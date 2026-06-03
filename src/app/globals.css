@@ -1,0 +1,153 @@
+@import "tailwindcss";
+@config "../../tailwind.config.ts";
+
+:root {
+  --font-inter: var(--font-poppins), sans-serif;
+  --font-manrope: var(--font-poppins), sans-serif;
+}
+
+* {box-sizing:border-box}
+html {scroll-behavior:smooth}
+body {
+  background: #fff8f3;
+  color: #1b1533;
+  font-family: var(--font-poppins), sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6, .font-display, .font-fredoka {
+  font-family: var(--font-fredoka), sans-serif !important;
+  letter-spacing: 0.02em !important;
+}
+
+.logo-font {
+  font-family: var(--font-fredoka), sans-serif !important;
+}
+
+.font-poppins {
+  font-family: var(--font-poppins), sans-serif !important;
+}
+
+.font-outfit {
+  font-family: var(--font-outfit), sans-serif !important;
+}
+
+.glass {background:rgba(255,255,255,.75);backdrop-filter:blur(18px)}
+
+@keyframes customMarquee {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(-100%, 0, 0);
+  }
+}
+
+.animate-custom-marquee {
+  display: inline-flex !important;
+  white-space: nowrap !important;
+  animation: customMarquee 35s linear infinite !important;
+}
+
+.marquee-container:hover .animate-custom-marquee {
+  animation-play-state: paused !important;
+}
+
+/* Scrollbar Hiding Utility */
+.scrollbar-none {
+  -ms-overflow-style: none !important;  /* IE and Edge */
+  scrollbar-width: none !important;  /* Firefox */
+}
+.scrollbar-none::-webkit-scrollbar {
+  display: none !important; /* Chrome, Safari and Opera */
+}
+
+/* Custom WooCommerce Cart Animations */
+@keyframes slideInRight {
+  from {
+    transform: translate3d(100%, 0, 0);
+  }
+  to {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes slideInUp {
+  from {
+    transform: translate3d(0, 100%, 0);
+    opacity: 0;
+  }
+  to {
+    transform: translate3d(0, 0, 0);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes toastProgress {
+  from {
+    width: 100%;
+  }
+  to {
+    width: 0%;
+  }
+}
+
+.animate-slide-in-right {
+  animation: slideInRight 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
+}
+
+.animate-slide-in-up {
+  animation: slideInUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-out forwards !important;
+}
+
+.animate-toast-progress {
+  animation: toastProgress 5s linear forwards !important;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+.animate-float {
+  animation: float 4s ease-in-out infinite !important;
+}
+
+/* Slide In Left animation for mobile hamburger menu drawer */
+@keyframes slideInLeft {
+  from {
+    transform: translate3d(-100%, 0, 0);
+  }
+  to {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.animate-slide-in-left {
+  animation: slideInLeft 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
+}
+
+/* Ensure main content is not hidden under the fixed mobile bottom navigation */
+@media (max-width: 767px) {
+  main {
+    padding-bottom: 72px !important;
+  }
+}
+
+
