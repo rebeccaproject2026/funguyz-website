@@ -1,0 +1,2479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FunGuyz Canada — Premium Adaptogens & Dried Genetics Shop</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script src="js/cart.js"></script>
+  <style>
+    /* Premium Next.js Homepage Styled Parity */
+    .hero-sec {
+      overflow: hidden;
+      background: linear-gradient(to top right, #fffdfb, #fffbf9, #fff5f0);
+      padding: 4rem 1.25rem;
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+    @media (min-width: 768px) {
+      .hero-sec {
+        padding: 5rem 2rem;
+      }
+    }
+    .hero-glow-1 {
+      position: absolute;
+      left: 10%;
+      top: 10%;
+      width: 400px;
+      height: 400px;
+      border-radius: 50%;
+      background: rgba(255, 232, 219, 0.35);
+      filter: blur(90px);
+      pointer-events: none;
+      z-index: 0;
+    }
+    .hero-glow-2 {
+      position: absolute;
+      right: -80px;
+      bottom: -60px;
+      width: 400px;
+      height: 350px;
+      border-radius: 50%;
+      background: linear-gradient(to top right, rgba(255, 182, 211, 0.5), rgba(255, 210, 229, 0.4), rgba(235, 223, 255, 0.3));
+      filter: blur(40px);
+      pointer-events: none;
+      z-index: 0;
+    }
+    .hero-glow-3 {
+      position: absolute;
+      right: -40px;
+      bottom: -20px;
+      width: 280px;
+      height: 280px;
+      border-radius: 50%;
+      background: linear-gradient(to bottom right, rgba(255, 219, 231, 0.7), rgba(255, 201, 223, 0.6));
+      filter: blur(20px);
+      opacity: 0.8;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .hero-glow-4 {
+      position: absolute;
+      right: 20%;
+      top: -100px;
+      width: 380px;
+      height: 380px;
+      border-radius: 50%;
+      background: rgba(224, 242, 254, 0.7);
+      filter: blur(70px);
+      pointer-events: none;
+      z-index: 0;
+    }
+    .hero-grid {
+      display: grid;
+      gap: 3rem;
+      grid-template-columns: repeat(1, minmax(0, 1fr));
+      align-items: center;
+      position: relative;
+      z-index: 10;
+      width: 100%;
+    }
+    @media (min-width: 1024px) {
+      .hero-grid {
+        grid-template-columns: 1.15fr 0.85fr;
+      }
+    }
+    .hero-trust-bar {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+      background: white;
+      border: 1px solid var(--slate-100);
+      border-radius: 24px;
+      padding: 0.875rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.01);
+      width: 100%;
+      max-width: 640px;
+      margin-top: 1rem;
+    }
+    @media (min-width: 640px) {
+      .hero-trust-bar {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+    .hero-trust-col {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .hero-trust-icon-box {
+      height: 2.25rem;
+      width: 2.25rem;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.02);
+      flex-shrink: 0;
+    }
+    .hero-trust-label {
+      font-size: 10px;
+      font-weight: 900;
+      color: var(--navy);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      line-height: 1.1;
+      text-align: left;
+    }
+    .hero-trust-sub {
+      display: block;
+      font-size: 8px;
+      font-weight: 500;
+      color: var(--slate-400);
+      text-transform: none;
+      letter-spacing: normal;
+      margin-top: 2px;
+    }
+    .hero-pedestal {
+      position: absolute;
+      bottom: 2rem;
+      width: 320px;
+      height: 48px;
+      background: white;
+      border-radius: 50%;
+      border: 1px solid rgba(241, 245, 249, 0.8);
+      box-shadow: 0 16px 40px rgba(27,21,51,0.05), 0 4px 12px rgba(27,21,51,0.02);
+      z-index: 0;
+    }
+    @media (min-width: 640px) {
+      .hero-pedestal {
+        width: 440px;
+        height: 65px;
+      }
+    }
+    
+    /* Benefit Strip */
+    .feature-strip {
+      background: rgba(241, 245, 249, 0.4);
+      padding: 2rem 1.25rem;
+    }
+    .strip-grid {
+      display: grid;
+      gap: 1.5rem;
+      grid-template-columns: repeat(1, minmax(0, 1fr));
+    }
+    @media (min-width: 640px) {
+      .strip-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    @media (min-width: 1024px) {
+      .strip-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    }
+    .strip-card {
+      background: white;
+      border: 1px solid var(--slate-100);
+      border-radius: 24px;
+      padding: 1.25rem;
+      box-shadow: 0 12px 36px rgba(27, 21, 51, 0.02);
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      cursor: pointer;
+      border-bottom: 4px solid var(--slate-200);
+      transition: all 0.3s ease;
+      text-align: left;
+    }
+    .strip-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 24px 50px rgba(27, 21, 51, 0.07);
+    }
+    .strip-icon-box {
+      height: 3rem;
+      width: 3rem;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.01);
+      transition: all 0.3s ease;
+    }
+    .strip-card:hover .strip-icon-box {
+      background: var(--navy);
+      color: white !important;
+    }
+
+    /* Shop by category */
+    .cat-grid-wrapper {
+      display: grid;
+      gap: 1.5rem;
+      grid-template-columns: repeat(1, minmax(0, 1fr));
+    }
+    @media (min-width: 640px) {
+      .cat-grid-wrapper { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    @media (min-width: 1024px) {
+      .cat-grid-wrapper { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    }
+    .cat-aspect-card {
+      position: relative;
+      aspect-ratio: 4 / 5;
+      width: 100%;
+      overflow: hidden;
+      border-radius: 28px;
+      box-shadow: 0 12px 36px rgba(27, 21, 51, 0.04);
+      transition: all 0.5s ease;
+      cursor: pointer;
+    }
+    .cat-aspect-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 24px 50px rgba(27, 21, 51, 0.15);
+    }
+    .cat-card-img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.7s ease;
+    }
+    .cat-aspect-card:hover .cat-card-img {
+      transform: scale(1.08);
+    }
+    .cat-card-gradient {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.4) 50%, transparent 100%);
+      transition: all 0.3s ease;
+      z-index: 5;
+    }
+    .cat-aspect-card:hover .cat-card-gradient {
+      background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.5) 50%, transparent 100%);
+    }
+    .cat-card-content {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 0.5rem;
+      z-index: 10;
+    }
+
+    /* Carousel Slides (Best Sellers / Blog) */
+    .slider-viewport {
+      overflow-x: auto;
+      display: flex;
+      gap: 1.5rem;
+      padding-bottom: 1.5rem;
+      scroll-behavior: smooth;
+    }
+    .slider-viewport::-webkit-scrollbar {
+      display: none;
+    }
+    .slider-card-wrapper {
+      flex: 0 0 100%;
+      width: 100%;
+    }
+    @media (min-width: 640px) { .slider-card-wrapper { flex: 0 0 calc(50% - 0.75rem); } }
+    @media (min-width: 768px) { .slider-card-wrapper { flex: 0 0 calc(33.333% - 1rem); } }
+    @media (min-width: 1024px) { .slider-card-wrapper { flex: 0 0 calc(25% - 1.125rem); } }
+
+    /* Why Choose FunGuyz Solid black block */
+    .why-block-black {
+      width: 100%;
+      background: black;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+      box-shadow: 0 4px 30px rgba(0,0,0,0.2);
+      padding: 2.5rem 0;
+    }
+    .why-card-grid {
+      display: grid;
+      overflow: hidden;
+      border-radius: 28px;
+      border: 1px solid #242428;
+      background: #0c0a0f;
+      grid-template-columns: repeat(1, minmax(0, 1fr));
+    }
+    @media (min-width: 1024px) {
+      .why-card-grid {
+        grid-template-columns: 1fr 2.5fr;
+      }
+    }
+    .why-pink-col {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      background: linear-gradient(to bottom right, #ff4fa3, #e03b87);
+      padding: 2.5rem;
+      text-align: left;
+      color: white;
+    }
+    .why-icons-grid {
+      display: grid;
+      gap: 1.5rem;
+      padding: 1.5rem;
+      grid-template-columns: repeat(1, minmax(0, 1fr));
+      background: #0c0a0f;
+    }
+    @media (min-width: 640px) {
+      .why-icons-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    @media (min-width: 1024px) {
+      .why-icons-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); padding: 2rem; }
+    }
+    .why-icon-col {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+      border-right: 1px solid rgba(255,255,255,0.03);
+    }
+    .why-icon-col:last-child {
+      border-right: none;
+    }
+
+    /* Benefits round tabs */
+    .benefit-capsules-grid {
+      display: grid;
+      gap: 2rem;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    @media (min-width: 768px) {
+      .benefit-capsules-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    }
+    @media (min-width: 1024px) {
+      .benefit-capsules-grid { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+    }
+    .benefit-round-col {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.75rem;
+      text-align: center;
+    }
+    .benefit-round-icon-box {
+      height: 3rem;
+      width: 3rem;
+      border-radius: 50%;
+      background: rgba(123, 92, 255, 0.05);
+      color: #7b5cff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+    }
+    .benefit-round-col:hover .benefit-round-icon-box {
+      background: rgba(255, 79, 163, 0.05);
+      color: var(--pinky);
+    }
+
+    /* Reviews FAQ Split Layout */
+    .split-layout-grid {
+      display: grid;
+      gap: 3rem;
+      grid-template-columns: repeat(1, minmax(0, 1fr));
+    }
+    @media (min-width: 1024px) {
+      .split-layout-grid {
+        grid-template-columns: 1.3fr 1fr;
+      }
+    }
+    
+    /* Sliding Review Card Carousel */
+    .sliding-review-card {
+      position: relative;
+      border-radius: 28px;
+      border: 2px solid rgba(255, 79, 163, 0.15);
+      background: #fffdfd;
+      padding: 2.25rem;
+      box-shadow: 0 15px 35px rgba(255, 79, 163, 0.05);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-h: 280px;
+      min-height: 280px;
+      transition: all 0.3s ease;
+      text-align: left;
+    }
+    .sliding-review-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 25px 50px rgba(255, 79, 163, 0.1);
+    }
+    .reviews-chevrons-row {
+      display: flex;
+      gap: 0.5rem;
+    }
+    .chevron-mini-btn {
+      height: 2rem;
+      width: 2rem;
+      border-radius: 12px;
+      border: 1px solid var(--slate-100);
+      background: white;
+      color: var(--navy);
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.02);
+      transition: all 0.2s ease;
+    }
+    .chevron-mini-btn:hover {
+      background: var(--pinky);
+      color: white;
+      border-color: var(--pinky);
+    }
+    .testimonial-avatar {
+      height: 2.75rem;
+      width: 2.75rem;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      font-weight: 900;
+      color: white;
+      font-size: 15px;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.02);
+    }
+
+    /* FAQ items index page style */
+    .home-faq-item {
+      border-bottom: 1px solid var(--slate-100);
+      transition: all 0.2s ease;
+    }
+    .home-faq-item:last-child {
+      border-bottom: none;
+    }
+    .home-faq-header {
+      padding: 1.125rem 1.5rem;
+      background: white;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      user-select: none;
+    }
+    .home-faq-q {
+      font-size: 11.5px;
+      font-weight: 900;
+      color: var(--navy);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .home-faq-ans {
+      padding: 0 1.5rem 1.25rem 1.5rem;
+      font-size: 12px;
+      color: var(--slate-500);
+      line-height: 1.6;
+      border-top: 1px solid transparent;
+      display: none;
+    }
+    .home-faq-item.active .home-faq-ans {
+      display: block;
+      border-top-color: var(--slate-50);
+    }
+
+    /* Instagram Section */
+    .instagram-card-feed {
+      border-radius: 28px;
+      border: 1px solid var(--slate-100);
+      background: #fafafa;
+      padding: 1.5rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.01);
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+      text-align: left;
+    }
+    .insta-square-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.75rem;
+    }
+    @media (min-width: 640px) {
+      .insta-square-grid {
+        grid-template-columns: repeat(6, 1fr);
+      }
+    }
+    .insta-pic-link {
+      position: relative;
+      aspect-ratio: 1/1;
+      overflow: hidden;
+      border-radius: 16px;
+      border: 1px solid var(--slate-100);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.02);
+    }
+    .insta-pic-link img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+    .insta-pic-link:hover img {
+      transform: scale(1.08);
+    }
+    .insta-hover-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(123, 92, 255, 0.15);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10;
+    }
+    .insta-pic-link:hover .insta-hover-overlay {
+      opacity: 1;
+    }
+    .insta-view-btn {
+      font-size: 8px;
+      font-weight: 900;
+      color: white;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      background: rgba(0,0,0,0.45);
+      padding: 0.25rem 0.5rem;
+      border-radius: 8px;
+      backdrop-filter: blur(4px);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header Include -->
+  <!-- Load Lucide Icons CDN for 100% Vector Parity with Next.js -->
+<script src="https://unpkg.com/lucide@latest"></script>
+
+
+<!-- 1. Next.js Parity Announcement Marquee Bar -->
+<div style="background:#110d24; color:white; padding:0.625rem 0; font-size:11px; font-weight:800; border-bottom:1px solid rgba(255,255,255,0.05); position:relative; z-index:1000; overflow:hidden; user-select:none;" class="font-poppins">
+  <div class="marquee-container" style="display:flex; overflow:hidden; white-space:nowrap;">
+    <!-- Track 1 -->
+    <div class="animate-custom-marquee" style="display:inline-flex; align-items:center; gap:2.5rem; padding-right:2.5rem; shrink-0:true;">
+      <button onclick="openMarqueeModal(0)" style="background:none; border:none; color:white; font-weight:800; cursor:pointer; font-size:11px;" class="hover:text-[#ff4fa3] shrink-0 font-poppins">Canada&#039;s Largest Magic Mushroom Dispensary</button><span style="color:#52525b; shrink-0:true; select-none:true;">•</span><button onclick="openMarqueeModal(1)" style="background:none; border:none; color:white; font-weight:800; cursor:pointer; font-size:11px;" class="hover:text-[#ff4fa3] shrink-0 font-poppins">Toronto Magic Mushroom Delivery Same-Day</button><span style="color:#52525b; shrink-0:true; select-none:true;">•</span><button onclick="openMarqueeModal(2)" style="background:none; border:none; color:white; font-weight:800; cursor:pointer; font-size:11px;" class="hover:text-[#ff4fa3] shrink-0 font-poppins">Ottawa Magic Mushroom Delivery Same-Day</button><span style="color:#52525b; shrink-0:true; select-none:true;">•</span><button onclick="openMarqueeModal(3)" style="background:none; border:none; color:white; font-weight:800; cursor:pointer; font-size:11px;" class="hover:text-[#ff4fa3] shrink-0 font-poppins">Free Delivery on Orders Over $120</button><span style="color:#52525b; shrink-0:true; select-none:true;">•</span><button onclick="openMarqueeModal(4)" style="background:none; border:none; color:white; font-weight:800; cursor:pointer; font-size:11px;" class="hover:text-[#ff4fa3] shrink-0 font-poppins">30% OFF All Products + Promo Coupons</button><span style="color:#52525b; shrink-0:true; select-none:true;">•</span><button onclick="openMarqueeModal(5)" style="background:none; border:none; color:white; font-weight:800; cursor:pointer; font-size:11px;" class="hover:text-[#ff4fa3] shrink-0 font-poppins">Express Delivery Under 2 Hours</button><span style="color:#52525b; shrink-0:true; select-none:true;">•</span><button onclick="openMarqueeModal(6)" style="background:none; border:none; color:white; font-weight:800; cursor:pointer; font-size:11px;" class="hover:text-[#ff4fa3] shrink-0 font-poppins">Buy Magic Mushrooms Canada-Wide Shipping</button><span style="color:#52525b; shrink-0:true; select-none:true;">•</span>    </div>
+    <!-- Track 2 (seamless duplication) -->
+    <div class="animate-custom-marquee" style="display:inline-flex; align-items:center; gap:2.5rem; padding-right:2.5rem; shrink-0:true;" aria-hidden="true">
+      <button onclick="openMarqueeModal(0)" style="background:none; border:none; color:white; font-weight:800; cursor:pointer; font-size:11px;" class="hover:text-[#ff4fa3] shrink-0 font-poppins">Canada&#039;s Largest Magic Mushroom Dispensary</button><span style="color:#52525b; shrink-0:true; select-none:true;">•</span><button onclick="openMarqueeModal(1)" style="background:none; border:none; color:white; font-weight:800; cursor:pointer; font-size:11px;" class="hover:text-[#ff4fa3] shrink-0 font-poppins">Toronto Magic Mushroom Delivery Same-Day</button><span style="color:#52525b; shrink-0:true; select-none:true;">•</span><button onclick="openMarqueeModal(2)" style="background:none; border:none; color:white; font-weight:800; cursor:pointer; font-size:11px;" class="hover:text-[#ff4fa3] shrink-0 font-poppins">Ottawa Magic Mushroom Delivery Same-Day</button><span style="color:#52525b; shrink-0:true; select-none:true;">•</span><button onclick="openMarqueeModal(3)" style="background:none; border:none; color:white; font-weight:800; cursor:pointer; font-size:11px;" class="hover:text-[#ff4fa3] shrink-0 font-poppins">Free Delivery on Orders Over $120</button><span style="color:#52525b; shrink-0:true; select-none:true;">•</span><button onclick="openMarqueeModal(4)" style="background:none; border:none; color:white; font-weight:800; cursor:pointer; font-size:11px;" class="hover:text-[#ff4fa3] shrink-0 font-poppins">30% OFF All Products + Promo Coupons</button><span style="color:#52525b; shrink-0:true; select-none:true;">•</span><button onclick="openMarqueeModal(5)" style="background:none; border:none; color:white; font-weight:800; cursor:pointer; font-size:11px;" class="hover:text-[#ff4fa3] shrink-0 font-poppins">Express Delivery Under 2 Hours</button><span style="color:#52525b; shrink-0:true; select-none:true;">•</span><button onclick="openMarqueeModal(6)" style="background:none; border:none; color:white; font-weight:800; cursor:pointer; font-size:11px;" class="hover:text-[#ff4fa3] shrink-0 font-poppins">Buy Magic Mushrooms Canada-Wide Shipping</button><span style="color:#52525b; shrink-0:true; select-none:true;">•</span>    </div>
+  </div>
+</div>
+
+<!-- Header Navigation Megamenu Bar -->
+<header style="background:rgba(255,255,255,0.95); backdrop-filter:blur(12px); border-bottom:1px solid #f1f5f9; position:sticky; top:0; z-index:90; padding:0.5rem 0;" class="font-poppins">
+  <div class="max-width-container" style="display:flex; align-items:center; justify-content:space-between; gap:1.5rem;">
+    
+    <!-- Left: Logo & Nav items -->
+    <div style="display:flex; align-items:center; gap:3rem; flex:1;">
+      <!-- Logo -->
+      <a href="index.php" style="display:flex; align-items:center;" class="hover:scale-[1.02] duration-200">
+        <img src="images/logo.webp" alt="FunGuyz Logo" style="height:3.5rem; width:auto; object-fit:contain;" class="logo-img">
+      </a>
+
+      <!-- Desktop Megamenu Links -->
+      <nav class="desktop-nav">
+        
+        <!-- Megamenu 1: Magic Mushrooms -->
+        <div style="position:relative;" class="dropdown-group py-3">
+          <a href="category.php?id=magic-mushrooms" style="font-size:12px; font-weight:800; text-transform:uppercase; color:rgba(27,21,51,0.85); letter-spacing:0.02em; display:flex; align-items:center; gap:0.375rem;" class="hover:text-[#ff4fa3]">
+            <span style="color:var(--pinky); position:relative; top:1px; display:inline-flex;" class="nav-vector-span">
+              <!-- Custom Mushroom svg structure matching Next.js exactly -->
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="height:0.95rem; width:0.95rem; color:var(--pinky);"><path d="M3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12H3Z" /><path d="M9 12V18C9 19.6569 10.3431 21 12 21C13.6569 21 15 19.6569 15 18V12" /></svg>
+            </span>
+            Magic Mushrooms 
+            <i data-lucide="chevron-down" style="height:0.875rem; width:0.875rem; color:#94a3b8; stroke-width:2.5;"></i>
+          </a>
+          
+          <!-- Dropdown Grid -->
+          <div class="megamenu-dropdown" style="position:absolute; top:100%; left:-2rem; margin-top:2px; background:#fff8f3; border:1px solid rgba(255, 79, 163, 0.15); border-radius:20px; padding:1.25rem; box-shadow:0 24px 80px rgba(255, 79, 163, 0.12); display:none; grid-template-columns:repeat(3, 1fr); gap:6px; width:640px; z-index:100;">
+            <a href="shop.php" style="display:flex; align-items:center; gap:0.5rem; padding:0.25rem 0.5rem; border-radius:8px; font-size:11.5px; font-weight:700; color:rgba(27,21,51,0.8);" class="hover:text-[#ff4fa3] hover:bg-[#fff0f5]"><i data-lucide="award" style="height:0.9rem; width:0.9rem; stroke-width:2.2; color:#a1a1aa;" class="shrink-0"></i><span class="truncate">Golden Teacher</span></a><a href="shop.php" style="display:flex; align-items:center; gap:0.5rem; padding:0.25rem 0.5rem; border-radius:8px; font-size:11.5px; font-weight:700; color:rgba(27,21,51,0.8);" class="hover:text-[#ff4fa3] hover:bg-[#fff0f5]"><i data-lucide="compass" style="height:0.9rem; width:0.9rem; stroke-width:2.2; color:#a1a1aa;" class="shrink-0"></i><span class="truncate">Blue Pulaski</span></a><a href="shop.php" style="display:flex; align-items:center; gap:0.5rem; padding:0.25rem 0.5rem; border-radius:8px; font-size:11.5px; font-weight:700; color:rgba(27,21,51,0.8);" class="hover:text-[#ff4fa3] hover:bg-[#fff0f5]"><i data-lucide="map-pin" style="height:0.9rem; width:0.9rem; stroke-width:2.2; color:#a1a1aa;" class="shrink-0"></i><span class="truncate">Texas Yellow Cap</span></a><a href="shop.php" style="display:flex; align-items:center; gap:0.5rem; padding:0.25rem 0.5rem; border-radius:8px; font-size:11.5px; font-weight:700; color:rgba(27,21,51,0.8);" class="hover:text-[#ff4fa3] hover:bg-[#fff0f5]"><i data-lucide="globe" style="height:0.9rem; width:0.9rem; stroke-width:2.2; color:#a1a1aa;" class="shrink-0"></i><span class="truncate">Vietnamese</span></a><a href="shop.php" style="display:flex; align-items:center; gap:0.5rem; padding:0.25rem 0.5rem; border-radius:8px; font-size:11.5px; font-weight:700; color:rgba(27,21,51,0.8);" class="hover:text-[#ff4fa3] hover:bg-[#fff0f5]"><i data-lucide="shield-check" style="height:0.9rem; width:0.9rem; stroke-width:2.2; color:#a1a1aa;" class="shrink-0"></i><span class="truncate">B+</span></a><a href="shop.php" style="display:flex; align-items:center; gap:0.5rem; padding:0.25rem 0.5rem; border-radius:8px; font-size:11.5px; font-weight:700; color:rgba(27,21,51,0.8);" class="hover:text-[#ff4fa3] hover:bg-[#fff0f5]"><i data-lucide="mountain" style="height:0.9rem; width:0.9rem; stroke-width:2.2; color:#a1a1aa;" class="shrink-0"></i><span class="truncate">Mazatapec</span></a><a href="shop.php" style="display:flex; align-items:center; gap:0.5rem; padding:0.25rem 0.5rem; border-radius:8px; font-size:11.5px; font-weight:700; color:rgba(27,21,51,0.8);" class="hover:text-[#ff4fa3] hover:bg-[#fff0f5]"><i data-lucide="coins" style="height:0.9rem; width:0.9rem; stroke-width:2.2; color:#a1a1aa;" class="shrink-0"></i><span class="truncate">Treasure Coast</span></a><a href="shop.php" style="display:flex; align-items:center; gap:0.5rem; padding:0.25rem 0.5rem; border-radius:8px; font-size:11.5px; font-weight:700; color:rgba(27,21,51,0.8);" class="hover:text-[#ff4fa3] hover:bg-[#fff0f5]"><i data-lucide="crown" style="height:0.9rem; width:0.9rem; stroke-width:2.2; color:#a1a1aa;" class="shrink-0"></i><span class="truncate">Cambodian</span></a><a href="shop.php" style="display:flex; align-items:center; gap:0.5rem; padding:0.25rem 0.5rem; border-radius:8px; font-size:11.5px; font-weight:700; color:rgba(27,21,51,0.8);" class="hover:text-[#ff4fa3] hover:bg-[#fff0f5]"><i data-lucide="flame" style="height:0.9rem; width:0.9rem; stroke-width:2.2; color:#a1a1aa;" class="shrink-0"></i><span class="truncate">Penis Envy</span></a><a href="shop.php" style="display:flex; align-items:center; gap:0.5rem; padding:0.25rem 0.5rem; border-radius:8px; font-size:11.5px; font-weight:700; color:rgba(27,21,51,0.8);" class="hover:text-[#ff4fa3] hover:bg-[#fff0f5]"><i data-lucide="sparkles" style="height:0.9rem; width:0.9rem; stroke-width:2.2; color:#a1a1aa;" class="shrink-0"></i><span class="truncate">Golden Penis Envy</span></a><a href="shop.php" style="display:flex; align-items:center; gap:0.5rem; padding:0.25rem 0.5rem; border-radius:8px; font-size:11.5px; font-weight:700; color:rgba(27,21,51,0.8);" class="hover:text-[#ff4fa3] hover:bg-[#fff0f5]"><i data-lucide="zap" style="height:0.9rem; width:0.9rem; stroke-width:2.2; color:#a1a1aa;" class="shrink-0"></i><span class="truncate">Blue Meanies</span></a><a href="shop.php" style="display:flex; align-items:center; gap:0.5rem; padding:0.25rem 0.5rem; border-radius:8px; font-size:11.5px; font-weight:700; color:rgba(27,21,51,0.8);" class="hover:text-[#ff4fa3] hover:bg-[#fff0f5]"><i data-lucide="hammer" style="height:0.9rem; width:0.9rem; stroke-width:2.2; color:#a1a1aa;" class="shrink-0"></i><span class="truncate">Squat Mak</span></a><a href="shop.php" style="display:flex; align-items:center; gap:0.5rem; padding:0.25rem 0.5rem; border-radius:8px; font-size:11.5px; font-weight:700; color:rgba(27,21,51,0.8);" class="hover:text-[#ff4fa3] hover:bg-[#fff0f5]"><i data-lucide="skull" style="height:0.9rem; width:0.9rem; stroke-width:2.2; color:#a1a1aa;" class="shrink-0"></i><span class="truncate">Thrasher</span></a><a href="shop.php" style="display:flex; align-items:center; gap:0.5rem; padding:0.25rem 0.5rem; border-radius:8px; font-size:11.5px; font-weight:700; color:rgba(27,21,51,0.8);" class="hover:text-[#ff4fa3] hover:bg-[#fff0f5]"><i data-lucide="brain" style="height:0.9rem; width:0.9rem; stroke-width:2.2; color:#a1a1aa;" class="shrink-0"></i><span class="truncate">Jedi Mind Fuck</span></a><a href="shop.php" style="display:flex; align-items:center; gap:0.5rem; padding:0.25rem 0.5rem; border-radius:8px; font-size:11.5px; font-weight:700; color:rgba(27,21,51,0.8);" class="hover:text-[#ff4fa3] hover:bg-[#fff0f5]"><i data-lucide="infinity" style="height:0.9rem; width:0.9rem; stroke-width:2.2; color:#a1a1aa;" class="shrink-0"></i><span class="truncate">Melmac</span></a><a href="shop.php" style="display:flex; align-items:center; gap:0.5rem; padding:0.25rem 0.5rem; border-radius:8px; font-size:11.5px; font-weight:700; color:rgba(27,21,51,0.8);" class="hover:text-[#ff4fa3] hover:bg-[#fff0f5]"><i data-lucide="waves" style="height:0.9rem; width:0.9rem; stroke-width:2.2; color:#a1a1aa;" class="shrink-0"></i><span class="truncate">Tidal Wave</span></a><a href="shop.php" style="display:flex; align-items:center; gap:0.5rem; padding:0.25rem 0.5rem; border-radius:8px; font-size:11.5px; font-weight:700; color:rgba(27,21,51,0.8);" class="hover:text-[#ff4fa3] hover:bg-[#fff0f5]"><i data-lucide="dna" style="height:0.9rem; width:0.9rem; stroke-width:2.2; color:#a1a1aa;" class="shrink-0"></i><span class="truncate">Albino Penis Envy</span></a><a href="shop.php" style="display:flex; align-items:center; gap:0.5rem; padding:0.25rem 0.5rem; border-radius:8px; font-size:11.5px; font-weight:700; color:rgba(27,21,51,0.8);" class="hover:text-[#ff4fa3] hover:bg-[#fff0f5]"><i data-lucide="rocket" style="height:0.9rem; width:0.9rem; stroke-width:2.2; color:#a1a1aa;" class="shrink-0"></i><span class="truncate">Albino Extra Terrestrial</span></a><a href="shop.php" style="display:flex; align-items:center; gap:0.5rem; padding:0.25rem 0.5rem; border-radius:8px; font-size:11.5px; font-weight:700; color:rgba(27,21,51,0.8);" class="hover:text-[#ff4fa3] hover:bg-[#fff0f5]"><i data-lucide="brain" style="height:0.9rem; width:0.9rem; stroke-width:2.2; color:#a1a1aa;" class="shrink-0"></i><span class="truncate">Albino Jedi Mind Fuck</span></a><a href="shop.php" style="display:flex; align-items:center; gap:0.5rem; padding:0.25rem 0.5rem; border-radius:8px; font-size:11.5px; font-weight:700; color:rgba(27,21,51,0.8);" class="hover:text-[#ff4fa3] hover:bg-[#fff0f5]"><i data-lucide="snowflake" style="height:0.9rem; width:0.9rem; stroke-width:2.2; color:#a1a1aa;" class="shrink-0"></i><span class="truncate">Albino Snow White</span></a><a href="shop.php" style="display:flex; align-items:center; gap:0.5rem; padding:0.25rem 0.5rem; border-radius:8px; font-size:11.5px; font-weight:700; color:rgba(27,21,51,0.8);" class="hover:text-[#ff4fa3] hover:bg-[#fff0f5]"><i data-lucide="activity" style="height:0.9rem; width:0.9rem; stroke-width:2.2; color:#a1a1aa;" class="shrink-0"></i><span class="truncate">Albino SV-13</span></a><a href="shop.php" style="display:flex; align-items:center; gap:0.5rem; padding:0.25rem 0.5rem; border-radius:8px; font-size:11.5px; font-weight:700; color:rgba(27,21,51,0.8);" class="hover:text-[#ff4fa3] hover:bg-[#fff0f5]"><i data-lucide="gem" style="height:0.9rem; width:0.9rem; stroke-width:2.2; color:#a1a1aa;" class="shrink-0"></i><span class="truncate">Albino Treasure Coast</span></a><a href="shop.php" style="display:flex; align-items:center; gap:0.5rem; padding:0.25rem 0.5rem; border-radius:8px; font-size:11.5px; font-weight:700; color:rgba(27,21,51,0.8);" class="hover:text-[#ff4fa3] hover:bg-[#fff0f5]"><i data-lucide="cloud-snow" style="height:0.9rem; width:0.9rem; stroke-width:2.2; color:#a1a1aa;" class="shrink-0"></i><span class="truncate">Jack Frost</span></a><a href="shop.php" style="display:flex; align-items:center; gap:0.5rem; padding:0.25rem 0.5rem; border-radius:8px; font-size:11.5px; font-weight:700; color:rgba(27,21,51,0.8);" class="hover:text-[#ff4fa3] hover:bg-[#fff0f5]"><i data-lucide="compass" style="height:0.9rem; width:0.9rem; stroke-width:2.2; color:#a1a1aa;" class="shrink-0"></i><span class="truncate">Yeti</span></a><a href="shop.php" style="display:flex; align-items:center; gap:0.5rem; padding:0.25rem 0.5rem; border-radius:8px; font-size:11.5px; font-weight:700; color:rgba(27,21,51,0.8);" class="hover:text-[#ff4fa3] hover:bg-[#fff0f5]"><i data-lucide="star" style="height:0.9rem; width:0.9rem; stroke-width:2.2; color:#a1a1aa;" class="shrink-0"></i><span class="truncate">APER</span></a><a href="shop.php" style="display:flex; align-items:center; gap:0.5rem; padding:0.25rem 0.5rem; border-radius:8px; font-size:11.5px; font-weight:700; color:rgba(27,21,51,0.8);" class="hover:text-[#ff4fa3] hover:bg-[#fff0f5]"><i data-lucide="shield-alert" style="height:0.9rem; width:0.9rem; stroke-width:2.2; color:#a1a1aa;" class="shrink-0"></i><span class="truncate">Avalanche</span></a><a href="shop.php" style="display:flex; align-items:center; gap:0.5rem; padding:0.25rem 0.5rem; border-radius:8px; font-size:11.5px; font-weight:700; color:rgba(27,21,51,0.8);" class="hover:text-[#ff4fa3] hover:bg-[#fff0f5]"><i data-lucide="egg" style="height:0.9rem; width:0.9rem; stroke-width:2.2; color:#a1a1aa;" class="shrink-0"></i><span class="truncate">Dino Eggs</span></a><a href="shop.php" style="display:flex; align-items:center; gap:0.5rem; padding:0.25rem 0.5rem; border-radius:8px; font-size:11.5px; font-weight:700; color:rgba(27,21,51,0.8);" class="hover:text-[#ff4fa3] hover:bg-[#fff0f5]"><i data-lucide="party-popper" style="height:0.9rem; width:0.9rem; stroke-width:2.2; color:#a1a1aa;" class="shrink-0"></i><span class="truncate">Full Moon Party</span></a><a href="shop.php" style="display:flex; align-items:center; gap:0.5rem; padding:0.25rem 0.5rem; border-radius:8px; font-size:11.5px; font-weight:700; color:rgba(27,21,51,0.8);" class="hover:text-[#ff4fa3] hover:bg-[#fff0f5]"><i data-lucide="palmtree" style="height:0.9rem; width:0.9rem; stroke-width:2.2; color:#a1a1aa;" class="shrink-0"></i><span class="truncate">Koh Samui</span></a><a href="shop.php" style="display:flex; align-items:center; gap:0.5rem; padding:0.25rem 0.5rem; border-radius:8px; font-size:11.5px; font-weight:700; color:rgba(27,21,51,0.8);" class="hover:text-[#ff4fa3] hover:bg-[#fff0f5]"><i data-lucide="heart" style="height:0.9rem; width:0.9rem; stroke-width:2.2; color:#a1a1aa;" class="shrink-0"></i><span class="truncate">Shakti</span></a>          </div>
+        </div>
+
+        <!-- Megamenu 2: Edibles -->
+        <div style="position:relative;" class="dropdown-group py-3">
+          <a href="category.php?id=edibles" style="font-size:12px; font-weight:800; text-transform:uppercase; color:rgba(27,21,51,0.85); letter-spacing:0.02em; display:flex; align-items:center; gap:0.375rem;" class="hover:text-[#ff4fa3]">
+            <i data-lucide="cookie" style="height:0.95rem; width:0.95rem; stroke-width:2.2; color:var(--pinky);"></i>
+            Edibles 
+            <i data-lucide="chevron-down" style="height:0.875rem; width:0.875rem; color:#94a3b8; stroke-width:2.5;"></i>
+          </a>
+          
+          <div class="megamenu-dropdown" style="position:absolute; top:100%; left:-2rem; margin-top:2px; background:#fff8f3; border:1px solid rgba(255, 79, 163, 0.15); border-radius:20px; padding:1.25rem; box-shadow:0 24px 80px rgba(255, 79, 163, 0.12); display:none; grid-template-columns:repeat(2, 1fr); gap:6px; width:460px; z-index:100;">
+            <a href="shop.php" style="display:flex; align-items:center; gap:0.5rem; padding:0.25rem 0.5rem; border-radius:8px; font-size:11.5px; font-weight:700; color:rgba(27,21,51,0.8);" class="hover:text-[#ff4fa3] hover:bg-[#fff0f5]"><i data-lucide="candy" style="height:0.9rem; width:0.9rem; stroke-width:2.2; color:#a1a1aa;" class="shrink-0"></i><span class="truncate">Blue Raspberry Gummies</span></a><a href="shop.php" style="display:flex; align-items:center; gap:0.5rem; padding:0.25rem 0.5rem; border-radius:8px; font-size:11.5px; font-weight:700; color:rgba(27,21,51,0.8);" class="hover:text-[#ff4fa3] hover:bg-[#fff0f5]"><i data-lucide="citrus" style="height:0.9rem; width:0.9rem; stroke-width:2.2; color:#a1a1aa;" class="shrink-0"></i><span class="truncate">Watermelon Gummies</span></a><a href="shop.php" style="display:flex; align-items:center; gap:0.5rem; padding:0.25rem 0.5rem; border-radius:8px; font-size:11.5px; font-weight:700; color:rgba(27,21,51,0.8);" class="hover:text-[#ff4fa3] hover:bg-[#fff0f5]"><i data-lucide="heart" style="height:0.9rem; width:0.9rem; stroke-width:2.2; color:#a1a1aa;" class="shrink-0"></i><span class="truncate">Strawberry Gummies</span></a><a href="shop.php" style="display:flex; align-items:center; gap:0.5rem; padding:0.25rem 0.5rem; border-radius:8px; font-size:11.5px; font-weight:700; color:rgba(27,21,51,0.8);" class="hover:text-[#ff4fa3] hover:bg-[#fff0f5]"><i data-lucide="smile" style="height:0.9rem; width:0.9rem; stroke-width:2.2; color:#a1a1aa;" class="shrink-0"></i><span class="truncate">Peach Gummies</span></a><a href="shop.php" style="display:flex; align-items:center; gap:0.5rem; padding:0.25rem 0.5rem; border-radius:8px; font-size:11.5px; font-weight:700; color:rgba(27,21,51,0.8);" class="hover:text-[#ff4fa3] hover:bg-[#fff0f5]"><i data-lucide="palmtree" style="height:0.9rem; width:0.9rem; stroke-width:2.2; color:#a1a1aa;" class="shrink-0"></i><span class="truncate">Tropical Gummies</span></a><a href="shop.php" style="display:flex; align-items:center; gap:0.5rem; padding:0.25rem 0.5rem; border-radius:8px; font-size:11.5px; font-weight:700; color:rgba(27,21,51,0.8);" class="hover:text-[#ff4fa3] hover:bg-[#fff0f5]"><i data-lucide="sparkles" style="height:0.9rem; width:0.9rem; stroke-width:2.2; color:#a1a1aa;" class="shrink-0"></i><span class="truncate">Mixed Berry Gummies</span></a><a href="shop.php" style="display:flex; align-items:center; gap:0.5rem; padding:0.25rem 0.5rem; border-radius:8px; font-size:11.5px; font-weight:700; color:rgba(27,21,51,0.8);" class="hover:text-[#ff4fa3] hover:bg-[#fff0f5]"><i data-lucide="grid" style="height:0.9rem; width:0.9rem; stroke-width:2.2; color:#a1a1aa;" class="shrink-0"></i><span class="truncate">Milk Chocolate Bar</span></a><a href="shop.php" style="display:flex; align-items:center; gap:0.5rem; padding:0.25rem 0.5rem; border-radius:8px; font-size:11.5px; font-weight:700; color:rgba(27,21,51,0.8);" class="hover:text-[#ff4fa3] hover:bg-[#fff0f5]"><i data-lucide="moon" style="height:0.9rem; width:0.9rem; stroke-width:2.2; color:#a1a1aa;" class="shrink-0"></i><span class="truncate">Dark Chocolate Bar</span></a><a href="shop.php" style="display:flex; align-items:center; gap:0.5rem; padding:0.25rem 0.5rem; border-radius:8px; font-size:11.5px; font-weight:700; color:rgba(27,21,51,0.8);" class="hover:text-[#ff4fa3] hover:bg-[#fff0f5]"><i data-lucide="cookie" style="height:0.9rem; width:0.9rem; stroke-width:2.2; color:#a1a1aa;" class="shrink-0"></i><span class="truncate">Cookies &amp; Cream Chocolate</span></a><a href="shop.php" style="display:flex; align-items:center; gap:0.5rem; padding:0.25rem 0.5rem; border-radius:8px; font-size:11.5px; font-weight:700; color:rgba(27,21,51,0.8);" class="hover:text-[#ff4fa3] hover:bg-[#fff0f5]"><i data-lucide="leaf" style="height:0.9rem; width:0.9rem; stroke-width:2.2; color:#a1a1aa;" class="shrink-0"></i><span class="truncate">Mint Chocolate Bar</span></a><a href="shop.php" style="display:flex; align-items:center; gap:0.5rem; padding:0.25rem 0.5rem; border-radius:8px; font-size:11.5px; font-weight:700; color:rgba(27,21,51,0.8);" class="hover:text-[#ff4fa3] hover:bg-[#fff0f5]"><i data-lucide="gem" style="height:0.9rem; width:0.9rem; stroke-width:2.2; color:#a1a1aa;" class="shrink-0"></i><span class="truncate">Salted Caramel Chocolate</span></a><a href="shop.php" style="display:flex; align-items:center; gap:0.5rem; padding:0.25rem 0.5rem; border-radius:8px; font-size:11.5px; font-weight:700; color:rgba(27,21,51,0.8);" class="hover:text-[#ff4fa3] hover:bg-[#fff0f5]"><i data-lucide="sun" style="height:0.9rem; width:0.9rem; stroke-width:2.2; color:#a1a1aa;" class="shrink-0"></i><span class="truncate">White Chocolate Bar</span></a><a href="shop.php" style="display:flex; align-items:center; gap:0.5rem; padding:0.25rem 0.5rem; border-radius:8px; font-size:11.5px; font-weight:700; color:rgba(27,21,51,0.8);" class="hover:text-[#ff4fa3] hover:bg-[#fff0f5]"><i data-lucide="coffee" style="height:0.9rem; width:0.9rem; stroke-width:2.2; color:#a1a1aa;" class="shrink-0"></i><span class="truncate">Chai Mushroom Tea</span></a><a href="shop.php" style="display:flex; align-items:center; gap:0.5rem; padding:0.25rem 0.5rem; border-radius:8px; font-size:11.5px; font-weight:700; color:rgba(27,21,51,0.8);" class="hover:text-[#ff4fa3] hover:bg-[#fff0f5]"><i data-lucide="cup-soda" style="height:0.9rem; width:0.9rem; stroke-width:2.2; color:#a1a1aa;" class="shrink-0"></i><span class="truncate">Lemon Ginger Tea</span></a><a href="shop.php" style="display:flex; align-items:center; gap:0.5rem; padding:0.25rem 0.5rem; border-radius:8px; font-size:11.5px; font-weight:700; color:rgba(27,21,51,0.8);" class="hover:text-[#ff4fa3] hover:bg-[#fff0f5]"><i data-lucide="flower" style="height:0.9rem; width:0.9rem; stroke-width:2.2; color:#a1a1aa;" class="shrink-0"></i><span class="truncate">Berry Hibiscus Tea</span></a><a href="shop.php" style="display:flex; align-items:center; gap:0.5rem; padding:0.25rem 0.5rem; border-radius:8px; font-size:11.5px; font-weight:700; color:rgba(27,21,51,0.8);" class="hover:text-[#ff4fa3] hover:bg-[#fff0f5]"><i data-lucide="smile" style="height:0.9rem; width:0.9rem; stroke-width:2.2; color:#a1a1aa;" class="shrink-0"></i><span class="truncate">Relaxation Tea</span></a><a href="shop.php" style="display:flex; align-items:center; gap:0.5rem; padding:0.25rem 0.5rem; border-radius:8px; font-size:11.5px; font-weight:700; color:rgba(27,21,51,0.8);" class="hover:text-[#ff4fa3] hover:bg-[#fff0f5]"><i data-lucide="zap" style="height:0.9rem; width:0.9rem; stroke-width:2.2; color:#a1a1aa;" class="shrink-0"></i><span class="truncate">Energy Tea</span></a><a href="shop.php" style="display:flex; align-items:center; gap:0.5rem; padding:0.25rem 0.5rem; border-radius:8px; font-size:11.5px; font-weight:700; color:rgba(27,21,51,0.8);" class="hover:text-[#ff4fa3] hover:bg-[#fff0f5]"><i data-lucide="coffee" style="height:0.9rem; width:0.9rem; stroke-width:2.2; color:#a1a1aa;" class="shrink-0"></i><span class="truncate">Mushroom Hot Chocolate</span></a>          </div>
+        </div>
+
+        <!-- Megamenu 3: Capsules -->
+        <div style="position:relative;" class="dropdown-group py-3">
+          <a href="category.php?id=capsules" style="font-size:12px; font-weight:800; text-transform:uppercase; color:rgba(27,21,51,0.85); letter-spacing:0.02em; display:flex; align-items:center; gap:0.375rem;" class="hover:text-[#ff4fa3]">
+            <i data-lucide="pill" style="height:0.95rem; width:0.95rem; stroke-width:2.2; color:var(--pinky);"></i>
+            Capsules 
+            <i data-lucide="chevron-down" style="height:0.875rem; width:0.875rem; color:#94a3b8; stroke-width:2.5;"></i>
+          </a>
+          
+          <div class="megamenu-dropdown" style="position:absolute; top:100%; left:-2rem; margin-top:2px; background:#fff8f3; border:1px solid rgba(255, 79, 163, 0.15); border-radius:20px; padding:1.25rem; box-shadow:0 24px 80px rgba(255, 79, 163, 0.12); display:none; grid-template-columns:repeat(2, 1fr); gap:6px; width:440px; z-index:100;">
+            <a href="shop.php" style="display:flex; align-items:center; gap:0.5rem; padding:0.25rem 0.5rem; border-radius:8px; font-size:11.5px; font-weight:700; color:rgba(27,21,51,0.8);" class="hover:text-[#ff4fa3] hover:bg-[#fff0f5]"><i data-lucide="award" style="height:0.9rem; width:0.9rem; stroke-width:2.2; color:#a1a1aa;" class="shrink-0"></i><span class="truncate">Golden Teacher Capsules</span></a><a href="shop.php" style="display:flex; align-items:center; gap:0.5rem; padding:0.25rem 0.5rem; border-radius:8px; font-size:11.5px; font-weight:700; color:rgba(27,21,51,0.8);" class="hover:text-[#ff4fa3] hover:bg-[#fff0f5]"><i data-lucide="flame" style="height:0.9rem; width:0.9rem; stroke-width:2.2; color:#a1a1aa;" class="shrink-0"></i><span class="truncate">Penis Envy Capsules</span></a><a href="shop.php" style="display:flex; align-items:center; gap:0.5rem; padding:0.25rem 0.5rem; border-radius:8px; font-size:11.5px; font-weight:700; color:rgba(27,21,51,0.8);" class="hover:text-[#ff4fa3] hover:bg-[#fff0f5]"><i data-lucide="zap" style="height:0.9rem; width:0.9rem; stroke-width:2.2; color:#a1a1aa;" class="shrink-0"></i><span class="truncate">Blue Meanies Capsules</span></a><a href="shop.php" style="display:flex; align-items:center; gap:0.5rem; padding:0.25rem 0.5rem; border-radius:8px; font-size:11.5px; font-weight:700; color:rgba(27,21,51,0.8);" class="hover:text-[#ff4fa3] hover:bg-[#fff0f5]"><i data-lucide="brain" style="height:0.9rem; width:0.9rem; stroke-width:2.2; color:#a1a1aa;" class="shrink-0"></i><span class="truncate">Focus &amp; Clarity Capsules</span></a><a href="shop.php" style="display:flex; align-items:center; gap:0.5rem; padding:0.25rem 0.5rem; border-radius:8px; font-size:11.5px; font-weight:700; color:rgba(27,21,51,0.8);" class="hover:text-[#ff4fa3] hover:bg-[#fff0f5]"><i data-lucide="smile" style="height:0.9rem; width:0.9rem; stroke-width:2.2; color:#a1a1aa;" class="shrink-0"></i><span class="truncate">Mood Support Capsules</span></a><a href="shop.php" style="display:flex; align-items:center; gap:0.5rem; padding:0.25rem 0.5rem; border-radius:8px; font-size:11.5px; font-weight:700; color:rgba(27,21,51,0.8);" class="hover:text-[#ff4fa3] hover:bg-[#fff0f5]"><i data-lucide="sun" style="height:0.9rem; width:0.9rem; stroke-width:2.2; color:#a1a1aa;" class="shrink-0"></i><span class="truncate">Energy Boost Capsules</span></a><a href="shop.php" style="display:flex; align-items:center; gap:0.5rem; padding:0.25rem 0.5rem; border-radius:8px; font-size:11.5px; font-weight:700; color:rgba(27,21,51,0.8);" class="hover:text-[#ff4fa3] hover:bg-[#fff0f5]"><i data-lucide="sparkles" style="height:0.9rem; width:0.9rem; stroke-width:2.2; color:#a1a1aa;" class="shrink-0"></i><span class="truncate">Creative Boost Capsules</span></a><a href="shop.php" style="display:flex; align-items:center; gap:0.5rem; padding:0.25rem 0.5rem; border-radius:8px; font-size:11.5px; font-weight:700; color:rgba(27,21,51,0.8);" class="hover:text-[#ff4fa3] hover:bg-[#fff0f5]"><i data-lucide="moon" style="height:0.9rem; width:0.9rem; stroke-width:2.2; color:#a1a1aa;" class="shrink-0"></i><span class="truncate">Relax &amp; Chill Capsules</span></a><a href="shop.php" style="display:flex; align-items:center; gap:0.5rem; padding:0.25rem 0.5rem; border-radius:8px; font-size:11.5px; font-weight:700; color:rgba(27,21,51,0.8);" class="hover:text-[#ff4fa3] hover:bg-[#fff0f5]"><i data-lucide="compass" style="height:0.9rem; width:0.9rem; stroke-width:2.2; color:#a1a1aa;" class="shrink-0"></i><span class="truncate">Beginner Friendly Capsules</span></a><a href="shop.php" style="display:flex; align-items:center; gap:0.5rem; padding:0.25rem 0.5rem; border-radius:8px; font-size:11.5px; font-weight:700; color:rgba(27,21,51,0.8);" class="hover:text-[#ff4fa3] hover:bg-[#fff0f5]"><i data-lucide="scale" style="height:0.9rem; width:0.9rem; stroke-width:2.2; color:#a1a1aa;" class="shrink-0"></i><span class="truncate">Balanced Mind Capsules</span></a><a href="shop.php" style="display:flex; align-items:center; gap:0.5rem; padding:0.25rem 0.5rem; border-radius:8px; font-size:11.5px; font-weight:700; color:rgba(27,21,51,0.8);" class="hover:text-[#ff4fa3] hover:bg-[#fff0f5]"><i data-lucide="paw-print" style="height:0.9rem; width:0.9rem; stroke-width:2.2; color:#a1a1aa;" class="shrink-0"></i><span class="truncate">Lion’s Mane Capsules</span></a><a href="shop.php" style="display:flex; align-items:center; gap:0.5rem; padding:0.25rem 0.5rem; border-radius:8px; font-size:11.5px; font-weight:700; color:rgba(27,21,51,0.8);" class="hover:text-[#ff4fa3] hover:bg-[#fff0f5]"><i data-lucide="sprout" style="height:0.9rem; width:0.9rem; stroke-width:2.2; color:#a1a1aa;" class="shrink-0"></i><span class="truncate">Reishi Capsules</span></a><a href="shop.php" style="display:flex; align-items:center; gap:0.5rem; padding:0.25rem 0.5rem; border-radius:8px; font-size:11.5px; font-weight:700; color:rgba(27,21,51,0.8);" class="hover:text-[#ff4fa3] hover:bg-[#fff0f5]"><i data-lucide="activity" style="height:0.9rem; width:0.9rem; stroke-width:2.2; color:#a1a1aa;" class="shrink-0"></i><span class="truncate">Cordyceps Capsules</span></a><a href="shop.php" style="display:flex; align-items:center; gap:0.5rem; padding:0.25rem 0.5rem; border-radius:8px; font-size:11.5px; font-weight:700; color:rgba(27,21,51,0.8);" class="hover:text-[#ff4fa3] hover:bg-[#fff0f5]"><i data-lucide="shield" style="height:0.9rem; width:0.9rem; stroke-width:2.2; color:#a1a1aa;" class="shrink-0"></i><span class="truncate">Chaga Capsules</span></a>          </div>
+        </div>
+
+        <!-- Megamenu 4: Microdose -->
+        <div style="position:relative;" class="dropdown-group py-3">
+          <a href="category.php?id=microdose" style="font-size:12px; font-weight:800; text-transform:uppercase; color:rgba(27,21,51,0.85); letter-spacing:0.02em; display:flex; align-items:center; gap:0.375rem;" class="hover:text-[#ff4fa3]">
+            <i data-lucide="gauge" style="height:0.95rem; width:0.95rem; stroke-width:2.2; color:var(--pinky);"></i>
+            Microdose 
+            <i data-lucide="chevron-down" style="height:0.875rem; width:0.875rem; color:#94a3b8; stroke-width:2.5;"></i>
+          </a>
+          
+          <div class="megamenu-dropdown" style="position:absolute; top:100%; left:-2rem; margin-top:2px; background:#fff8f3; border:1px solid rgba(255, 79, 163, 0.15); border-radius:20px; padding:1.25rem; box-shadow:0 24px 80px rgba(255, 79, 163, 0.12); display:none; grid-template-columns:repeat(2, 1fr); gap:6px; width:440px; z-index:100;">
+            <a href="shop.php" style="display:flex; align-items:center; gap:0.5rem; padding:0.25rem 0.5rem; border-radius:8px; font-size:11.5px; font-weight:700; color:rgba(27,21,51,0.8);" class="hover:text-[#ff4fa3] hover:bg-[#fff0f5]"><i data-lucide="award" style="height:0.9rem; width:0.9rem; stroke-width:2.2; color:#a1a1aa;" class="shrink-0"></i><span class="truncate">Golden Teacher Microdose</span></a><a href="shop.php" style="display:flex; align-items:center; gap:0.5rem; padding:0.25rem 0.5rem; border-radius:8px; font-size:11.5px; font-weight:700; color:rgba(27,21,51,0.8);" class="hover:text-[#ff4fa3] hover:bg-[#fff0f5]"><i data-lucide="flame" style="height:0.9rem; width:0.9rem; stroke-width:2.2; color:#a1a1aa;" class="shrink-0"></i><span class="truncate">Penis Envy Microdose</span></a><a href="shop.php" style="display:flex; align-items:center; gap:0.5rem; padding:0.25rem 0.5rem; border-radius:8px; font-size:11.5px; font-weight:700; color:rgba(27,21,51,0.8);" class="hover:text-[#ff4fa3] hover:bg-[#fff0f5]"><i data-lucide="zap" style="height:0.9rem; width:0.9rem; stroke-width:2.2; color:#a1a1aa;" class="shrink-0"></i><span class="truncate">Blue Meanies Microdose</span></a><a href="shop.php" style="display:flex; align-items:center; gap:0.5rem; padding:0.25rem 0.5rem; border-radius:8px; font-size:11.5px; font-weight:700; color:rgba(27,21,51,0.8);" class="hover:text-[#ff4fa3] hover:bg-[#fff0f5]"><i data-lucide="activity" style="height:0.9rem; width:0.9rem; stroke-width:2.2; color:#a1a1aa;" class="shrink-0"></i><span class="truncate">Daily Wellness Microdose</span></a><a href="shop.php" style="display:flex; align-items:center; gap:0.5rem; padding:0.25rem 0.5rem; border-radius:8px; font-size:11.5px; font-weight:700; color:rgba(27,21,51,0.8);" class="hover:text-[#ff4fa3] hover:bg-[#fff0f5]"><i data-lucide="brain" style="height:0.9rem; width:0.9rem; stroke-width:2.2; color:#a1a1aa;" class="shrink-0"></i><span class="truncate">Focus &amp; Clarity Microdose</span></a><a href="shop.php" style="display:flex; align-items:center; gap:0.5rem; padding:0.25rem 0.5rem; border-radius:8px; font-size:11.5px; font-weight:700; color:rgba(27,21,51,0.8);" class="hover:text-[#ff4fa3] hover:bg-[#fff0f5]"><i data-lucide="sparkles" style="height:0.9rem; width:0.9rem; stroke-width:2.2; color:#a1a1aa;" class="shrink-0"></i><span class="truncate">Creative Boost Microdose</span></a><a href="shop.php" style="display:flex; align-items:center; gap:0.5rem; padding:0.25rem 0.5rem; border-radius:8px; font-size:11.5px; font-weight:700; color:rgba(27,21,51,0.8);" class="hover:text-[#ff4fa3] hover:bg-[#fff0f5]"><i data-lucide="smile" style="height:0.9rem; width:0.9rem; stroke-width:2.2; color:#a1a1aa;" class="shrink-0"></i><span class="truncate">Mood Support Microdose</span></a><a href="shop.php" style="display:flex; align-items:center; gap:0.5rem; padding:0.25rem 0.5rem; border-radius:8px; font-size:11.5px; font-weight:700; color:rgba(27,21,51,0.8);" class="hover:text-[#ff4fa3] hover:bg-[#fff0f5]"><i data-lucide="sun" style="height:0.9rem; width:0.9rem; stroke-width:2.2; color:#a1a1aa;" class="shrink-0"></i><span class="truncate">Energy Boost Microdose</span></a><a href="shop.php" style="display:flex; align-items:center; gap:0.5rem; padding:0.25rem 0.5rem; border-radius:8px; font-size:11.5px; font-weight:700; color:rgba(27,21,51,0.8);" class="hover:text-[#ff4fa3] hover:bg-[#fff0f5]"><i data-lucide="moon" style="height:0.9rem; width:0.9rem; stroke-width:2.2; color:#a1a1aa;" class="shrink-0"></i><span class="truncate">Relax &amp; Chill Microdose</span></a><a href="shop.php" style="display:flex; align-items:center; gap:0.5rem; padding:0.25rem 0.5rem; border-radius:8px; font-size:11.5px; font-weight:700; color:rgba(27,21,51,0.8);" class="hover:text-[#ff4fa3] hover:bg-[#fff0f5]"><i data-lucide="compass" style="height:0.9rem; width:0.9rem; stroke-width:2.2; color:#a1a1aa;" class="shrink-0"></i><span class="truncate">Beginner Friendly Microdose</span></a><a href="shop.php" style="display:flex; align-items:center; gap:0.5rem; padding:0.25rem 0.5rem; border-radius:8px; font-size:11.5px; font-weight:700; color:rgba(27,21,51,0.8);" class="hover:text-[#ff4fa3] hover:bg-[#fff0f5]"><i data-lucide="scale" style="height:0.9rem; width:0.9rem; stroke-width:2.2; color:#a1a1aa;" class="shrink-0"></i><span class="truncate">Balanced Mind Microdose</span></a><a href="shop.php" style="display:flex; align-items:center; gap:0.5rem; padding:0.25rem 0.5rem; border-radius:8px; font-size:11.5px; font-weight:700; color:rgba(27,21,51,0.8);" class="hover:text-[#ff4fa3] hover:bg-[#fff0f5]"><i data-lucide="paw-print" style="height:0.9rem; width:0.9rem; stroke-width:2.2; color:#a1a1aa;" class="shrink-0"></i><span class="truncate">Lion’s Mane Microdose Blend</span></a><a href="shop.php" style="display:flex; align-items:center; gap:0.5rem; padding:0.25rem 0.5rem; border-radius:8px; font-size:11.5px; font-weight:700; color:rgba(27,21,51,0.8);" class="hover:text-[#ff4fa3] hover:bg-[#fff0f5]"><i data-lucide="layers" style="height:0.9rem; width:0.9rem; stroke-width:2.2; color:#a1a1aa;" class="shrink-0"></i><span class="truncate">Stamets Stack Microdose</span></a><a href="shop.php" style="display:flex; align-items:center; gap:0.5rem; padding:0.25rem 0.5rem; border-radius:8px; font-size:11.5px; font-weight:700; color:rgba(27,21,51,0.8);" class="hover:text-[#ff4fa3] hover:bg-[#fff0f5]"><i data-lucide="crown" style="height:0.9rem; width:0.9rem; stroke-width:2.2; color:#a1a1aa;" class="shrink-0"></i><span class="truncate">Premium Microdose Blend</span></a>          </div>
+        </div>
+
+        <a href="shop.php" style="font-size:12px; font-weight:800; text-transform:uppercase; color:rgba(27,21,51,0.85); letter-spacing:0.02em;" class="hover:text-[#ff4fa3]"><i data-lucide="gift" style="height:0.95rem; width:0.95rem; stroke-width:2.2; color:var(--pinky); margin-right:2px; position:relative; top:1px; display:inline-flex;"></i> Bundles</a>
+      </nav>
+    </div>
+
+    <!-- Right Block: Search / Account / Wishlist / Cart Icons -->
+    <div style="display:flex; align-items:center; gap:1.5rem;" class="shrink-0">
+      
+      <!-- 1. Search Overlay CTA -->
+      <button onclick="toggleSearchOverlay(true)" style="background:none; border:none; color:var(--navy); cursor:pointer; display:flex; flex-direction:column; align-items:center; gap:2px;" class="hover:text-[#ff4fa3]" title="Search">
+        <i data-lucide="search" style="height:1.25rem; width:1.25rem; stroke-width:2.2;"></i>
+        <span style="font-size:9.5px; font-weight:800;">Search</span>
+      </button>
+
+      <!-- 2. Account Link (Next.js Account) -->
+      <a href="info.php" style="color:var(--navy); display:flex; flex-direction:column; align-items:center; gap:2px;" class="hover:text-[#ff4fa3]" title="Account">
+        <i data-lucide="user-round" style="height:1.25rem; width:1.25rem; stroke-width:2.2;"></i>
+        <span style="font-size:9.5px; font-weight:800;">Account</span>
+      </a>
+
+      <!-- 3. Wishlist Counter -->
+      <button onclick="toggleDrawer('wishlist-drawer', true)" style="background:none; border:none; color:var(--navy); cursor:pointer; position:relative; display:flex; flex-direction:column; align-items:center; gap:2px;" class="hover:text-[#ff4fa3]" title="Wishlist">
+        <i data-lucide="heart" style="height:1.25rem; width:1.25rem; stroke-width:2.2;"></i>
+        <span style="position:absolute; top:-4px; right:4px; background:var(--pinky); color:white; font-size:8px; font-weight:900; height:14px; width:14px; border-radius:50%; display:grid; place-items:center; border:1px solid white;" class="wishlist-count">0</span>
+        <span style="font-size:9.5px; font-weight:800;">Wishlist</span>
+      </button>
+
+      <!-- 4. Cart Counter -->
+      <button onclick="toggleDrawer('cart-drawer', true)" style="background:none; border:none; color:var(--navy); cursor:pointer; position:relative; display:flex; flex-direction:column; align-items:center; gap:2px;" class="hover:text-[#ff4fa3]" title="Cart">
+        <i data-lucide="shopping-cart" style="height:1.25rem; width:1.25rem; stroke-width:2.2;"></i>
+        <span style="position:absolute; top:-4px; right:-2px; background:var(--pinky); color:white; font-size:8px; font-weight:900; height:14px; width:14px; border-radius:50%; display:grid; place-items:center; border:1px solid white;" class="cart-count">0</span>
+        <span style="font-size:9.5px; font-weight:800;">Cart</span>
+      </button>
+
+    </div>
+  </div>
+</header>
+
+<!-- Styles to support megamenu transitions -->
+<style>
+  .desktop-nav {
+    display: none !important;
+  }
+  @media (min-width: 768px) {
+    .desktop-nav {
+      display: flex !important;
+      gap: 1.5rem;
+      align-items: center;
+    }
+  }
+  .dropdown-group:hover .megamenu-dropdown {
+    display: grid !important;
+    animation: scaleUp 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+</style>
+
+<!-- Common Slide-in Backdrop -->
+<div class="drawer-backdrop"></div>
+
+<!-- Sliding Cart Drawer Drawer -->
+<div id="cart-drawer" class="drawer-panel font-poppins">
+  <div class="drawer-header">
+    <h3 class="drawer-title logo-font">Your Cart Drawer</h3>
+    <button class="drawer-close" onclick="toggleDrawer('cart-drawer', false)">&times;</button>
+  </div>
+  <div class="drawer-content cart-drawer-list">
+    <!-- Populated dynamically via js/cart.js -->
+  </div>
+  <div class="drawer-footer cart-drawer-footer" style="display:flex; flex-direction:column; gap:0.75rem;">
+    <div style="display:flex; justify-content:space-between; align-items:center; font-size:13px; font-weight:600; color:#64748b;">
+      <span>Subtotal</span>
+      <strong style="color:var(--navy); font-size:14px;" class="cart-drawer-subtotal">$0.00</strong>
+    </div>
+    <a href="cart.php" class="btn-secondary" style="width:100%;">View Shopping Cart</a>
+    <a href="checkout.php" class="btn-primary" style="width:100%;">Proceed to Checkout</a>
+  </div>
+</div>
+
+<!-- Sliding Wishlist Drawer Drawer -->
+<div id="wishlist-drawer" class="drawer-panel font-poppins">
+  <div class="drawer-header">
+    <h3 class="drawer-title logo-font">Your Wishlist</h3>
+    <button class="drawer-close" onclick="toggleDrawer('wishlist-drawer', false)">&times;</button>
+  </div>
+  <div class="drawer-content wishlist-drawer-list">
+    <!-- Populated dynamically via js/cart.js -->
+  </div>
+</div>
+
+<!-- 4. DYNAMIC MODAL SEARCH OVERLAY -->
+<div id="search-modal-overlay" style="display:none; position:fixed; inset:0; background:rgba(15,23,42,0.6); backdrop-filter:blur(8px); z-index:999; align-items:start; justify-content:center; padding-top:6rem; padding-left:1rem; padding-right:1rem;" onclick="toggleSearchOverlay(false)">
+  <div style="background:#fff8f3; border:1px solid rgba(255, 79, 163, 0.15); border-radius:24px; padding:1.5rem; width:100%; max-width:576px; box-shadow:0 32px 120px rgba(255,79,163,0.18); position:relative;" onclick="event.stopPropagation()">
+    
+    <!-- Close -->
+    <button onclick="toggleSearchOverlay(false)" style="position:absolute; top:1rem; right:1rem; height:2rem; width:2rem; border-radius:50%; background:none; border:none; font-size:20px; color:var(--slate-400); cursor:pointer; display:grid; place-items:center;" class="hover:text-[#ff4fa3]">&times;</button>
+
+    <div style="display:flex; align-items:center; gap:0.75rem; margin-bottom:1rem;">
+      <div style="height:2.25rem; width:2.25rem; background:var(--pinky); border-radius:12px; display:grid; place-items:center; color:white;">
+        <i data-lucide="search" style="height:1.25rem; width:1.25rem; stroke-width:2.5;"></i>
+      </div>
+      <div style="text-align:left;">
+        <span style="font-size:9.5px; font-weight:900; color:var(--pinky); text-transform:uppercase;">Search Catalog</span>
+        <h3 style="font-size:11px; font-weight:700; color:var(--slate-400);">FunGuyz Dispensary</h3>
+      </div>
+    </div>
+
+    <!-- Form -->
+    <form action="shop.php" method="GET" style="display:flex; align-items:center; gap:0.5rem; background:white; border:1px solid var(--slate-200); border-radius:9999px; padding:0.375rem 0.5rem 0.375rem 1.25rem; box-shadow:0 1px 2px rgba(0,0,0,0.02);">
+      <input type="text" name="search" style="border:none; outline:none; flex:1; font-size:13px; font-weight:600; color:var(--navy);" placeholder="Type search formulations..." required>
+      <button type="submit" style="background:var(--pinky); border:none; border-radius:50%; height:2.25rem; width:2.25rem; display:grid; place-items:center; color:white; cursor:pointer;" class="hover:scale-105 transition-transform">
+        <i data-lucide="search" style="height:1rem; width:1rem; stroke-width:3;"></i>
+      </button>
+    </form>
+  </div>
+</div>
+
+<!-- 5. DYNAMIC MODAL ANNOUNCEMENT DETAILS OVERLAY -->
+<div id="announcement-modal-overlay" style="display:none; position:fixed; inset:0; background:rgba(15,23,42,0.5); backdrop-filter:blur(8px); z-index:999; align-items:center; justify-content:center; padding:1rem;" onclick="closeMarqueeModal()">
+  <div style="background:#fff8f3; border:1px solid rgba(255, 79, 163, 0.15); border-radius:24px; padding:1.5rem; width:100%; max-width:420px; box-shadow:0 32px 100px rgba(255,79,163,0.15); position:relative;" onclick="event.stopPropagation()">
+    
+    <button onclick="closeMarqueeModal()" style="position:absolute; top:1rem; right:1rem; height:2rem; width:2rem; border-radius:50%; background:none; border:none; font-size:20px; color:var(--slate-400); cursor:pointer; display:grid; place-items:center;" class="hover:text-[#ff4fa3]">&times;</button>
+
+    <div style="display:flex; align-items:center; gap:0.75rem; mb-4; margin-bottom:1rem;">
+      <div style="height:2.25rem; width:2.25rem; background:linear-gradient(to top right, #ff4fa3, #7b5cff); border-radius:12px; display:grid; place-items:center; font-size:18px; color:white;">🍄</div>
+      <div style="text-align:left;">
+        <span style="font-size:9.5px; font-weight:900; color:var(--pinky); text-transform:uppercase;">Announcement Detail</span>
+        <h3 style="font-size:11px; font-weight:700; color:var(--slate-400);">FunGuyz Canada</h3>
+      </div>
+    </div>
+
+    <div style="text-align:left; display:flex; flex-direction:column; gap:0.75rem;">
+      <h2 style="font-size:15px; font-weight:900; color:var(--navy); text-transform:uppercase;" id="marquee-modal-title">Announcement Title</h2>
+      <p style="font-size:12px; color:rgba(27,21,51,0.85); leading-relaxed:true; line-height:1.6; background:white; padding:1rem; border-radius:16px; border:1px solid rgba(255, 79, 163, 0.05); box-shadow:0 1px 2px rgba(0,0,0,0.01);" id="marquee-modal-desc">
+        Detail parameters.
+      </p>
+    </div>
+
+    <button onclick="closeMarqueeModal()" class="btn-primary" style="width:100%; margin-top:1.5rem; height:3rem; padding:0; display:grid; place-items:center; border-radius:16px; font-size:11px;">
+      Understand & Close
+    </button>
+  </div>
+</div>
+
+<!-- Simple inline scripts to drive overlays and Lucide initialization -->
+<script>
+  function toggleSearchOverlay(show) {
+      const el = document.getElementById('search-modal-overlay');
+      if (el) {
+          el.style.display = show ? 'flex' : 'none';
+      }
+  }
+
+  const marqueeModalItems = [{"title":"Canada's Largest Magic Mushroom Dispensary","desc":"FunGuyz is Canada's premier online magic mushroom dispensary, serving over 100,000 customers nationwide with premium quality psilocybin products, lab-tested genetics, and guaranteed discreet shipping."},{"title":"Toronto Magic Mushroom Delivery Same-Day","desc":"Order before 2:00 PM EST in the Greater Toronto Area (GTA) to receive same-day courier delivery right to your door. Fully discreet packaging and real-time SMS delivery tracking."},{"title":"Ottawa Magic Mushroom Delivery Same-Day","desc":"Same-day express delivery is available in Ottawa and surrounding regions. Fast, safe, and discreet drop-offs within 2-4 hours of placing your order."},{"title":"Free Delivery on Orders Over $120","desc":"We offer 100% free express shipping via Canada Post Express Delivery on all orders exceeding $120. Delivered within 1-3 business days with tracking number provided."},{"title":"30% OFF All Products + Promo Coupons","desc":"New customers receive 30% off their first order! Use code FUN30 at checkout. Check our promotions page for additional weekly coupons, gift bundle codes, and community rewards."},{"title":"Express Delivery Under 2 Hours","desc":"Need it now? Our ultra-fast local express courier option delivers magic mushrooms to your location in under 2 hours in selected metropolitan service areas."},{"title":"Buy Magic Mushrooms Canada-Wide Shipping","desc":"We ship securely to every province and territory in Canada, including British Columbia, Alberta, Quebec, and the Maritimes. Sealed, odorless, vacuum-packed delivery."}];
+
+  function openMarqueeModal(index) {
+      const modal = document.getElementById('announcement-modal-overlay');
+      const item = marqueeModalItems[index];
+      if (modal && item) {
+          document.getElementById('marquee-modal-title').textContent = item.title;
+          document.getElementById('marquee-modal-desc').textContent = item.desc;
+          modal.style.display = 'flex';
+      }
+  }
+
+  function closeMarqueeModal() {
+      const modal = document.getElementById('announcement-modal-overlay');
+      if (modal) {
+          modal.style.display = 'none';
+      }
+  }
+
+  // Initialize Lucide Vector Icons on load for 100% Next.js design parity
+  window.addEventListener('DOMContentLoaded', () => {
+      if (typeof lucide !== 'undefined') {
+          lucide.createIcons();
+      }
+  });
+</script>
+
+  <!-- 1. PREMIUM DTC HERO SECTION -->
+  <section class="hero-sec font-poppins">
+    <!-- Ambient misty background glows -->
+    <div class="hero-glow-1"></div>
+    <div class="hero-glow-2"></div>
+    <div class="hero-glow-3"></div>
+    <div class="hero-glow-4"></div>
+
+    <div class="max-width-container hero-grid">
+      
+      <!-- Text details -->
+      <div style="display:flex; flex-direction:column; gap:1.25rem; text-align:left;">
+        <!-- Top pill badge -->
+        <div style="display:inline-flex; align-items:center; gap:0.5rem; background:rgba(255, 79, 163, 0.05); color:var(--pinky); padding:0.5rem 1rem; border-radius:9999px; font-size:10px; font-weight:900; text-transform:uppercase; letter-spacing:0.15em; width:fit-content;" class="logo-font">
+          <svg style="height:0.875rem; width:0.875rem;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" /></svg>
+          Premium. Pure. Powerful.
+        </div>
+
+        <h1 style="font-size:42px; md:font-size:56px; lg:font-size:68px; font-weight:900; leading-none:true; line-height:0.95; color:var(--navy); uppercase:true; letter-spacing:0.02em;" class="logo-font">
+          Discover Your <br>
+          <span style="color:var(--pinky);">Next</span> 
+          <span style="color:#3b82f6;">Experience</span>
+        </h1>
+
+        <p style="font-size:15px; font-weight:600; color:var(--slate-500); max-width:32rem; line-height:1.75;">
+          Premium mushrooms, edibles, capsules and microdose products crafted for quality, wellness and mindful living.
+        </p>
+
+        <!-- Bottom trust badges card -->
+        <div class="hero-trust-bar">
+          <!-- 1. Lab Tested -->
+          <div class="hero-trust-col">
+            <div class="hero-trust-icon-box" style="background:#ffe3ef; color:var(--pinky);">
+              <svg style="height:1rem; width:1rem;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" /></svg>
+            </div>
+            <span class="hero-trust-label logo-font">
+              Lab Tested
+              <small class="hero-trust-sub">For Purity</small>
+            </span>
+          </div>
+
+          <!-- 2. Natural -->
+          <div class="hero-trust-col">
+            <div class="hero-trust-icon-box" style="background:#ecfdf5; color:#10b981;">
+              <svg style="height:1rem; width:1rem;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m0-12.728l.707.707m12.728 12.728l.707-.707M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+            </div>
+            <span class="hero-trust-label logo-font">
+              100% Natural
+              <small class="hero-trust-sub">Premium Quality</small>
+            </span>
+          </div>
+
+          <!-- 3. Shipping -->
+          <div class="hero-trust-col">
+            <div class="hero-trust-icon-box" style="background:#eef2ff; color:#6366f1;">
+              <svg style="height:1rem; width:1rem;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" /></svg>
+            </div>
+            <span class="hero-trust-label logo-font">
+              Discreet Mail
+              <small class="hero-trust-sub">Private & Secure</small>
+            </span>
+          </div>
+
+          <!-- 4. SSL Checkout -->
+          <div class="hero-trust-col">
+            <div class="hero-trust-icon-box" style="background:#eff6ff; color:#3b82f6;">
+              <svg style="height:1rem; width:1rem;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
+            </div>
+            <span class="hero-trust-label logo-font">
+              Secure Key
+              <small class="hero-trust-sub">SSL Encrypted</small>
+            </span>
+          </div>
+        </div>
+
+        <!-- Action CTAs -->
+        <div style="display:flex; gap:1rem; flex-wrap:wrap; margin-top:1.25rem;">
+          <a href="shop.php" class="btn-primary">
+            <svg style="height:1.15rem; width:1.15rem;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" /></svg>
+            Shop Now
+          </a>
+          <a href="#shop-by-category" class="btn-secondary" style="background:white;">
+            <svg style="height:1.15rem; width:1.15rem; color:var(--pinky);" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" /></svg>
+            Explore Collections
+          </a>
+        </div>
+      </div>
+
+      <!-- Right: Pedestal & 3D Art Composition -->
+      <div style="position:relative; display:flex; align-items:center; justify-content:center; min-height:400px;">
+        <div class="hero-pedestal"></div>
+        
+        <!-- Composition image (Next.js exact path copy) -->
+        <img src="images/hero_composition.webp" alt="Composition" style="max-width:100%; height:auto; position:relative; z-index:10; filter: drop-shadow(0 20px 50px rgba(27,21,51,0.08));" class="animate-float">
+      </div>
+
+    </div>
+  </section>
+
+  <!-- 2. HIGH ELEVATED FEATURE STRIP -->
+  <section class="feature-strip font-poppins">
+    <div class="max-width-container strip-grid">
+      <!-- 1. Free Shipping -->
+      <div class="strip-card" style="border-bottom-color:#7b5cff;">
+        <span class="strip-icon-box" style="background:#f3efff; color:#7b5cff;">
+          <svg style="height:1.5rem; width:1.5rem;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7" /></svg>
+        </span>
+        <span class="trust-badge-title">
+          Free Shipping
+          <small class="hero-trust-sub" style="text-transform:none;">On Orders Over $150</small>
+        </span>
+      </div>
+
+      <!-- 2. Code discount -->
+      <div class="strip-card" style="border-bottom-color:var(--pinky);">
+        <span class="strip-icon-box" style="background:#ffe5f1; color:var(--pinky);">
+          <svg style="height:1.5rem; width:1.5rem;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7" /></svg>
+        </span>
+        <span class="trust-badge-title">
+          10% Off First
+          <small class="hero-trust-sub" style="text-transform:none;">Use Code: FUNGUYZ10</small>
+        </span>
+      </div>
+
+      <!-- 3. Discreet mail -->
+      <div class="strip-card" style="border-bottom-color:#0ea5e9;">
+        <span class="strip-icon-box" style="background:#e0f2fe; color:#0ea5e9;">
+          <svg style="height:1.5rem; width:1.5rem;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2"><path stroke-linecap="round" stroke-linejoin="round" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" /></svg>
+        </span>
+        <span class="trust-badge-title">
+          Discreet Mail
+          <small class="hero-trust-sub" style="text-transform:none;">No Branding, 100% Private</small>
+        </span>
+      </div>
+
+      <!-- 4. Loyalty Rewards -->
+      <div class="strip-card" style="border-bottom-color:#10b981;">
+        <span class="strip-icon-box" style="background:#ecfdf5; color:#10b981;">
+          <svg style="height:1.5rem; width:1.5rem;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" /></svg>
+        </span>
+        <span class="trust-badge-title">
+          Loyalty Rewards
+          <small class="hero-trust-sub" style="text-transform:none;">Earn Points & Save More</small>
+        </span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. SHOP BY CATEGORY SECTION -->
+  <section id="shop-by-category" style="padding: 5rem 0;" class="font-poppins">
+    <div class="max-width-container">
+      <div style="text-align:center; display:flex; flex-direction:column; align-items:center; gap:0.375rem; margin-bottom:3.5rem;">
+        <span style="font-size:10px; font-weight:900; text-transform:uppercase; color:var(--pinky); letter-spacing:0.15em;" class="logo-font">Premium Selection</span>
+        <h2 style="font-size:28px; font-weight:900; color:var(--navy);" class="logo-font">SHOP BY CATEGORY</h2>
+        <div style="height:4px; width:48px; background:var(--pinky); border-radius:9999px; margin-top:2px;"></div>
+      </div>
+
+      <div class="cat-grid-wrapper">
+        <!-- Cat 1: Dried Mushrooms -->
+        <div class="cat-aspect-card" onclick="window.location.href='category.php?id=magic-mushrooms'">
+          <img src="images/cat_mushrooms.webp" class="cat-card-img" alt="Dried mushrooms">
+          <div class="cat-card-gradient"></div>
+          <div class="cat-card-content">
+            <h3 style="font-size:18px; font-weight:900; color:white; text-transform:uppercase;" class="logo-font">Magic Mushrooms</h3>
+            <p style="font-size:11px; color:#e2e8f0; font-weight:600; max-width:210px; line-height:1.4;">
+              100% natural, lab tested dried mushroom cultivars.
+            </p>
+            <button class="btn-secondary" style="font-size:9.5px; border-radius:12px; padding:0.375rem 1rem; margin-top:0.5rem; background:rgba(255,255,255,0.1); border-color:rgba(255,255,255,0.2); color:white;">
+              Shop Now
+            </button>
+          </div>
+        </div>
+
+        <!-- Cat 2: Edibles -->
+        <div class="cat-aspect-card" onclick="window.location.href='category.php?id=edibles'">
+          <img src="images/cat_edibles.webp" class="cat-card-img" alt="Edibles">
+          <div class="cat-card-gradient"></div>
+          <div class="cat-card-content">
+            <h3 style="font-size:18px; font-weight:900; color:white; text-transform:uppercase;" class="logo-font">Active Edibles</h3>
+            <p style="font-size:11px; color:#e2e8f0; font-weight:600; max-width:210px; line-height:1.4;">
+              Delicious organic adaptogen gummies and chocolates.
+            </p>
+            <button class="btn-secondary" style="font-size:9.5px; border-radius:12px; padding:0.375rem 1rem; margin-top:0.5rem; background:rgba(255,255,255,0.1); border-color:rgba(255,255,255,0.2); color:white;">
+              Shop Now
+            </button>
+          </div>
+        </div>
+
+        <!-- Cat 3: Capsules -->
+        <div class="cat-aspect-card" onclick="window.location.href='category.php?id=capsules'">
+          <img src="images/cat_capsules.webp" class="cat-card-img" alt="Capsules">
+          <div class="cat-card-gradient"></div>
+          <div class="cat-card-content">
+            <h3 style="font-size:18px; font-weight:900; color:white; text-transform:uppercase;" class="logo-font">Capsules</h3>
+            <p style="font-size:11px; color:#e2e8f0; font-weight:600; max-width:210px; line-height:1.4;">
+              Precise, travel-ready daily cognitive focus capsules.
+            </p>
+            <button class="btn-secondary" style="font-size:9.5px; border-radius:12px; padding:0.375rem 1rem; margin-top:0.5rem; background:rgba(255,255,255,0.1); border-color:rgba(255,255,255,0.2); color:white;">
+              Shop Now
+            </button>
+          </div>
+        </div>
+
+        <!-- Cat 4: Microdose -->
+        <div class="cat-aspect-card" onclick="window.location.href='category.php?id=microdose'">
+          <img src="images/cat_microdose.webp" class="cat-card-img" alt="Microdosing">
+          <div class="cat-card-gradient"></div>
+          <div class="cat-card-content">
+            <h3 style="font-size:18px; font-weight:900; color:white; text-transform:uppercase;" class="logo-font">Microdose Blends</h3>
+            <p style="font-size:11px; color:#e2e8f0; font-weight:600; max-width:210px; line-height:1.4;">
+              Sub-perceptual biological focus adaptogenic stacks.
+            </p>
+            <button class="btn-secondary" style="font-size:9.5px; border-radius:12px; padding:0.375rem 1rem; margin-top:0.5rem; background:rgba(255,255,255,0.1); border-color:rgba(255,255,255,0.2); color:white;">
+              Shop Now
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- 4. BEST SELLERS SECTION (WITH SLIDING CHEVRONS VIEWPORT CAROUSEL) -->
+  <section style="padding: 3rem 0;" class="font-poppins">
+    <div class="max-width-container">
+      <div style="display:flex; justify-content:space-between; align-items:flex-end; border-bottom:1px solid rgba(123,92,255,0.05); padding-bottom:1rem; margin-bottom:2rem;">
+        <div style="text-align:left; display:flex; flex-direction:column; gap:4px;">
+          <span style="font-size:10px; font-weight:900; text-transform:uppercase; color:var(--pinky); letter-spacing:0.15em;" class="logo-font">Trending Now</span>
+          <h2 style="font-size:28px; font-weight:900; color:var(--navy);" class="logo-font">BEST SELLERS</h2>
+        </div>
+        <div style="display:flex; align-items:center; gap:1.25rem;">
+          <div class="reviews-chevrons-row">
+            <button onclick="slideCarousel('sellers-viewport', -280)" class="chevron-mini-btn">&larr;</button>
+            <button onclick="slideCarousel('sellers-viewport', 280)" class="chevron-mini-btn">&rarr;</button>
+          </div>
+          <a href="shop.php" class="btn-primary" style="font-size:10px; padding:0.5rem 1.25rem; border-radius:12px;">View All Products</a>
+        </div>
+      </div>
+
+      <!-- Scrollable Viewport -->
+      <div class="slider-viewport" id="sellers-viewport">
+                  <div class="slider-card-wrapper">
+            <div class="prod-card">
+  <!-- Wishlist heart button -->
+  <button 
+    onclick="toggleWishlist({id:'golden-teacher',title:'Golden Teacher',price:'$79.99',imageSrc:'images/prod_golden_teacher.webp',category:'Magic Mushrooms'})" 
+    class="wishlist-btn" 
+    data-id="golden-teacher"
+  >
+    <svg style="height:0.875rem; width:0.875rem;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" /></svg>
+  </button>
+
+  <!-- Product Image -->
+  <a href="product.php?id=golden-teacher" class="prod-img-link">
+          <span class="prod-badge premium">
+        premium      </span>
+        <img src="images/prod_golden_teacher.webp" alt="Golden Teacher" class="prod-img" loading="lazy" />
+  </a>
+
+  <!-- Content details -->
+  <div class="prod-details">
+    <span class="prod-cat">Magic Mushrooms</span>
+    <h3 class="prod-title">
+      <a href="product.php?id=golden-teacher">Golden Teacher</a>
+    </h3>
+
+    <!-- Star Ratings -->
+    <div class="prod-rating">
+      <div class="stars-row">
+                  <svg class="star-icon" viewBox="0 0 20 20" fill="currentColor"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+                  <svg class="star-icon" viewBox="0 0 20 20" fill="currentColor"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+                  <svg class="star-icon" viewBox="0 0 20 20" fill="currentColor"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+                  <svg class="star-icon" viewBox="0 0 20 20" fill="currentColor"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+                  <svg class="star-icon" viewBox="0 0 20 20" fill="currentColor"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+              </div>
+      <span class="rating-count">(125)</span>
+    </div>
+
+    <!-- Potency Progress Bar -->
+    <div class="potency-row">
+      <!-- Left Column -->
+      <div class="potency-col-left">
+        <span class="potency-label">POTENCY</span>
+        <span class="potency-val font-poppins">35% - 45%</span>
+      </div>
+
+      <!-- Right Column -->
+      <div class="potency-col-right">
+        <span class="potency-badge font-poppins" style="background-color: #FFF3E6; color: #F59E0B;">
+          MODERATE        </span>
+        <div class="progress-bar-bg">
+          <div class="progress-bar-fill" style="width: 45%;"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pricing & Buy triggers -->
+    <div class="price-buy-row">
+      <div class="price-box">
+        <span class="price-active font-poppins">$79.99</span>
+        <span class="price-original font-poppins">$99.99</span>
+      </div>
+      <button 
+        onclick="addToCart({id:'golden-teacher',title:'Golden Teacher',price:'$79.99',imageSrc:'images/prod_golden_teacher.webp',category:'Magic Mushrooms'})" 
+        class="buy-btn"
+      >
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" /></svg>
+      </button>
+    </div>
+
+  </div>
+</div>
+          </div>
+                  <div class="slider-card-wrapper">
+            <div class="prod-card">
+  <!-- Wishlist heart button -->
+  <button 
+    onclick="toggleWishlist({id:'penis-envy',title:'Penis Envy',price:'$89.99',imageSrc:'images/prod_penis_envy.webp',category:'Magic Mushrooms'})" 
+    class="wishlist-btn" 
+    data-id="penis-envy"
+  >
+    <svg style="height:0.875rem; width:0.875rem;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" /></svg>
+  </button>
+
+  <!-- Product Image -->
+  <a href="product.php?id=penis-envy" class="prod-img-link">
+          <span class="prod-badge top-rated">
+        top rated      </span>
+        <img src="images/prod_penis_envy.webp" alt="Penis Envy" class="prod-img" loading="lazy" />
+  </a>
+
+  <!-- Content details -->
+  <div class="prod-details">
+    <span class="prod-cat">Magic Mushrooms</span>
+    <h3 class="prod-title">
+      <a href="product.php?id=penis-envy">Penis Envy</a>
+    </h3>
+
+    <!-- Star Ratings -->
+    <div class="prod-rating">
+      <div class="stars-row">
+                  <svg class="star-icon" viewBox="0 0 20 20" fill="currentColor"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+                  <svg class="star-icon" viewBox="0 0 20 20" fill="currentColor"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+                  <svg class="star-icon" viewBox="0 0 20 20" fill="currentColor"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+                  <svg class="star-icon" viewBox="0 0 20 20" fill="currentColor"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+                  <svg class="star-icon" viewBox="0 0 20 20" fill="currentColor"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+              </div>
+      <span class="rating-count">(99)</span>
+    </div>
+
+    <!-- Potency Progress Bar -->
+    <div class="potency-row">
+      <!-- Left Column -->
+      <div class="potency-col-left">
+        <span class="potency-label">POTENCY</span>
+        <span class="potency-val font-poppins">75% - 90%</span>
+      </div>
+
+      <!-- Right Column -->
+      <div class="potency-col-right">
+        <span class="potency-badge font-poppins" style="background-color: #FEF2F2; color: #DC2626;">
+          VERY STRONG        </span>
+        <div class="progress-bar-bg">
+          <div class="progress-bar-fill" style="width: 90%;"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pricing & Buy triggers -->
+    <div class="price-buy-row">
+      <div class="price-box">
+        <span class="price-active font-poppins">$89.99</span>
+        <span class="price-original font-poppins">$119.99</span>
+      </div>
+      <button 
+        onclick="addToCart({id:'penis-envy',title:'Penis Envy',price:'$89.99',imageSrc:'images/prod_penis_envy.webp',category:'Magic Mushrooms'})" 
+        class="buy-btn"
+      >
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" /></svg>
+      </button>
+    </div>
+
+  </div>
+</div>
+          </div>
+                  <div class="slider-card-wrapper">
+            <div class="prod-card">
+  <!-- Wishlist heart button -->
+  <button 
+    onclick="toggleWishlist({id:'blue-raspberry-gummies',title:'Blue Raspberry Gummies',price:'$49.99',imageSrc:'images/prod_blue_gummies.webp',category:'Edibles'})" 
+    class="wishlist-btn" 
+    data-id="blue-raspberry-gummies"
+  >
+    <svg style="height:0.875rem; width:0.875rem;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" /></svg>
+  </button>
+
+  <!-- Product Image -->
+  <a href="product.php?id=blue-raspberry-gummies" class="prod-img-link">
+          <span class="prod-badge best-seller">
+        best seller      </span>
+        <img src="images/prod_blue_gummies.webp" alt="Blue Raspberry Gummies" class="prod-img" loading="lazy" />
+  </a>
+
+  <!-- Content details -->
+  <div class="prod-details">
+    <span class="prod-cat">Edibles</span>
+    <h3 class="prod-title">
+      <a href="product.php?id=blue-raspberry-gummies">Blue Raspberry Gummies</a>
+    </h3>
+
+    <!-- Star Ratings -->
+    <div class="prod-rating">
+      <div class="stars-row">
+                  <svg class="star-icon" viewBox="0 0 20 20" fill="currentColor"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+                  <svg class="star-icon" viewBox="0 0 20 20" fill="currentColor"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+                  <svg class="star-icon" viewBox="0 0 20 20" fill="currentColor"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+                  <svg class="star-icon" viewBox="0 0 20 20" fill="currentColor"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+                  <svg class="star-icon" viewBox="0 0 20 20" fill="currentColor"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+              </div>
+      <span class="rating-count">(154)</span>
+    </div>
+
+    <!-- Potency Progress Bar -->
+    <div class="potency-row">
+      <!-- Left Column -->
+      <div class="potency-col-left">
+        <span class="potency-label">POTENCY</span>
+        <span class="potency-val font-poppins">10% - 23%</span>
+      </div>
+
+      <!-- Right Column -->
+      <div class="potency-col-right">
+        <span class="potency-badge font-poppins" style="background-color: #F0FDF4; color: #16A34A;">
+          MILD        </span>
+        <div class="progress-bar-bg">
+          <div class="progress-bar-fill" style="width: 23%;"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pricing & Buy triggers -->
+    <div class="price-buy-row">
+      <div class="price-box">
+        <span class="price-active font-poppins">$49.99</span>
+        <span class="price-original font-poppins">$64.99</span>
+      </div>
+      <button 
+        onclick="addToCart({id:'blue-raspberry-gummies',title:'Blue Raspberry Gummies',price:'$49.99',imageSrc:'images/prod_blue_gummies.webp',category:'Edibles'})" 
+        class="buy-btn"
+      >
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" /></svg>
+      </button>
+    </div>
+
+  </div>
+</div>
+          </div>
+                  <div class="slider-card-wrapper">
+            <div class="prod-card">
+  <!-- Wishlist heart button -->
+  <button 
+    onclick="toggleWishlist({id:'golden-teacher-capsules',title:'Golden Teacher Capsules',price:'$59.99',imageSrc:'images/prod_teacher_capsules.webp',category:'Capsules'})" 
+    class="wishlist-btn" 
+    data-id="golden-teacher-capsules"
+  >
+    <svg style="height:0.875rem; width:0.875rem;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" /></svg>
+  </button>
+
+  <!-- Product Image -->
+  <a href="product.php?id=golden-teacher-capsules" class="prod-img-link">
+          <span class="prod-badge daily">
+        daily      </span>
+        <img src="images/prod_teacher_capsules.webp" alt="Golden Teacher Capsules" class="prod-img" loading="lazy" />
+  </a>
+
+  <!-- Content details -->
+  <div class="prod-details">
+    <span class="prod-cat">Capsules</span>
+    <h3 class="prod-title">
+      <a href="product.php?id=golden-teacher-capsules">Golden Teacher Capsules</a>
+    </h3>
+
+    <!-- Star Ratings -->
+    <div class="prod-rating">
+      <div class="stars-row">
+                  <svg class="star-icon" viewBox="0 0 20 20" fill="currentColor"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+                  <svg class="star-icon" viewBox="0 0 20 20" fill="currentColor"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+                  <svg class="star-icon" viewBox="0 0 20 20" fill="currentColor"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+                  <svg class="star-icon" viewBox="0 0 20 20" fill="currentColor"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+                  <svg class="star-icon" viewBox="0 0 20 20" fill="currentColor"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+              </div>
+      <span class="rating-count">(82)</span>
+    </div>
+
+    <!-- Potency Progress Bar -->
+    <div class="potency-row">
+      <!-- Left Column -->
+      <div class="potency-col-left">
+        <span class="potency-label">POTENCY</span>
+        <span class="potency-val font-poppins">20% - 35%</span>
+      </div>
+
+      <!-- Right Column -->
+      <div class="potency-col-right">
+        <span class="potency-badge font-poppins" style="background-color: #FFF3E6; color: #F59E0B;">
+          MODERATE        </span>
+        <div class="progress-bar-bg">
+          <div class="progress-bar-fill" style="width: 35%;"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pricing & Buy triggers -->
+    <div class="price-buy-row">
+      <div class="price-box">
+        <span class="price-active font-poppins">$59.99</span>
+        <span class="price-original font-poppins">$74.99</span>
+      </div>
+      <button 
+        onclick="addToCart({id:'golden-teacher-capsules',title:'Golden Teacher Capsules',price:'$59.99',imageSrc:'images/prod_teacher_capsules.webp',category:'Capsules'})" 
+        class="buy-btn"
+      >
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" /></svg>
+      </button>
+    </div>
+
+  </div>
+</div>
+          </div>
+                  <div class="slider-card-wrapper">
+            <div class="prod-card">
+  <!-- Wishlist heart button -->
+  <button 
+    onclick="toggleWishlist({id:'microdose-daily-blend',title:'Microdose Daily Blend',price:'$69.99',imageSrc:'images/prod_daily_blend.webp',category:'Microdose'})" 
+    class="wishlist-btn" 
+    data-id="microdose-daily-blend"
+  >
+    <svg style="height:0.875rem; width:0.875rem;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" /></svg>
+  </button>
+
+  <!-- Product Image -->
+  <a href="product.php?id=microdose-daily-blend" class="prod-img-link">
+          <span class="prod-badge wellness">
+        wellness      </span>
+        <img src="images/prod_daily_blend.webp" alt="Microdose Daily Blend" class="prod-img" loading="lazy" />
+  </a>
+
+  <!-- Content details -->
+  <div class="prod-details">
+    <span class="prod-cat">Microdose</span>
+    <h3 class="prod-title">
+      <a href="product.php?id=microdose-daily-blend">Microdose Daily Blend</a>
+    </h3>
+
+    <!-- Star Ratings -->
+    <div class="prod-rating">
+      <div class="stars-row">
+                  <svg class="star-icon" viewBox="0 0 20 20" fill="currentColor"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+                  <svg class="star-icon" viewBox="0 0 20 20" fill="currentColor"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+                  <svg class="star-icon" viewBox="0 0 20 20" fill="currentColor"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+                  <svg class="star-icon" viewBox="0 0 20 20" fill="currentColor"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+                  <svg class="star-icon" viewBox="0 0 20 20" fill="currentColor"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+              </div>
+      <span class="rating-count">(34)</span>
+    </div>
+
+    <!-- Potency Progress Bar -->
+    <div class="potency-row">
+      <!-- Left Column -->
+      <div class="potency-col-left">
+        <span class="potency-label">POTENCY</span>
+        <span class="potency-val font-poppins">0% - 10%</span>
+      </div>
+
+      <!-- Right Column -->
+      <div class="potency-col-right">
+        <span class="potency-badge font-poppins" style="background-color: #F0FDF4; color: #16A34A;">
+          MILD        </span>
+        <div class="progress-bar-bg">
+          <div class="progress-bar-fill" style="width: 10%;"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pricing & Buy triggers -->
+    <div class="price-buy-row">
+      <div class="price-box">
+        <span class="price-active font-poppins">$69.99</span>
+        <span class="price-original font-poppins">$89.99</span>
+      </div>
+      <button 
+        onclick="addToCart({id:'microdose-daily-blend',title:'Microdose Daily Blend',price:'$69.99',imageSrc:'images/prod_daily_blend.webp',category:'Microdose'})" 
+        class="buy-btn"
+      >
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" /></svg>
+      </button>
+    </div>
+
+  </div>
+</div>
+          </div>
+              </div>
+
+    </div>
+  </section>
+
+  <!-- 5. WHY CHOOSE FUNGUYZ BANNER (Designed as Next.js full-width banner) -->
+  <div class="why-block-black font-poppins">
+    <div class="max-width-container">
+      <div class="why-card-grid">
+        <div class="why-pink-col">
+          <span style="font-size:24px; font-weight:900; text-transform:uppercase; color:rgba(255,255,255,0.8);" class="logo-font">Why Choose</span>
+          <h2 style="font-size:48px; font-weight:900; text-transform:uppercase; color:white; margin-top:0.25rem;" class="logo-font">FUNGUYZ?</h2>
+        </div>
+        <div class="why-icons-grid">
+          <!-- Item 1 -->
+          <div class="why-icon-col">
+            <svg style="height:2.25rem; width:2.25rem; color:var(--pinky);" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" /></svg>
+            <b style="font-size:13.5px; font-weight:900; color:white; text-transform:uppercase; margin-top:0.5rem;" class="logo-font">Premium Quality</b>
+            <span style="font-size:11px; color:#94a3b8;">Lab Tested Products</span>
+          </div>
+
+          <!-- Item 2 -->
+          <div class="why-icon-col">
+            <svg style="height:2.25rem; width:2.25rem; color:var(--pinky);" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" /></svg>
+            <b style="font-size:13.5px; font-weight:900; color:white; text-transform:uppercase; margin-top:0.5rem;" class="logo-font">Discreet Shipping</b>
+            <span style="font-size:11px; color:#94a3b8;">Canada Wide Safe</span>
+          </div>
+
+          <!-- Item 3 -->
+          <div class="why-icon-col">
+            <svg style="height:2.25rem; width:2.25rem; color:var(--pinky);" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
+            <b style="font-size:13.5px; font-weight:900; color:white; text-transform:uppercase; margin-top:0.5rem;" class="logo-font">Secure Checkout</b>
+            <span style="font-size:11px; color:#94a3b8;">SSL Encrypted Key</span>
+          </div>
+
+          <!-- Item 4 -->
+          <div class="why-icon-col">
+            <svg style="height:2.25rem; width:2.25rem; color:var(--pinky);" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
+            <b style="font-size:13.5px; font-weight:900; color:white; text-transform:uppercase; margin-top:0.5rem;" class="logo-font">24/7 Support</b>
+            <span style="font-size:11px; color:#94a3b8;">We Are Here For You</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. FEATURED PRODUCTS (8 PRODUCTS IN A GRID) -->
+  <div style="background:linear-gradient(to bottom, #ffeef5, rgba(238,230,255,0.7), white); padding:5rem 0; border-top:1px solid rgba(255,255,255,0.15);" class="font-poppins">
+    <section class="max-width-container">
+      <div style="text-align:center; display:flex; flex-direction:column; align-items:center; gap:0.375rem; margin-bottom:3.5rem;">
+        <span style="font-size:10px; font-weight:900; text-transform:uppercase; color:var(--pinky); letter-spacing:0.15em;" class="logo-font">Trending Now</span>
+        <h2 style="font-size:28px; font-weight:900; color:var(--navy);" class="logo-font">FEATURED PRODUCTS</h2>
+        <div style="height:4px; width:48px; background:var(--pinky); border-radius:9999px; margin-top:2px;"></div>
+      </div>
+
+      <div class="grid-4-cols">
+        <div class="prod-card">
+  <!-- Wishlist heart button -->
+  <button 
+    onclick="toggleWishlist({id:'golden-teacher',title:'Golden Teacher',price:'$79.99',imageSrc:'images/prod_golden_teacher.webp',category:'Magic Mushrooms'})" 
+    class="wishlist-btn" 
+    data-id="golden-teacher"
+  >
+    <svg style="height:0.875rem; width:0.875rem;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" /></svg>
+  </button>
+
+  <!-- Product Image -->
+  <a href="product.php?id=golden-teacher" class="prod-img-link">
+          <span class="prod-badge premium">
+        premium      </span>
+        <img src="images/prod_golden_teacher.webp" alt="Golden Teacher" class="prod-img" loading="lazy" />
+  </a>
+
+  <!-- Content details -->
+  <div class="prod-details">
+    <span class="prod-cat">Magic Mushrooms</span>
+    <h3 class="prod-title">
+      <a href="product.php?id=golden-teacher">Golden Teacher</a>
+    </h3>
+
+    <!-- Star Ratings -->
+    <div class="prod-rating">
+      <div class="stars-row">
+                  <svg class="star-icon" viewBox="0 0 20 20" fill="currentColor"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+                  <svg class="star-icon" viewBox="0 0 20 20" fill="currentColor"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+                  <svg class="star-icon" viewBox="0 0 20 20" fill="currentColor"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+                  <svg class="star-icon" viewBox="0 0 20 20" fill="currentColor"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+                  <svg class="star-icon" viewBox="0 0 20 20" fill="currentColor"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+              </div>
+      <span class="rating-count">(125)</span>
+    </div>
+
+    <!-- Potency Progress Bar -->
+    <div class="potency-row">
+      <!-- Left Column -->
+      <div class="potency-col-left">
+        <span class="potency-label">POTENCY</span>
+        <span class="potency-val font-poppins">35% - 45%</span>
+      </div>
+
+      <!-- Right Column -->
+      <div class="potency-col-right">
+        <span class="potency-badge font-poppins" style="background-color: #FFF3E6; color: #F59E0B;">
+          MODERATE        </span>
+        <div class="progress-bar-bg">
+          <div class="progress-bar-fill" style="width: 45%;"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pricing & Buy triggers -->
+    <div class="price-buy-row">
+      <div class="price-box">
+        <span class="price-active font-poppins">$79.99</span>
+        <span class="price-original font-poppins">$99.99</span>
+      </div>
+      <button 
+        onclick="addToCart({id:'golden-teacher',title:'Golden Teacher',price:'$79.99',imageSrc:'images/prod_golden_teacher.webp',category:'Magic Mushrooms'})" 
+        class="buy-btn"
+      >
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" /></svg>
+      </button>
+    </div>
+
+  </div>
+</div>
+<div class="prod-card">
+  <!-- Wishlist heart button -->
+  <button 
+    onclick="toggleWishlist({id:'penis-envy',title:'Penis Envy',price:'$89.99',imageSrc:'images/prod_penis_envy.webp',category:'Magic Mushrooms'})" 
+    class="wishlist-btn" 
+    data-id="penis-envy"
+  >
+    <svg style="height:0.875rem; width:0.875rem;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" /></svg>
+  </button>
+
+  <!-- Product Image -->
+  <a href="product.php?id=penis-envy" class="prod-img-link">
+          <span class="prod-badge top-rated">
+        top rated      </span>
+        <img src="images/prod_penis_envy.webp" alt="Penis Envy" class="prod-img" loading="lazy" />
+  </a>
+
+  <!-- Content details -->
+  <div class="prod-details">
+    <span class="prod-cat">Magic Mushrooms</span>
+    <h3 class="prod-title">
+      <a href="product.php?id=penis-envy">Penis Envy</a>
+    </h3>
+
+    <!-- Star Ratings -->
+    <div class="prod-rating">
+      <div class="stars-row">
+                  <svg class="star-icon" viewBox="0 0 20 20" fill="currentColor"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+                  <svg class="star-icon" viewBox="0 0 20 20" fill="currentColor"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+                  <svg class="star-icon" viewBox="0 0 20 20" fill="currentColor"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+                  <svg class="star-icon" viewBox="0 0 20 20" fill="currentColor"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+                  <svg class="star-icon" viewBox="0 0 20 20" fill="currentColor"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+              </div>
+      <span class="rating-count">(99)</span>
+    </div>
+
+    <!-- Potency Progress Bar -->
+    <div class="potency-row">
+      <!-- Left Column -->
+      <div class="potency-col-left">
+        <span class="potency-label">POTENCY</span>
+        <span class="potency-val font-poppins">75% - 90%</span>
+      </div>
+
+      <!-- Right Column -->
+      <div class="potency-col-right">
+        <span class="potency-badge font-poppins" style="background-color: #FEF2F2; color: #DC2626;">
+          VERY STRONG        </span>
+        <div class="progress-bar-bg">
+          <div class="progress-bar-fill" style="width: 90%;"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pricing & Buy triggers -->
+    <div class="price-buy-row">
+      <div class="price-box">
+        <span class="price-active font-poppins">$89.99</span>
+        <span class="price-original font-poppins">$119.99</span>
+      </div>
+      <button 
+        onclick="addToCart({id:'penis-envy',title:'Penis Envy',price:'$89.99',imageSrc:'images/prod_penis_envy.webp',category:'Magic Mushrooms'})" 
+        class="buy-btn"
+      >
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" /></svg>
+      </button>
+    </div>
+
+  </div>
+</div>
+<div class="prod-card">
+  <!-- Wishlist heart button -->
+  <button 
+    onclick="toggleWishlist({id:'blue-raspberry-gummies',title:'Blue Raspberry Gummies',price:'$49.99',imageSrc:'images/prod_blue_gummies.webp',category:'Edibles'})" 
+    class="wishlist-btn" 
+    data-id="blue-raspberry-gummies"
+  >
+    <svg style="height:0.875rem; width:0.875rem;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" /></svg>
+  </button>
+
+  <!-- Product Image -->
+  <a href="product.php?id=blue-raspberry-gummies" class="prod-img-link">
+          <span class="prod-badge best-seller">
+        best seller      </span>
+        <img src="images/prod_blue_gummies.webp" alt="Blue Raspberry Gummies" class="prod-img" loading="lazy" />
+  </a>
+
+  <!-- Content details -->
+  <div class="prod-details">
+    <span class="prod-cat">Edibles</span>
+    <h3 class="prod-title">
+      <a href="product.php?id=blue-raspberry-gummies">Blue Raspberry Gummies</a>
+    </h3>
+
+    <!-- Star Ratings -->
+    <div class="prod-rating">
+      <div class="stars-row">
+                  <svg class="star-icon" viewBox="0 0 20 20" fill="currentColor"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+                  <svg class="star-icon" viewBox="0 0 20 20" fill="currentColor"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+                  <svg class="star-icon" viewBox="0 0 20 20" fill="currentColor"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+                  <svg class="star-icon" viewBox="0 0 20 20" fill="currentColor"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+                  <svg class="star-icon" viewBox="0 0 20 20" fill="currentColor"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+              </div>
+      <span class="rating-count">(154)</span>
+    </div>
+
+    <!-- Potency Progress Bar -->
+    <div class="potency-row">
+      <!-- Left Column -->
+      <div class="potency-col-left">
+        <span class="potency-label">POTENCY</span>
+        <span class="potency-val font-poppins">10% - 23%</span>
+      </div>
+
+      <!-- Right Column -->
+      <div class="potency-col-right">
+        <span class="potency-badge font-poppins" style="background-color: #F0FDF4; color: #16A34A;">
+          MILD        </span>
+        <div class="progress-bar-bg">
+          <div class="progress-bar-fill" style="width: 23%;"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pricing & Buy triggers -->
+    <div class="price-buy-row">
+      <div class="price-box">
+        <span class="price-active font-poppins">$49.99</span>
+        <span class="price-original font-poppins">$64.99</span>
+      </div>
+      <button 
+        onclick="addToCart({id:'blue-raspberry-gummies',title:'Blue Raspberry Gummies',price:'$49.99',imageSrc:'images/prod_blue_gummies.webp',category:'Edibles'})" 
+        class="buy-btn"
+      >
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" /></svg>
+      </button>
+    </div>
+
+  </div>
+</div>
+<div class="prod-card">
+  <!-- Wishlist heart button -->
+  <button 
+    onclick="toggleWishlist({id:'golden-teacher-capsules',title:'Golden Teacher Capsules',price:'$59.99',imageSrc:'images/prod_teacher_capsules.webp',category:'Capsules'})" 
+    class="wishlist-btn" 
+    data-id="golden-teacher-capsules"
+  >
+    <svg style="height:0.875rem; width:0.875rem;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" /></svg>
+  </button>
+
+  <!-- Product Image -->
+  <a href="product.php?id=golden-teacher-capsules" class="prod-img-link">
+          <span class="prod-badge daily">
+        daily      </span>
+        <img src="images/prod_teacher_capsules.webp" alt="Golden Teacher Capsules" class="prod-img" loading="lazy" />
+  </a>
+
+  <!-- Content details -->
+  <div class="prod-details">
+    <span class="prod-cat">Capsules</span>
+    <h3 class="prod-title">
+      <a href="product.php?id=golden-teacher-capsules">Golden Teacher Capsules</a>
+    </h3>
+
+    <!-- Star Ratings -->
+    <div class="prod-rating">
+      <div class="stars-row">
+                  <svg class="star-icon" viewBox="0 0 20 20" fill="currentColor"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+                  <svg class="star-icon" viewBox="0 0 20 20" fill="currentColor"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+                  <svg class="star-icon" viewBox="0 0 20 20" fill="currentColor"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+                  <svg class="star-icon" viewBox="0 0 20 20" fill="currentColor"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+                  <svg class="star-icon" viewBox="0 0 20 20" fill="currentColor"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+              </div>
+      <span class="rating-count">(82)</span>
+    </div>
+
+    <!-- Potency Progress Bar -->
+    <div class="potency-row">
+      <!-- Left Column -->
+      <div class="potency-col-left">
+        <span class="potency-label">POTENCY</span>
+        <span class="potency-val font-poppins">20% - 35%</span>
+      </div>
+
+      <!-- Right Column -->
+      <div class="potency-col-right">
+        <span class="potency-badge font-poppins" style="background-color: #FFF3E6; color: #F59E0B;">
+          MODERATE        </span>
+        <div class="progress-bar-bg">
+          <div class="progress-bar-fill" style="width: 35%;"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pricing & Buy triggers -->
+    <div class="price-buy-row">
+      <div class="price-box">
+        <span class="price-active font-poppins">$59.99</span>
+        <span class="price-original font-poppins">$74.99</span>
+      </div>
+      <button 
+        onclick="addToCart({id:'golden-teacher-capsules',title:'Golden Teacher Capsules',price:'$59.99',imageSrc:'images/prod_teacher_capsules.webp',category:'Capsules'})" 
+        class="buy-btn"
+      >
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" /></svg>
+      </button>
+    </div>
+
+  </div>
+</div>
+<div class="prod-card">
+  <!-- Wishlist heart button -->
+  <button 
+    onclick="toggleWishlist({id:'microdose-daily-blend',title:'Microdose Daily Blend',price:'$69.99',imageSrc:'images/prod_daily_blend.webp',category:'Microdose'})" 
+    class="wishlist-btn" 
+    data-id="microdose-daily-blend"
+  >
+    <svg style="height:0.875rem; width:0.875rem;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" /></svg>
+  </button>
+
+  <!-- Product Image -->
+  <a href="product.php?id=microdose-daily-blend" class="prod-img-link">
+          <span class="prod-badge wellness">
+        wellness      </span>
+        <img src="images/prod_daily_blend.webp" alt="Microdose Daily Blend" class="prod-img" loading="lazy" />
+  </a>
+
+  <!-- Content details -->
+  <div class="prod-details">
+    <span class="prod-cat">Microdose</span>
+    <h3 class="prod-title">
+      <a href="product.php?id=microdose-daily-blend">Microdose Daily Blend</a>
+    </h3>
+
+    <!-- Star Ratings -->
+    <div class="prod-rating">
+      <div class="stars-row">
+                  <svg class="star-icon" viewBox="0 0 20 20" fill="currentColor"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+                  <svg class="star-icon" viewBox="0 0 20 20" fill="currentColor"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+                  <svg class="star-icon" viewBox="0 0 20 20" fill="currentColor"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+                  <svg class="star-icon" viewBox="0 0 20 20" fill="currentColor"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+                  <svg class="star-icon" viewBox="0 0 20 20" fill="currentColor"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+              </div>
+      <span class="rating-count">(34)</span>
+    </div>
+
+    <!-- Potency Progress Bar -->
+    <div class="potency-row">
+      <!-- Left Column -->
+      <div class="potency-col-left">
+        <span class="potency-label">POTENCY</span>
+        <span class="potency-val font-poppins">0% - 10%</span>
+      </div>
+
+      <!-- Right Column -->
+      <div class="potency-col-right">
+        <span class="potency-badge font-poppins" style="background-color: #F0FDF4; color: #16A34A;">
+          MILD        </span>
+        <div class="progress-bar-bg">
+          <div class="progress-bar-fill" style="width: 10%;"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pricing & Buy triggers -->
+    <div class="price-buy-row">
+      <div class="price-box">
+        <span class="price-active font-poppins">$69.99</span>
+        <span class="price-original font-poppins">$89.99</span>
+      </div>
+      <button 
+        onclick="addToCart({id:'microdose-daily-blend',title:'Microdose Daily Blend',price:'$69.99',imageSrc:'images/prod_daily_blend.webp',category:'Microdose'})" 
+        class="buy-btn"
+      >
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" /></svg>
+      </button>
+    </div>
+
+  </div>
+</div>
+      </div>
+
+      <div style="text-align:center; margin-top:4rem;">
+        <a href="shop.php" class="btn-primary">
+          View All Products
+          <svg style="height:1rem; width:1rem;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" /></svg>
+        </a>
+      </div>
+    </section>
+  </div>
+
+  <!-- 7. THE BENEFITS (6 capsule-like elements) -->
+  <section style="padding: 5rem 0;" class="font-poppins">
+    <div class="max-width-container">
+      <div style="text-align:center; display:flex; flex-direction:column; align-items:center; gap:0.375rem; margin-bottom:4rem;">
+        <span style="font-size:10px; font-weight:900; text-transform:uppercase; color:var(--pinky); letter-spacing:0.15em;" class="logo-font">Why Mushrooms?</span>
+        <h2 style="font-size:28px; font-weight:900; color:var(--navy);" class="logo-font">THE BENEFITS</h2>
+        <div style="height:4px; width:48px; background:var(--pinky); border-radius:9999px; margin-top:2px;"></div>
+      </div>
+
+      <div class="benefit-capsules-grid" style="background:white; border:1px solid #f1f5f9; border-radius:32px; padding:2rem; box-shadow:0 8px 30px rgba(0,0,0,0.01);">
+        <!-- Benefit 1 -->
+        <div class="benefit-round-col">
+          <span class="benefit-round-icon-box">
+            <svg style="height:1.25rem; width:1.25rem;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+          </span>
+          <b class="trust-badge-title" style="font-size:10.5px;">Enhances Mood</b>
+          <span style="font-size:9.5px; color:var(--slate-400);">Promotes happiness and positivity</span>
+        </div>
+
+        <!-- Benefit 2 -->
+        <div class="benefit-round-col">
+          <span class="benefit-round-icon-box">
+            <svg style="height:1.25rem; width:1.25rem;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" /></svg>
+          </span>
+          <b class="trust-badge-title" style="font-size:10.5px;">Boosts Creativity</b>
+          <span style="font-size:9.5px; color:var(--slate-400);">Unlocks divergent focus states</span>
+        </div>
+
+        <!-- Benefit 3 -->
+        <div class="benefit-round-col">
+          <span class="benefit-round-icon-box">
+            <svg style="height:1.25rem; width:1.25rem;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" /></svg>
+          </span>
+          <b class="trust-badge-title" style="font-size:10.5px;">Reduces Stress</b>
+          <span style="font-size:9.5px; color:var(--slate-400);">Helps the mind relax and calm</span>
+        </div>
+
+        <!-- Benefit 4 -->
+        <div class="benefit-round-col">
+          <span class="benefit-round-icon-box">
+            <svg style="height:1.25rem; width:1.25rem;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
+          </span>
+          <b class="trust-badge-title" style="font-size:10.5px;">Improves Focus</b>
+          <span style="font-size:9.5px; color:var(--slate-400);">Sharpens clarity and workflow efficiency</span>
+        </div>
+
+        <!-- Benefit 5 -->
+        <div class="benefit-round-col">
+          <span class="benefit-round-icon-box">
+            <svg style="height:1.25rem; width:1.25rem;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" /></svg>
+          </span>
+          <b class="trust-badge-title" style="font-size:10.5px;">Mindful Living</b>
+          <span style="font-size:9.5px; color:var(--slate-400);">Supports connection and inner peace</span>
+        </div>
+
+        <!-- Benefit 6 -->
+        <div class="benefit-round-col">
+          <span class="benefit-round-icon-box">
+            <svg style="height:1.25rem; width:1.25rem;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" /></svg>
+          </span>
+          <b class="trust-badge-title" style="font-size:10.5px;">Natural & Safe</b>
+          <span style="font-size:9.5px; color:var(--slate-400);">100% organic, lab tested pure flushes</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8. REVIEWS & FAQ INTEGRATED SECTION -->
+  <div style="background:white; border-top:1px solid #f1f5f9; border-bottom:1px solid #f1f5f9; padding:5rem 0;" class="font-poppins">
+    <section class="max-width-container">
+      
+      <div style="text-align:center; display:flex; flex-direction:column; align-items:center; gap:0.375rem; margin-bottom:4rem;">
+        <span style="font-size:10px; font-weight:900; text-transform:uppercase; color:var(--pinky); letter-spacing:0.15em;" class="logo-font">Customer Care</span>
+        <h2 style="font-size:28px; font-weight:900; color:var(--navy);" class="logo-font">REVIEWS & FAQ</h2>
+        <div style="height:4px; width:48px; background:var(--pinky); border-radius:9999px; margin-top:2px;"></div>
+      </div>
+
+      <div class="split-layout-grid">
+        
+        <!-- Left: Customer Reviews Carousel -->
+        <div style="display:flex; flex-direction:column; gap:1.5rem;">
+          <div style="text-align:left; border-left:4px solid var(--pinky); padding-left:1rem; margin-bottom:0.5rem;">
+            <span style="font-size:9.5px; font-weight:900; text-transform:uppercase; color:var(--slate-400); letter-spacing:0.05em;">Real Reviews</span>
+            <h3 style="font-size:16px; font-weight:900; color:var(--navy); text-transform:uppercase; margin-top:2px;" class="logo-font">WHAT OUR CUSTOMERS SAY</h3>
+          </div>
+
+          <!-- Carousel Container -->
+          <div class="sliding-review-card">
+            <!-- decorative quotes mark -->
+            <span style="position:absolute; right:1.5rem; top:0.5rem; font-size:110px; font-family:serif; color:#ffe3ef; line-height:1; font-weight:900; pointer-events:none; user-select:none;">”</span>
+            
+            <div style="display:flex; flex-direction:column; gap:1rem; position:relative; z-index:10;">
+              <!-- rating stars -->
+              <div style="display:flex; gap:2px; color:#f59e0b;" id="reviewer-stars">
+                ★★★★★
+              </div>
+              <p style="font-size:15px; color:var(--slate-600); font-style:italic; line-height:1.6; min-height:80px;" id="reviewer-text">
+                "Best quality products I have tried so far. Everything was fresh, vacuum-sealed and arrived super fast. Customer support helped me with dosage recommendations. Highly recommended!"
+              </p>
+            </div>
+
+            <!-- Profile and chevrons footer -->
+            <div style="display:flex; justify-content:space-between; align-items:center; border-top:1px solid #fcf2f6; padding-top:1.25rem; position:relative; z-index:10; margin-top:1rem;">
+              <div style="display:flex; align-items:center; gap:1rem;">
+                <div class="testimonial-avatar" id="reviewer-avatar" style="background:linear-gradient(to right, #ff4fa3, #e03b87);">J</div>
+                <div style="text-align:left;">
+                  <strong style="font-size:13.5px; font-weight:900; color:var(--navy); text-transform:uppercase; display:block;" id="reviewer-name">Jake M.</strong>
+                  <span style="display:inline-flex; align-items:center; gap:0.25rem; font-size:9px; font-weight:900; color:#16a34a; text-transform:uppercase; margin-top:2px;">
+                    <span style="height:5px; width:5px; border-radius:50%; background:#16a34a;"></span>
+                    Verified Buyer
+                  </span>
+                </div>
+              </div>
+
+              <!-- Chevron slide controls -->
+              <div class="reviews-chevrons-row">
+                <button onclick="changeReview(-1)" class="chevron-mini-btn">&larr;</button>
+                <button onclick="changeReview(1)" class="chevron-mini-btn">&rarr;</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: FAQ Accordions -->
+        <div style="display:flex; flex-direction:column; gap:1.5rem;">
+          <div style="text-align:left; border-left:4px solid var(--pinky); padding-left:1rem; margin-bottom:0.5rem;">
+            <span style="font-size:9.5px; font-weight:900; text-transform:uppercase; color:var(--slate-400); letter-spacing:0.05em;">Got Questions?</span>
+            <h3 style="font-size:16px; font-weight:900; color:var(--navy); text-transform:uppercase; margin-top:2px;" class="logo-font">FREQUENTLY ASKED QUESTIONS</h3>
+          </div>
+
+          <div style="border:1px solid #f1f5f9; border-radius:24px; background:white; overflow:hidden; box-shadow:0 4px 20px rgba(0,0,0,0.01);">
+            <!-- FAQ 1 -->
+            <div class="home-faq-item active" id="home-faq-0">
+              <div class="home-faq-header" onclick="toggleHomeFaq(0)">
+                <span class="home-faq-q">Are your products legal in Canada?</span>
+                <span style="font-size:14px; font-weight:900; color:var(--slate-400);">&times;</span>
+              </div>
+              <div class="home-faq-ans" style="display:block;">
+                Our products are shipped discreetly and safely across Canada. While the legal landscape is evolving, we operate with strict quality control and customer privacy as our top priorities.
+              </div>
+            </div>
+
+            <!-- FAQ 2 -->
+            <div class="home-faq-item" id="home-faq-1">
+              <div class="home-faq-header" onclick="toggleHomeFaq(1)">
+                <span class="home-faq-q">How long does shipping take?</span>
+                <span style="font-size:14px; font-weight:900; color:var(--slate-400);">+</span>
+              </div>
+              <div class="home-faq-ans">
+                We offer fast shipping across Canada. Orders typically arrive in 2-4 business days, depending on your location. All orders are provided with a tracking number.
+              </div>
+            </div>
+
+            <!-- FAQ 3 -->
+            <div class="home-faq-item" id="home-faq-2">
+              <div class="home-faq-header" onclick="toggleHomeFaq(2)">
+                <span class="home-faq-q">Is my order discreet?</span>
+                <span style="font-size:14px; font-weight:900; color:var(--slate-400);">+</span>
+              </div>
+              <div class="home-faq-ans">
+                Yes, absolutely. We use plain, vacuum-sealed packaging with no external branding or reference to mushrooms. Your privacy is 100% secure.
+              </div>
+            </div>
+
+            <!-- FAQ 4 -->
+            <div class="home-faq-item" id="home-faq-3">
+              <div class="home-faq-header" onclick="toggleHomeFaq(3)">
+                <span class="home-faq-q">How should I store my products?</span>
+                <span style="font-size:14px; font-weight:900; color:var(--slate-400);">+</span>
+              </div>
+              <div class="home-faq-ans">
+                Keep dried mushrooms and edibles in a cool, dark, dry place. Capsules and tinctures should also be kept away from direct sunlight.
+              </div>
+            </div>
+
+            <!-- FAQ 5 -->
+            <div class="home-faq-item" id="home-faq-4">
+              <div class="home-faq-header" onclick="toggleHomeFaq(4)">
+                <span class="home-faq-q">Do you offer refunds?</span>
+                <span style="font-size:14px; font-weight:900; color:var(--slate-400);">+</span>
+              </div>
+              <div class="home-faq-ans">
+                We stand by the quality of our products. If you are not completely satisfied, please contact our support team within 7 days and we will make it right.
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+  </div>
+
+  <!-- 9. LATEST BLOG RESEARCH CAROUSEL -->
+  <section style="padding: 5rem 0;" class="font-poppins">
+    <div class="max-width-container">
+      <div style="display:flex; justify-content:space-between; align-items:flex-end; border-bottom:1px solid rgba(123,92,255,0.05); padding-bottom:1rem; margin-bottom:2rem;">
+        <div style="text-align:left; display:flex; flex-direction:column; gap:4px;">
+          <span style="font-size:10px; font-weight:900; text-transform:uppercase; color:var(--pinky); letter-spacing:0.15em;" class="logo-font">Latest Research</span>
+          <h2 style="font-size:28px; font-weight:900; color:var(--navy);" class="logo-font">FROM THE BLOG</h2>
+        </div>
+        <div style="display:flex; align-items:center; gap:1.25rem;">
+          <div class="reviews-chevrons-row">
+            <button onclick="slideCarousel('blog-viewport', -280)" class="chevron-mini-btn">&larr;</button>
+            <button onclick="slideCarousel('blog-viewport', 280)" class="chevron-mini-btn">&rarr;</button>
+          </div>
+          <a href="blog.php" class="btn-primary" style="font-size:10px; padding:0.5rem 1.25rem; border-radius:12px;">View All Articles</a>
+        </div>
+      </div>
+
+      <!-- Blog Viewport -->
+      <div class="slider-viewport" id="blog-viewport">
+        <!-- Slide 1 -->
+        <div class="slider-card-wrapper">
+          <article class="prod-card" style="padding:0; overflow:hidden;">
+            <div style="width:100%; aspect-ratio:16/9; background:linear-gradient(to right, #7b5cff, #ff4fa3); display:flex; align-items:center; justify-content:center; color:white; font-size:14px; font-weight:900; padding:1rem; text-align:center;" class="logo-font">
+              🍄 Microdosing Guide 101
+            </div>
+            <div style="padding:1.25rem; text-align:left; display:flex; flex-direction:column; gap:0.5rem; flex:1;">
+              <div style="display:flex; justify-content:space-between; font-size:8px; font-weight:900; color:var(--slate-400); uppercase:true;">
+                <span style="background:rgba(255, 79, 163, 0.05); color:var(--pinky); padding:1px 4px; border-radius:3px;">Guides</span>
+                <span>May 10, 2026</span>
+              </div>
+              <h3 style="font-size:13px; font-weight:900; color:var(--navy); uppercase:true; line-height:1.3;" class="logo-font">
+                <a href="blog.php?id=beginner-guide">Microdosing for Beginners: Complete Handbook</a>
+              </h3>
+              <p style="font-size:11px; color:var(--slate-500); line-height:1.5; line-clamp:2;">
+                Understand dosage, metabolic schedules, and benefits before your first journey.
+              </p>
+            </div>
+          </article>
+        </div>
+
+        <!-- Slide 2 -->
+        <div class="slider-card-wrapper">
+          <article class="prod-card" style="padding:0; overflow:hidden;">
+            <div style="width:100%; aspect-ratio:16/9; background:linear-gradient(to right, #7b5cff, #ff4fa3); display:flex; align-items:center; justify-content:center; color:white; font-size:14px; font-weight:900; padding:1rem; text-align:center;" class="logo-font">
+              🧪 Sterile Cultivation Isolate
+            </div>
+            <div style="padding:1.25rem; text-align:left; display:flex; flex-direction:column; gap:0.5rem; flex:1;">
+              <div style="display:flex; justify-content:space-between; font-size:8px; font-weight:900; color:var(--slate-400); uppercase:true;">
+                <span style="background:rgba(255, 79, 163, 0.05); color:var(--pinky); padding:1px 4px; border-radius:3px;">Research</span>
+                <span>May 6, 2026</span>
+              </div>
+              <h3 style="font-size:13px; font-weight:900; color:var(--navy); uppercase:true; line-height:1.3;" class="logo-font">
+                <a href="blog.php?id=sterile-cultivation">Cleanroom Mycological Sterile Cultivation</a>
+              </h3>
+              <p style="font-size:11px; color:var(--slate-500); line-height:1.5; line-clamp:2;">
+                Explore clean laminar flow hoods, agar isolation, and cellular purity protocols.
+              </p>
+            </div>
+          </article>
+        </div>
+
+        <!-- Slide 3 -->
+        <div class="slider-card-wrapper">
+          <article class="prod-card" style="padding:0; overflow:hidden;">
+            <div style="width:100%; aspect-ratio:16/9; background:linear-gradient(to right, #7b5cff, #ff4fa3); display:flex; align-items:center; justify-content:center; color:white; font-size:14px; font-weight:900; padding:1rem; text-align:center;" class="logo-font">
+              ✨ Organic Adaptogens Power
+            </div>
+            <div style="padding:1.25rem; text-align:left; display:flex; flex-direction:column; gap:0.5rem; flex:1;">
+              <div style="display:flex; justify-content:space-between; font-size:8px; font-weight:900; color:var(--slate-400); uppercase:true;">
+                <span style="background:rgba(255, 79, 163, 0.05); color:var(--pinky); padding:1px 4px; border-radius:3px;">Science</span>
+                <span>May 2, 2026</span>
+              </div>
+              <h3 style="font-size:13px; font-weight:900; color:var(--navy); uppercase:true; line-height:1.3;" class="logo-font">
+                <a href="blog.php?id=chaga-lions-mane">Organic Adaptogens: Why Lion's Mane Matters</a>
+              </h3>
+              <p style="font-size:11px; color:var(--slate-500); line-height:1.5; line-clamp:2;">
+                Understand why thousands of experts stack Lion's Mane and Chaga for daily focus.
+              </p>
+            </div>
+          </article>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- 10. INSTAGRAM SQUARE FEED & TRUST METRIC CARDS -->
+  <div style="background:white; border-top:1px solid #f1f5f9; padding:5rem 0;" class="font-poppins">
+    <section class="max-width-container" style="display:grid; gap:3.5rem; grid-template-columns:repeat(1, minmax(0, 1fr));" class="lg:grid-cols-2">
+      
+      <!-- Left: Instagram Feed Card -->
+      <div class="instagram-card-feed">
+        <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid rgba(123,92,255,0.05); padding-bottom:1rem;">
+          <div style="display:flex; align-items:center; gap:1rem;">
+            <!-- Instagram round avatar logo -->
+            <div style="height:3.5rem; width:3.5rem; border-radius:16px; background:linear-gradient(to top right, #fccc63, #cd486b, #4c68d7); display:grid; place-items:center; color:white; shadow:sm;">
+              <svg style="height:1.75rem; width:1.75rem;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5" /><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37zM17.5 6.5h.01" /></svg>
+            </div>
+            <div style="text-align:left;">
+              <span style="font-size:9.5px; font-weight:900; color:var(--slate-400); text-transform:uppercase;">FOLLOW US ON INSTAGRAM</span>
+              <h2 style="font-size:20px; font-weight:900; color:var(--pinky); margin-top:2px;" class="logo-font">@funguyz.ca</h2>
+            </div>
+          </div>
+          <a href="https://instagram.com" class="btn-primary" style="font-size:9.5px; padding:0.5rem 1.25rem; border-radius:12px;">Follow Now</a>
+        </div>
+
+        <div class="insta-square-grid">
+          <div class="insta-pic-link">
+            <img src="images/cat_mushrooms.webp">
+            <div class="insta-hover-overlay"><span class="insta-view-btn">View</span></div>
+          </div>
+          <div class="insta-pic-link">
+            <img src="images/prod_blue_gummies.webp">
+            <div class="insta-hover-overlay"><span class="insta-view-btn">View</span></div>
+          </div>
+          <div class="insta-pic-link">
+            <img src="images/prod_teacher_capsules.webp">
+            <div class="insta-hover-overlay"><span class="insta-view-btn">View</span></div>
+          </div>
+          <div class="insta-pic-link">
+            <img src="images/prod_daily_blend.webp">
+            <div class="insta-hover-overlay"><span class="insta-view-btn">View</span></div>
+          </div>
+          <div class="insta-pic-link">
+            <img src="images/cat_edibles.webp">
+            <div class="insta-hover-overlay"><span class="insta-view-btn">View</span></div>
+          </div>
+          <div class="insta-pic-link">
+            <img src="images/hero_composition.webp">
+            <div class="insta-hover-overlay"><span class="insta-view-btn">View</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Trusted Customer Safe Site Card -->
+      <div style="border-radius:28px; background:linear-gradient(135deg, #fffcfd, #fff7fa); border:2px solid rgba(255,79,163,0.15); padding:2rem; box-shadow:0 15px 35px rgba(255, 79, 163, 0.05); display:flex; flex-direction:column; justify-content:space-between; min-height:280px; text-align:left; position:relative;">
+        <div style="display:flex; flex-direction:column; gap:0.5rem;">
+          <span style="font-size:10px; font-weight:900; text-transform:uppercase; color:var(--pinky); letter-spacing:0.1em;">TRUSTED BY THOUSANDS</span>
+          <h3 style="font-size:20px; font-weight:900; color:var(--navy); line-height:1.2;" class="logo-font">Guaranteed Quality & Certified Safety</h3>
+          <p style="font-size:12px; color:var(--slate-500); line-height:1.6; margin-top:2px;">
+            We prioritize premium organic sourcing, strict laboratory verification, and fully secure, discrete shipping for your complete peace of mind.
+          </p>
+        </div>
+
+        <div style="display:flex; align-items:center; gap:1rem; background:rgba(255, 79, 163, 0.04); border:1px solid rgba(255, 79, 163, 0.1); border-radius:20px; padding:1rem; margin-top:1.5rem;">
+          <div style="text-align:left;">
+            <span style="font-size:36px; font-weight:900; color:var(--pinky); line-height:1;">4.9</span>
+            <span style="display:block; font-size:8px; font-weight:900; color:var(--slate-400); text-transform:uppercase; margin-top:2px;">Rating</span>
+          </div>
+          <div style="width:1px; height:2rem; background:rgba(255, 79, 163, 0.2);"></div>
+          <div style="flex:1; display:flex; flex-direction:column; gap:2px; text-align:left;">
+            <div style="color:#f59e0b; font-size:11px;">★★★★★</div>
+            <span style="font-size:10px; font-weight:900; color:var(--navy);" class="logo-font">2,500+ Verified Reviews</span>
+          </div>
+          <span style="display:inline-flex; align-items:center; gap:0.25rem; font-size:8.5px; font-weight:900; text-transform:uppercase; background:#d1fae5; color:#065f46; padding:0.25rem 0.625rem; border-radius:9999px; border:1px solid rgba(5,150,105,0.2);">
+            <span style="height:5px; width:5px; border-radius:50%; background:#10b981;"></span>
+            Safe Site
+          </span>
+        </div>
+      </div>
+
+    </section>
+  </div>
+
+  <!-- Newsletter Include -->
+  <div style="background:var(--cream); padding:5rem 0; font-family:'Poppins', sans-serif; position:relative; overflow:hidden;" class="font-poppins">
+  <!-- Glowing ambient circles -->
+  <div style="position:absolute; left:10%; top:20%; width:350px; height:350px; border-radius:50%; background:rgba(255, 79, 163, 0.08); filter:blur(100px); pointer-events:none;"></div>
+  <div style="position:absolute; right:10%; bottom:20%; width:350px; height:350px; border-radius:50%; background:rgba(123, 92, 255, 0.08); filter:blur(100px); pointer-events:none;"></div>
+
+  <div class="max-width-container" style="position:relative; z-index:10;">
+    <div style="max-width:48rem; margin:0 auto; background:rgba(255,255,255,0.8); border:1px solid rgba(255, 79, 163, 0.15); border-radius:40px; padding:3rem 2rem; text-align:center; box-shadow:0 20px 50px rgba(255,79,163,0.06);" class="glass font-poppins">
+      
+      <!-- Sparkle icons -->
+      <div style="display:flex; justify-content:center; gap:0.25rem; font-size:1.5rem; color:#ff4fa3; margin-bottom:0.75rem;" class="animate-float">
+        ✨
+      </div>
+
+      <h2 style="font-size:24px; font-weight:900; color:var(--navy); uppercase; line-height:1.2; letter-spacing:-0.01em; margin-bottom:0.5rem;" class="logo-font">
+        Subscribe To Our <span style="background:linear-gradient(to right, #ff4fa3, #7b5cff); -webkit-background-clip:text; -webkit-text-fill-color:transparent;">Newsletter</span>
+      </h2>
+      
+      <p style="font-size:11.5px; font-weight:600; color:var(--slate-500); max-w:24rem; margin:0 auto 2rem auto; leading-relaxed:1.6; line-height:1.6;">
+        Join our adaptogen wellness club. Receive genetic catalog drops, clinical dosage templates, and Canadian logistics updates directly in your mailbox.
+      </p>
+
+      <!-- Input Form -->
+      <form onsubmit="event.preventDefault(); alert('Newsletter subscription successful! Check pay@funguyz.ca for discount coupons.');" style="max-width:32rem; margin:0 auto; display:flex; flex-direction:column; sm:flex-direction:row; gap:0.75rem;">
+        <div style="position:relative; flex:1;">
+          <svg style="position:absolute; left:1rem; top:50%; transform:translateY(-50%); height:1rem; width:1rem; color:var(--slate-400);" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
+          <input 
+            type="email" 
+            required 
+            placeholder="Enter your email address" 
+            style="width:100%; border:1px solid var(--slate-200); background:white; border-radius:16px; padding:0.875rem 1rem 0.875rem 2.75rem; font-size:12px; font-weight:600; color:var(--navy); outline:none; transition:all 0.2s ease;"
+            class="focus:border-[#ff4fa3]"
+          />
+        </div>
+        <button 
+          type="submit" 
+          style="background:linear-gradient(to right, #ff4fa3, #7b5cff); border:none; color:white; border-radius:16px; padding:0.875rem 2rem; font-size:11px; font-weight:900; text-transform:uppercase; letter-spacing:0.1em; cursor:pointer; transition:all 0.2s ease;"
+          class="hover:opacity-90 shrink-0"
+        >
+          Subscribe
+        </button>
+      </form>
+
+    </div>
+  </div>
+</div>
+
+  <!-- Footer Include -->
+  <footer class="relative font-poppins" style="background:#1b1533; color:white; border-top:1px solid rgba(123,92,255,0.05); padding-top:4rem; padding-bottom:2rem; overflow:hidden;">
+  <!-- Visual background glow -->
+  <div class="absolute -left-32 -top-32 h-96 w-96 rounded-full bg-[#7b5cff]/5 blur-[120px] pointer-events-none"></div>
+
+  <div class="footer-core-grid relative mx-auto max-w-7xl gap-10 px-6 pb-16">
+    <!-- Brand Info -->
+    <div class="flex flex-col gap-6">
+      <a href="index.php" class="block transition-transform hover:scale-[1.02] duration-200">
+        <img src="images/logo.webp" alt="FunGuyz Logo" style="height:3.5rem; width:auto; object-fit:contain;" class="logo-img">
+      </a>
+      <p style="text-align:left; color:rgba(255,255,255,0.6);" class="max-w-xs text-xs font-semibold leading-6">
+        Your trusted Canadian source for premium magic mushrooms, edibles,
+        capsules & microdose products. Quality, purity & experience.
+      </p>
+      <div class="flex items-center gap-4 mt-2">
+        <a href="#instagram" style="color:rgba(255,255,255,0.6);" class="hover:text-white transition-colors duration-200">
+          <svg class="h-5 w-5 fill-none stroke-current" stroke-width="2.2" viewBox="0 0 24 24">
+            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+          </svg>
+        </a>
+        <a href="#facebook" style="color:rgba(255,255,255,0.6);" class="hover:text-white transition-colors duration-200">
+          <svg class="h-5 w-5 fill-none stroke-current" stroke-width="2.2" viewBox="0 0 24 24">
+            <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+          </svg>
+        </a>
+        <a href="#tiktok" style="color:rgba(255,255,255,0.6);" class="hover:text-white transition-colors duration-200">
+          <svg class="h-5 w-5 fill-none stroke-current" stroke-width="2.2" viewBox="0 0 24 24">
+            <path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"></path>
+          </svg>
+        </a>
+        <a href="#twitter" style="color:rgba(255,255,255,0.6);" class="hover:text-white transition-colors duration-200">
+          <svg class="h-4.5 w-4.5 fill-none stroke-current" stroke-width="2.2" viewBox="0 0 24 24">
+            <path d="M4 4l11.733 16h4.267l-11.733 -16z"></path>
+            <path d="M4 20l6.768 -6.768m2.46 -2.46l6.772 -6.772"></path>
+          </svg>
+        </a>
+      </div>
+    </div>
+
+    <!-- Shop Column -->
+    <div class="flex flex-col gap-5 text-left">
+      <h4 class="text-xs font-black uppercase tracking-wider text-[#2fdfff] logo-font">SHOP</h4>
+      <ul style="list-style:none; color:rgba(255,255,255,0.5);" class="space-y-3.5 text-xs font-semibold">
+        <li><a href="category.php?id=edibles" class="hover:text-[#ff4fa3] transition-colors duration-200">Edibles</a></li>
+        <li><a href="shop.php" class="hover:text-[#ff4fa3] transition-colors duration-200">Bundles</a></li>
+        <li><a href="category.php?id=capsules" class="hover:text-[#ff4fa3] transition-colors duration-200">Capsules</a></li>
+        <li><a href="category.php?id=microdose" class="hover:text-[#ff4fa3] transition-colors duration-200">Microdose</a></li>
+        <li><a href="shop.php?filter=best-sellers" class="hover:text-[#ff4fa3] transition-colors duration-200">Best Sellers</a></li>
+        <li><a href="category.php?id=magic-mushrooms" class="hover:text-[#ff4fa3] transition-colors duration-200">Magic Mushrooms</a></li>
+      </ul>
+    </div>
+
+    <!-- Support Column -->
+    <div class="flex flex-col gap-5 text-left">
+      <h4 class="text-xs font-black uppercase tracking-wider text-[#2fdfff] logo-font">SUPPORT</h4>
+      <ul style="list-style:none; color:rgba(255,255,255,0.5);" class="space-y-3.5 text-xs font-semibold">
+        <li><a href="faq.php" class="hover:text-[#ff4fa3] transition-colors duration-200">FAQ</a></li>
+        <li><a href="faq.php" class="hover:text-[#ff4fa3] transition-colors duration-200">Contact Us</a></li>
+        <li><a href="track-order.php" class="hover:text-[#ff4fa3] transition-colors duration-200">Track Order</a></li>
+        <li><a href="info.php" class="hover:text-[#ff4fa3] transition-colors duration-200">Shipping Policy</a></li>
+        <li><a href="info.php" class="hover:text-[#ff4fa3] transition-colors duration-200">Payment Methods</a></li>
+        <li><a href="info.php" class="hover:text-[#ff4fa3] transition-colors duration-200">Returns & Refunds</a></li>
+      </ul>
+    </div>
+
+    <!-- Learn Column -->
+    <div class="flex flex-col gap-5 text-left">
+      <h4 class="text-xs font-black uppercase tracking-wider text-[#2fdfff] logo-font">LEARN</h4>
+      <ul style="list-style:none; color:rgba(255,255,255,0.5);" class="space-y-3.5 text-xs font-semibold">
+        <li><a href="blog.php" class="hover:text-[#ff4fa3] transition-colors duration-200">Blog</a></li>
+        <li><a href="blog.php?id=beginner-guide" class="hover:text-[#ff4fa3] transition-colors duration-200">Beginner Guide</a></li>
+        <li><a href="blog.php?id=chaga-lions-mane" class="hover:text-[#ff4fa3] transition-colors duration-200">Microdose Guide</a></li>
+        <li><a href="blog.php" class="hover:text-[#ff4fa3] transition-colors duration-200">Mushroom Strains</a></li>
+        <li><a href="blog.php" class="hover:text-[#ff4fa3] transition-colors duration-200">Wellness Articles</a></li>
+        <li><a href="blog.php" class="hover:text-[#ff4fa3] transition-colors duration-200">Research & Studies</a></li>
+      </ul>
+    </div>
+
+    <!-- Legal Column -->
+    <div class="flex flex-col gap-5 text-left">
+      <h4 class="text-xs font-black uppercase tracking-wider text-[#2fdfff] logo-font">LEGAL</h4>
+      <ul style="list-style:none; color:rgba(255,255,255,0.5);" class="space-y-3.5 text-xs font-semibold">
+        <li><a href="info.php" class="hover:text-[#ff4fa3] transition-colors duration-200">Cookie Policy</a></li>
+        <li><a href="info.php" class="hover:text-[#ff4fa3] transition-colors duration-200">Privacy Policy</a></li>
+        <li><a href="info.php" class="hover:text-[#ff4fa3] transition-colors duration-200">Responsible Use</a></li>
+        <li><a href="info.php" class="hover:text-[#ff4fa3] transition-colors duration-200">Legal Disclaimer</a></li>
+        <li><a href="info.php" class="hover:text-[#ff4fa3] transition-colors duration-200">Age Verification</a></li>
+        <li><a href="info.php" class="hover:text-[#ff4fa3] transition-colors duration-200">Terms & Conditions</a></li>
+      </ul>
+    </div>
+
+    <!-- Contact Info -->
+    <div class="flex flex-col gap-5 text-left">
+      <h4 class="text-xs font-black uppercase tracking-wider text-[#2fdfff] logo-font">CONTACT US</h4>
+      <ul style="list-style:none; color:rgba(255,255,255,0.6);" class="space-y-4.5 text-xs font-semibold">
+        <li style="display:flex; align-items:center; gap:0.75rem;">
+          <i data-lucide="mail" style="height:1rem; width:1rem; color:#2fdfff; stroke-width:2.2;" class="shrink-0"></i>
+          <a href="mailto:hello@funguyz.ca" class="hover:text-white transition-colors duration-200">hello@funguyz.ca</a>
+        </li>
+        <li style="display:flex; align-items:start; gap:0.75rem;">
+          <i data-lucide="map-pin" style="height:1rem; width:1rem; color:#2fdfff; stroke-width:2.2; margin-top:2px;" class="shrink-0"></i>
+          <div style="display:flex; flex-direction:column; gap:0.25rem; text-align:left;" class="text-[11px] leading-relaxed">
+            <span>10am-10pm Mon-Thr</span>
+            <span>10am-11pm fri-sat</span>
+            <span>11am - 10pm sun</span>
+          </div>
+        </li>
+        <li style="display:flex; align-items:center; gap:0.75rem;">
+          <i data-lucide="phone" style="height:1rem; width:1rem; color:#2fdfff; stroke-width:2.2;" class="shrink-0"></i>
+          <span>+1 (888) 123-4567</span>
+        </li>
+        <li style="display:flex; align-items:center; gap:0.75rem;">
+          <span style="font-size:14px;" class="select-none">🇨🇦</span>
+          <span>Canada</span>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Footer Bottom Bar -->
+  <div class="relative z-10" style="border-t: 1px solid rgba(255,255,255,0.05); border-top: 1px solid rgba(255,255,255,0.05); pt-8; padding-top: 2rem; px-6; padding-left: 1.5rem; padding-right: 1.5rem;">
+    <div class="mx-auto max-w-7xl flex flex-col md:flex-row items-center justify-between gap-6 w-full text-center md:text-left">
+      
+      <!-- Copyright & Credentials Line (Left) -->
+      <div class="flex flex-col sm:flex-row items-center gap-x-3 gap-y-1.5 text-xs font-semibold" style="color:rgba(255,255,255,0.4);">
+        <span>© 2026 FunGuyz. All Rights Reserved.</span>
+        <span class="hidden sm:inline h-3.5 w-px" style="background:rgba(255,255,255,0.1);"></span>
+        <span>
+          Sourced from <a href="https://mushroomexpert.com" target="_blank" rel="noreferrer" class="text-[#ff4fa3] hover:underline font-black">MushroomExpert.com</a>
+        </span>
+      </div>
+
+      <!-- Translucent 19+ Age Warning Capsule (Right) -->
+      <div class="inline-flex items-center gap-2.5 rounded-full px-4 py-1.5 text-xs shadow-sm shrink-0" style="background:rgba(239, 68, 68, 0.05); border:1px solid rgba(239, 68, 68, 0.15); color:rgba(248, 113, 113, 0.90);">
+        <span class="flex h-5 w-5 items-center justify-center rounded-full text-[9px] font-black text-red-500" style="background:rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.30);">19+</span>
+        <span class="font-semibold tracking-wide">This site is intended for adults 19 years and older. Please consume responsibly.</span>
+      </div>
+
+    </div>
+  </div>
+</footer>
+
+<!-- CSS definitions to match the Next.js responsive grid exactly -->
+<style>
+  .footer-core-grid {
+    display: grid;
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+  }
+  @media (min-width: 640px) {
+    .footer-core-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  @media (min-width: 1024px) {
+    .footer-core-grid {
+      grid-template-columns: 1.4fr repeat(4, 1fr) 1.2fr;
+    }
+  }
+  
+  /* Space custom classes for list elements in footer */
+  .space-y-3\.5 > * + * {
+    margin-top: 0.875rem;
+  }
+  .space-y-4\.5 > * + * {
+    margin-top: 1.125rem;
+  }
+</style>
+
+  <!-- Client-side home sliders, reviews toggler, and accordions logic -->
+  <script>
+    // Review Carousel Data
+    const homeReviews = [
+      {
+        name: 'Jake M.',
+        avatar: 'J',
+        gradient: 'linear-gradient(to right, #ff4fa3, #e03b87)',
+        rating: '★★★★★',
+        text: '"Best quality products I have tried so far. Everything was fresh, vacuum-sealed and arrived super fast. Customer support helped me with dosage recommendations. Highly recommended!"'
+      },
+      {
+        name: 'Sarah K.',
+        avatar: 'S',
+        gradient: 'linear-gradient(to right, #7b5cff, #6532d6)',
+        rating: '★★★★★',
+        text: '"The fruit gummies are incredibly delicious! Strong, consistent effects, and no heavy body load. Discreet packaging is a huge plus for apartment delivery."'
+      },
+      {
+        name: 'Mikey D.',
+        avatar: 'M',
+        gradient: 'linear-gradient(to right, #f59e0b, #d97706)',
+        rating: '★★★★★',
+        text: '"Microdosing capsules have completely changed my daily work ritual. I feel sharper, more creative, and less overwhelmed. Outstanding supplement quality."'
+      }
+    ];
+
+    let currentHomeReview = 0;
+
+    function changeReview(direction) {
+      currentHomeReview = (currentHomeReview + direction + homeReviews.length) % homeReviews.length;
+      const rev = homeReviews[currentHomeReview];
+
+      // Re-populate elements
+      document.getElementById('reviewer-stars').textContent = rev.rating;
+      document.getElementById('reviewer-text').textContent = rev.text;
+      document.getElementById('reviewer-name').textContent = rev.name;
+      
+      const avatar = document.getElementById('reviewer-avatar');
+      avatar.textContent = rev.avatar;
+      avatar.style.background = rev.gradient;
+    }
+
+    // FAQ Toggles
+    function toggleHomeFaq(index) {
+      const allItems = document.querySelectorAll('.home-faq-item');
+      allItems.forEach((item, idx) => {
+        const ans = item.querySelector('.home-faq-ans');
+        const trigger = item.querySelector('.home-faq-header span:last-child');
+        
+        if (idx === index) {
+          item.classList.toggle('active');
+          const isActive = item.classList.contains('active');
+          ans.style.display = isActive ? 'block' : 'none';
+          trigger.textContent = isActive ? '×' : '+';
+        } else {
+          item.classList.remove('active');
+          ans.style.display = 'none';
+          trigger.textContent = '+';
+        }
+      });
+    }
+
+    // Carousel viewport sliding controller
+    function slideCarousel(viewportId, offset) {
+      const vp = document.getElementById(viewportId);
+      if (vp) {
+        vp.scrollBy({ left: offset, behavior: 'smooth' });
+      }
+    }
+  </script>
+
+</body>
+</html>
