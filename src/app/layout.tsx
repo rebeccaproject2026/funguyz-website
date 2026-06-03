@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Fredoka, Outfit, Poppins } from 'next/font/google';
 import './globals.css';
 import { CartProvider } from '@/context/CartContext';
+import { LaunchPopup } from '@/components/LaunchPopup';
 
 const fredoka = Fredoka({
   subsets: ['latin'],
@@ -35,6 +36,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className="antialiased font-sans">
         <CartProvider>
           {children}
+          <LaunchPopup />
         </CartProvider>
       </body>
     </html>
