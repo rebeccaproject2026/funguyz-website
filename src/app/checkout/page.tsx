@@ -64,7 +64,7 @@ export default function CheckoutPage() {
     if (!formData.city) activeErrors.push('City is required');
     if (!formData.postcode) activeErrors.push('Postal Code is required');
 
-    // e-Transfer and Cash payment methods require no card field validations
+    // e-Transfer payment method requires no card field validations
 
     if (activeErrors.length > 0) {
       setErrors(activeErrors);

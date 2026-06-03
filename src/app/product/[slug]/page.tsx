@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { ProductCard } from '@/components/ProductCard';
@@ -71,12 +71,9 @@ function getGalleryImagesList(title: string, category: string, mainImg: string):
 export default function ProductDetailsPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = React.use(params);
   const { addToCart, toggleWishlist, isWishlisted } = useCart();
-  const [productData, setProductData] = useState<any>(null);
   const [selectedWeight, setSelectedWeight] = useState<string>('7g');
   const [quantity, setQuantity] = useState<number>(1);
   const [activeTab, setActiveTab] = useState<'desc' | 'lab' | 'reviews' | 'faq'>('desc');
-  const [galleryImages, setGalleryImages] = useState<string[]>([]);
-  const [activeImage, setActiveImage] = useState<string>('');
   const [openFaqTab, setOpenFaqTab] = useState<number | null>(null);
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const [newReviewRating, setNewReviewRating] = useState<number>(5);
@@ -86,11 +83,55 @@ export default function ProductDetailsPage({ params }: { params: Promise<{ slug:
     ['David K.', 'Excellent gummies! The watermelon flavor is completely organic and has zero heavy body load. Ideal microdosing stack for creative coding and design focus!', 5]
   ]);
 
+  // Parse dynamic slug and match product from our central products data
+  let matched = products.find(p => p[0].toLowerCase().replace(/\s+/g, '-') === slug);
+  if (!matched) {
+    matched = products[0]; // Fallback to Golden Teacher
+  }
+
+  // Curate high-end WooCommerce specifications based on product data matches
+  const basePriceNum = parseFloat(matched[2].replace('$', ''));
+  
+  // Custom weights pricing multipliers
+  const pricingMap: Record<string, number> = {
+    '3.5g': Math.round(basePriceNum * 0.6),
+    '7g': Math.round(basePriceNum),
+    '14g': Math.round(basePriceNum * 1.8),
+    '28g': Math.round(basePriceNum * 3.2)
+  };
+
+  const mainImg = imageMap[matched[0]] || getFallbackImage(matched[1]);
+  const galleryImages = getGalleryImagesList(matched[0], matched[1], mainImg);
+
+  const productData = {
+    title: matched[0],
+    category: matched[1],
+    price: matched[2],
+    originalPrice: matched[4],
+    imageSrc: mainImg,
+    reviews: matched[6] || '48 reviews',
+    rating: matched[7] || 5,
+    pricingMap,
+    desc: getCustomDescription(matched[0], matched[1]),
+    compounds: getCompoundsForCategory(matched[1]),
+    slug: matched[0].toLowerCase().replace(/\s+/g, '-')
+  };
+
+  const [selectedGalleryImage, setSelectedGalleryImage] = useState<string | null>(null);
+  const activeImage = selectedGalleryImage || mainImg;
+
+  // Reset selected gallery image state when slug changes so new products display their correct default image
+  const [prevSlug, setPrevSlug] = useState(slug);
+  if (slug !== prevSlug) {
+    setPrevSlug(slug);
+    setSelectedGalleryImage(null);
+  }
+
   const handlePrevImage = () => {
     const currentIndex = galleryImages.indexOf(activeImage);
     if (currentIndex !== -1) {
       const prevIndex = (currentIndex - 1 + galleryImages.length) % galleryImages.length;
-      setActiveImage(galleryImages[prevIndex]);
+      setSelectedGalleryImage(galleryImages[prevIndex]);
     }
   };
 
@@ -98,58 +139,11 @@ export default function ProductDetailsPage({ params }: { params: Promise<{ slug:
     const currentIndex = galleryImages.indexOf(activeImage);
     if (currentIndex !== -1) {
       const nextIndex = (currentIndex + 1) % galleryImages.length;
-      setActiveImage(galleryImages[nextIndex]);
+      setSelectedGalleryImage(galleryImages[nextIndex]);
     }
   };
 
-  const wishlisted = productData ? isWishlisted(productData.title) : false;
-
-  // Parse dynamic slug and match product from our central products data
-  useEffect(() => {
-    // Default fallback to "Golden Teacher" if dynamic matching slug isn't found
-    let matched = products.find(p => p[0].toLowerCase().replace(/\s+/g, '-') === slug);
-    if (!matched) {
-      matched = products[0]; // Fallback to Golden Teacher
-    }
-
-    // Curate high-end WooCommerce specifications based on product data matches
-    const basePriceNum = parseFloat(matched[2].replace('$', ''));
-    
-    // Custom weights pricing multipliers
-    const pricingMap: Record<string, number> = {
-      '3.5g': Math.round(basePriceNum * 0.6),
-      '7g': Math.round(basePriceNum),
-      '14g': Math.round(basePriceNum * 1.8),
-      '28g': Math.round(basePriceNum * 3.2)
-    };
-
-    const mainImg = imageMap[matched[0]] || getFallbackImage(matched[1]);
-    const gallery = getGalleryImagesList(matched[0], matched[1], mainImg);
-
-    setProductData({
-      title: matched[0],
-      category: matched[1],
-      price: matched[2],
-      originalPrice: matched[4],
-      imageSrc: mainImg,
-      reviews: matched[6] || '48 reviews',
-      rating: matched[7] || 5,
-      pricingMap,
-      desc: getCustomDescription(matched[0], matched[1]),
-      compounds: getCompoundsForCategory(matched[1]),
-      slug: matched[0].toLowerCase().replace(/\s+/g, '-')
-    });
-    setGalleryImages(gallery);
-    setActiveImage(mainImg);
-  }, [slug]);
-
-  if (!productData) {
-    return (
-      <main className="bg-[#fff8f3] text-[#1b1533] min-h-screen flex items-center justify-center">
-        <Sparkles className="h-10 w-10 text-[#ff4fa3] animate-spin" />
-      </main>
-    );
-  }
+  const wishlisted = isWishlisted(productData.title);
 
   // Multiplier price for dynamic size selection
   const calculatedPrice = productData.pricingMap[selectedWeight] || parseFloat(productData.price.replace('$', ''));
@@ -224,7 +218,7 @@ export default function ProductDetailsPage({ params }: { params: Promise<{ slug:
               {galleryImages.map((img, idx) => (
                 <button
                   key={idx}
-                  onClick={() => setActiveImage(img)}
+                  onClick={() => setSelectedGalleryImage(img)}
                   className={`aspect-square rounded-2xl border bg-white overflow-hidden flex items-center justify-center hover:border-[#ff4fa3] transition-all cursor-pointer ${
                     activeImage === img ? 'border-[#ff4fa3] ring-2 ring-pink-50' : 'border-slate-100'
                   }`}

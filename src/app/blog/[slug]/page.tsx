@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { 
@@ -56,25 +56,12 @@ const blogPostsData = [
 
 export default function BlogDetailsPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = React.use(params);
-  const [post, setPost] = useState<any>(null);
   const [bookmarked, setBookmarked] = useState<boolean>(false);
 
-  useEffect(() => {
-    // Dynamic matching of slug
-    const normalizedSlug = decodeURIComponent(slug).toLowerCase();
-    let matched = blogPostsData.find(p => p.title.toLowerCase().replace(/\s+/g, '-') === normalizedSlug || p.slug === normalizedSlug);
-    if (!matched) {
-      matched = blogPostsData[0]; // Fallback to first post
-    }
-    setPost(matched);
-  }, [slug]);
-
+  const normalizedSlug = decodeURIComponent(slug).toLowerCase();
+  let post = blogPostsData.find(p => p.title.toLowerCase().replace(/\s+/g, '-') === normalizedSlug || p.slug === normalizedSlug);
   if (!post) {
-    return (
-      <main className="bg-[#fff8f3] text-[#1b1533] min-h-screen flex items-center justify-center">
-        <Sparkles className="h-10 w-10 text-[#ff4fa3] animate-spin" />
-      </main>
-    );
+    post = blogPostsData[0]; // Fallback to first post
   }
 
   return (

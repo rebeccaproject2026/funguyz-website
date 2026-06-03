@@ -346,7 +346,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
                 <div className="flex flex-col gap-3 mb-6">
                   <div className="flex items-center justify-between text-xs font-bold text-slate-400 uppercase tracking-wider">
                     <span>Shipping</span>
-                    <span className="text-[#ff4fa3] font-black">FREE SHIPPING</span>
+                    <span className="text-[#ff4fa3] font-black">$20.00 FLAT RATE</span>
                   </div>
                   <div className="flex items-center justify-between">
                     <span className="text-sm font-black uppercase tracking-tight text-[#1b1533] logo-font">Subtotal</span>

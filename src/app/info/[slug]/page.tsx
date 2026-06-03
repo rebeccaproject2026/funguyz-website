@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { Newsletter } from '@/components/Newsletter';
@@ -55,14 +55,14 @@ const infoContentMap: Record<string, PolicyData> = {
         sectionTitle: '2. Shipping Rates & Transit Timelines',
         paragraphs: [
           'We ship to every single province and territory in Canada utilizing Canada Post Express Delivery. National express delivery typically takes 1-3 business days depending on location.',
-          'For metro Toronto and Ottawa areas, same-day express local courier delivery is available for orders placed before 2:00 PM EST. Use our interactive calculator widget below to estimate your shipping rates, delivery timeline, and free-delivery tiers.'
+          'For metro Toronto and Ottawa areas, same-day express local courier delivery is available for orders placed before 2:00 PM EST. Use our interactive calculator widget below to estimate your shipping rates and delivery timeline.'
         ]
       },
       {
         anchor: 'insurance',
         sectionTitle: '3. Full Package Transit Insurance',
         paragraphs: [
-          'Every package shipped by the FunGuyz store carries full transit insurance. If your discreet package is lost, delayed, or damaged by Canada Post, we immediately dispatch a replacement order via free express shipping.',
+          'Every package shipped by the FunGuyz store carries full transit insurance. If your discreet package is lost, delayed, or damaged by Canada Post, we immediately dispatch a replacement order via express shipping.',
           'Once your parcel is sorted at the local Ontario postal terminal, an active tracking link is automatically generated and emailed to your registered profile.'
         ]
       }
@@ -74,15 +74,14 @@ const infoContentMap: Record<string, PolicyData> = {
     lastUpdated: 'June 1, 2026',
     toc: [
       { anchor: 'gateways', label: '1. Secure Payment Gateways' },
-      { anchor: 'etransfer', label: '2. Interac e-Transfer Guide' },
-      { anchor: 'creditcard', label: '3. SSL Encrypted Cards' }
+      { anchor: 'etransfer', label: '2. Interac e-Transfer Guide' }
     ],
     content: [
       {
         anchor: 'gateways',
         sectionTitle: '1. Secure Payment Gateways',
         paragraphs: [
-          'To preserve client identity and support financial security, we offer two secure, fully encrypted payment gateways: Interac e-Transfer and secure Credit Card processing.',
+          'To preserve client identity and support financial security, we offer a secure, fully encrypted payment gateway: Interac e-Transfer.',
           'We advocate for Interac e-Transfer as it offers the absolute highest degree of client anonymity, bypassing standard card logs entirely.'
         ]
       },
@@ -92,14 +91,6 @@ const infoContentMap: Record<string, PolicyData> = {
         paragraphs: [
           'Sending your e-Transfer is highly secure and straightforward. Simply log in to your Canadian online banking portal, add pay@funguyz.ca as your contact, and send the payment.',
           'Please ensure you specify your unique Order ID in the payment message memo. This allows our automated systems to instantly match the transfer and release your order for cleanroom packing.'
-        ]
-      },
-      {
-        anchor: 'creditcard',
-        sectionTitle: '3. SSL 256-bit Credit Card Encryption',
-        paragraphs: [
-          'All credit card checkout transactions are routed through isolated servers using SSL 256-bit encryption keys. We never store or track any credit card numbers or raw billing details.',
-          'Your bank transaction statement will show a generic household description, keeping your personal botanical research completely anonymous.'
         ]
       }
     ]
@@ -134,8 +125,8 @@ const infoContentMap: Record<string, PolicyData> = {
         anchor: 'timelines',
         sectionTitle: '3. Reimbursement Timelines',
         paragraphs: [
-          'Accepted refunds are credited directly back to your account via Interac e-Transfer or credit card statements within 2 to 4 business days.',
-          'If a replacement order is preferred, our dispatch teams will immediately ship a new package with free express shipping.'
+          'Accepted refunds are credited directly back to your account via Interac e-Transfer within 2 to 4 business days.',
+          'If a replacement order is preferred, our dispatch teams will immediately ship a new package with express shipping.'
         ]
       }
     ]
@@ -356,7 +347,6 @@ const RELATED_LINKS = [
 
 export default function DynamicInfoPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = React.use(params);
-  const [content, setContent] = useState<PolicyData | null>(null);
   const [isBookmarked, setIsBookmarked] = useState(false);
   const slugKey = slug.toLowerCase();
 
@@ -371,27 +361,11 @@ export default function DynamicInfoPage({ params }: { params: Promise<{ slug: st
   const [userWeight, setUserWeight] = useState(160); // lbs
   const [userIntent, setUserIntent] = useState<'micro' | 'gentle' | 'trip'>('micro');
 
-  useEffect(() => {
-    const matched = infoContentMap[slugKey];
-    if (matched) {
-      setContent(matched);
-    } else {
-      setContent(infoContentMap['shipping-policy']);
-    }
-  }, [slugKey]);
-
-  if (!content) {
-    return (
-      <main className="bg-[#fff8f3] text-[#1b1533] min-h-screen flex items-center justify-center">
-        <Sparkles className="h-10 w-10 text-[#ff4fa3] animate-spin" />
-      </main>
-    );
-  }
+  const content = infoContentMap[slugKey] || infoContentMap['shipping-policy'];
 
   // --- Shipping Calculation logic ---
-  const freeThreshold = 120;
-  const isFree = shipVal >= freeThreshold;
-  const shipCost = isFree ? 0 : shipRegion === 'National' ? 15 : 10;
+  const isFree = false;
+  const shipCost = 20;
   const speed = shipRegion === 'GTA' ? 'Same-Day (Under 4 Hrs)' : shipRegion === 'Ottawa' ? 'Same-Day (2-4 Hrs)' : '1-3 Business Days';
 
   // --- Dosage Calculation logic ---
@@ -633,9 +607,9 @@ export default function DynamicInfoPage({ params }: { params: Promise<{ slug: st
                         <strong className="block text-xs font-black text-[#ff4fa3] logo-font mt-1.5 leading-none">{speed}</strong>
                       </div>
                       <div>
-                        <span className="block text-[8px] font-black text-slate-400 uppercase tracking-widest leading-none">Express Tier</span>
+                        <span className="block text-[8px] font-black text-slate-400 uppercase tracking-widest leading-none">Shipping Tier</span>
                         <strong className="block text-[10px] font-bold text-slate-500 mt-1.5 leading-none">
-                          {isFree ? '★ Free Shipping over $120' : `$${freeThreshold - shipVal} away from FREE`}
+                          Flat Rate Shipping
                         </strong>
                       </div>
                     </div>
@@ -644,64 +618,24 @@ export default function DynamicInfoPage({ params }: { params: Promise<{ slug: st
 
                 {/* 2. PAYMENT METHODS WIDGET */}
                 {slugKey === 'payment-methods' && sec.anchor === 'etransfer' && (
-                  <div className="border border-pink-100 bg-[#fff8f3]/40 rounded-[32px] p-6 space-y-6 mt-6 animate-scale-up">
+                  <div className="border border-pink-100 bg-[#fff8f3]/40 rounded-[32px] p-6 space-y-4 mt-6 animate-scale-up">
                     <div className="text-center space-y-1">
-                      <span className="text-[8px] font-black uppercase tracking-widest text-[#ff4fa3] logo-font">Interactive Panel</span>
-                      <h4 className="text-xs font-black uppercase text-[#1b1533] logo-font">Payment Method Switcher</h4>
-                      <p className="text-[10px] text-slate-400 font-semibold leading-none">Toggle between secure accepted payment avenues.</p>
-                    </div>
-
-                    {/* Selector tabs */}
-                    <div className="grid grid-cols-3 gap-2">
-                      {[
-                        { id: 'etransfer', label: 'e-Transfer', icon: Coins },
-                        { id: 'creditcard', label: 'Credit Card', icon: CreditCard },
-                        { id: 'cod', label: 'Cash (COD)', icon: Truck }
-                      ].map((tab) => (
-                        <button
-                          key={tab.id}
-                          onClick={() => setActivePayTab(tab.id as any)}
-                          className={`rounded-xl border py-2.5 px-1 flex flex-col items-center justify-center gap-1.5 text-[9px] font-black uppercase tracking-wide logo-font transition-all ${
-                            activePayTab === tab.id
-                              ? 'border-[#ff4fa3] bg-[#ff4fa3]/5 text-[#ff4fa3] shadow-sm'
-                              : 'border-slate-200 bg-white text-slate-600 hover:border-pink-300'
-                          }`}
-                        >
-                          <tab.icon className="h-4 w-4 shrink-0" />
-                          <span>{tab.label}</span>
-                        </button>
-                      ))}
+                      <span className="text-[8px] font-black uppercase tracking-widest text-[#ff4fa3] logo-font">Secure Payment</span>
+                      <h4 className="text-xs font-black uppercase text-[#1b1533] logo-font">Interac e-Transfer Guide</h4>
+                      <p className="text-[10px] text-slate-400 font-semibold leading-none">Accepted payments are processed strictly via e-Transfer.</p>
                     </div>
 
                     {/* Step description */}
                     <div className="bg-white border border-slate-100 rounded-2xl p-5 text-left text-xs font-semibold leading-relaxed text-slate-500">
-                      {activePayTab === 'etransfer' && (
-                        <div className="space-y-2">
-                          <strong className="block text-xs font-black text-[#1b1533] uppercase logo-font">Interac e-Transfer Instructions:</strong>
-                          <ol className="list-decimal pl-4 space-y-1 text-[11px] font-bold text-slate-500">
-                            <li>Check out with Interac e-Transfer.</li>
-                            <li>Send payment through your online banking portal to <code className="bg-pink-50 text-[#ff4fa3] px-1 rounded">pay@funguyz.ca</code>.</li>
-                            <li>Set your security password as your unique <code className="bg-slate-100 px-1 rounded text-slate-800 font-black">Order ID</code>.</li>
-                            <li>Our systems authorize transaction confirmations instantly upon receipt.</li>
-                          </ol>
-                        </div>
-                      )}
-                      {activePayTab === 'creditcard' && (
-                        <div className="space-y-2">
-                          <strong className="block text-xs font-black text-[#1b1533] uppercase logo-font">Encrypted Credit Card Checkout:</strong>
-                          <p className="text-[11px] font-bold text-slate-500">
-                            We route raw transaction billing through SSL 256-bit certificates. There is zero retention of cards, numbers, or CVVs in our database. Generically described on statements for complete anonymization.
-                          </p>
-                        </div>
-                      )}
-                      {activePayTab === 'cod' && (
-                        <div className="space-y-2">
-                          <strong className="block text-xs font-black text-[#1b1533] uppercase logo-font">Cash on Delivery (COD) Rules:</strong>
-                          <p className="text-[11px] font-bold text-slate-500">
-                            GTA and Ottawa metros same-day dispatch support Cash payment. Hand transaction funds directly to the delivery courier upon successful parcel drop-off at your door.
-                          </p>
-                        </div>
-                      )}
+                      <div className="space-y-2">
+                        <strong className="block text-xs font-black text-[#1b1533] uppercase logo-font">Interac e-Transfer Instructions:</strong>
+                        <ol className="list-decimal pl-4 space-y-1.5 text-[11px] font-bold text-slate-500">
+                          <li>Check out with Interac e-Transfer.</li>
+                          <li>Send payment through your online banking portal to <code className="bg-pink-50 text-[#ff4fa3] px-1 rounded">pay@funguyz.ca</code>.</li>
+                          <li>Set your security password as your unique <code className="bg-slate-100 px-1 rounded text-slate-800 font-black">Order ID</code>.</li>
+                          <li>Our systems authorize transaction confirmations instantly upon receipt.</li>
+                        </ol>
+                      </div>
                     </div>
                   </div>
                 )}

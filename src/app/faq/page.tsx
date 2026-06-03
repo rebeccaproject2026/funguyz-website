@@ -81,7 +81,7 @@ const ALL_FAQS: FAQItem[] = [
   {
     category: 'payments',
     q: 'What secure payment methods do you accept?',
-    a: 'To protect customer identity and banking security, we offer two secure, encrypted payment options: Interac e-Transfer and secure Credit Card processing.'
+    a: 'To protect customer identity and banking security, we process orders strictly via secure Interac e-Transfer.'
   },
   {
     category: 'payments',
@@ -90,8 +90,8 @@ const ALL_FAQS: FAQItem[] = [
   },
   {
     category: 'payments',
-    q: 'Are my payment credentials encrypted?',
-    a: 'Yes. All checkout interactions are protected using SSL 256-bit encryption protocols. We do not store or track any credit card numbers, CVVs, or bank details, keeping your transaction fully anonymous.'
+    q: 'Is my e-Transfer payment secure?',
+    a: 'Yes. Interac e-Transfer is handled directly through your Canadian financial institution. We do not store or track any card numbers or raw bank details, keeping your transaction fully anonymous.'
   },
 
   // Returns
@@ -108,7 +108,7 @@ const ALL_FAQS: FAQItem[] = [
   {
     category: 'returns',
     q: 'How long does a refund take to process?',
-    a: 'Once approved, refunds are credited back to your account via Interac e-Transfer or credit card statements within 2 to 4 business days. Replacement packages are shipped immediately via free express shipping.'
+    a: 'Once approved, refunds are credited back to your account via Interac e-Transfer within 2 to 4 business days. Replacement packages are shipped immediately via express shipping.'
   },
 
   // Account
