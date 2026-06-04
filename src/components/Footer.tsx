@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from 'react';
-import { Mail, MapPin, Phone, ShieldCheck, ChevronDown } from 'lucide-react';
+import { Mail, MapPin, LifeBuoy, ShieldCheck, ChevronDown, Headphones } from 'lucide-react';
 import { Logo } from './Logo';
 
 type FooterColumn = [title: string, links: string[]];
@@ -35,7 +35,7 @@ export function Footer() {
             Your trusted Canadian source for premium magic mushrooms, edibles,
             capsules & microdose products. Quality, purity & experience.
           </p>
-          <div className="flex items-center gap-4 mt-2">
+          {/* <div className="flex items-center gap-4 mt-2">
             <a href="#instagram" className="text-white/60 hover:text-white transition-colors duration-200">
               <svg className="h-5 w-5 fill-none stroke-current" strokeWidth="2.2" viewBox="0 0 24 24">
                 <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
@@ -59,7 +59,7 @@ export function Footer() {
                 <path d="M4 20l6.768 -6.768m2.46 -2.46l6.772 -6.772"></path>
               </svg>
             </a>
-          </div>
+          </div> */}
         </div>
 
         {/* Dynamic Columns */}
@@ -129,15 +129,15 @@ export function Footer() {
             </li>
             <li className="flex items-start gap-3">
               <MapPin className="h-4 w-4 text-[#2fdfff] shrink-0 mt-0.5" />
-              <div className="flex flex-col gap-1 text-[11px] leading-relaxed text-white/60">
-                <span>10am-10pm Mon-Thr</span>
-                <span>10am-11pm fri-sat</span>
-                <span>11am - 10pm sun</span>
+              <div className="flex flex-col gap-1 text-[11px] leading-relaxed text-white/60 whitespace-nowrap">
+                <span>24/7 Online Ordering</span>
+                <span>Delivery Available 9AM–11PM</span>
+                <span>7 Days A Week</span>
               </div>
             </li>
             <li className="flex items-center gap-3">
-              <Phone className="h-4 w-4 text-[#2fdfff] shrink-0" />
-              <span>+1 (888) 123-4567</span>
+              <Headphones className="h-4 w-4 text-[#2fdfff] shrink-0" />
+              <a href="/contact" className="hover:text-white transition-colors">Support</a>
             </li>
             <li className="flex items-center gap-3">
               <span className="text-sm select-none">🇨🇦</span>
@@ -150,7 +150,7 @@ export function Footer() {
       {/* Footer Bottom Bar */}
       <div className="border-t border-white/5 pt-8 px-6 relative z-10">
         <div className="mx-auto max-w-7xl flex flex-col md:flex-row items-center justify-between gap-6 w-full text-center md:text-left">
-          
+
           {/* Copyright & Credentials Line (Left) */}
           <div className="flex flex-col sm:flex-row items-center gap-x-3 gap-y-1.5 text-xs font-semibold text-white/40">
             <span>© 2026 FunGuyz. All Rights Reserved.</span>

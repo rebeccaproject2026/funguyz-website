@@ -4,18 +4,18 @@ import React, { useState } from 'react';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { useCart } from '@/context/CartContext';
-import { 
-  Sparkles, 
-  ShoppingBag, 
-  ShieldCheck, 
-  CreditCard, 
-  Lock, 
-  ArrowRight, 
-  CheckCircle2, 
-  Truck, 
-  MapPin, 
-  User, 
-  Mail, 
+import {
+  Sparkles,
+  ShoppingBag,
+  ShieldCheck,
+  CreditCard,
+  Lock,
+  ArrowRight,
+  CheckCircle2,
+  Truck,
+  MapPin,
+  User,
+  Mail,
   Phone,
   Zap,
   Package,
@@ -40,7 +40,7 @@ export default function CheckoutPage() {
     province: 'ON',
     postcode: ''
   });
-  
+
   const [isCompleted, setIsCompleted] = useState(false);
   const [completedOrder, setCompletedOrder] = useState<any>(null);
   const [errors, setErrors] = useState<string[]>([]);
@@ -48,7 +48,7 @@ export default function CheckoutPage() {
   // Scheduling Modal State
   const [isScheduleModalOpen, setIsScheduleModalOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState<Date>(new Date(2026, 5, 25)); // default June 25, 2026
-  const [selectedTimeSlot, setSelectedTimeSlot] = useState<string>('10:00 AM to 2:00 PM');
+  const [selectedTimeSlot, setSelectedTimeSlot] = useState<string>('9:00 AM to 12:00 PM');
   const [scheduleEmail, setScheduleEmail] = useState('');
   const [schedulePhone, setSchedulePhone] = useState('');
   const [scheduleError, setScheduleError] = useState('');
@@ -57,7 +57,7 @@ export default function CheckoutPage() {
   // Calculate pricing metrics
   const parsedSubtotal = subtotal;
   const shippingCost = 20.00;
-  const taxes = parsedSubtotal * 0.13; // 13% HST Ontario
+  const taxes = 0; // No tax per client request
   const grandTotal = parsedSubtotal + shippingCost + taxes;
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -140,7 +140,7 @@ export default function CheckoutPage() {
         timeSlot: selectedTimeSlot
       }
     });
-    
+
     setErrors([]);
     clearCart(); // Empty client e-commerce cart
     setIsCompleted(true);
@@ -171,7 +171,7 @@ export default function CheckoutPage() {
     return (
       <main className="bg-[#fff8f3] text-[#1b1533] min-h-screen selection:bg-[#ff4fa3] selection:text-white antialiased">
         <Header />
-        
+
         {/* Success Confirmation Page */}
         <section className="mx-auto max-w-3xl px-4 py-16 text-center">
           <div className="bg-white border border-slate-100 rounded-[32px] p-8 md:p-12 shadow-sm flex flex-col items-center gap-6">
@@ -225,25 +225,25 @@ export default function CheckoutPage() {
             {/* Interac e-Transfer Action Instructions */}
             <div className="w-full border border-pink-100 bg-[#fffdfd] rounded-[24px] p-6 text-left space-y-4 shadow-sm relative overflow-hidden">
               <div className="absolute right-0 top-0 w-24 h-24 bg-pink-500/5 rounded-bl-[100px] pointer-events-none" />
-              
+
               <h4 className="text-xs font-black uppercase tracking-wider text-[#ff4fa3] flex items-center gap-1.5 logo-font">
                 <Sparkles className="h-4.5 w-4.5 text-[#ff4fa3] animate-pulse" /> Interac e-Transfer Instructions
               </h4>
               <p className="text-[11.5px] font-semibold text-slate-500 leading-relaxed">
-                Please send your <strong>Interac e-Transfer</strong> payment from your bank's portal within 24 hours. Your order dispatch is held secure until transfer receipt is confirmed.
+                Once payment is sent, your order will be processed and prepared for delivery.
               </p>
 
               <div className="grid gap-4 sm:grid-cols-3 bg-white p-4 rounded-2xl border border-pink-50/50 shadow-sm text-xs font-semibold">
-                
+
                 {/* Recipient */}
                 <div className="space-y-1 relative group">
                   <span className="block text-[8px] text-slate-400 uppercase tracking-widest leading-none">Recipient Email</span>
-                  <strong className="block text-slate-700 text-sm font-bold font-poppins">pay@funguyz.ca</strong>
-                  <button 
+                  <strong className="block text-slate-700 text-sm font-bold font-poppins">funguys.rock@gmail.com</strong>
+                  <button
                     type="button"
                     onClick={() => {
-                      navigator.clipboard.writeText('pay@funguyz.ca');
-                      alert('Recipient email pay@funguyz.ca copied to clipboard!');
+                      navigator.clipboard.writeText('funguys.rock@gmail.com');
+                      alert('Recipient email funguys.rock@gmail.com copied to clipboard!');
                     }}
                     className="mt-1 text-[9px] font-black uppercase text-[#ff4fa3] hover:underline cursor-pointer tracking-wider"
                   >
@@ -254,12 +254,12 @@ export default function CheckoutPage() {
                 {/* Password/Memo */}
                 <div className="space-y-1 relative group">
                   <span className="block text-[8px] text-slate-400 uppercase tracking-widest leading-none">Question / Password</span>
-                  <strong className="block text-slate-700 text-sm font-bold font-poppins">{completedOrder.orderId}</strong>
-                  <button 
+                  <strong className="block text-slate-700 text-sm font-bold font-poppins">Canada{completedOrder.orderId.slice(-4)}</strong>
+                  <button
                     type="button"
                     onClick={() => {
-                      navigator.clipboard.writeText(completedOrder.orderId);
-                      alert(`E-transfer Password ${completedOrder.orderId} copied to clipboard!`);
+                      navigator.clipboard.writeText(`Canada${completedOrder.orderId.slice(-4)}`);
+                      alert(`E-transfer Password Canada${completedOrder.orderId.slice(-4)} copied to clipboard!`);
                     }}
                     className="mt-1 text-[9px] font-black uppercase text-[#ff4fa3] hover:underline cursor-pointer tracking-wider"
                   >
@@ -276,8 +276,9 @@ export default function CheckoutPage() {
 
               </div>
 
-              <p className="text-[10px] text-slate-400 font-semibold leading-relaxed">
-                * Note: Please make sure to include your order ID <strong className="text-slate-700 font-bold">{completedOrder.orderId}</strong> in the memo field of your e-Transfer for instant automated matching.
+              <p className="text-[10px] text-[#ff4fa3] font-semibold leading-relaxed flex items-center justify-start gap-1">
+                * Note: Fast • Secure • Discreet Delivery Across Canada
+                <img src="/images/canada-flag.svg" alt="Canada Flag" className="w-4 h-3 rounded-[1px] shrink-0" />
               </p>
             </div>
 
@@ -291,7 +292,7 @@ export default function CheckoutPage() {
 
           </div>
         </section>
-        
+
         <Footer />
       </main>
     );
@@ -305,7 +306,7 @@ export default function CheckoutPage() {
       <section className="bg-gradient-to-tr from-[#fffdfb] via-[#fffbf9] to-[#fff5f0] border-b border-purple-100/50 py-16 px-4 md:px-8 text-center relative overflow-hidden">
         <div className="absolute left-[5%] top-[10%] w-[300px] h-[300px] rounded-full bg-[#ffe8db]/30 blur-[80px] pointer-events-none" />
         <div className="absolute right-[5%] bottom-[5%] w-[300px] h-[300px] rounded-full bg-[#e0f2fe]/40 blur-[80px] pointer-events-none" />
-        
+
         <div className="mx-auto max-w-3xl relative z-10 flex flex-col items-center gap-3">
           <div className="inline-flex items-center gap-1.5 rounded-full bg-[#ff4fa3]/5 px-3.5 py-1.5 text-[9px] font-bold uppercase tracking-widest text-[#ff4fa3]">
             <Lock className="h-3 w-3" /> SSL 256-bit Encrypted checkout
@@ -321,7 +322,7 @@ export default function CheckoutPage() {
 
       {/* Checkout Forms Section */}
       <section className="mx-auto max-w-7xl px-4 py-12 md:px-8">
-        
+
         {errors.length > 0 && (
           <div className="mb-8 rounded-2xl bg-red-500/10 border border-red-500/20 p-5 space-y-1.5 text-red-700 text-xs font-bold uppercase tracking-wider logo-font">
             <span className="block text-sm font-black mb-1">Please fix the following validation errors:</span>
@@ -332,10 +333,10 @@ export default function CheckoutPage() {
         )}
 
         <form onSubmit={handlePlaceOrder} className="grid gap-10 lg:grid-cols-[1.3fr_1fr] items-start">
-          
+
           {/* Left Block: Intake Forms */}
           <div className="bg-white border border-slate-100 rounded-[32px] p-6 md:p-8 shadow-sm space-y-8">
-            
+
             {/* Shipping methods (Moved to top before billing details) */}
             <div className="space-y-4">
               <h2 className="text-xl font-black text-[#1b1533] uppercase logo-font">Shipping Options</h2>
@@ -344,11 +345,10 @@ export default function CheckoutPage() {
                 <button
                   type="button"
                   onClick={() => setShippingMethod('sameday')}
-                  className={`rounded-2xl border p-4 text-left cursor-pointer transition-all flex items-start gap-3 ${
-                    shippingMethod === 'sameday'
-                      ? 'border-[#ff4fa3] bg-pink-50/10 shadow-sm'
-                      : 'border-slate-200 hover:border-pink-300'
-                  }`}
+                  className={`rounded-2xl border p-4 text-left cursor-pointer transition-all flex items-start gap-3 ${shippingMethod === 'sameday'
+                    ? 'border-[#ff4fa3] bg-pink-50/10 shadow-sm'
+                    : 'border-slate-200 hover:border-pink-300'
+                    }`}
                 >
                   <MapPin className="h-5 w-5 text-[#ff4fa3] shrink-0 mt-0.5" />
                   <div>
@@ -362,11 +362,10 @@ export default function CheckoutPage() {
                 <button
                   type="button"
                   onClick={() => setShippingMethod('express')}
-                  className={`rounded-2xl border p-4 text-left cursor-pointer transition-all flex items-start gap-3 ${
-                    shippingMethod === 'express'
-                      ? 'border-[#ff4fa3] bg-pink-50/10 shadow-sm'
-                      : 'border-slate-200 hover:border-pink-300'
-                  }`}
+                  className={`rounded-2xl border p-4 text-left cursor-pointer transition-all flex items-start gap-3 ${shippingMethod === 'express'
+                    ? 'border-[#ff4fa3] bg-pink-50/10 shadow-sm'
+                    : 'border-slate-200 hover:border-pink-300'
+                    }`}
                 >
                   <Zap className="h-5 w-5 text-[#ff4fa3] shrink-0 mt-0.5" />
                   <div>
@@ -387,8 +386,8 @@ export default function CheckoutPage() {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <label className="block text-[10px] font-black uppercase tracking-wider text-slate-400">
                     First Name
-                    <input 
-                      type="text" 
+                    <input
+                      type="text"
                       name="firstName"
                       required
                       value={formData.firstName}
@@ -399,8 +398,8 @@ export default function CheckoutPage() {
                   </label>
                   <label className="block text-[10px] font-black uppercase tracking-wider text-slate-400">
                     Last Name
-                    <input 
-                      type="text" 
+                    <input
+                      type="text"
                       name="lastName"
                       required
                       value={formData.lastName}
@@ -410,12 +409,12 @@ export default function CheckoutPage() {
                     />
                   </label>
                 </div>
-                
+
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <label className="block text-[10px] font-black uppercase tracking-wider text-slate-400">
                     Email Address
-                    <input 
-                      type="email" 
+                    <input
+                      type="email"
                       name="email"
                       required
                       value={formData.email}
@@ -426,8 +425,8 @@ export default function CheckoutPage() {
                   </label>
                   <label className="block text-[10px] font-black uppercase tracking-wider text-slate-400">
                     Phone Number
-                    <input 
-                      type="tel" 
+                    <input
+                      type="tel"
                       name="phone"
                       required
                       value={formData.phone}
@@ -440,8 +439,8 @@ export default function CheckoutPage() {
 
                 <label className="block text-[10px] font-black uppercase tracking-wider text-slate-400">
                   Street Address
-                  <input 
-                    type="text" 
+                  <input
+                    type="text"
                     name="address"
                     required
                     value={formData.address}
@@ -454,8 +453,8 @@ export default function CheckoutPage() {
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                   <label className="block text-[10px] font-black uppercase tracking-wider text-slate-400">
                     City
-                    <input 
-                      type="text" 
+                    <input
+                      type="text"
                       name="city"
                       required
                       value={formData.city}
@@ -481,8 +480,8 @@ export default function CheckoutPage() {
                   </label>
                   <label className="block text-[10px] font-black uppercase tracking-wider text-slate-400">
                     Postal Code
-                    <input 
-                      type="text" 
+                    <input
+                      type="text"
                       name="postcode"
                       required
                       value={formData.postcode}
@@ -543,17 +542,21 @@ export default function CheckoutPage() {
                     Secured
                   </span>
                 </div>
-                
+
                 {/* e-Transfer flow explanations */}
                 <div className="space-y-2 text-[10.5px] font-semibold text-slate-500 leading-normal pl-0.5 font-poppins">
                   <p>
-                    We process orders strictly via <strong>Interac e-Transfer</strong> for maximum Canadian privacy and discreet shopping logs.
+                    Once payment is sent, your order will be processed and prepared for delivery.
                   </p>
                   <ol className="list-decimal pl-4.5 space-y-1.5 text-slate-400">
-                    <li>Send payment to our recipient: <strong className="text-slate-700 font-bold">pay@funguyz.ca</strong></li>
-                    <li>Use your unique <strong className="text-slate-700 font-bold">Order ID</strong> (shown upon placing order) as the transaction memo or question password.</li>
-                    <li>Your order will instantly route to preparation once bank ledger sync is confirmed.</li>
+                    <li>Send Payment To: <strong className="text-slate-700 font-bold">funguys.rock@gmail.com</strong></li>
+                    <li>Security Question: <strong className="text-slate-700 font-bold">Which country are we from?</strong></li>
+                    <li>Security Answer: <strong className="text-slate-700 font-bold">Canada + last 4 digits of your order#</strong> (example: Canada1234)</li>
                   </ol>
+                  <p className="text-[#ff4fa3] flex items-center justify-start gap-1">
+                    Fast • Secure • Discreet Delivery Across Canada
+                    <img src="/images/canada-flag.svg" alt="Canada Flag" className="w-4 h-3 rounded-[1px] shrink-0" />
+                  </p>
                 </div>
               </div>
             </div>
@@ -565,13 +568,10 @@ export default function CheckoutPage() {
                 <strong className="text-slate-800">${parsedSubtotal.toFixed(2)}</strong>
               </div>
               <div className="flex justify-between">
-                <span>Discreet Shipping</span>
+                <span>{shippingMethod === 'sameday' ? 'Delivery Fee' : 'Shipping Fee'}</span>
                 <strong className="text-slate-800">${shippingCost.toFixed(2)}</strong>
               </div>
-              <div className="flex justify-between">
-                <span>Taxes (13% HST)</span>
-                <strong className="text-slate-800">${taxes.toFixed(2)}</strong>
-              </div>
+              {/* Taxes removed as per client request */}
               <div className="border-t border-slate-100 pt-4 flex justify-between text-sm">
                 <span className="text-slate-800 uppercase logo-font">Total Amount</span>
                 <strong className="text-[#ff4fa3] font-black logo-font text-base">${grandTotal.toFixed(2)}</strong>
@@ -594,35 +594,25 @@ export default function CheckoutPage() {
       {/* 11. Delivery Scheduling Modal */}
       {isScheduleModalOpen && (
         <div className="fixed inset-0 z-[99999] flex items-center justify-center p-3 sm:p-4 bg-slate-950/70 backdrop-blur-md transition-opacity duration-300 select-none font-sans">
-          
-          {/* Modal Outer Container */}
-          <div className="relative w-full max-w-[850px] rounded-[32px] bg-[#0c0a1a] text-white border border-pink-500/20 shadow-[0_0_60px_rgba(255,79,163,0.15)] overflow-hidden flex flex-col md:flex-row animate-scale-up max-h-[94vh] md:max-h-none overflow-y-auto md:overflow-visible">
-            
-            {/* Ambient glows inside the modal */}
-            <div className="absolute -top-32 -left-32 w-80 h-80 rounded-full bg-[#ff4fa3]/10 blur-[60px] pointer-events-none" />
-            <div className="absolute -bottom-32 -right-32 w-80 h-80 rounded-full bg-[#7b5cff]/10 blur-[60px] pointer-events-none" />
 
-            {/* Close Button */}
-            <button
-              type="button"
-              onClick={() => setIsScheduleModalOpen(false)}
-              className="absolute top-4 right-4 text-slate-400 hover:text-white transition-colors p-1.5 hover:bg-white/10 border border-slate-700/50 rounded-full cursor-pointer z-50"
-              aria-label="Close scheduling modal"
-            >
-              <X className="h-4.5 w-4.5" />
-            </button>
+          {/* Modal Outer Container */}
+          <div className="relative w-full max-w-[900px] flex flex-col md:flex-row gap-6 animate-scale-up max-h-[94vh] md:max-h-none overflow-y-auto md:overflow-visible p-4 md:p-0">
+            
+            {/* Background Ambient Glows */}
+            <div className="absolute -top-20 -left-20 w-96 h-96 rounded-full bg-[#ff4fa3]/20 blur-[100px] pointer-events-none -z-10" />
+            <div className="absolute -bottom-20 -right-20 w-96 h-96 rounded-full bg-[#7b5cff]/20 blur-[100px] pointer-events-none -z-10" />
 
             {/* LEFT COLUMN: Calendar & Info */}
-            <div className="w-full md:w-[42%] bg-gradient-to-b from-[#13102c] to-[#0c0a1a] p-6 sm:p-8 flex flex-col justify-between border-b md:border-b-0 md:border-r border-pink-500/10 shrink-0">
+            <div className="w-full md:w-[45%] bg-[#0c0a1a] border border-[#ff4fa3]/20 rounded-3xl p-6 sm:p-8 flex flex-col justify-between shrink-0 shadow-[0_0_40px_rgba(255,79,163,0.1)]">
               <div className="space-y-4">
                 <div className="border border-[#ff4fa3]/30 bg-[#ff4fa3]/5 px-3 py-1 rounded-full inline-flex items-center gap-1.5 text-[8.5px] font-black uppercase tracking-widest text-[#ff4fa3] logo-font leading-none">
                   <span>✦</span>
                   <span>Pre-Launch Booking</span>
                   <span>✦</span>
                 </div>
-                
+
                 <div className="space-y-1.5">
-                  <h3 className="text-xl sm:text-2xl font-black uppercase tracking-tight leading-none logo-font">
+                  <h3 className="text-xl sm:text-2xl font-black uppercase tracking-tight leading-none logo-font text-white">
                     Schedule Your <span className="text-[#ff4fa3] block mt-1">Delivery Slot</span>
                   </h3>
                   <p className="text-[11px] font-semibold text-slate-400 leading-normal">
@@ -675,11 +665,11 @@ export default function CheckoutPage() {
                       const dayNum = i + 1;
                       const cellDate = new Date(calendarMonth.getFullYear(), calendarMonth.getMonth(), dayNum);
                       const minSelectableDate = new Date(2026, 5, 25);
-                      
+
                       const isDisabled = cellDate < minSelectableDate;
                       const isSelected = selectedDate.getFullYear() === cellDate.getFullYear() &&
-                                         selectedDate.getMonth() === cellDate.getMonth() &&
-                                         selectedDate.getDate() === cellDate.getDate();
+                        selectedDate.getMonth() === cellDate.getMonth() &&
+                        selectedDate.getDate() === cellDate.getDate();
 
                       return (
                         <button
@@ -687,13 +677,12 @@ export default function CheckoutPage() {
                           type="button"
                           disabled={isDisabled}
                           onClick={() => setSelectedDate(cellDate)}
-                          className={`h-7 w-7 rounded-full flex items-center justify-center transition-all ${
-                            isSelected
-                              ? 'bg-gradient-to-r from-[#ff4fa3] to-[#7b5cff] text-white font-extrabold shadow-sm scale-105'
-                              : isDisabled
-                              ? 'text-slate-600 line-through opacity-40 cursor-not-allowed'
+                          className={`h-7 w-7 rounded-full flex items-center justify-center transition-all ${isSelected
+                            ? 'bg-gradient-to-r from-[#ff4fa3] to-[#7b5cff] text-white font-extrabold shadow-sm scale-105'
+                            : isDisabled
+                              ? 'text-white/30 line-through cursor-not-allowed'
                               : 'text-slate-300 hover:bg-white/10 cursor-pointer'
-                          }`}
+                            }`}
                         >
                           {dayNum}
                         </button>
@@ -712,9 +701,19 @@ export default function CheckoutPage() {
             </div>
 
             {/* RIGHT COLUMN: Time Slots & Contact */}
-            <div className="flex-1 p-6 sm:p-8 flex flex-col justify-between gap-6 relative">
+            <div className="flex-1 bg-[#0c0a1a] border border-[#ff4fa3]/30 rounded-3xl p-6 sm:p-8 flex flex-col justify-between gap-6 relative shadow-[0_0_40px_rgba(255,79,163,0.1)]">
+              {/* Close Button Inside Right Card */}
+              <button
+                type="button"
+                onClick={() => setIsScheduleModalOpen(false)}
+                className="absolute top-4 right-4 md:top-6 md:right-6 text-slate-200 hover:text-white transition-colors p-1.5 hover:bg-white/10 rounded-full cursor-pointer z-50 border border-slate-800"
+                aria-label="Close scheduling modal"
+              >
+                <X className="h-4.5 w-4.5" />
+              </button>
+
               <div className="space-y-5">
-                
+
                 {/* Delivery Hours card */}
                 <div className="bg-slate-900/35 border border-slate-800/80 rounded-2xl p-4 flex items-center gap-3">
                   <div className="h-8 w-8 rounded-full bg-[#7b5cff]/10 border border-[#7b5cff]/20 flex items-center justify-center text-[#7b5cff] shrink-0">
@@ -723,7 +722,7 @@ export default function CheckoutPage() {
                   <div>
                     <span className="block text-[10px] font-black uppercase text-slate-400 tracking-wider">Delivery Dispatch Hours</span>
                     <span className="block text-[9.5px] font-semibold text-slate-300 leading-normal mt-0.5">
-                      Sunday – Thursday: 9:00 AM to 10:00 PM | Friday – Saturday: 9:00 AM to 11:00 PM
+                      Every day: 9:00 AM to 11:00 PM
                     </span>
                   </div>
                 </div>
@@ -732,18 +731,17 @@ export default function CheckoutPage() {
                 <div className="space-y-2.5">
                   <span className="block text-[10px] font-black uppercase text-slate-400 tracking-wider">Select a Delivery Window</span>
                   <div className="grid gap-2 sm:grid-cols-3">
-                    {['10:00 AM to 2:00 PM', '2:00 PM to 6:00 PM', '6:00 PM to 10:00 PM'].map((slot) => {
+                    {['9:00 AM to 12:00 PM', '12:00 PM to 3:00 PM', '3:00 PM to 6:00 PM', '6:00 PM to 9:00 PM', '9:00 PM to 11:00 PM'].map((slot) => {
                       const isSelected = selectedTimeSlot === slot;
                       return (
                         <button
                           key={slot}
                           type="button"
                           onClick={() => setSelectedTimeSlot(slot)}
-                          className={`rounded-xl border p-2.5 text-center transition-all cursor-pointer flex flex-col items-center justify-center gap-1.5 ${
-                            isSelected
-                              ? 'border-[#ff4fa3] bg-[#ff4fa3]/5 text-[#ff4fa3] font-black shadow-sm'
-                              : 'border-slate-800 bg-slate-900/20 text-slate-400 hover:border-slate-700 hover:text-slate-200'
-                          }`}
+                          className={`rounded-xl border p-2.5 text-center transition-all cursor-pointer flex flex-col items-center justify-center gap-1.5 ${isSelected
+                            ? 'border-[#ff4fa3] bg-[#ff4fa3]/5 text-[#ff4fa3] font-black shadow-sm'
+                            : 'border-slate-800 bg-slate-900/20 text-slate-400 hover:border-slate-700 hover:text-slate-200'
+                            }`}
                         >
                           <span className="text-[10px] font-bold tracking-wide">{slot}</span>
                         </button>

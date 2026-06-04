@@ -2,8 +2,10 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { X, Check, Copy, Mail, Shield, MapPin, Gift, Phone } from 'lucide-react';
+import { usePathname } from 'next/navigation';
 
 export function LaunchPopup() {
+  const pathname = usePathname();
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isDismissed, setIsDismissed] = useState<boolean>(false);
   const [emailVal, setEmailVal] = useState<string>('');
@@ -14,10 +16,12 @@ export function LaunchPopup() {
 
   const timerRef = useRef<NodeJS.Timeout | null>(null);
 
+  if (pathname === '/checkout/') return null;
+
   useEffect(() => {
     const dismissedAtStr = localStorage.getItem('funguyz_launch_popup_dismissed_at');
     const subbed = localStorage.getItem('funguyz_launch_popup_submitted') === 'true';
-    
+
     if (subbed) {
       setSubmitted(true);
       setIsOpen(false);
@@ -116,7 +120,8 @@ export function LaunchPopup() {
   if (!isOpen && isDismissed && !submitted) {
     return (
       <div className="fixed bottom-16 md:bottom-0 left-0 right-0 z-[998] bg-[#0c0a1a]/95 backdrop-blur-md border-t border-pink-500/20 px-4 py-3 sm:px-6 sm:py-3.5 flex flex-col md:flex-row items-center justify-between gap-3 text-white shadow-[0_-8px_30px_rgba(0,0,0,0.6)] animate-slide-in-up select-none font-sans">
-        <style dangerouslySetInnerHTML={{__html: `
+        <style dangerouslySetInnerHTML={{
+          __html: `
           main {
             padding-bottom: 60px !important;
           }
@@ -130,7 +135,7 @@ export function LaunchPopup() {
         <div className="flex items-center gap-2.5 text-center md:text-left relative z-10">
           <span className="flex h-2 w-2 shrink-0 rounded-full bg-pink-500 animate-pulse" />
           <p className="text-[11px] sm:text-xs font-semibold tracking-wide text-slate-300 leading-normal">
-            🍁 <span className="text-white font-extrabold uppercase logo-font tracking-wider mr-1 text-[#ff4fa3]">Grand Opening Coming Soon:</span> 
+            🍁 <span className="text-white font-extrabold uppercase logo-font tracking-wider mr-1 text-[#ff4fa3]">Grand Opening Coming Soon:</span>
             We are launching our new site for secure Canada-Wide delivery & shipping! Pre-order now to secure <b className="text-[#ff4fa3] font-black">20% OFF</b>.
           </p>
         </div>
@@ -153,7 +158,7 @@ export function LaunchPopup() {
     <div className="fixed inset-0 z-[99999] flex items-center justify-center p-3 sm:p-4 bg-slate-950/70 backdrop-blur-md transition-opacity duration-300 select-none font-sans">
       {/* Outer Modal Container: Responsive height limits, scroll overflow bounds, and scaled padding */}
       <div className="relative w-full max-w-[450px] max-h-[94vh] overflow-y-auto scrollbar-none rounded-[28px] sm:rounded-[32px] bg-[#0c0a1a]/95 text-white border border-pink-500/20 shadow-[0_0_60px_rgba(255,79,163,0.15),0_0_100px_rgba(123,92,255,0.1)] p-5 sm:p-9 flex flex-col items-center text-center gap-4 sm:gap-5.5 animate-scale-up">
-        
+
         {/* Soft Radial Ambient Lighting */}
         <div className="absolute -top-32 left-1/2 -translate-x-1/2 w-80 h-80 rounded-full bg-[#ff4fa3]/15 blur-[60px] pointer-events-none" />
         <div className="absolute -bottom-32 left-1/2 -translate-x-1/2 w-80 h-80 rounded-full bg-[#7b5cff]/10 blur-[60px] pointer-events-none" />
@@ -213,7 +218,7 @@ export function LaunchPopup() {
                 <svg className="h-3.5 w-5 sm:h-4 sm:w-6 text-pink-500 fill-none stroke-current" strokeWidth="2.5" strokeLinecap="round" viewBox="0 0 24 24">
                   <path d="M18 12c-4-2-8-2-12 0M16 16c-3-1.5-6-1.5-9 0" />
                 </svg>
-                
+
                 <h3 className="text-3.5xl sm:text-4.5xl font-extrabold tracking-wider text-white logo-font leading-none uppercase">
                   LAUNCH!
                 </h3>
@@ -286,7 +291,7 @@ export function LaunchPopup() {
 
             {/* Trust Indicators block: Responsive flex alignment inside columns */}
             <div className="grid grid-cols-3 divide-x divide-slate-800/60 w-full text-center items-center shrink-0">
-              
+
               {/* Secure Shipping */}
               <div className="flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-1.5 px-0.5">
                 <Shield className="h-4 w-4 sm:h-4.5 sm:w-4.5 text-[#ff4fa3] stroke-[1.8] shrink-0" />

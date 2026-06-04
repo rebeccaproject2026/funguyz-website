@@ -138,25 +138,36 @@ export default function ContactPage() {
               <h2 className="text-xl font-black text-[#1b1533] uppercase logo-font">Get In Touch</h2>
               
               <div className="space-y-5">
-                {/* Email */}
+                {/* Tracking Orders */}
                 <div className="flex items-start gap-4">
                   <div className="h-10 w-10 rounded-xl bg-pink-50 flex items-center justify-center text-[#ff4fa3] shrink-0">
                     <Mail className="h-5 w-5" />
                   </div>
                   <div>
-                    <span className="block text-[9px] font-black text-slate-400 uppercase tracking-widest">Email Support</span>
+                    <span className="block text-[9px] font-black text-slate-400 uppercase tracking-widest">Tracking Orders</span>
                     <a href="mailto:hello@funguyz.ca" className="text-sm font-black text-[#1b1533] hover:text-[#ff4fa3] logo-font mt-0.5 block">hello@funguyz.ca</a>
                   </div>
                 </div>
 
-                {/* Telephone */}
+                {/* General Inquiry */}
                 <div className="flex items-start gap-4">
                   <div className="h-10 w-10 rounded-xl bg-purple-50 flex items-center justify-center text-purple-500 shrink-0">
-                    <Phone className="h-5 w-5" />
+                    <Mail className="h-5 w-5" />
                   </div>
                   <div>
-                    <span className="block text-[9px] font-black text-slate-400 uppercase tracking-widest">Toll Free Help desk</span>
-                    <strong className="text-sm font-black text-[#1b1533] logo-font mt-0.5 block">+1 (888) 123-4567</strong>
+                    <span className="block text-[9px] font-black text-slate-400 uppercase tracking-widest">General Inquiry</span>
+                    <a href="mailto:info@funguyz.ca" className="text-sm font-black text-[#1b1533] hover:text-purple-500 logo-font mt-0.5 block">info@funguyz.ca</a>
+                  </div>
+                </div>
+
+                {/* Order Department */}
+                <div className="flex items-start gap-4">
+                  <div className="h-10 w-10 rounded-xl bg-indigo-50 flex items-center justify-center text-indigo-500 shrink-0">
+                    <Mail className="h-5 w-5" />
+                  </div>
+                  <div>
+                    <span className="block text-[9px] font-black text-slate-400 uppercase tracking-widest">Order Department</span>
+                    <a href="mailto:sales@funguyz.ca" className="text-sm font-black text-[#1b1533] hover:text-indigo-500 logo-font mt-0.5 block">sales@funguyz.ca</a>
                   </div>
                 </div>
 
