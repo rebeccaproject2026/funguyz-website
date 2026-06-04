@@ -63,8 +63,6 @@ function getGalleryImagesList(title: string, category: string, mainImg: string):
   return [
     mainImg,
     '/images/cat_mushrooms.webp',
-    '/images/hero_composition.webp',
-    '/images/blog_1.webp',
   ];
 }
 

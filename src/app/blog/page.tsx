@@ -37,7 +37,7 @@ const ALL_BLOG_POSTS: BlogPost[] = [
     date: 'May 28, 2026',
     time: '5 min read',
     image: '/images/blog_1.webp',
-    slug: 'the-art-of-microdosing:-a-beginner’s-guide',
+    slug: 'the-art-of-microdosing-a-beginners-guide',
     featured: true
   },
   {
@@ -47,7 +47,7 @@ const ALL_BLOG_POSTS: BlogPost[] = [
     date: 'May 20, 2026',
     time: '8 min read',
     image: '/images/blog_2.webp',
-    slug: 'psilocybin-and-neuroplasticity:-the-science'
+    slug: 'psilocybin-and-neuroplasticity-the-science'
   },
   {
     title: 'Setting Your Intentions: Psychedelic Journeys',
@@ -56,7 +56,7 @@ const ALL_BLOG_POSTS: BlogPost[] = [
     date: 'May 15, 2026',
     time: '6 min read',
     image: '/images/blog_3.webp',
-    slug: 'setting-your-intentions:-psychedelic-journeys'
+    slug: 'setting-your-intentions-psychedelic-journeys'
   },
   {
     title: 'Integrating Your Psychedelic Experience',
