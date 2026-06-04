@@ -21,27 +21,27 @@ const blogPostsData = [
     desc: 'Everything you need to know about starting a sub-perceptual psilocybin microdose ritual safely.',
     category: 'Guides',
     date: 'Apr 28, 2026',
-    time: '5 min read',
+    time: '4 min read',
     image: '/images/blog_1.webp',
-    slug: 'the-art-of-microdosing:-a-beginner’s-guide'
+    slug: 'the-art-of-microdosing-a-beginners-guide'
   },
   {
     title: 'Psilocybin and Neuroplasticity: The Science',
-    desc: 'How magic mushrooms stimulate new neural pathways and connections in the brain.',
+    desc: 'How magic mushrooms promote brain connectivity and long-term structural changes.',
     category: 'Science',
-    date: 'Apr 20, 2026',
-    time: '8 min read',
+    date: 'May 12, 2026',
+    time: '6 min read',
     image: '/images/blog_2.webp',
-    slug: 'psilocybin-and-neuroplasticity:-the-science'
+    slug: 'psilocybin-and-neuroplasticity-the-science'
   },
   {
     title: 'Setting Your Intentions: Psychedelic Journeys',
-    desc: 'Why set and setting are crucial for a positive and transformational experience.',
-    category: 'Mindset',
-    date: 'Apr 15, 2026',
-    time: '6 min read',
+    desc: 'Why the mindset and environment are the most critical factors for a positive trip.',
+    category: 'Guides',
+    date: 'Apr 28, 2026',
+    time: '5 min read',
     image: '/images/blog_3.webp',
-    slug: 'setting-your-intentions:-psychedelic-journeys'
+    slug: 'setting-your-intentions-psychedelic-journeys'
   },
   {
     title: 'Integrating Your Psychedelic Experience',
