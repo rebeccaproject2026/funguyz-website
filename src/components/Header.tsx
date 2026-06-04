@@ -50,6 +50,7 @@ import {
   Candy,
   Citrus,
   Grid,
+  Ticket,
   Leaf,
   Flower,
   CupSoda,
@@ -62,7 +63,7 @@ import {
 import { Logo } from './Logo';
 import { useCart } from '@/context/CartContext';
 import { usePathname } from 'next/navigation';
-import { getSubcategories } from '@/data/products';
+import { getSubcategories, menuGroups, getProductSlug, getProductUrl, getCategorySlug } from '@/data/products';
 
 function MushroomWithStarsIcon(props: React.ComponentProps<'svg'>) {
   return (
@@ -146,8 +147,9 @@ function getDropdownGridCols(label: string): string {
     case 'Magic Mushrooms':
       return 'grid grid-cols-3 gap-x-4 gap-y-0.5 w-[640px]';
     case 'Edibles':
-      return 'grid grid-cols-2 gap-x-4 gap-y-0.5 w-[460px]';
+      return 'grid grid-cols-3 gap-x-6 gap-y-1.5 w-[720px]';
     case 'Capsules':
+      return 'grid grid-cols-2 gap-x-6 gap-y-1.5 w-[520px]';
     case 'Microdose':
       return 'grid grid-cols-2 gap-x-4 gap-y-0.5 w-[440px]';
     default:
@@ -171,7 +173,7 @@ function getSubcategoryIcon(sub: string, parentLabel: string) {
     if (s.includes('cambodian')) return Crown;
     
     // Potency strains (making each separate one unique!)
-    if (s === 'penis envy') return Flame;
+    if (s === 'penis envy' || s.includes('penis envy')) return Flame;
     if (s.includes('golden penis envy')) return Sparkles;
     if (s.includes('blue meanies')) return Zap;
     if (s.includes('squat mak')) return Hammer;
@@ -179,9 +181,12 @@ function getSubcategoryIcon(sub: string, parentLabel: string) {
     if (s.includes('jedi mind fuck')) return Brain;
     if (s.includes('melmac')) return Infinity;
     if (s.includes('tidal wave')) return Waves;
+    if (s.includes('enigma')) return Skull;
+    if (s.includes('hillbilly')) return Compass;
+    if (s.includes('buffalo')) return Globe;
     
     // Albino Strains (making each separate one unique!)
-    if (s.includes('albino penis envy')) return Dna;
+    if (s.includes('albino penis envy') || s.includes('ape')) return Dna;
     if (s.includes('albino extra terrestrial')) return Rocket;
     if (s.includes('albino jedi mind fuck')) return Eye;
     if (s.includes('albino snow white')) return Snowflake;
@@ -206,6 +211,8 @@ function getSubcategoryIcon(sub: string, parentLabel: string) {
     if (s.includes('peach')) return Smile;
     if (s.includes('tropical')) return Palmtree;
     if (s.includes('mixed berry')) return Sparkles;
+    if (s.includes('mango')) return Citrus;
+    if (s.includes('apple')) return Sprout;
     
     if (s.includes('milk chocolate')) return Grid;
     if (s.includes('dark chocolate')) return Moon;
@@ -213,6 +220,8 @@ function getSubcategoryIcon(sub: string, parentLabel: string) {
     if (s.includes('mint chocolate')) return Leaf;
     if (s.includes('salted caramel')) return Gem;
     if (s.includes('white chocolate')) return Sun;
+    if (s.includes('chocolate')) return Grid;
+    if (s.includes('s\'mores')) return Cookie;
     
     if (s.includes('chai')) return Coffee;
     if (s.includes('lemon ginger')) return CupSoda;
@@ -240,6 +249,9 @@ function getSubcategoryIcon(sub: string, parentLabel: string) {
     if (s.includes('reishi')) return Sprout;
     if (s.includes('cordyceps')) return Activity;
     if (s.includes('chaga')) return Shield;
+    if (s.includes('turkey')) return Layers;
+    
+    if (s.includes('tincture') || s.includes('extract')) return CupSoda;
     
     return Pill;
   }
@@ -249,9 +261,9 @@ function getSubcategoryIcon(sub: string, parentLabel: string) {
     if (s.includes('teacher')) return Award;
     if (s.includes('penis envy')) return Flame;
     if (s.includes('blue meanies')) return Zap;
-    if (s.includes('daily wellness')) return Activity;
-    if (s.includes('focus')) return Brain;
-    if (s.includes('creative')) return Sparkles;
+    if (s.includes('daily wellness') || s.includes('wellness')) return Activity;
+    if (s.includes('focus') || s.includes('productivity')) return Brain;
+    if (s.includes('creative') || s.includes('creativity')) return Sparkles;
     if (s.includes('mood')) return Smile;
     if (s.includes('energy')) return Sun;
     if (s.includes('relax')) return Moon;
@@ -308,7 +320,7 @@ export function Header() {
   return (
     <>
       {/* 1. Announcement Bar */}
-      <div className="bg-[#110d24] py-2 text-[11px] font-bold text-white shadow-sm relative z-50 overflow-hidden select-none border-b border-white/5">
+      <div className="bg-[#110d24] py-2 text-[12px] font-bold text-white shadow-sm relative z-50 overflow-hidden select-none border-b border-white/5">
         <div className="flex whitespace-nowrap overflow-hidden marquee-container">
           {/* Track 1 */}
           <div className="inline-flex items-center gap-6 animate-custom-marquee pr-6 shrink-0">
@@ -358,7 +370,7 @@ export function Header() {
               >
                 <Heart className="h-5.5 w-5.5 stroke-[1.8]" />
                 {totalWishlistQuantity > 0 && (
-                  <span className="absolute right-0.5 top-0.5 grid h-4.5 w-4.5 place-items-center rounded-full bg-[#ff4fa3] text-[8px] font-black text-white shadow-md">
+                  <span className="absolute right-0.5 top-0.5 grid h-4.5 w-4.5 place-items-center rounded-full bg-[#ff4fa3] text-[10px] font-black text-white shadow-md">
                     {totalWishlistQuantity}
                   </span>
                 )}
@@ -370,7 +382,7 @@ export function Header() {
               >
                 <ShoppingCart className="h-5.5 w-5.5 stroke-[1.8]" />
                 {totalQuantity > 0 && (
-                  <span className="absolute right-0.5 top-0.5 grid h-4.5 w-4.5 place-items-center rounded-full bg-[#ff4fa3] text-[8px] font-black text-white shadow-md">
+                  <span className="absolute right-0.5 top-0.5 grid h-4.5 w-4.5 place-items-center rounded-full bg-[#ff4fa3] text-[10px] font-black text-white shadow-md">
                     {totalQuantity}
                   </span>
                 )}
@@ -405,21 +417,46 @@ export function Header() {
                       </a>
                       {item.hasDropdown ? (
                         <div className={`absolute top-full -left-6 mt-1 bg-[#fff8f3] border border-pink-100/80 rounded-2xl p-4 shadow-[0_24px_80px_rgba(255,79,163,0.12)] opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-[100] scale-95 group-hover:scale-100 pointer-events-none group-hover:pointer-events-auto ${getDropdownGridCols(item.label)} before:content-[''] before:absolute before:-top-2 before:left-0 before:right-0 before:h-2`}>
-                          {getSubcategories(item.label).map((sub, sIdx) => {
-                            const SubIcon = getSubcategoryIcon(sub, item.label);
-                            const subcategorySlug = sub.toLowerCase().replace(/\s+/g, '-');
-                            return (
-                              <a
-                                key={sIdx}
-                                href={`/shop?category=${categorySlug}&subcategory=${subcategorySlug}`}
-                                className="group/item px-2 py-1.5 rounded-lg text-[12px] font-bold text-[#1b1533]/80 hover:text-[#ff4fa3] hover:bg-pink-50/40 transition-all duration-150 text-left whitespace-nowrap overflow-hidden text-ellipsis flex items-center gap-1.5"
-                                title={sub}
-                              >
-                                <SubIcon className="h-4 w-4 stroke-[2] text-slate-400 group-hover/item:text-[#ff4fa3] group-hover/item:scale-110 transition-all duration-200 shrink-0" />
-                                <span className="truncate">{sub}</span>
-                              </a>
-                            );
-                          })}
+                          {(item.label === 'Edibles' || item.label === 'Capsules') ? (
+                            menuGroups[item.label]?.map((group, gIdx) => (
+                              <div key={gIdx} className="flex flex-col gap-2">
+                                <h3 className="px-2 py-1 text-[11px] font-black uppercase tracking-wider text-[#ff4fa3]/80 border-b border-pink-100/30">
+                                  {group.groupName}
+                                </h3>
+                                <div className="flex flex-col gap-0.5">
+                                  {group.items.map((sub, sIdx) => {
+                                    const SubIcon = getSubcategoryIcon(sub, item.label);
+                                    return (
+                                      <a
+                                        key={sIdx}
+                                        href={getProductUrl(sub, item.label)}
+                                        className="group/item px-2 py-1.5 rounded-lg text-[12px] font-bold text-[#1b1533]/80 hover:text-[#ff4fa3] hover:bg-pink-50/40 transition-all duration-150 text-left whitespace-nowrap overflow-hidden text-ellipsis flex items-center gap-1.5"
+                                        title={sub}
+                                      >
+                                        <SubIcon className="h-4 w-4 stroke-[2] text-slate-400 group-hover/item:text-[#ff4fa3] group-hover/item:scale-110 transition-all duration-200 shrink-0" />
+                                        <span className="truncate">{sub}</span>
+                                      </a>
+                                    );
+                                  })}
+                                </div>
+                              </div>
+                            ))
+                          ) : (
+                            getSubcategories(item.label).map((sub, sIdx) => {
+                              const SubIcon = getSubcategoryIcon(sub, item.label);
+                              return (
+                                <a
+                                  key={sIdx}
+                                  href={getProductUrl(sub, item.label)}
+                                  className="group/item px-2 py-1.5 rounded-lg text-[12px] font-bold text-[#1b1533]/80 hover:text-[#ff4fa3] hover:bg-pink-50/40 transition-all duration-150 text-left whitespace-nowrap overflow-hidden text-ellipsis flex items-center gap-1.5"
+                                  title={sub}
+                                >
+                                  <SubIcon className="h-4 w-4 stroke-[2] text-slate-400 group-hover/item:text-[#ff4fa3] group-hover/item:scale-110 transition-all duration-200 shrink-0" />
+                                  <span className="truncate">{sub}</span>
+                                </a>
+                              );
+                            })
+                          )}
                         </div>
                       ) : null}
                     </div>
@@ -433,6 +470,16 @@ export function Header() {
                   >
                     <Gift className="h-4 w-4 stroke-[2.2] text-[#ff4fa3] group-hover:scale-110 transition-transform duration-200" />
                     <span>Bundles</span>
+                  </a>
+                </div>
+                {/* Separate Coupons Menu Link */}
+                <div className="relative group py-3">
+                  <a
+                    href="/coupons"
+                    className="flex items-center gap-1.5 cursor-pointer transition-colors duration-200 text-[#1b1533]/85 hover:text-[#ff4fa3]"
+                  >
+                    <Ticket className="h-4 w-4 stroke-[2.2] text-[#ff4fa3] group-hover:scale-110 transition-transform duration-200" />
+                    <span>Coupons</span>
                   </a>
                 </div>
               </nav>
@@ -506,7 +553,7 @@ export function Header() {
 
               {/* Navigation Categories Accordion */}
               <div className="flex flex-col gap-1">
-                <span className="text-[9px] font-black uppercase tracking-widest text-slate-400 mb-2 pl-2">Categories</span>
+                <span className="text-[12px] font-black uppercase tracking-widest text-slate-400 mb-2 pl-2">Categories</span>
                 {navItems.map((item) => {
                   const categorySlug = item.label.toLowerCase().replace(/\s+/g, '-');
                   const isExpanded = !!expandedMobileCategories[item.label];
@@ -525,22 +572,47 @@ export function Header() {
                         <ChevronDown className={`h-4 w-4 text-slate-400 transition-transform duration-200 ${isExpanded ? 'rotate-180 text-[#ff4fa3]' : ''}`} />
                       </button>
                       {isExpanded && (
-                        <div className="pl-6 pr-2 flex flex-col gap-0.5 mt-1 border-l-2 border-pink-100/40 ml-5">
-                          {subcategories.map((sub, sIdx) => {
-                            const SubIcon = getSubcategoryIcon(sub, item.label);
-                            const subcategorySlug = sub.toLowerCase().replace(/\s+/g, '-');
-                            return (
-                              <a
-                                key={sIdx}
-                                href={`/shop?category=${categorySlug}&subcategory=${subcategorySlug}`}
-                                onClick={() => setIsMobileMenuOpen(false)}
-                                className="flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-semibold text-[#1b1533]/80 hover:text-[#ff4fa3] hover:bg-pink-50/20 transition-all"
-                              >
-                                <SubIcon className="h-3.5 w-3.5 stroke-[2] text-slate-400" />
-                                <span>{sub}</span>
-                              </a>
-                            );
-                          })}
+                        <div className="pl-4 pr-2 flex flex-col gap-2 mt-1 border-l-2 border-pink-100/40 ml-5 text-left">
+                          {(item.label === 'Edibles' || item.label === 'Capsules') ? (
+                            menuGroups[item.label]?.map((group, gIdx) => (
+                              <div key={gIdx} className="flex flex-col gap-0.5 mt-2 first:mt-0">
+                                <span className="px-3 text-[10px] font-black uppercase tracking-wider text-[#ff4fa3] block">
+                                  {group.groupName}
+                                </span>
+                                {group.items.map((sub, sIdx) => {
+                                  const SubIcon = getSubcategoryIcon(sub, item.label);
+                                  const subcategorySlug = getProductUrl(sub, item.label);
+                                  return (
+                                    <a
+                                      key={sIdx}
+                                      href={subcategorySlug}
+                                      onClick={() => setIsMobileMenuOpen(false)}
+                                      className="flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-semibold text-[#1b1533]/80 hover:text-[#ff4fa3] hover:bg-pink-50/20 transition-all"
+                                    >
+                                      <SubIcon className="h-3.5 w-3.5 stroke-[2] text-slate-400" />
+                                      <span>{sub}</span>
+                                    </a>
+                                  );
+                                })}
+                              </div>
+                            ))
+                          ) : (
+                            subcategories.map((sub, sIdx) => {
+                              const SubIcon = getSubcategoryIcon(sub, item.label);
+                              const subcategorySlug = getProductUrl(sub, item.label);
+                              return (
+                                <a
+                                  key={sIdx}
+                                  href={subcategorySlug}
+                                  onClick={() => setIsMobileMenuOpen(false)}
+                                  className="flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-semibold text-[#1b1533]/80 hover:text-[#ff4fa3] hover:bg-pink-50/20 transition-all"
+                                >
+                                  <SubIcon className="h-3.5 w-3.5 stroke-[2] text-slate-400" />
+                                  <span>{sub}</span>
+                                </a>
+                              );
+                            })
+                          )}
                         </div>
                       )}
                     </div>
@@ -559,7 +631,7 @@ export function Header() {
 
               {/* General Links */}
               <div className="flex flex-col gap-1 border-t border-pink-100/30 pt-4">
-                <span className="text-[9px] font-black uppercase tracking-widest text-slate-400 mb-2 pl-2">Quick Links</span>
+                <span className="text-[12px] font-black uppercase tracking-widest text-slate-400 mb-2 pl-2">Quick Links</span>
                 <a href="/faq" onClick={() => setIsMobileMenuOpen(false)} className="px-3 py-2 rounded-xl text-xs font-bold text-[#1b1533]/85 hover:text-[#ff4fa3] hover:bg-pink-50/40 transition-all">FAQ</a>
                 <a href="/blog" onClick={() => setIsMobileMenuOpen(false)} className="px-3 py-2 rounded-xl text-xs font-bold text-[#1b1533]/85 hover:text-[#ff4fa3] hover:bg-pink-50/40 transition-all">Blog</a>
                 <a href="/contact" onClick={() => setIsMobileMenuOpen(false)} className="px-3 py-2 rounded-xl text-xs font-bold text-[#1b1533]/85 hover:text-[#ff4fa3] hover:bg-pink-50/40 transition-all">Contact Us</a>
@@ -569,9 +641,9 @@ export function Header() {
 
             {/* Drawer Footer */}
             <div className="p-5 border-t border-pink-100/40 bg-white flex flex-col gap-2">
-              <span className="text-[8px] font-black uppercase tracking-widest text-slate-400">Customer Support</span>
+              <span className="text-[12px] font-black uppercase tracking-widest text-slate-400">Customer Support</span>
               <a href="mailto:hello@funguyz.ca" className="text-xs font-bold text-slate-700 hover:text-[#ff4fa3]">hello@funguyz.ca</a>
-              <span className="text-[10px] font-semibold text-slate-400 mt-1">🇨🇦 Sourced in Canada</span>
+              <span className="text-[12px] font-semibold text-slate-400 mt-1">🇨🇦 Sourced in Canada</span>
             </div>
           </div>
         </div>
@@ -580,33 +652,33 @@ export function Header() {
       {/* Mobile Sticky Bottom Navigation Bar */}
       <div className="fixed bottom-0 left-0 right-0 z-[999] md:hidden bg-white/90 backdrop-blur-md border-t border-slate-150/80 shadow-[0_-4px_24px_rgba(27,21,51,0.06)] h-16 flex items-center justify-around px-2 py-1 select-none">
         <a 
-          href="/" 
-          className={`flex flex-col items-center justify-center active:scale-95 transition-all w-12 h-12 ${pathname === '/' ? 'text-[#ff4fa3]' : 'text-slate-500 hover:text-[#ff4fa3]'}`}
+          href="/shop" 
+          className={`flex flex-col items-center justify-center active:scale-95 transition-all w-12 h-12 ${(pathname === '/shop' || pathname.startsWith('/shop/') || pathname.startsWith('/category/') || pathname.startsWith('/product/')) ? 'text-[#ff4fa3]' : 'text-slate-500 hover:text-[#ff4fa3]'}`}
         >
-          <Home className="h-5 w-5 stroke-[1.8]" />
-          <span className="text-[9px] font-bold mt-1 uppercase tracking-wider whitespace-nowrap">Home</span>
+          <ShoppingBag className="h-5 w-5 stroke-[1.8]" />
+          <span className="text-[12px] font-bold mt-1 uppercase tracking-wider whitespace-nowrap">Shop</span>
+        </a>
+        <a 
+          href="/bundles" 
+          className={`flex flex-col items-center justify-center active:scale-95 transition-all w-12 h-12 ${(pathname === '/bundles' || pathname.startsWith('/bundles/')) ? 'text-[#ff4fa3]' : 'text-slate-500 hover:text-[#ff4fa3]'}`}
+        >
+          <Gift className="h-5 w-5 stroke-[1.8]" />
+          <span className="text-[12px] font-bold mt-1 uppercase tracking-wider whitespace-nowrap">Bundles</span>
+        </a>
+        <a 
+          href="/coupons" 
+          className={`flex flex-col items-center justify-center active:scale-95 transition-all w-12 h-12 ${(pathname === '/coupons' || pathname.startsWith('/coupons/')) ? 'text-[#ff4fa3]' : 'text-slate-500 hover:text-[#ff4fa3]'}`}
+        >
+          <Ticket className="h-5 w-5 stroke-[1.8]" />
+          <span className="text-[12px] font-bold mt-1 uppercase tracking-wider whitespace-nowrap">Coupons</span>
         </a>
         <button 
           onClick={() => setIsMobileCategoryOpen(true)}
           className={`flex flex-col items-center justify-center active:scale-95 transition-all w-12 h-12 cursor-pointer focus:outline-none ${isMobileCategoryOpen ? 'text-[#ff4fa3]' : 'text-slate-500 hover:text-[#ff4fa3]'}`}
         >
           <Grid className={`h-5 w-5 stroke-[1.8] ${isMobileCategoryOpen ? 'animate-pulse' : ''}`} />
-          <span className={`text-[9px] font-bold mt-1 uppercase tracking-wider whitespace-nowrap ${isMobileCategoryOpen ? 'animate-pulse' : ''}`}>Category</span>
+          <span className={`text-[12px] font-bold mt-1 uppercase tracking-wider whitespace-nowrap ${isMobileCategoryOpen ? 'animate-pulse' : ''}`}>Category</span>
         </button>
-        <a 
-          href="/bundles" 
-          className={`flex flex-col items-center justify-center active:scale-95 transition-all w-12 h-12 ${(pathname === '/bundles' || pathname.startsWith('/bundles/')) ? 'text-[#ff4fa3]' : 'text-slate-500 hover:text-[#ff4fa3]'}`}
-        >
-          <Gift className="h-5 w-5 stroke-[1.8]" />
-          <span className="text-[9px] font-bold mt-1 uppercase tracking-wider whitespace-nowrap">Bundles</span>
-        </a>
-        <a 
-          href="/shop" 
-          className={`flex flex-col items-center justify-center active:scale-95 transition-all w-12 h-12 ${(pathname === '/shop' || pathname.startsWith('/shop/') || pathname.startsWith('/category/') || pathname.startsWith('/product/')) ? 'text-[#ff4fa3]' : 'text-slate-500 hover:text-[#ff4fa3]'}`}
-        >
-          <ShoppingBag className="h-5 w-5 stroke-[1.8]" />
-          <span className="text-[9px] font-bold mt-1 uppercase tracking-wider whitespace-nowrap">Shop</span>
-        </a>
       </div>
 
       {selectedItem && (
@@ -632,7 +704,7 @@ export function Header() {
                 🍄
               </div>
               <div>
-                <span className="text-[10px] font-black uppercase tracking-widest text-[#ff4fa3]">Announcement Detail</span>
+                <span className="text-[12px] font-black uppercase tracking-widest text-[#ff4fa3]">Announcement Detail</span>
                 <h3 className="text-xs font-bold text-slate-400">FunGuyz Store</h3>
               </div>
             </div>
@@ -642,7 +714,7 @@ export function Header() {
               <h2 className="text-base font-black tracking-tight leading-snug text-[#1b1533]">
                 {selectedItem.title}
               </h2>
-              <p className="text-[11px] font-semibold leading-relaxed text-[#1b1533]/85 bg-white p-4 rounded-xl border border-pink-50/50 shadow-sm">
+              <p className="text-[12px] font-semibold leading-relaxed text-[#1b1533]/85 bg-white p-4 rounded-xl border border-pink-50/50 shadow-sm">
                 {selectedItem.details}
               </p>
             </div>
@@ -676,7 +748,7 @@ export function Header() {
                   <span className="text-xl">🍄</span>
                   <div className="text-left">
                     <h2 className="text-base font-black tracking-tight text-[#1b1533] uppercase logo-font">Browse Categories</h2>
-                    <p className="text-[10px] font-semibold text-slate-400">Select a formulation to explore</p>
+                    <p className="text-[12px] font-semibold text-slate-400">Select a formulation to explore</p>
                   </div>
                 </div>
                 <button 
@@ -722,7 +794,7 @@ export function Header() {
                         <a 
                           href={linkUrl}
                           onClick={() => setIsMobileCategoryOpen(false)}
-                          className="text-[8.5px] font-black uppercase tracking-wider text-[#ff4fa3] bg-pink-50/50 hover:bg-[#ff4fa3] hover:text-white px-2 py-1 rounded-lg transition-all border border-pink-100/50 logo-font shrink-0"
+                          className="text-[12px] font-black uppercase tracking-wider text-[#ff4fa3] bg-pink-50/50 hover:bg-[#ff4fa3] hover:text-white px-2 py-1 rounded-lg transition-all border border-pink-100/50 logo-font shrink-0"
                         >
                           View
                         </a>
@@ -741,13 +813,13 @@ export function Header() {
                         {subcategories.length > 0 && (
                           <div className="flex flex-wrap gap-1 mt-2.5">
                             {subcategories.slice(0, 3).map((sub, sIdx) => {
-                              const subcategorySlug = sub.toLowerCase().replace(/\s+/g, '-');
+                              const productUrl = getProductUrl(sub, item.label);
                               return (
                                 <a
                                   key={sIdx}
-                                  href={`/shop?category=${categorySlug}&subcategory=${subcategorySlug}`}
+                                  href={productUrl}
                                   onClick={() => setIsMobileCategoryOpen(false)}
-                                  className="text-[8px] font-bold text-slate-500 hover:text-[#ff4fa3] bg-white/85 px-1.5 py-0.5 rounded border border-slate-100 truncate max-w-[80px]"
+                                  className="text-[10px] font-bold text-slate-500 hover:text-[#ff4fa3] bg-white/85 px-1.5 py-0.5 rounded border border-slate-100 truncate max-w-[80px]"
                                   title={sub}
                                 >
                                   {sub.split(' ')[0]}
@@ -770,13 +842,13 @@ export function Header() {
                   </div>
                   <div>
                     <h3 className="text-xs font-black text-[#1b1533] uppercase logo-font">Browse All Formulations</h3>
-                    <p className="text-[9px] font-semibold text-slate-400">Discover Canada's best dispensary deals</p>
+                    <p className="text-[12px] font-semibold text-slate-400">Discover Canada's best dispensary deals</p>
                   </div>
                 </div>
                 <a 
                   href="/shop"
                   onClick={() => setIsMobileCategoryOpen(false)}
-                  className="bg-[#ff4fa3] text-white hover:bg-black text-[10px] font-black uppercase tracking-wider px-3.5 py-2 rounded-xl transition-all shadow-md shadow-pink-100 logo-font shrink-0"
+                  className="bg-[#ff4fa3] text-white hover:bg-black text-[12px] font-black uppercase tracking-wider px-3.5 py-2 rounded-xl transition-all shadow-md shadow-pink-100 logo-font shrink-0"
                 >
                   Shop Now
                 </a>
@@ -810,7 +882,7 @@ export function Header() {
                 <Search className="h-5 w-5" />
               </div>
               <div>
-                <span className="text-[10px] font-black uppercase tracking-widest text-[#ff4fa3]">Search Catalog</span>
+                <span className="text-[12px] font-black uppercase tracking-widest text-[#ff4fa3]">Search Catalog</span>
                 <h3 className="text-xs font-bold text-slate-400">FunGuyz Store</h3>
               </div>
             </div>
@@ -847,17 +919,17 @@ function IconAction({
   return (
     <button 
       onClick={onClick}
-      className="group relative flex flex-col items-center gap-1 text-[11px] font-bold text-slate-700 hover:text-[#ff4fa3] transition-colors duration-200 focus:outline-none cursor-pointer"
+      className="group relative flex flex-col items-center gap-1 text-[12px] font-bold text-slate-700 hover:text-[#ff4fa3] transition-colors duration-200 focus:outline-none cursor-pointer"
     >
       <span className="relative p-1 text-slate-700 group-hover:text-[#ff4fa3] transition-colors duration-200">
         {icon}
         {badge && badge !== '0' ? (
-          <span className="absolute -right-2 -top-1.5 grid h-5.5 w-5.5 place-items-center rounded-full bg-[#ff4fa3] text-[9px] font-black text-white shadow-md shadow-pink-200">
+          <span className="absolute -right-2 -top-1.5 grid h-5.5 w-5.5 place-items-center rounded-full bg-[#ff4fa3] text-[10px] font-black text-white shadow-md shadow-pink-200">
             {badge}
           </span>
         ) : null}
       </span>
-      <span className="hidden sm:block text-[11px] font-bold text-slate-700 group-hover:text-[#ff4fa3] transition-colors duration-200">
+      <span className="hidden sm:block text-[12px] font-bold text-slate-700 group-hover:text-[#ff4fa3] transition-colors duration-200">
         {label}
       </span>
     </button>

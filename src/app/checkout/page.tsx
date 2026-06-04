@@ -180,7 +180,7 @@ export default function CheckoutPage() {
             </div>
 
             <div className="space-y-2">
-              <span className="text-[10px] font-black uppercase tracking-widest text-[#ff4fa3] logo-font">Order Placed Successfully!</span>
+              <span className="text-[12px] font-black uppercase tracking-widest text-[#ff4fa3] logo-font">Order Placed Successfully!</span>
               <h1 className="text-3xl font-black text-[#1b1533] uppercase logo-font">Thank You For Your Order</h1>
               <p className="text-xs font-semibold text-slate-500 leading-relaxed max-w-md mx-auto">
                 Your discreet package is currently being processed. You will receive an email confirmation containing your invoices and shipping details.
@@ -190,19 +190,19 @@ export default function CheckoutPage() {
             {/* Receipt Summary Grid */}
             <div className="w-full grid gap-4 sm:grid-cols-4 bg-slate-50 border border-slate-100 rounded-2xl p-5 text-left text-xs font-bold text-slate-400 mt-4">
               <div>
-                <span className="block text-[8px] uppercase tracking-wider">Order ID</span>
+                <span className="block text-[12px] uppercase tracking-wider">Order ID</span>
                 <strong className="block text-slate-800 text-sm mt-1 logo-font">{completedOrder.orderId}</strong>
               </div>
               <div>
-                <span className="block text-[8px] uppercase tracking-wider">Date</span>
+                <span className="block text-[12px] uppercase tracking-wider">Date</span>
                 <strong className="block text-slate-800 text-sm mt-1 logo-font">{completedOrder.date}</strong>
               </div>
               <div>
-                <span className="block text-[8px] uppercase tracking-wider">Total amount</span>
+                <span className="block text-[12px] uppercase tracking-wider">Total amount</span>
                 <strong className="block text-[#ff4fa3] text-sm mt-1 logo-font">{completedOrder.grandTotal}</strong>
               </div>
               <div>
-                <span className="block text-[8px] uppercase tracking-wider">Canada Post</span>
+                <span className="block text-[12px] uppercase tracking-wider">Canada Post</span>
                 <strong className="block text-emerald-600 text-sm mt-1 logo-font">{completedOrder.trackingCode}</strong>
               </div>
             </div>
@@ -215,7 +215,7 @@ export default function CheckoutPage() {
                 </div>
                 <div>
                   <h4 className="text-xs font-black uppercase tracking-wider text-emerald-800 logo-font">Scheduled Pre-Launch Delivery</h4>
-                  <p className="text-[11.5px] font-semibold text-slate-600 leading-normal mt-1">
+                  <p className="text-[12px] font-semibold text-slate-600 leading-normal mt-1">
                     Your delivery has been scheduled for <strong className="text-slate-800">{completedOrder.deliveryDetails.date}</strong> during the <strong className="text-slate-800">{completedOrder.deliveryDetails.timeSlot}</strong> delivery window. We will contact you at <strong>{completedOrder.formData.phone}</strong> or <strong>{completedOrder.formData.email}</strong> to coordinate.
                   </p>
                 </div>
@@ -229,7 +229,7 @@ export default function CheckoutPage() {
               <h4 className="text-xs font-black uppercase tracking-wider text-[#ff4fa3] flex items-center gap-1.5 logo-font">
                 <Sparkles className="h-4.5 w-4.5 text-[#ff4fa3] animate-pulse" /> Interac e-Transfer Instructions
               </h4>
-              <p className="text-[11.5px] font-semibold text-slate-500 leading-relaxed">
+              <p className="text-[12px] font-semibold text-slate-500 leading-relaxed">
                 Please send your <strong>Interac e-Transfer</strong> payment from your bank's portal within 24 hours. Your order dispatch is held secure until transfer receipt is confirmed.
               </p>
 
@@ -237,7 +237,7 @@ export default function CheckoutPage() {
                 
                 {/* Recipient */}
                 <div className="space-y-1 relative group">
-                  <span className="block text-[8px] text-slate-400 uppercase tracking-widest leading-none">Recipient Email</span>
+                  <span className="block text-[12px] text-slate-400 uppercase tracking-widest leading-none">Recipient Email</span>
                   <strong className="block text-slate-700 text-sm font-bold font-poppins">pay@funguyz.ca</strong>
                   <button 
                     type="button"
@@ -245,7 +245,7 @@ export default function CheckoutPage() {
                       navigator.clipboard.writeText('pay@funguyz.ca');
                       alert('Recipient email pay@funguyz.ca copied to clipboard!');
                     }}
-                    className="mt-1 text-[9px] font-black uppercase text-[#ff4fa3] hover:underline cursor-pointer tracking-wider"
+                    className="mt-1 text-[12px] font-black uppercase text-[#ff4fa3] hover:underline cursor-pointer tracking-wider"
                   >
                     Copy Email
                   </button>
@@ -253,7 +253,7 @@ export default function CheckoutPage() {
 
                 {/* Password/Memo */}
                 <div className="space-y-1 relative group">
-                  <span className="block text-[8px] text-slate-400 uppercase tracking-widest leading-none">Question / Password</span>
+                  <span className="block text-[12px] text-slate-400 uppercase tracking-widest leading-none">Question / Password</span>
                   <strong className="block text-slate-700 text-sm font-bold font-poppins">{completedOrder.orderId}</strong>
                   <button 
                     type="button"
@@ -261,7 +261,7 @@ export default function CheckoutPage() {
                       navigator.clipboard.writeText(completedOrder.orderId);
                       alert(`E-transfer Password ${completedOrder.orderId} copied to clipboard!`);
                     }}
-                    className="mt-1 text-[9px] font-black uppercase text-[#ff4fa3] hover:underline cursor-pointer tracking-wider"
+                    className="mt-1 text-[12px] font-black uppercase text-[#ff4fa3] hover:underline cursor-pointer tracking-wider"
                   >
                     Copy Password
                   </button>
@@ -269,14 +269,14 @@ export default function CheckoutPage() {
 
                 {/* Amount */}
                 <div className="space-y-1">
-                  <span className="block text-[8px] text-slate-400 uppercase tracking-widest leading-none">Amount Due</span>
+                  <span className="block text-[12px] text-slate-400 uppercase tracking-widest leading-none">Amount Due</span>
                   <strong className="block text-[#ff4fa3] text-sm font-black font-poppins">{completedOrder.grandTotal}</strong>
-                  <div className="mt-1 text-[9px] text-slate-400 font-bold uppercase tracking-wider">CAD Dollars</div>
+                  <div className="mt-1 text-[12px] text-slate-400 font-bold uppercase tracking-wider">CAD Dollars</div>
                 </div>
 
               </div>
 
-              <p className="text-[10px] text-slate-400 font-semibold leading-relaxed">
+              <p className="text-[12px] text-slate-400 font-semibold leading-relaxed">
                 * Note: Please make sure to include your order ID <strong className="text-slate-700 font-bold">{completedOrder.orderId}</strong> in the memo field of your e-Transfer for instant automated matching.
               </p>
             </div>
@@ -307,7 +307,7 @@ export default function CheckoutPage() {
         <div className="absolute right-[5%] bottom-[5%] w-[300px] h-[300px] rounded-full bg-[#e0f2fe]/40 blur-[80px] pointer-events-none" />
         
         <div className="mx-auto max-w-3xl relative z-10 flex flex-col items-center gap-3">
-          <div className="inline-flex items-center gap-1.5 rounded-full bg-[#ff4fa3]/5 px-3.5 py-1.5 text-[9px] font-bold uppercase tracking-widest text-[#ff4fa3]">
+          <div className="inline-flex items-center gap-1.5 rounded-full bg-[#ff4fa3]/5 px-3.5 py-1.5 text-[10px] font-bold uppercase tracking-widest text-[#ff4fa3]">
             <Lock className="h-3 w-3" /> SSL 256-bit Encrypted checkout
           </div>
           <h1 className="text-4xl md:text-5xl font-black tracking-tight text-[#1b1533] uppercase logo-font">
@@ -353,7 +353,7 @@ export default function CheckoutPage() {
                   <MapPin className="h-5 w-5 text-[#ff4fa3] shrink-0 mt-0.5" />
                   <div>
                     <span className="block text-xs font-black uppercase text-[#1b1533] logo-font leading-tight">Same Day Delivery</span>
-                    <span className="block text-[10px] text-slate-400 font-semibold mt-1">GTA & Ottawa Local Courier Delivery</span>
+                    <span className="block text-[12px] text-slate-400 font-semibold mt-1">Same day delivery with in 2 - 5 hours</span>
                     <strong className="block text-emerald-600 text-xs font-black logo-font mt-2">$20.00 Flat</strong>
                   </div>
                 </button>
@@ -371,7 +371,7 @@ export default function CheckoutPage() {
                   <Zap className="h-5 w-5 text-[#ff4fa3] shrink-0 mt-0.5" />
                   <div>
                     <span className="block text-xs font-black uppercase text-[#1b1533] logo-font leading-tight">Express Shipping</span>
-                    <span className="block text-[10px] text-slate-400 font-semibold mt-1">Canada Post Express 1-2 Days</span>
+                    <span className="block text-[12px] text-slate-400 font-semibold mt-1">Canada Post Express 1-2 Days</span>
                     <strong className="block text-emerald-600 text-xs font-black logo-font mt-2">
                       $20.00 Flat
                     </strong>
@@ -385,7 +385,7 @@ export default function CheckoutPage() {
               <h2 className="text-xl font-black text-[#1b1533] uppercase logo-font">Billing Details</h2>
               <div className="grid gap-4">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <label className="block text-[10px] font-black uppercase tracking-wider text-slate-400">
+                  <label className="block text-[12px] font-black uppercase tracking-wider text-slate-400">
                     First Name
                     <input 
                       type="text" 
@@ -397,7 +397,7 @@ export default function CheckoutPage() {
                       className="mt-1.5 w-full rounded-xl border border-slate-200 px-3.5 py-2.5 text-xs font-semibold outline-none focus:border-[#ff4fa3] focus:ring-4 focus:ring-pink-50/50"
                     />
                   </label>
-                  <label className="block text-[10px] font-black uppercase tracking-wider text-slate-400">
+                  <label className="block text-[12px] font-black uppercase tracking-wider text-slate-400">
                     Last Name
                     <input 
                       type="text" 
@@ -412,7 +412,7 @@ export default function CheckoutPage() {
                 </div>
                 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <label className="block text-[10px] font-black uppercase tracking-wider text-slate-400">
+                  <label className="block text-[12px] font-black uppercase tracking-wider text-slate-400">
                     Email Address
                     <input 
                       type="email" 
@@ -424,7 +424,7 @@ export default function CheckoutPage() {
                       className="mt-1.5 w-full rounded-xl border border-slate-200 px-3.5 py-2.5 text-xs font-semibold outline-none focus:border-[#ff4fa3] focus:ring-4 focus:ring-pink-50/50"
                     />
                   </label>
-                  <label className="block text-[10px] font-black uppercase tracking-wider text-slate-400">
+                  <label className="block text-[12px] font-black uppercase tracking-wider text-slate-400">
                     Phone Number
                     <input 
                       type="tel" 
@@ -438,7 +438,7 @@ export default function CheckoutPage() {
                   </label>
                 </div>
 
-                <label className="block text-[10px] font-black uppercase tracking-wider text-slate-400">
+                <label className="block text-[12px] font-black uppercase tracking-wider text-slate-400">
                   Street Address
                   <input 
                     type="text" 
@@ -452,7 +452,7 @@ export default function CheckoutPage() {
                 </label>
 
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                  <label className="block text-[10px] font-black uppercase tracking-wider text-slate-400">
+                  <label className="block text-[12px] font-black uppercase tracking-wider text-slate-400">
                     City
                     <input 
                       type="text" 
@@ -464,7 +464,7 @@ export default function CheckoutPage() {
                       className="mt-1.5 w-full rounded-xl border border-slate-200 px-3.5 py-2.5 text-xs font-semibold outline-none focus:border-[#ff4fa3] focus:ring-4 focus:ring-pink-50/50"
                     />
                   </label>
-                  <label className="block text-[10px] font-black uppercase tracking-wider text-slate-400">
+                  <label className="block text-[12px] font-black uppercase tracking-wider text-slate-400">
                     Province
                     <select
                       name="province"
@@ -479,7 +479,7 @@ export default function CheckoutPage() {
                       <option value="MB">Manitoba (MB)</option>
                     </select>
                   </label>
-                  <label className="block text-[10px] font-black uppercase tracking-wider text-slate-400">
+                  <label className="block text-[12px] font-black uppercase tracking-wider text-slate-400">
                     Postal Code
                     <input 
                       type="text" 
@@ -513,7 +513,7 @@ export default function CheckoutPage() {
                     <div className="flex-1 flex flex-col justify-between">
                       <div>
                         <span className="block text-xs font-black text-[#1b1533] uppercase leading-tight line-clamp-1">{item.title}</span>
-                        <span className="block text-[9px] text-slate-400 font-bold uppercase mt-0.5">{item.category}</span>
+                        <span className="block text-[12px] text-slate-400 font-bold uppercase mt-0.5">{item.category}</span>
                       </div>
                       <div className="flex items-center justify-between text-xs font-semibold mt-1">
                         <span className="text-slate-400">Qty: {item.quantity}</span>
@@ -534,18 +534,18 @@ export default function CheckoutPage() {
                 {/* Interac Brand Banner */}
                 <div className="flex items-center justify-between border-b border-pink-50 pb-2.5">
                   <div className="flex items-center gap-2">
-                    <div className="bg-[#FFB800] text-black h-5.5 px-2 rounded-lg flex items-center justify-center font-black text-[9px] tracking-wider uppercase font-sans">
+                    <div className="bg-[#FFB800] text-black h-5.5 px-2 rounded-lg flex items-center justify-center font-black text-[12px] tracking-wider uppercase font-sans">
                       INTERAC
                     </div>
                     <span className="text-xs font-black uppercase text-[#1b1533] logo-font leading-none">e-Transfer</span>
                   </div>
-                  <span className="bg-emerald-50 text-emerald-700 px-2 py-0.5 rounded-md text-[8px] font-black uppercase tracking-wider font-poppins">
+                  <span className="bg-emerald-50 text-emerald-700 px-2 py-0.5 rounded-md text-[10px] font-black uppercase tracking-wider font-poppins">
                     Secured
                   </span>
                 </div>
                 
                 {/* e-Transfer flow explanations */}
-                <div className="space-y-2 text-[10.5px] font-semibold text-slate-500 leading-normal pl-0.5 font-poppins">
+                <div className="space-y-2 text-[12px] font-semibold text-slate-500 leading-normal pl-0.5 font-poppins">
                   <p>
                     We process orders strictly via <strong>Interac e-Transfer</strong> for maximum Canadian privacy and discreet shopping logs.
                   </p>
@@ -615,7 +615,7 @@ export default function CheckoutPage() {
             {/* LEFT COLUMN: Calendar & Info */}
             <div className="w-full md:w-[42%] bg-gradient-to-b from-[#13102c] to-[#0c0a1a] p-6 sm:p-8 flex flex-col justify-between border-b md:border-b-0 md:border-r border-pink-500/10 shrink-0">
               <div className="space-y-4">
-                <div className="border border-[#ff4fa3]/30 bg-[#ff4fa3]/5 px-3 py-1 rounded-full inline-flex items-center gap-1.5 text-[8.5px] font-black uppercase tracking-widest text-[#ff4fa3] logo-font leading-none">
+                <div className="border border-[#ff4fa3]/30 bg-[#ff4fa3]/5 px-3 py-1 rounded-full inline-flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-[#ff4fa3] logo-font leading-none">
                   <span>✦</span>
                   <span>Pre-Launch Booking</span>
                   <span>✦</span>
@@ -625,7 +625,7 @@ export default function CheckoutPage() {
                   <h3 className="text-xl sm:text-2xl font-black uppercase tracking-tight leading-none logo-font">
                     Schedule Your <span className="text-[#ff4fa3] block mt-1">Delivery Slot</span>
                   </h3>
-                  <p className="text-[11px] font-semibold text-slate-400 leading-normal">
+                  <p className="text-[12px] font-semibold text-slate-400 leading-normal">
                     Select a delivery date starting from June 25, 2026.
                   </p>
                 </div>
@@ -657,7 +657,7 @@ export default function CheckoutPage() {
                   </div>
 
                   {/* Weekday Titles */}
-                  <div className="grid grid-cols-7 gap-1 text-center text-[9px] font-black text-slate-400 uppercase tracking-widest mb-2">
+                  <div className="grid grid-cols-7 gap-1 text-center text-[12px] font-black text-slate-400 uppercase tracking-widest mb-2">
                     {['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'].map((d) => (
                       <div key={d}>{d}</div>
                     ))}
@@ -705,7 +705,7 @@ export default function CheckoutPage() {
               </div>
 
               {/* Bottom Notice */}
-              <div className="mt-6 flex items-center gap-2 border-t border-slate-800/80 pt-4 text-[10px] text-slate-400 font-semibold leading-normal">
+              <div className="mt-6 flex items-center gap-2 border-t border-slate-800/80 pt-4 text-[12px] text-slate-400 font-semibold leading-normal">
                 <Truck className="h-4 w-4 text-[#ff4fa3] shrink-0" />
                 <span>Orders will ship to arrive starting June 25, 2026.</span>
               </div>
@@ -721,8 +721,8 @@ export default function CheckoutPage() {
                     <Calendar className="h-4 w-4" />
                   </div>
                   <div>
-                    <span className="block text-[10px] font-black uppercase text-slate-400 tracking-wider">Delivery Dispatch Hours</span>
-                    <span className="block text-[9.5px] font-semibold text-slate-300 leading-normal mt-0.5">
+                    <span className="block text-[12px] font-black uppercase text-slate-400 tracking-wider">Delivery Dispatch Hours</span>
+                    <span className="block text-[12px] font-semibold text-slate-300 leading-normal mt-0.5">
                       Sunday – Thursday: 9:00 AM to 10:00 PM | Friday – Saturday: 9:00 AM to 11:00 PM
                     </span>
                   </div>
@@ -730,7 +730,7 @@ export default function CheckoutPage() {
 
                 {/* Time slot selector */}
                 <div className="space-y-2.5">
-                  <span className="block text-[10px] font-black uppercase text-slate-400 tracking-wider">Select a Delivery Window</span>
+                  <span className="block text-[12px] font-black uppercase text-slate-400 tracking-wider">Select a Delivery Window</span>
                   <div className="grid gap-2 sm:grid-cols-3">
                     {['10:00 AM to 2:00 PM', '2:00 PM to 6:00 PM', '6:00 PM to 10:00 PM'].map((slot) => {
                       const isSelected = selectedTimeSlot === slot;
@@ -745,7 +745,7 @@ export default function CheckoutPage() {
                               : 'border-slate-800 bg-slate-900/20 text-slate-400 hover:border-slate-700 hover:text-slate-200'
                           }`}
                         >
-                          <span className="text-[10px] font-bold tracking-wide">{slot}</span>
+                          <span className="text-[12px] font-bold tracking-wide">{slot}</span>
                         </button>
                       );
                     })}
@@ -754,7 +754,7 @@ export default function CheckoutPage() {
 
                 {/* Contact Confirmation details */}
                 <div className="space-y-3">
-                  <span className="block text-[10px] font-black uppercase text-slate-400 tracking-wider">Confirm Your Contact Information</span>
+                  <span className="block text-[12px] font-black uppercase text-slate-400 tracking-wider">Confirm Your Contact Information</span>
                   <div className="grid gap-3 sm:grid-cols-2">
                     <div className="relative flex items-center">
                       <Mail className="absolute left-3.5 h-4 w-4 text-slate-500" />
@@ -781,7 +781,7 @@ export default function CheckoutPage() {
 
                 {/* Error Box */}
                 {scheduleError && (
-                  <div className="rounded-xl border border-red-500/20 bg-red-500/10 p-3 text-red-400 text-[11px] font-bold text-left">
+                  <div className="rounded-xl border border-red-500/20 bg-red-500/10 p-3 text-red-400 text-[12px] font-bold text-left">
                     ⚠️ {scheduleError}
                   </div>
                 )}

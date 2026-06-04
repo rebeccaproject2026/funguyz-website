@@ -92,7 +92,7 @@ export default function BeginnerGuidePage() {
           <div className="flex flex-col items-start text-left gap-4">
             
             {/* Breadcrumb */}
-            <div className="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-slate-400 logo-font leading-none">
+            <div className="flex items-center gap-1.5 text-[12px] font-black uppercase tracking-widest text-slate-400 logo-font leading-none">
               <a href="/" className="hover:text-[#ff4fa3] transition-colors">Home</a>
               <span>&gt;</span>
               <a href="/blog" className="hover:text-[#ff4fa3] transition-colors">Blog</a>
@@ -102,7 +102,7 @@ export default function BeginnerGuidePage() {
 
             {/* Title */}
             <div className="space-y-1">
-              <span className="text-[10px] font-black uppercase tracking-widest text-[#ff4fa3] logo-font">Wellness Onboarding</span>
+              <span className="text-[12px] font-black uppercase tracking-widest text-[#ff4fa3] logo-font">Wellness Onboarding</span>
               <h1 className="text-3xl md:text-5xl font-black text-[#1b1533] uppercase tracking-tight logo-font leading-none">
                 Beginner's Guide <br />
                 <span className="text-[#ff4fa3]">To Psilocybin</span>
@@ -129,7 +129,7 @@ export default function BeginnerGuidePage() {
             <div className="relative bg-white/70 backdrop-blur-md border border-pink-100/60 rounded-[40px] p-6 shadow-[0_24px_70px_rgba(255,79,163,0.12)] max-w-xs text-left space-y-3">
               <BookOpen className="h-6 w-6 text-[#ff4fa3]" />
               <h3 className="text-xs font-black uppercase text-[#1b1533] logo-font">Safe Onboarding</h3>
-              <p className="text-[10px] font-semibold text-slate-400 leading-normal">
+              <p className="text-[12px] font-semibold text-slate-400 leading-normal">
                 Expert instructions covering set, setting, intent alignment, and low-tolerance dosage stacks.
               </p>
             </div>
@@ -141,7 +141,7 @@ export default function BeginnerGuidePage() {
       {/* 2. Step-by-Step Onboarding Grid */}
       <section className="mx-auto max-w-7xl px-4 py-16 md:px-8">
         <div className="text-center space-y-2 mb-12 max-w-md mx-auto">
-          <span className="text-[10px] font-black uppercase tracking-widest text-[#ff4fa3] logo-font">Roadmap</span>
+          <span className="text-[12px] font-black uppercase tracking-widest text-[#ff4fa3] logo-font">Roadmap</span>
           <h2 className="text-2xl md:text-3xl font-black text-[#1b1533] uppercase logo-font">4-Step Onboarding Roadmap</h2>
           <p className="text-xs text-slate-400 font-semibold">Follow our basic structural guidelines to guarantee a warm, safe, and positive wellness experience.</p>
         </div>
@@ -159,7 +159,7 @@ export default function BeginnerGuidePage() {
                 <item.icon className="h-5 w-5 stroke-[2.2]" />
               </div>
               <h3 className="text-xs font-black uppercase text-[#1b1533] logo-font mb-2">{item.title}</h3>
-              <p className="text-[11px] font-semibold leading-relaxed text-slate-400">{item.desc}</p>
+              <p className="text-[12px] font-semibold leading-relaxed text-slate-400">{item.desc}</p>
             </div>
           ))}
         </div>
@@ -171,7 +171,7 @@ export default function BeginnerGuidePage() {
           <div className="absolute top-0 right-0 h-44 w-44 rounded-full bg-[#ff4fa3]/5 blur-3xl pointer-events-none" />
           
           <div className="space-y-2 mb-8 max-w-md mx-auto">
-            <span className="text-[10px] font-black uppercase tracking-widest text-[#ff4fa3] logo-font">Recommender Engine</span>
+            <span className="text-[12px] font-black uppercase tracking-widest text-[#ff4fa3] logo-font">Recommender Engine</span>
             <h2 className="text-2xl md:text-3xl font-black text-[#1b1533] uppercase logo-font">What Product Is Right For Me?</h2>
             <p className="text-xs text-slate-400 font-semibold leading-relaxed">Take our quick 3-question onboarding quiz to identify the optimal strain format, dosage, and category matching your experience level.</p>
           </div>
@@ -179,7 +179,7 @@ export default function BeginnerGuidePage() {
           {/* Quiz Step 1: Intent */}
           {quizStep === 1 && (
             <div className="space-y-6 animate-scale-up">
-              <span className="block text-[10px] font-black uppercase tracking-widest text-[#ff4fa3] logo-font">Question 1 of 3</span>
+              <span className="block text-[12px] font-black uppercase tracking-widest text-[#ff4fa3] logo-font">Question 1 of 3</span>
               <strong className="block text-sm font-black text-[#1b1533] uppercase logo-font">What is your primary wellness goal?</strong>
               <div className="grid gap-3 sm:grid-cols-3 text-left">
                 {[
@@ -193,7 +193,7 @@ export default function BeginnerGuidePage() {
                     className="rounded-2xl border border-slate-100 hover:border-[#ff4fa3] hover:bg-pink-50/5 p-5 text-left cursor-pointer transition-all flex flex-col justify-between h-32"
                   >
                     <span className="block text-xs font-black uppercase text-[#1b1533] logo-font">{opt.title}</span>
-                    <span className="block text-[9px] text-slate-400 font-semibold leading-normal mt-2">{opt.desc}</span>
+                    <span className="block text-[12px] text-slate-400 font-semibold leading-normal mt-2">{opt.desc}</span>
                   </button>
                 ))}
               </div>
@@ -203,7 +203,7 @@ export default function BeginnerGuidePage() {
           {/* Quiz Step 2: Experience */}
           {quizStep === 2 && (
             <div className="space-y-6 animate-scale-up">
-              <span className="block text-[10px] font-black uppercase tracking-widest text-[#ff4fa3] logo-font">Question 2 of 3</span>
+              <span className="block text-[12px] font-black uppercase tracking-widest text-[#ff4fa3] logo-font">Question 2 of 3</span>
               <strong className="block text-sm font-black text-[#1b1533] uppercase logo-font">What is your psychedelic experience level?</strong>
               <div className="grid gap-3 sm:grid-cols-2 text-left">
                 {[
@@ -216,7 +216,7 @@ export default function BeginnerGuidePage() {
                     className="rounded-2xl border border-slate-100 hover:border-[#ff4fa3] hover:bg-pink-50/5 p-5 text-left cursor-pointer transition-all flex flex-col justify-between h-32"
                   >
                     <span className="block text-xs font-black uppercase text-[#1b1533] logo-font">{opt.title}</span>
-                    <span className="block text-[9px] text-slate-400 font-semibold leading-normal mt-2">{opt.desc}</span>
+                    <span className="block text-[12px] text-slate-400 font-semibold leading-normal mt-2">{opt.desc}</span>
                   </button>
                 ))}
               </div>
@@ -226,7 +226,7 @@ export default function BeginnerGuidePage() {
           {/* Quiz Step 3: Format */}
           {quizStep === 3 && (
             <div className="space-y-6 animate-scale-up">
-              <span className="block text-[10px] font-black uppercase tracking-widest text-[#ff4fa3] logo-font">Question 3 of 3</span>
+              <span className="block text-[12px] font-black uppercase tracking-widest text-[#ff4fa3] logo-font">Question 3 of 3</span>
               <strong className="block text-sm font-black text-[#1b1533] uppercase logo-font">What product medium do you prefer?</strong>
               <div className="grid gap-3 sm:grid-cols-3 text-left">
                 {[
@@ -240,7 +240,7 @@ export default function BeginnerGuidePage() {
                     className="rounded-2xl border border-slate-100 hover:border-[#ff4fa3] hover:bg-pink-50/5 p-5 text-left cursor-pointer transition-all flex flex-col justify-between h-32"
                   >
                     <span className="block text-xs font-black uppercase text-[#1b1533] logo-font">{opt.title}</span>
-                    <span className="block text-[9px] text-slate-400 font-semibold leading-normal mt-2">{opt.desc}</span>
+                    <span className="block text-[12px] text-slate-400 font-semibold leading-normal mt-2">{opt.desc}</span>
                   </button>
                 ))}
               </div>
@@ -257,9 +257,9 @@ export default function BeginnerGuidePage() {
                   <img src={rec.imageSrc} alt={rec.title} className="object-contain max-h-[140px]" />
                 </div>
                 <div className="space-y-2">
-                  <span className="text-[8px] font-black uppercase text-[#ff4fa3] tracking-wider logo-font">{rec.category}</span>
+                  <span className="text-[12px] font-black uppercase text-[#ff4fa3] tracking-wider logo-font">{rec.category}</span>
                   <h3 className="text-base md:text-lg font-black uppercase text-[#1b1533] logo-font leading-snug">{rec.title}</h3>
-                  <p className="text-[10px] font-semibold leading-relaxed text-slate-400">{rec.desc}</p>
+                  <p className="text-[12px] font-semibold leading-relaxed text-slate-400">{rec.desc}</p>
                   
                   <div className="pt-3 border-t border-slate-100 flex items-center justify-between">
                     <strong className="text-sm font-black text-[#1b1533] logo-font">{rec.price}</strong>
@@ -272,7 +272,7 @@ export default function BeginnerGuidePage() {
                           imageSrc: rec.imageSrc
                         });
                       }}
-                      className="inline-flex items-center gap-1.5 rounded-xl bg-[#ff4fa3] text-white border border-[#ff4fa3] py-2 px-4 text-[10px] font-black uppercase tracking-wider hover:bg-black hover:text-[#ff4fa3] hover:border-black cursor-pointer transition-all logo-font"
+                      className="inline-flex items-center gap-1.5 rounded-xl bg-[#ff4fa3] text-white border border-[#ff4fa3] py-2 px-4 text-[12px] font-black uppercase tracking-wider hover:bg-black hover:text-[#ff4fa3] hover:border-black cursor-pointer transition-all logo-font"
                     >
                       <Plus className="h-3.5 w-3.5" /> Add To Cart
                     </button>
@@ -299,7 +299,7 @@ export default function BeginnerGuidePage() {
         <div className="mx-auto max-w-4xl space-y-10 text-center">
           
           <div className="space-y-2">
-            <span className="text-[10px] font-black uppercase tracking-widest text-[#ff4fa3] logo-font leading-none">onboarding help</span>
+            <span className="text-[12px] font-black uppercase tracking-widest text-[#ff4fa3] logo-font leading-none">onboarding help</span>
             <h2 className="text-2xl md:text-3xl font-black text-[#1b1533] uppercase logo-font">Beginner Stacking FAQs</h2>
             <p className="text-xs text-slate-400 max-w-md mx-auto">Discover essential beginner safety questions answered clearly by our clinical mycologists.</p>
           </div>
@@ -340,7 +340,7 @@ export default function BeginnerGuidePage() {
       <section className="bg-[#fff8f3] py-16 px-4 md:px-8">
         <div className="mx-auto max-w-7xl text-center space-y-8">
           <div className="space-y-2">
-            <span className="text-[10px] font-black uppercase tracking-widest text-[#ff4fa3] logo-font">Learn Suite</span>
+            <span className="text-[12px] font-black uppercase tracking-widest text-[#ff4fa3] logo-font">Learn Suite</span>
             <h3 className="text-2xl font-black text-[#1b1533] uppercase logo-font">Related Guides & Stacks</h3>
           </div>
 
@@ -355,9 +355,9 @@ export default function BeginnerGuidePage() {
                   {link.icon}
                 </div>
                 <div className="space-y-1">
-                  <h4 className="text-[8px] font-black uppercase text-slate-400 logo-font leading-none">Learn</h4>
+                  <h4 className="text-[12px] font-black uppercase text-slate-400 logo-font leading-none">Learn</h4>
                   <h3 className="text-sm font-black text-[#1b1533] uppercase logo-font leading-tight">{link.name}</h3>
-                  <p className="text-[10px] font-semibold text-slate-400 leading-relaxed line-clamp-3">{link.desc}</p>
+                  <p className="text-[12px] font-semibold text-slate-400 leading-relaxed line-clamp-3">{link.desc}</p>
                 </div>
                 <a 
                   href={link.url}

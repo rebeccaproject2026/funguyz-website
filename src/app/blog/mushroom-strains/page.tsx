@@ -124,7 +124,7 @@ export default function MushroomStrainsPage() {
           <div className="flex flex-col items-start text-left gap-4">
             
             {/* Breadcrumb */}
-            <div className="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-slate-400 logo-font leading-none">
+            <div className="flex items-center gap-1.5 text-[12px] font-black uppercase tracking-widest text-slate-400 logo-font leading-none">
               <a href="/" className="hover:text-[#ff4fa3] transition-colors">Home</a>
               <span>&gt;</span>
               <a href="/blog" className="hover:text-[#ff4fa3] transition-colors">Blog</a>
@@ -134,7 +134,7 @@ export default function MushroomStrainsPage() {
 
             {/* Title */}
             <div className="space-y-1">
-              <span className="text-[10px] font-black uppercase tracking-widest text-[#ff4fa3] logo-font">Mycological Strains</span>
+              <span className="text-[12px] font-black uppercase tracking-widest text-[#ff4fa3] logo-font">Mycological Strains</span>
               <h1 className="text-3xl md:text-5xl font-black text-[#1b1533] uppercase tracking-tight logo-font leading-none">
                 Explore Mushroom <br />
                 <span className="text-[#ff4fa3]">Strains Directory</span>
@@ -161,7 +161,7 @@ export default function MushroomStrainsPage() {
             <div className="relative bg-white/70 backdrop-blur-md border border-pink-100/60 rounded-[40px] p-6 shadow-[0_24px_70px_rgba(255,79,163,0.12)] max-w-xs text-left space-y-3">
               <Leaf className="h-6 w-6 text-[#ff4fa3]" />
               <h3 className="text-xs font-black uppercase text-[#1b1533] logo-font">Strain Genetics</h3>
-              <p className="text-[10px] font-semibold text-slate-400 leading-normal">
+              <p className="text-[12px] font-semibold text-slate-400 leading-normal">
                 Double-tested organic flushes processed in sterile cleanrooms to preserve raw genetic potency.
               </p>
             </div>
@@ -214,7 +214,7 @@ export default function MushroomStrainsPage() {
               <div key={idx} className="bg-white border border-slate-100 rounded-[36px] p-6 md:p-8 shadow-sm flex flex-col justify-between items-start gap-6 hover:shadow-md transition-shadow relative overflow-hidden group">
                 
                 {/* Potency Badge */}
-                <div className={`absolute top-6 right-6 text-[8px] font-black uppercase tracking-widest px-3 py-1 rounded-full border ${
+                <div className={`absolute top-6 right-6 text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full border ${
                   strain.potency === 'mild'
                     ? 'border-green-200 bg-green-50 text-green-600'
                     : strain.potency === 'high'
@@ -226,9 +226,9 @@ export default function MushroomStrainsPage() {
 
                 <div className="space-y-4 w-full">
                   <div className="space-y-1">
-                    <span className="block text-[8px] font-black text-slate-400 uppercase tracking-widest">Strain Cultivar</span>
+                    <span className="block text-[12px] font-black text-slate-400 uppercase tracking-widest">Strain Cultivar</span>
                     <h3 className="text-xl font-black text-[#1b1533] uppercase logo-font leading-none">{strain.name}</h3>
-                    <p className="text-[10px] font-bold text-[#ff4fa3]">{strain.potencyPct}</p>
+                    <p className="text-[12px] font-bold text-[#ff4fa3]">{strain.potencyPct}</p>
                   </div>
 
                   <p className="text-xs font-semibold leading-relaxed text-slate-400 border-b border-slate-50 pb-4">
@@ -238,16 +238,16 @@ export default function MushroomStrainsPage() {
                   {/* Strain characteristics list */}
                   <div className="grid gap-3 sm:grid-cols-3 text-left">
                     <div>
-                      <span className="block text-[8px] font-black text-slate-400 uppercase tracking-widest">Origin</span>
-                      <strong className="block text-[10.5px] font-bold text-slate-700 leading-tight mt-1 truncate">{strain.origin}</strong>
+                      <span className="block text-[12px] font-black text-slate-400 uppercase tracking-widest">Origin</span>
+                      <strong className="block text-[12px] font-bold text-slate-700 leading-tight mt-1 truncate">{strain.origin}</strong>
                     </div>
                     <div>
-                      <span className="block text-[8px] font-black text-slate-400 uppercase tracking-widest">Visual Shifting</span>
-                      <strong className="block text-[10.5px] font-bold text-slate-700 leading-tight mt-1 truncate" title={strain.visuals}>{strain.visuals}</strong>
+                      <span className="block text-[12px] font-black text-slate-400 uppercase tracking-widest">Visual Shifting</span>
+                      <strong className="block text-[12px] font-bold text-slate-700 leading-tight mt-1 truncate" title={strain.visuals}>{strain.visuals}</strong>
                     </div>
                     <div>
-                      <span className="block text-[8px] font-black text-slate-400 uppercase tracking-widest">Cognitive State</span>
-                      <strong className="block text-[10.5px] font-bold text-slate-700 leading-tight mt-1 truncate" title={strain.mindset}>{strain.mindset}</strong>
+                      <span className="block text-[12px] font-black text-slate-400 uppercase tracking-widest">Cognitive State</span>
+                      <strong className="block text-[12px] font-bold text-slate-700 leading-tight mt-1 truncate" title={strain.mindset}>{strain.mindset}</strong>
                     </div>
                   </div>
                 </div>
@@ -259,9 +259,9 @@ export default function MushroomStrainsPage() {
                       <img src={strain.product.img} alt={strain.product.name} className="object-contain max-h-[44px]" />
                     </div>
                     <div>
-                      <span className="block text-[8px] font-black text-[#ff4fa3] uppercase tracking-wider logo-font">Recommend crop</span>
+                      <span className="block text-[12px] font-black text-[#ff4fa3] uppercase tracking-wider logo-font">Recommend crop</span>
                       <strong className="block text-xs font-black uppercase text-[#1b1533] logo-font leading-tight">{strain.product.name}</strong>
-                      <span className="block text-[10px] text-slate-400 font-bold mt-1 leading-none">{strain.product.price}</span>
+                      <span className="block text-[12px] text-slate-400 font-bold mt-1 leading-none">{strain.product.price}</span>
                     </div>
                   </div>
 
@@ -274,7 +274,7 @@ export default function MushroomStrainsPage() {
                         imageSrc: strain.product.img
                       });
                     }}
-                    className="rounded-xl bg-[#ff4fa3] text-white border border-[#ff4fa3] py-2.5 px-4 text-[9px] font-black uppercase tracking-wider hover:bg-black hover:text-[#ff4fa3] hover:border-black cursor-pointer transition-all logo-font flex items-center gap-1 shrink-0"
+                    className="rounded-xl bg-[#ff4fa3] text-white border border-[#ff4fa3] py-2.5 px-4 text-[12px] font-black uppercase tracking-wider hover:bg-black hover:text-[#ff4fa3] hover:border-black cursor-pointer transition-all logo-font flex items-center gap-1 shrink-0"
                   >
                     <Plus className="h-3.5 w-3.5" /> Quick Buy
                   </button>
@@ -298,7 +298,7 @@ export default function MushroomStrainsPage() {
         <div className="mx-auto max-w-4xl space-y-10 text-center">
           
           <div className="space-y-2">
-            <span className="text-[10px] font-black uppercase tracking-widest text-[#ff4fa3] logo-font leading-none">Strain Science</span>
+            <span className="text-[12px] font-black uppercase tracking-widest text-[#ff4fa3] logo-font leading-none">Strain Science</span>
             <h2 className="text-2xl md:text-3xl font-black text-[#1b1533] uppercase logo-font">Strain Genetics FAQs</h2>
             <p className="text-xs text-slate-400 max-w-md mx-auto">Discover mycological answers regarding strain variations, alkaloid testing, and potency factors.</p>
           </div>
@@ -339,7 +339,7 @@ export default function MushroomStrainsPage() {
       <section className="bg-[#fff8f3] py-16 px-4 md:px-8">
         <div className="mx-auto max-w-7xl text-center space-y-8">
           <div className="space-y-2">
-            <span className="text-[10px] font-black uppercase tracking-widest text-[#ff4fa3] logo-font">Learn Suite</span>
+            <span className="text-[12px] font-black uppercase tracking-widest text-[#ff4fa3] logo-font">Learn Suite</span>
             <h3 className="text-2xl font-black text-[#1b1533] uppercase logo-font">Related Guides & Stacks</h3>
           </div>
 
@@ -354,9 +354,9 @@ export default function MushroomStrainsPage() {
                   {link.icon}
                 </div>
                 <div className="space-y-1">
-                  <h4 className="text-[8px] font-black uppercase text-slate-400 logo-font leading-none">Learn</h4>
+                  <h4 className="text-[12px] font-black uppercase text-slate-400 logo-font leading-none">Learn</h4>
                   <h3 className="text-sm font-black text-[#1b1533] uppercase logo-font leading-tight">{link.name}</h3>
-                  <p className="text-[10px] font-semibold text-slate-400 leading-relaxed line-clamp-3">{link.desc}</p>
+                  <p className="text-[12px] font-semibold text-slate-400 leading-relaxed line-clamp-3">{link.desc}</p>
                 </div>
                 <a 
                   href={link.url}

@@ -129,7 +129,7 @@ export default function BlogHubPage() {
           <div className="flex flex-col items-start text-left gap-4">
             
             {/* Breadcrumb */}
-            <div className="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-slate-400 logo-font leading-none">
+            <div className="flex items-center gap-1.5 text-[12px] font-black uppercase tracking-widest text-slate-400 logo-font leading-none">
               <a href="/" className="hover:text-[#ff4fa3] transition-colors">Home</a>
               <span>&gt;</span>
               <span className="text-slate-600">Blog Hub</span>
@@ -137,7 +137,7 @@ export default function BlogHubPage() {
 
             {/* Title */}
             <div className="space-y-1">
-              <span className="text-[10px] font-black uppercase tracking-widest text-[#ff4fa3] logo-font">Educational Curation</span>
+              <span className="text-[12px] font-black uppercase tracking-widest text-[#ff4fa3] logo-font">Educational Curation</span>
               <h1 className="text-3xl md:text-5xl font-black text-[#1b1533] uppercase tracking-tight logo-font leading-none">
                 FunGuyz Research <br />
                 <span className="text-[#ff4fa3]">& Blog Hub</span>
@@ -164,7 +164,7 @@ export default function BlogHubPage() {
             <div className="relative bg-white/70 backdrop-blur-md border border-pink-100/60 rounded-[40px] p-6 shadow-[0_24px_70px_rgba(255,79,163,0.12)] max-w-xs text-left space-y-3">
               <BookOpen className="h-6 w-6 text-[#ff4fa3]" />
               <h3 className="text-xs font-black uppercase text-[#1b1533] logo-font">Scientific Database</h3>
-              <p className="text-[10px] font-semibold text-slate-400 leading-normal">
+              <p className="text-[12px] font-semibold text-slate-400 leading-normal">
                 Publishing safe clinical guides and botanical research flushes monitored by certified mycological practitioners.
               </p>
             </div>
@@ -177,7 +177,7 @@ export default function BlogHubPage() {
       {!searchQuery && activeCategory === 'all' && (
         <section className="mx-auto max-w-7xl px-4 pt-16 md:px-8">
           <div className="text-left mb-6">
-            <span className="text-[9px] font-black uppercase tracking-widest text-[#ff4fa3] logo-font border border-pink-100 bg-white px-3 py-1 rounded-full shadow-sm">Featured Read</span>
+            <span className="text-[10px] font-black uppercase tracking-widest text-[#ff4fa3] logo-font border border-pink-100 bg-white px-3 py-1 rounded-full shadow-sm">Featured Read</span>
           </div>
 
           <div className="bg-white border border-slate-100 rounded-[44px] p-6 md:p-8 shadow-sm grid gap-8 lg:grid-cols-[1.2fr_1fr] items-center hover:shadow-md transition-shadow group">
@@ -193,7 +193,7 @@ export default function BlogHubPage() {
 
             {/* Featured Info */}
             <div className="flex flex-col items-start gap-4 text-left">
-              <span className="rounded bg-[#ff4fa3]/5 px-3 py-1 text-[9px] font-black uppercase tracking-widest text-[#ff4fa3]">
+              <span className="rounded bg-[#ff4fa3]/5 px-3 py-1 text-[10px] font-black uppercase tracking-widest text-[#ff4fa3]">
                 {featuredPost.category}
               </span>
               <h2 className="text-xl md:text-3xl font-black uppercase tracking-tight text-[#1b1533] logo-font leading-tight">
@@ -204,7 +204,7 @@ export default function BlogHubPage() {
               </p>
 
               {/* Author and read time */}
-              <div className="flex flex-wrap items-center gap-4 text-[10px] font-bold text-slate-400 border-b border-slate-100 pb-4 w-full">
+              <div className="flex flex-wrap items-center gap-4 text-[12px] font-bold text-slate-400 border-b border-slate-100 pb-4 w-full">
                 <span className="flex items-center gap-1"><Calendar className="h-3.5 w-3.5 text-[#ff4fa3]" /> {featuredPost.date}</span>
                 <span className="flex items-center gap-1"><Clock className="h-3.5 w-3.5 text-[#ff4fa3]" /> {featuredPost.time}</span>
                 <span className="flex items-center gap-1"><User className="h-3.5 w-3.5 text-[#ff4fa3]" /> Cultivation Team</span>
@@ -237,7 +237,7 @@ export default function BlogHubPage() {
                 <button
                   key={cat}
                   onClick={() => setActiveCategory(cat)}
-                  className={`rounded-2xl px-4 py-2.5 text-[11px] font-black uppercase tracking-wider logo-font transition-all duration-200 border cursor-pointer shrink-0 ${
+                  className={`rounded-2xl px-4 py-2.5 text-[12px] font-black uppercase tracking-wider logo-font transition-all duration-200 border cursor-pointer shrink-0 ${
                     activeCategory === cat
                       ? 'bg-[#ff4fa3] border-[#ff4fa3] text-white shadow-md shadow-pink-100'
                       : 'bg-white border-slate-200 text-slate-700 hover:border-[#ff4fa3] hover:text-[#ff4fa3]'
@@ -278,15 +278,15 @@ export default function BlogHubPage() {
                   </div>
 
                   <div className="space-y-2 w-full">
-                    <span className="inline-block rounded bg-[#ff4fa3]/5 px-2.5 py-0.5 text-[8.5px] font-bold uppercase tracking-widest text-[#ff4fa3]">
+                    <span className="inline-block rounded bg-[#ff4fa3]/5 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-widest text-[#ff4fa3]">
                       {post.category}
                     </span>
                     <h3 className="text-base font-black uppercase text-[#1b1533] logo-font leading-snug line-clamp-2 group-hover:text-[#ff4fa3] transition-colors">{post.title}</h3>
-                    <p className="text-[11px] font-semibold leading-relaxed text-slate-400 line-clamp-3">{post.desc}</p>
+                    <p className="text-[12px] font-semibold leading-relaxed text-slate-400 line-clamp-3">{post.desc}</p>
                   </div>
 
                   {/* Reading details and CTA */}
-                  <div className="border-t border-slate-100 pt-4 mt-auto w-full flex items-center justify-between text-[9px] font-bold text-slate-400">
+                  <div className="border-t border-slate-100 pt-4 mt-auto w-full flex items-center justify-between text-[12px] font-bold text-slate-400">
                     <div className="flex gap-2">
                       <span>{post.date}</span>
                       <span>•</span>
@@ -294,7 +294,7 @@ export default function BlogHubPage() {
                     </div>
                     <a 
                       href={`/blog/${post.slug}`}
-                      className="text-[9px] font-black uppercase tracking-wider text-[#ff4fa3] hover:underline logo-font flex items-center gap-1"
+                      className="text-[12px] font-black uppercase tracking-wider text-[#ff4fa3] hover:underline logo-font flex items-center gap-1"
                     >
                       Read Guide <ChevronRight className="h-3 w-3 stroke-[2.5]" />
                     </a>
@@ -352,7 +352,7 @@ export default function BlogHubPage() {
               <Award className="h-4.5 w-4.5 stroke-[2.2]" />
             </div>
             <h4 className="text-xs font-black uppercase text-[#1b1533] logo-font">Clinical Quality Standards</h4>
-            <p className="text-[10px] text-slate-400 leading-relaxed font-semibold">
+            <p className="text-[12px] text-slate-400 leading-relaxed font-semibold">
               Our clinical research and wellness guides are cross-referenced with medical studies to assure complete dosage safety, clean genetic cultivation, and pure biological flushes.
             </p>
           </div>
@@ -361,8 +361,8 @@ export default function BlogHubPage() {
           <div className="border border-pink-100 bg-[#fffdfd] rounded-[28px] p-5 flex items-start gap-3.5 shadow-sm text-left">
             <ShieldCheck className="h-5.5 w-5.5 text-emerald-500 shrink-0 mt-0.5" />
             <div>
-              <b className="block text-[10px] font-black text-[#1b1533] uppercase logo-font">100% Insured Deliveries</b>
-              <p className="text-[9.5px] text-slate-400 mt-1 font-semibold leading-relaxed">
+              <b className="block text-[12px] font-black text-[#1b1533] uppercase logo-font">100% Insured Deliveries</b>
+              <p className="text-[12px] text-slate-400 mt-1 font-semibold leading-relaxed">
                 Enjoy guaranteed scent-free envelopes Canada-wide. Fully insured transit protection.
               </p>
             </div>

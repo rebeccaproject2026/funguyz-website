@@ -5,20 +5,20 @@ import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { 
   Mail, 
-  Phone, 
   MapPin, 
   Clock, 
   Sparkles, 
   Send, 
   CheckCircle2, 
-  ShieldCheck,
-  MessageSquare
+  ShieldCheck
 } from 'lucide-react';
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
+    phone: '',
+    category: 'Product',
     subject: '',
     message: ''
   });
@@ -28,7 +28,7 @@ export default function ContactPage() {
     e.preventDefault();
     if (formData.name && formData.email && formData.message) {
       setSubmitted(true);
-      setFormData({ name: '', email: '', subject: '', message: '' });
+      setFormData({ name: '', email: '', phone: '', category: 'Product', subject: '', message: '' });
       setTimeout(() => setSubmitted(false), 5000);
     }
   };
@@ -43,7 +43,7 @@ export default function ContactPage() {
         <div className="absolute right-[5%] bottom-[5%] w-[300px] h-[300px] rounded-full bg-[#e0f2fe]/40 blur-[80px] pointer-events-none" />
         
         <div className="mx-auto max-w-3xl relative z-10 flex flex-col items-center gap-3">
-          <div className="inline-flex items-center gap-1.5 rounded-full bg-[#ff4fa3]/5 px-3.5 py-1.5 text-[9px] font-bold uppercase tracking-widest text-[#ff4fa3]">
+          <div className="inline-flex items-center gap-1.5 rounded-full bg-[#ff4fa3]/5 px-3.5 py-1.5 text-[10px] font-bold uppercase tracking-widest text-[#ff4fa3]">
             <Sparkles className="h-3 w-3" /> Customer Support Center
           </div>
           <h1 className="text-4xl md:text-5xl font-black tracking-tight text-[#1b1533] uppercase logo-font">
@@ -70,11 +70,11 @@ export default function ContactPage() {
           {/* Left Column: Intake Contact Form */}
           <div className="bg-white border border-slate-100 rounded-[32px] p-6 md:p-8 shadow-sm">
             <h2 className="text-xl font-black text-[#1b1533] uppercase logo-font mb-2">Send Us A Message</h2>
-            <p className="text-slate-400 text-[11px] font-semibold uppercase tracking-wider mb-6">We answer all inquiries within 4 hours</p>
+            <p className="text-slate-400 text-[12px] font-semibold uppercase tracking-wider mb-6">We answer all inquiries within 4 hours</p>
 
             <form onSubmit={handleSubmit} className="space-y-5">
               <div className="grid gap-5 sm:grid-cols-2">
-                <label className="block text-[10px] font-black uppercase tracking-wider text-slate-400">
+                <label className="block text-[12px] font-black uppercase tracking-wider text-slate-400">
                   Your Name
                   <input 
                     type="text" 
@@ -85,7 +85,7 @@ export default function ContactPage() {
                     className="mt-1.5 w-full rounded-xl border border-slate-200 px-3.5 py-2.5 text-xs font-semibold outline-none focus:border-[#ff4fa3] focus:ring-4 focus:ring-pink-50/50"
                   />
                 </label>
-                <label className="block text-[10px] font-black uppercase tracking-wider text-slate-400">
+                <label className="block text-[12px] font-black uppercase tracking-wider text-slate-400">
                   Email Address
                   <input 
                     type="email" 
@@ -98,7 +98,34 @@ export default function ContactPage() {
                 </label>
               </div>
 
-              <label className="block text-[10px] font-black uppercase tracking-wider text-slate-400">
+              <div className="grid gap-5 sm:grid-cols-2">
+                <label className="block text-[12px] font-black uppercase tracking-wider text-slate-400">
+                  Phone Number
+                  <input 
+                    type="tel" 
+                    value={formData.phone}
+                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                    placeholder="e.g. +1 (416) 555-0199"
+                    className="mt-1.5 w-full rounded-xl border border-slate-200 px-3.5 py-2.5 text-xs font-semibold outline-none focus:border-[#ff4fa3] focus:ring-4 focus:ring-pink-50/50 bg-white"
+                  />
+                </label>
+                <label className="block text-[12px] font-black uppercase tracking-wider text-slate-400">
+                  Support Category
+                  <select 
+                    value={formData.category}
+                    onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+                    className="mt-1.5 w-full rounded-xl border border-slate-200 px-3.5 py-2.5 text-xs font-semibold outline-none focus:border-[#ff4fa3] focus:ring-4 focus:ring-pink-50/50 bg-white"
+                  >
+                    <option value="Product">Product Question</option>
+                    <option value="Checkout">Checkout Help</option>
+                    <option value="Payment">Payment & E-Transfer</option>
+                    <option value="Shipping">Shipping & Tracking</option>
+                    <option value="Other">Other Inquiry</option>
+                  </select>
+                </label>
+              </div>
+
+              <label className="block text-[12px] font-black uppercase tracking-wider text-slate-400">
                 Subject
                 <input 
                   type="text" 
@@ -109,7 +136,7 @@ export default function ContactPage() {
                 />
               </label>
 
-              <label className="block text-[10px] font-black uppercase tracking-wider text-slate-400">
+              <label className="block text-[12px] font-black uppercase tracking-wider text-slate-400">
                 Detailed Message
                 <textarea 
                   required
@@ -144,30 +171,22 @@ export default function ContactPage() {
                     <Mail className="h-5 w-5" />
                   </div>
                   <div>
-                    <span className="block text-[9px] font-black text-slate-400 uppercase tracking-widest">Email Support</span>
+                    <span className="block text-[12px] font-black text-slate-400 uppercase tracking-widest">Email Support</span>
                     <a href="mailto:hello@funguyz.ca" className="text-sm font-black text-[#1b1533] hover:text-[#ff4fa3] logo-font mt-0.5 block">hello@funguyz.ca</a>
                   </div>
                 </div>
 
-                {/* Telephone */}
-                <div className="flex items-start gap-4">
-                  <div className="h-10 w-10 rounded-xl bg-purple-50 flex items-center justify-center text-purple-500 shrink-0">
-                    <Phone className="h-5 w-5" />
-                  </div>
-                  <div>
-                    <span className="block text-[9px] font-black text-slate-400 uppercase tracking-widest">Toll Free Help desk</span>
-                    <strong className="text-sm font-black text-[#1b1533] logo-font mt-0.5 block">+1 (888) 123-4567</strong>
-                  </div>
-                </div>
-
-                {/* Active hours */}
                 <div className="flex items-start gap-4">
                   <div className="h-10 w-10 rounded-xl bg-indigo-50 flex items-center justify-center text-indigo-500 shrink-0">
                     <Clock className="h-5 w-5" />
                   </div>
                   <div>
-                    <span className="block text-[9px] font-black text-slate-400 uppercase tracking-widest">Support Timings</span>
-                    <strong className="text-xs font-semibold text-slate-600 mt-0.5 block">Mon - Sun: 9AM - 9PM EST</strong>
+                    <span className="block text-[12px] font-black text-slate-400 uppercase tracking-widest">Support Timings</span>
+                    <div className="flex flex-col gap-1 text-[12px] leading-relaxed text-slate-600 mt-0.5 font-semibold">
+                      <span>10am-10pm Mon-Thr</span>
+                      <span>10am-11pm fri-sat</span>
+                      <span>11am - 10pm sun</span>
+                    </div>
                   </div>
                 </div>
 
@@ -177,36 +196,11 @@ export default function ContactPage() {
                     <MapPin className="h-5 w-5" />
                   </div>
                   <div>
-                    <span className="block text-[9px] font-black text-slate-400 uppercase tracking-widest">Dispensary Hub</span>
+                    <span className="block text-[12px] font-black text-slate-400 uppercase tracking-widest">Dispensary Hub</span>
                     <strong className="text-xs font-semibold text-slate-600 mt-0.5 block">Toronto & Ottawa Metros, Canada</strong>
                   </div>
                 </div>
               </div>
-            </div>
-
-            {/* Live Chat Support Card */}
-            <div className="bg-gradient-to-tr from-[#fffbf8] to-[#fff5f0] border border-pink-100/60 rounded-[32px] p-6 shadow-sm flex items-center justify-between gap-6 group hover:shadow-md transition-shadow">
-              <div className="flex items-start gap-4 text-left">
-                <div className="h-10 w-10 rounded-xl bg-white border border-pink-100 flex items-center justify-center text-[#ff4fa3] shrink-0 mt-0.5 relative">
-                  <MessageSquare className="h-5 w-5 stroke-[2.2]" />
-                  <span className="absolute -top-1 -right-1 flex h-3 w-3">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                    <span className="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
-                  </span>
-                </div>
-                <div>
-                  <b className="block text-xs font-black text-[#1b1533] uppercase logo-font">Live Chat Assistance</b>
-                  <p className="text-[10px] text-slate-400 mt-1 font-semibold leading-relaxed">
-                    Chat live with a mycological wellness consultant. Real-time guidance on microdose routines, product selection, and shipping updates.
-                  </p>
-                </div>
-              </div>
-              <button 
-                onClick={() => alert('Opening live chat container... Our specialists are online!')}
-                className="rounded-2xl bg-[#ff4fa3] text-white border border-[#ff4fa3] py-3.5 px-6 text-xs font-black uppercase tracking-wider hover:bg-black hover:text-[#ff4fa3] hover:border-black transition-all duration-200 cursor-pointer logo-font shrink-0"
-              >
-                Chat Now
-              </button>
             </div>
 
             {/* Safety Assurance Banner */}
@@ -216,7 +210,7 @@ export default function ContactPage() {
               </div>
               <div>
                 <b className="block text-xs font-black text-[#1b1533] uppercase logo-font">100% Secure & Anonymous</b>
-                <p className="text-[10px] text-slate-400 mt-1 font-semibold leading-relaxed">
+                <p className="text-[12px] text-slate-400 mt-1 font-semibold leading-relaxed">
                   We use encrypted email channels and isolated servers to guarantee customer details are completely safe and wiped periodically. We guarantee safe, unmarked cardboard drop-offs Canada-wide.
                 </p>
               </div>

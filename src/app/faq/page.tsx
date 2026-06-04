@@ -180,7 +180,7 @@ export default function FAQPage() {
           <div className="flex flex-col items-start text-left gap-4">
             
             {/* Breadcrumb */}
-            <div className="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-slate-400 logo-font leading-none">
+            <div className="flex items-center gap-1.5 text-[12px] font-black uppercase tracking-widest text-slate-400 logo-font leading-none">
               <a href="/" className="hover:text-[#ff4fa3] transition-colors">Home</a>
               <span>&gt;</span>
               <span className="text-slate-600">FAQ</span>
@@ -188,7 +188,7 @@ export default function FAQPage() {
 
             {/* Title */}
             <div className="space-y-1">
-              <span className="text-[10px] font-black uppercase tracking-widest text-[#ff4fa3] logo-font">Support Database</span>
+              <span className="text-[12px] font-black uppercase tracking-widest text-[#ff4fa3] logo-font">Support Database</span>
               <h1 className="text-3xl md:text-5xl font-black text-[#1b1533] uppercase tracking-tight logo-font leading-none">
                 Frequently Asked <br />
                 <span className="text-[#ff4fa3]">Questions</span>
@@ -219,10 +219,10 @@ export default function FAQPage() {
                 💡
               </div>
               <h3 className="text-sm font-black uppercase text-[#1b1533] logo-font">Need Quick Help?</h3>
-              <p className="text-[10.5px] font-semibold text-slate-400 leading-normal">
+              <p className="text-[12px] font-semibold text-slate-400 leading-normal">
                 Use our dynamic search filters below to find detailed descriptions of active alkaloid test reports, payment passwords, and shipment security.
               </p>
-              <div className="flex items-center gap-1.5 text-[9px] font-black uppercase text-[#ff4fa3] tracking-widest logo-font pt-2 border-t border-slate-100">
+              <div className="flex items-center gap-1.5 text-[12px] font-black uppercase text-[#ff4fa3] tracking-widest logo-font pt-2 border-t border-slate-100">
                 <ShieldCheck className="h-3.5 w-3.5" /> 100% Encrypted Database
               </div>
             </div>
@@ -251,7 +251,7 @@ export default function FAQPage() {
             {searchQuery && (
               <button 
                 onClick={() => setSearchQuery('')}
-                className="text-[10px] font-black uppercase text-slate-400 hover:text-[#ff4fa3] logo-font px-2"
+                className="text-[12px] font-black uppercase text-slate-400 hover:text-[#ff4fa3] logo-font px-2"
               >
                 Clear
               </button>
@@ -259,7 +259,7 @@ export default function FAQPage() {
           </div>
 
           {/* Popular Shortcuts */}
-          <div className="flex flex-wrap items-center justify-center gap-2 mt-4 text-[10px] font-bold text-slate-400">
+          <div className="flex flex-wrap items-center justify-center gap-2 mt-4 text-[12px] font-bold text-slate-400">
             <span>Try searching:</span>
             {POPULAR_QUESTIONS.map((q, idx) => (
               <button
@@ -302,7 +302,7 @@ export default function FAQPage() {
         {/* Dynamic Search Header */}
         {searchQuery && (
           <div className="text-center mb-8">
-            <span className="text-[10px] font-black uppercase tracking-widest text-[#ff4fa3] logo-font">Search Results</span>
+            <span className="text-[12px] font-black uppercase tracking-widest text-[#ff4fa3] logo-font">Search Results</span>
             <h3 className="text-sm font-black uppercase text-slate-500 logo-font mt-1">
               Found {filteredFAQs.length} matching questions for "{searchQuery}"
             </h3>
@@ -314,7 +314,7 @@ export default function FAQPage() {
           <div className="bg-white border border-slate-100 rounded-[36px] p-6 md:p-8 shadow-sm space-y-4">
             <div className="flex items-center gap-2 border-b border-slate-100/50 pb-4 mb-4">
               <HelpCircle className="h-4.5 w-4.5 text-[#ff4fa3] shrink-0" />
-              <span className="text-[10px] font-black uppercase tracking-widest text-slate-400 logo-font">
+              <span className="text-[12px] font-black uppercase tracking-widest text-slate-400 logo-font">
                 {searchQuery ? 'Matching Search' : `${activeCategory} Category`} Frequently Asked
               </span>
             </div>
@@ -370,7 +370,7 @@ export default function FAQPage() {
               </div>
               <div>
                 <b className="block text-xs font-black text-[#1b1533] uppercase logo-font">Still Need Assistance?</b>
-                <p className="text-[10px] text-slate-400 mt-1 font-semibold leading-relaxed">
+                <p className="text-[12px] text-slate-400 mt-1 font-semibold leading-relaxed">
                   Our dedicated mycological support specialists are online 7 days a week to guide your dosage plans, tracking code updates, and billing confirmations.
                 </p>
               </div>

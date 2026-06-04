@@ -84,7 +84,7 @@ export default function ShopPage() {
         <div className="absolute right-[5%] bottom-[5%] w-[300px] h-[300px] rounded-full bg-[#e0f2fe]/40 blur-[80px] pointer-events-none" />
         
         <div className="mx-auto max-w-3xl relative z-10 flex flex-col items-center gap-3">
-          <div className="inline-flex items-center gap-1.5 rounded-full bg-[#ff4fa3]/5 px-3.5 py-1.5 text-[9px] font-bold uppercase tracking-widest text-[#ff4fa3]">
+          <div className="inline-flex items-center gap-1.5 rounded-full bg-[#ff4fa3]/5 px-3.5 py-1.5 text-[10px] font-bold uppercase tracking-widest text-[#ff4fa3]">
             <Sparkles className="h-3 w-3" /> Canada's #1 Premium Dispensary
           </div>
           <h1 className="text-4xl md:text-5xl font-black tracking-tight text-[#1b1533] uppercase">
@@ -167,7 +167,7 @@ export default function ShopPage() {
               <div className="p-5 border-b border-pink-100/40 bg-white flex items-center justify-between shrink-0">
                 <div className="text-left">
                   <h2 className="text-sm font-black uppercase tracking-wider text-[#1b1533] logo-font">Filter Formulations</h2>
-                  <p className="text-[10px] font-semibold text-slate-400 mt-0.5">Refine catalog by product type</p>
+                  <p className="text-[12px] font-semibold text-slate-400 mt-0.5">Refine catalog by product type</p>
                 </div>
                 <button 
                   onClick={() => setIsFilterPanelOpen(false)}
@@ -181,7 +181,7 @@ export default function ShopPage() {
               <div className="flex-1 overflow-y-auto p-5 space-y-6 scrollbar-none">
                 {/* Category Selection */}
                 <div className="flex flex-col gap-2.5 text-left">
-                  <span className="text-[10px] font-black uppercase tracking-widest text-[#ff4fa3] border-b border-pink-100/50 pb-1.5 block">Category</span>
+                  <span className="text-[12px] font-black uppercase tracking-widest text-[#ff4fa3] border-b border-pink-100/50 pb-1.5 block">Category</span>
                   <div className="flex flex-col gap-1.5">
                     {categoryTabs.map(tab => {
                       const isActive = selectedCategory === tab;
@@ -211,13 +211,13 @@ export default function ShopPage() {
 
                 {/* Subcategories Selection */}
                 <div className="flex flex-col gap-2.5 text-left">
-                  <span className="text-[10px] font-black uppercase tracking-widest text-[#ff4fa3] border-b border-pink-100/50 pb-1.5 block">Formulation</span>
+                  <span className="text-[12px] font-black uppercase tracking-widest text-[#ff4fa3] border-b border-pink-100/50 pb-1.5 block">Formulation</span>
                   
                   {selectedCategory === 'All' || selectedCategory === 'Best Sellers' ? (
                     <div className="space-y-4">
                       {['Magic Mushrooms', 'Edibles', 'Capsules', 'Microdose'].map(cat => (
                         <div key={cat} className="flex flex-col gap-2 text-left">
-                          <span className="text-[9px] font-black uppercase tracking-wider text-slate-400">{cat}</span>
+                          <span className="text-[12px] font-black uppercase tracking-wider text-slate-400">{cat}</span>
                           <div className="flex flex-wrap gap-1.5">
                             {getSubcategories(cat).map(sub => {
                               const isActive = subcategoryFilter.toLowerCase() === sub.toLowerCase();
@@ -239,7 +239,7 @@ export default function ShopPage() {
                                       }
                                     }
                                   }}
-                                  className={`text-[10px] font-bold px-2.5 py-1.5 rounded-lg border transition-all cursor-pointer ${
+                                  className={`text-[12px] font-bold px-2.5 py-1.5 rounded-lg border transition-all cursor-pointer ${
                                     isActive
                                       ? 'bg-[#ff4fa3] border-[#ff4fa3] text-white shadow-sm'
                                       : 'bg-white border-slate-200/60 text-slate-500 hover:border-pink-200 hover:text-[#ff4fa3] hover:bg-pink-50/20'
@@ -255,7 +255,7 @@ export default function ShopPage() {
                     </div>
                   ) : (
                     <div className="flex flex-col gap-2 text-left">
-                      <span className="text-[9px] font-black uppercase tracking-wider text-slate-400">{selectedCategory} Formulations</span>
+                      <span className="text-[12px] font-black uppercase tracking-wider text-slate-400">{selectedCategory} Formulations</span>
                       <div className="flex flex-wrap gap-1.5">
                         {getSubcategories(selectedCategory).map(sub => {
                           const isActive = subcategoryFilter.toLowerCase() === sub.toLowerCase();
@@ -277,7 +277,7 @@ export default function ShopPage() {
                                   }
                                 }
                               }}
-                              className={`text-[10px] font-bold px-2.5 py-1.5 rounded-lg border transition-all cursor-pointer ${
+                              className={`text-[12px] font-bold px-2.5 py-1.5 rounded-lg border transition-all cursor-pointer ${
                                 isActive
                                   ? 'bg-[#ff4fa3] border-[#ff4fa3] text-white shadow-sm'
                                   : 'bg-white border-slate-200/60 text-slate-500 hover:border-pink-200 hover:text-[#ff4fa3] hover:bg-pink-50/20'

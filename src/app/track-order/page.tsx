@@ -91,7 +91,7 @@ export default function TrackOrderPage() {
           <div className="flex flex-col items-start text-left gap-4">
             
             {/* Breadcrumb */}
-            <div className="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-slate-400 logo-font leading-none">
+            <div className="flex items-center gap-1.5 text-[12px] font-black uppercase tracking-widest text-slate-400 logo-font leading-none">
               <a href="/" className="hover:text-[#ff4fa3] transition-colors">Home</a>
               <span>&gt;</span>
               <span className="text-slate-600">Track Order</span>
@@ -99,7 +99,7 @@ export default function TrackOrderPage() {
 
             {/* Title */}
             <div className="space-y-1">
-              <span className="text-[10px] font-black uppercase tracking-widest text-[#ff4fa3] logo-font">Real-Time Logistics</span>
+              <span className="text-[12px] font-black uppercase tracking-widest text-[#ff4fa3] logo-font">Real-Time Logistics</span>
               <h1 className="text-3xl md:text-5xl font-black text-[#1b1533] uppercase tracking-tight logo-font leading-none">
                 Track Your <br />
                 <span className="text-[#ff4fa3]">Order Live</span>
@@ -126,7 +126,7 @@ export default function TrackOrderPage() {
             <div className="relative bg-white/70 backdrop-blur-md border border-pink-100/60 rounded-[40px] p-6 shadow-[0_24px_70px_rgba(255,79,163,0.12)] max-w-xs text-left space-y-3">
               <span className="text-2xl">📦</span>
               <h3 className="text-xs font-black uppercase text-[#1b1533] logo-font">Discreet Courier Seals</h3>
-              <p className="text-[10px] font-semibold text-slate-400 leading-normal">
+              <p className="text-[12px] font-semibold text-slate-400 leading-normal">
                 Every transaction includes insured Canada Post Express Delivery tracking. Double-sealed, completely scent-free generic envelope shipping.
               </p>
             </div>
@@ -140,7 +140,7 @@ export default function TrackOrderPage() {
         
         <div className="bg-white border border-slate-100 rounded-[36px] p-6 md:p-10 shadow-sm text-center space-y-6">
           <div className="max-w-md mx-auto space-y-2">
-            <span className="text-[9px] font-black uppercase tracking-widest text-[#ff4fa3] logo-font">Enter Code</span>
+            <span className="text-[12px] font-black uppercase tracking-widest text-[#ff4fa3] logo-font">Enter Code</span>
             <h2 className="text-xl md:text-2xl font-black text-[#1b1533] uppercase logo-font">Logistics Tracking System</h2>
             <p className="text-xs text-slate-400 font-semibold leading-relaxed">Input your Order ID or tracking code (e.g. FG-10492) below to visualize your package shipment transit history.</p>
           </div>
@@ -166,7 +166,7 @@ export default function TrackOrderPage() {
           </form>
 
           {/* Quick Demo Trigger */}
-          <div className="text-[10px] font-semibold text-slate-400">
+          <div className="text-[12px] font-semibold text-slate-400">
             Don't have a tracking code yet? Click{' '}
             <button 
               onClick={handleDemoClick}
@@ -185,17 +185,17 @@ export default function TrackOrderPage() {
             {/* Timeline Header summary card */}
             <div className="flex flex-wrap items-center justify-between gap-4 border-b border-slate-100 pb-6">
               <div className="space-y-1">
-                <span className="text-[8px] font-black uppercase tracking-widest text-[#ff4fa3] logo-font">Ontario Dispatch Hub</span>
+                <span className="text-[12px] font-black uppercase tracking-widest text-[#ff4fa3] logo-font">Ontario Dispatch Hub</span>
                 <h3 className="text-base font-black uppercase text-[#1b1533] logo-font">Tracking ID: {trackingCode}</h3>
               </div>
               <div className="flex gap-4 items-center">
                 <div className="text-right">
-                  <span className="block text-[8px] font-black text-slate-400 uppercase tracking-widest leading-none">Est. Arrival</span>
+                  <span className="block text-[12px] font-black text-slate-400 uppercase tracking-widest leading-none">Est. Arrival</span>
                   <strong className="block text-xs font-black text-emerald-600 logo-font mt-1">Tomorrow (Express)</strong>
                 </div>
                 <div className="h-10 w-px bg-slate-100" />
                 <div>
-                  <span className="block text-[8px] font-black text-slate-400 uppercase tracking-widest leading-none">Status</span>
+                  <span className="block text-[12px] font-black text-slate-400 uppercase tracking-widest leading-none">Status</span>
                   <strong className="block text-xs font-black text-[#ff4fa3] logo-font mt-1 uppercase tracking-wide">In Transit</strong>
                 </div>
               </div>
@@ -225,13 +225,13 @@ export default function TrackOrderPage() {
                         }`}>
                           {step.title}
                         </h4>
-                        <span className={`text-[10px] font-bold ${
+                        <span className={`text-[12px] font-bold ${
                           isPending ? 'text-slate-400' : 'text-[#ff4fa3]'
                         }`}>
                           {step.time}
                         </span>
                       </div>
-                      <p className="text-[11px] font-semibold leading-relaxed text-slate-400 max-w-xl">
+                      <p className="text-[12px] font-semibold leading-relaxed text-slate-400 max-w-xl">
                         {step.desc}
                       </p>
                     </div>
@@ -250,7 +250,7 @@ export default function TrackOrderPage() {
         <div className="mx-auto max-w-4xl space-y-10 text-center">
           
           <div className="space-y-2">
-            <span className="text-[10px] font-black uppercase tracking-widest text-[#ff4fa3] logo-font leading-none">Tracking Help</span>
+            <span className="text-[12px] font-black uppercase tracking-widest text-[#ff4fa3] logo-font leading-none">Tracking Help</span>
             <h2 className="text-2xl md:text-3xl font-black text-[#1b1533] uppercase logo-font">Shipping & Tracking FAQs</h2>
             <p className="text-xs text-slate-400 max-w-md mx-auto">Get answers to the most common delivery tracking, cleanroom dispatch, and discrete transit questions.</p>
           </div>
@@ -292,7 +292,7 @@ export default function TrackOrderPage() {
       <section className="bg-[#fff8f3] py-16 px-4 md:px-8">
         <div className="mx-auto max-w-7xl text-center space-y-8">
           <div className="space-y-2">
-            <span className="text-[10px] font-black uppercase tracking-widest text-[#ff4fa3] logo-font">Support Desk</span>
+            <span className="text-[12px] font-black uppercase tracking-widest text-[#ff4fa3] logo-font">Support Desk</span>
             <h3 className="text-2xl font-black text-[#1b1533] uppercase logo-font">Related Support Links</h3>
           </div>
 
@@ -307,9 +307,9 @@ export default function TrackOrderPage() {
                   {link.icon}
                 </div>
                 <div className="space-y-1">
-                  <h4 className="text-[8px] font-black uppercase text-slate-400 logo-font leading-none">Support</h4>
+                  <h4 className="text-[12px] font-black uppercase text-slate-400 logo-font leading-none">Support</h4>
                   <h3 className="text-sm font-black text-[#1b1533] uppercase logo-font leading-tight">{link.name}</h3>
-                  <p className="text-[10px] font-semibold text-slate-400 leading-relaxed line-clamp-3">{link.desc}</p>
+                  <p className="text-[12px] font-semibold text-slate-400 leading-relaxed line-clamp-3">{link.desc}</p>
                 </div>
                 <a 
                   href={link.url}
