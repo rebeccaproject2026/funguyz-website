@@ -16,10 +16,12 @@ export function LaunchPopup() {
 
   const timerRef = useRef<NodeJS.Timeout | null>(null);
 
+  if (pathname === '/checkout/') return null;
+
   useEffect(() => {
     const dismissedAtStr = localStorage.getItem('funguyz_launch_popup_dismissed_at');
     const subbed = localStorage.getItem('funguyz_launch_popup_submitted') === 'true';
-    
+
     if (subbed) {
       setSubmitted(true);
       setIsOpen(false);
@@ -119,7 +121,8 @@ export function LaunchPopup() {
     if (pathname !== '/') return null;
     return (
       <div className="fixed bottom-16 md:bottom-0 left-0 right-0 z-[998] bg-[#0c0a1a]/95 backdrop-blur-md border-t border-pink-500/20 px-4 py-3 sm:px-6 sm:py-3.5 flex flex-col md:flex-row items-center justify-between gap-3 text-white shadow-[0_-8px_30px_rgba(0,0,0,0.6)] animate-slide-in-up select-none font-sans">
-        <style dangerouslySetInnerHTML={{__html: `
+        <style dangerouslySetInnerHTML={{
+          __html: `
           main {
             padding-bottom: 60px !important;
           }
@@ -162,7 +165,9 @@ export function LaunchPopup() {
   return (
     <div className="fixed inset-0 z-[99999] flex items-center justify-center p-3 sm:p-4 bg-slate-950/70 backdrop-blur-md transition-opacity duration-300 select-none font-sans">
       <div className="relative w-full max-w-[490px] max-h-[96vh] overflow-y-auto scrollbar-none rounded-[28px] bg-[#0c0a1a]/98 text-white border border-[#ff4fa3]/30 shadow-[0_0_80px_rgba(255,79,163,0.15),0_0_120px_rgba(123,92,255,0.1)] p-3.5 sm:p-6 flex flex-col items-center text-center gap-2 sm:gap-4 animate-scale-up">
-        
+        {/* Soft Radial Ambient Lighting */}
+        <div className="absolute -top-32 left-1/2 -translate-x-1/2 w-80 h-80 rounded-full bg-[#ff4fa3]/15 blur-[60px] pointer-events-none" />
+        <div className="absolute -bottom-32 left-1/2 -translate-x-1/2 w-80 h-80 rounded-full bg-[#7b5cff]/10 blur-[60px] pointer-events-none" />
 
         {/* Close button top-right */}
         <button

@@ -36,6 +36,31 @@ export function Footer() {
             Your trusted Canadian source for premium magic mushrooms, edibles,
             capsules & microdose products. Quality, purity & experience.
           </p>
+          {/* <div className="flex items-center gap-4 mt-2">
+            <a href="#instagram" className="text-white/60 hover:text-white transition-colors duration-200">
+              <svg className="h-5 w-5 fill-none stroke-current" strokeWidth="2.2" viewBox="0 0 24 24">
+                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+              </svg>
+            </a>
+            <a href="#facebook" className="text-white/60 hover:text-white transition-colors duration-200">
+              <svg className="h-5 w-5 fill-none stroke-current" strokeWidth="2.2" viewBox="0 0 24 24">
+                <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+              </svg>
+            </a>
+            <a href="#tiktok" className="text-white/60 hover:text-white transition-colors duration-200">
+              <svg className="h-5 w-5 fill-none stroke-current" strokeWidth="2.2" viewBox="0 0 24 24">
+                <path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"></path>
+              </svg>
+            </a>
+            <a href="#twitter" className="text-white/60 hover:text-white transition-colors duration-200">
+              <svg className="h-4.5 w-4.5 fill-none stroke-current" strokeWidth="2.2" viewBox="0 0 24 24">
+                <path d="M4 4l11.733 16h4.267l-11.733 -16z"></path>
+                <path d="M4 20l6.768 -6.768m2.46 -2.46l6.772 -6.772"></path>
+              </svg>
+            </a>
+          </div> */}
         </div>
 
         {/* Dynamic Columns */}
@@ -105,7 +130,7 @@ export function Footer() {
             </li>
             <li className="flex items-start gap-3">
               <MapPin className="h-4 w-4 text-[#2fdfff] shrink-0 mt-0.5" />
-              <div className="flex flex-col gap-1 text-[11px] leading-relaxed text-white/60">
+              <div className="flex flex-col gap-1 text-[11px] leading-relaxed text-white/60 whitespace-nowrap">
                 <span>24/7 Online Ordering</span>
                 <span>Delivery Available 9AM–11PM</span>
                 <span>7 Days A Week</span>
@@ -123,7 +148,7 @@ export function Footer() {
       {/* Footer Bottom Bar */}
       <div className="border-t border-white/5 pt-8 px-6 relative z-10">
         <div className="mx-auto max-w-7xl flex flex-col md:flex-row items-center justify-between gap-6 w-full text-center md:text-left">
-          
+
           {/* Copyright & Credentials Line (Left) */}
           <div className="flex flex-col sm:flex-row items-center gap-x-3 gap-y-1.5 text-xs font-semibold text-white/40">
             <span>© 2026 FunGuyz. All Rights Reserved.</span>
@@ -175,11 +200,11 @@ function SupportModal({ onClose }: SupportModalProps) {
   };
 
   return (
-    <div 
+    <div
       className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[9999] flex items-center justify-center p-4 animate-fade-in"
       onClick={onClose}
     >
-      <div 
+      <div
         className="relative w-full max-w-lg bg-[#1b1533] border border-purple-500/20 rounded-[32px] p-6 md:p-8 shadow-[0_24px_80px_rgba(123,92,255,0.15)] text-white max-h-[90vh] overflow-y-auto"
         onClick={(e) => e.stopPropagation()}
       >
@@ -219,8 +244,8 @@ function SupportModal({ onClose }: SupportModalProps) {
             <div className="grid gap-4.5 sm:grid-cols-2">
               <label className="block text-[11px] font-black uppercase tracking-wider text-white/50">
                 Your Name
-                <input 
-                  type="text" 
+                <input
+                  type="text"
                   required
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
@@ -230,8 +255,8 @@ function SupportModal({ onClose }: SupportModalProps) {
               </label>
               <label className="block text-[11px] font-black uppercase tracking-wider text-white/50">
                 Email Address
-                <input 
-                  type="email" 
+                <input
+                  type="email"
                   required
                   value={formData.email}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
@@ -244,8 +269,8 @@ function SupportModal({ onClose }: SupportModalProps) {
             <div className="grid gap-4.5 sm:grid-cols-2">
               <label className="block text-[11px] font-black uppercase tracking-wider text-white/50">
                 Phone Number
-                <input 
-                  type="tel" 
+                <input
+                  type="tel"
                   value={formData.phone}
                   onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                   placeholder="e.g. +1 (416) 555-0199"
@@ -254,7 +279,7 @@ function SupportModal({ onClose }: SupportModalProps) {
               </label>
               <label className="block text-[11px] font-black uppercase tracking-wider text-white/50">
                 Support Category
-                <select 
+                <select
                   value={formData.category}
                   onChange={(e) => setFormData({ ...formData, category: e.target.value })}
                   className="mt-1.5 w-full rounded-xl bg-white/5 border border-white/10 px-3.5 py-2.5 text-xs font-semibold text-white outline-none focus:border-[#ff4fa3] focus:bg-white/[0.07] transition-all"
@@ -270,8 +295,8 @@ function SupportModal({ onClose }: SupportModalProps) {
 
             <label className="block text-[11px] font-black uppercase tracking-wider text-white/50">
               Subject
-              <input 
-                type="text" 
+              <input
+                type="text"
                 required
                 value={formData.subject}
                 onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
@@ -282,7 +307,7 @@ function SupportModal({ onClose }: SupportModalProps) {
 
             <label className="block text-[11px] font-black uppercase tracking-wider text-white/50">
               Detailed Description
-              <textarea 
+              <textarea
                 required
                 rows={4}
                 value={formData.message}

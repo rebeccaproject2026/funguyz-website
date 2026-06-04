@@ -165,7 +165,7 @@ export default function ContactPage() {
               <h2 className="text-xl font-black text-[#1b1533] uppercase logo-font">Get In Touch</h2>
               
               <div className="space-y-5">
-                {/* Email */}
+                {/* Tracking Orders */}
                 <div className="flex items-start gap-4">
                   <div className="h-10 w-10 rounded-xl bg-pink-50 flex items-center justify-center text-[#ff4fa3] shrink-0">
                     <Mail className="h-5 w-5" />

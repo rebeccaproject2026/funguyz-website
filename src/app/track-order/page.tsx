@@ -4,16 +4,16 @@ import React, { useState } from 'react';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { Newsletter } from '@/components/Newsletter';
-import { 
-  Sparkles, 
-  Search, 
-  CheckCircle2, 
-  Clock, 
-  Package, 
-  Truck, 
-  MapPin, 
-  HelpCircle, 
-  ChevronDown, 
+import {
+  Sparkles,
+  Search,
+  CheckCircle2,
+  Clock,
+  Package,
+  Truck,
+  MapPin,
+  HelpCircle,
+  ChevronDown,
   ChevronUp,
   ArrowRight,
   ShieldCheck
@@ -84,12 +84,12 @@ export default function TrackOrderPage() {
       <section className="relative overflow-hidden bg-gradient-to-tr from-[#fffbf8] via-[#fffcfb] to-[#fff3ec] border-b border-purple-100/50 py-16 px-4 md:px-8 min-h-[350px] flex items-center">
         <div className="absolute left-[5%] top-[10%] w-[300px] h-[300px] rounded-full bg-[#ffe8db]/30 blur-[90px] pointer-events-none" />
         <div className="absolute right-[5%] bottom-[5%] w-[300px] h-[300px] rounded-full bg-[#e0f2fe]/40 blur-[90px] pointer-events-none" />
-        
+
         <div className="mx-auto max-w-7xl relative z-10 grid gap-10 md:grid-cols-[1.3fr_1fr] items-center w-full">
-          
+
           {/* Left Hero Block */}
           <div className="flex flex-col items-start text-left gap-4">
-            
+
             {/* Breadcrumb */}
             <div className="flex items-center gap-1.5 text-[12px] font-black uppercase tracking-widest text-slate-400 logo-font leading-none">
               <a href="/" className="hover:text-[#ff4fa3] transition-colors">Home</a>
@@ -111,7 +111,7 @@ export default function TrackOrderPage() {
               Enter your unique tracking code below to watch your secure, double vacuum-sealed package progress from Ontario cleanrooms directly to your door.
             </p>
 
-            <button 
+            <button
               onClick={() => document.getElementById('tracking-engine-section')?.scrollIntoView({ behavior: 'smooth' })}
               className="text-xs font-black uppercase tracking-wider text-[#ff4fa3] hover:text-black transition-colors duration-200 logo-font border-b-2 border-transparent hover:border-black pb-0.5"
             >
@@ -137,7 +137,7 @@ export default function TrackOrderPage() {
 
       {/* 2. Interactive Tracking Search Box */}
       <section id="tracking-engine-section" className="mx-auto max-w-4xl px-4 py-16 md:px-8">
-        
+
         <div className="bg-white border border-slate-100 rounded-[36px] p-6 md:p-10 shadow-sm text-center space-y-6">
           <div className="max-w-md mx-auto space-y-2">
             <span className="text-[12px] font-black uppercase tracking-widest text-[#ff4fa3] logo-font">Enter Code</span>
@@ -148,7 +148,7 @@ export default function TrackOrderPage() {
           <form onSubmit={handleTrackSubmit} className="max-w-md mx-auto flex flex-col sm:flex-row gap-3">
             <div className="flex-1 flex items-center gap-2.5 bg-[#fff8f3] border border-slate-200 rounded-2xl px-4 py-3.5 focus-within:border-[#ff4fa3] focus-within:bg-white transition-all">
               <Search className="h-4.5 w-4.5 text-slate-400 shrink-0" />
-              <input 
+              <input
                 type="text"
                 required
                 value={trackingCode}
@@ -168,7 +168,7 @@ export default function TrackOrderPage() {
           {/* Quick Demo Trigger */}
           <div className="text-[12px] font-semibold text-slate-400">
             Don't have a tracking code yet? Click{' '}
-            <button 
+            <button
               onClick={handleDemoClick}
               className="text-[#ff4fa3] hover:underline font-black cursor-pointer"
             >
@@ -181,7 +181,7 @@ export default function TrackOrderPage() {
         {/* 3. Interactive Timeline Progress Deck */}
         {isSearched && (
           <div className="mt-12 bg-white border border-slate-100 rounded-[36px] p-6 md:p-10 shadow-sm space-y-8 text-left animate-scale-up">
-            
+
             {/* Timeline Header summary card */}
             <div className="flex flex-wrap items-center justify-between gap-4 border-b border-slate-100 pb-6">
               <div className="space-y-1">
@@ -206,23 +206,21 @@ export default function TrackOrderPage() {
               {mockTimeline.map((step, idx) => {
                 const StepIcon = step.icon;
                 const isPending = step.time === 'Pending Delivery';
-                
+
                 return (
                   <div key={idx} className="relative">
                     {/* Ring dot icon container */}
-                    <div className={`absolute -left-[45px] top-0 h-8 w-8 rounded-full border flex items-center justify-center shadow-sm transition-colors ${
-                      isPending 
-                        ? 'bg-white border-slate-200 text-slate-400' 
+                    <div className={`absolute -left-[45px] top-0 h-8 w-8 rounded-full border flex items-center justify-center shadow-sm transition-colors ${isPending
+                        ? 'bg-white border-slate-200 text-slate-400'
                         : 'bg-[#ff4fa3] border-[#ff4fa3] text-white'
-                    }`}>
+                      }`}>
                       <StepIcon className="h-4 w-4 stroke-[2.2]" />
                     </div>
 
                     <div className="space-y-1 text-left">
                       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
-                        <h4 className={`text-xs md:text-sm font-black uppercase logo-font ${
-                          isPending ? 'text-slate-400' : 'text-[#1b1533]'
-                        }`}>
+                        <h4 className={`text-xs md:text-sm font-black uppercase logo-font ${isPending ? 'text-slate-400' : 'text-[#1b1533]'
+                          }`}>
                           {step.title}
                         </h4>
                         <span className={`text-[12px] font-bold ${
@@ -248,7 +246,7 @@ export default function TrackOrderPage() {
       {/* 4. Tracking FAQ Accordion */}
       <section className="bg-white border-t border-b border-purple-100/30 py-16 px-4 md:px-8">
         <div className="mx-auto max-w-4xl space-y-10 text-center">
-          
+
           <div className="space-y-2">
             <span className="text-[12px] font-black uppercase tracking-widest text-[#ff4fa3] logo-font leading-none">Tracking Help</span>
             <h2 className="text-2xl md:text-3xl font-black text-[#1b1533] uppercase logo-font">Shipping & Tracking FAQs</h2>
@@ -270,13 +268,11 @@ export default function TrackOrderPage() {
                   <strong className="text-xs md:text-sm font-black text-[#1b1533] uppercase logo-font group-hover:text-[#ff4fa3] transition-colors flex items-center gap-2.5">
                     <HelpCircle className="h-4.5 w-4.5 text-[#ff4fa3] shrink-0 stroke-[2.2]" /> {faq.q}
                   </strong>
-                  <ChevronDown className={`h-4.5 w-4.5 text-slate-400 group-hover:text-[#ff4fa3] transition-transform duration-300 shrink-0 stroke-[2.5] ${
-                    activeFaqIdx === idx ? 'rotate-180' : ''
-                  }`} />
+                  <ChevronDown className={`h-4.5 w-4.5 text-slate-400 group-hover:text-[#ff4fa3] transition-transform duration-300 shrink-0 stroke-[2.5] ${activeFaqIdx === idx ? 'rotate-180' : ''
+                    }`} />
                 </button>
-                <div className={`transition-all duration-300 overflow-hidden ${
-                  activeFaqIdx === idx ? 'max-h-[300px] opacity-100 mt-2' : 'max-h-0 opacity-0'
-                }`}>
+                <div className={`transition-all duration-300 overflow-hidden ${activeFaqIdx === idx ? 'max-h-[300px] opacity-100 mt-2' : 'max-h-0 opacity-0'
+                  }`}>
                   <p className="text-xs font-semibold leading-relaxed text-slate-500 pl-7 bg-white/40 p-3.5 rounded-xl border border-pink-50/20 shadow-inner">
                     {faq.a}
                   </p>
@@ -311,7 +307,7 @@ export default function TrackOrderPage() {
                   <h3 className="text-sm font-black text-[#1b1533] uppercase logo-font leading-tight">{link.name}</h3>
                   <p className="text-[12px] font-semibold text-slate-400 leading-relaxed line-clamp-3">{link.desc}</p>
                 </div>
-                <a 
+                <a
                   href={link.url}
                   className="w-full inline-flex items-center justify-center rounded-2xl bg-slate-50 text-slate-800 border border-slate-200/80 py-3 text-xs font-black uppercase tracking-wider group-hover:bg-[#ff4fa3] group-hover:text-white group-hover:border-[#ff4fa3] transition-all duration-200 cursor-pointer gap-1.5 logo-font"
                 >
