@@ -14,17 +14,21 @@ body {
   font-family: var(--font-poppins), sans-serif;
 }
 
-h1, h2, h3, h4, h5, h6, .font-display {
-  font-family: var(--font-fredoka), var(--font-outfit), sans-serif !important;
+h1, h2, h3, h4, h5, h6, .font-display, .font-fredoka {
+  font-family: var(--font-fredoka), sans-serif !important;
   letter-spacing: 0.02em !important;
 }
 
 .logo-font {
-  font-family: var(--font-fredoka), var(--font-outfit), sans-serif !important;
+  font-family: var(--font-fredoka), sans-serif !important;
 }
 
 .font-poppins {
   font-family: var(--font-poppins), sans-serif !important;
+}
+
+.font-outfit {
+  font-family: var(--font-outfit), sans-serif !important;
 }
 
 .glass {background:rgba(255,255,255,.75);backdrop-filter:blur(18px)}

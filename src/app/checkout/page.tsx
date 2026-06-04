@@ -19,7 +19,11 @@ import {
   Phone,
   Zap,
   Package,
-  DollarSign
+  DollarSign,
+  ChevronLeft,
+  ChevronRight,
+  Calendar,
+  X
 } from 'lucide-react';
 
 export default function CheckoutPage() {
@@ -40,6 +44,15 @@ export default function CheckoutPage() {
   const [isCompleted, setIsCompleted] = useState(false);
   const [completedOrder, setCompletedOrder] = useState<any>(null);
   const [errors, setErrors] = useState<string[]>([]);
+
+  // Scheduling Modal State
+  const [isScheduleModalOpen, setIsScheduleModalOpen] = useState(false);
+  const [selectedDate, setSelectedDate] = useState<Date>(new Date(2026, 5, 25)); // default June 25, 2026
+  const [selectedTimeSlot, setSelectedTimeSlot] = useState<string>('10:00 AM to 2:00 PM');
+  const [scheduleEmail, setScheduleEmail] = useState('');
+  const [schedulePhone, setSchedulePhone] = useState('');
+  const [scheduleError, setScheduleError] = useState('');
+  const [calendarMonth, setCalendarMonth] = useState<Date>(new Date(2026, 5, 1)); // default June 2026
 
   // Calculate pricing metrics
   const parsedSubtotal = subtotal;
@@ -64,13 +77,50 @@ export default function CheckoutPage() {
     if (!formData.city) activeErrors.push('City is required');
     if (!formData.postcode) activeErrors.push('Postal Code is required');
 
-    // e-Transfer and Cash payment methods require no card field validations
-
     if (activeErrors.length > 0) {
       setErrors(activeErrors);
       window.scrollTo({ top: 300, behavior: 'smooth' });
       return;
     }
+
+    setErrors([]);
+    setScheduleEmail(formData.email);
+    setSchedulePhone(formData.phone);
+    setScheduleError('');
+    setIsScheduleModalOpen(true);
+  };
+
+  const handleConfirmSchedule = () => {
+    const email = scheduleEmail.trim();
+    const phone = schedulePhone.trim();
+
+    if (!email || !phone) {
+      setScheduleError('Both Email and Phone Number are required.');
+      return;
+    }
+
+    const isEmailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    const isPhoneValid = /^[+]?[(]?[0-9]{3}[)]?[-s.]?[0-9]{3}[-s.]?[0-9]{4,6}$/.test(phone) || (phone.replace(/\D/g, '').length >= 10);
+
+    if (!isEmailValid) {
+      setScheduleError('Please enter a valid email address.');
+      return;
+    }
+
+    if (!isPhoneValid) {
+      setScheduleError('Please enter a valid phone number.');
+      return;
+    }
+
+    const minDate = new Date(2026, 5, 25);
+    const checkSelectedDate = new Date(selectedDate.getFullYear(), selectedDate.getMonth(), selectedDate.getDate());
+    if (checkSelectedDate < minDate) {
+      setScheduleError('Delivery is only available on or after June 25, 2026.');
+      return;
+    }
+
+    setScheduleError('');
+    setIsScheduleModalOpen(false);
 
     // Success order generation
     const trackingCode = `CX${Math.floor(100000000 + Math.random() * 900000000)}CA`;
@@ -80,13 +130,41 @@ export default function CheckoutPage() {
       trackingCode,
       grandTotal: `$${grandTotal.toFixed(2)}`,
       items: [...cartItems],
-      formData
+      formData: {
+        ...formData,
+        email: email,
+        phone: phone
+      },
+      deliveryDetails: {
+        date: selectedDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }),
+        timeSlot: selectedTimeSlot
+      }
     });
     
     setErrors([]);
     clearCart(); // Empty client e-commerce cart
     setIsCompleted(true);
     window.scrollTo({ top: 100, behavior: 'smooth' });
+  };
+
+  // Calendar Math Helpers
+  const getDaysInMonth = (year: number, month: number) => {
+    return new Date(year, month + 1, 0).getDate();
+  };
+
+  const getFirstDayOfMonth = (year: number, month: number) => {
+    return new Date(year, month, 1).getDay();
+  };
+
+  const handlePrevMonth = () => {
+    const prev = new Date(calendarMonth.getFullYear(), calendarMonth.getMonth() - 1, 1);
+    if (prev < new Date(2026, 5, 1)) return; // Restrict before June 2026
+    setCalendarMonth(prev);
+  };
+
+  const handleNextMonth = () => {
+    const next = new Date(calendarMonth.getFullYear(), calendarMonth.getMonth() + 1, 1);
+    setCalendarMonth(next);
   };
 
   if (isCompleted && completedOrder) {
@@ -128,6 +206,21 @@ export default function CheckoutPage() {
                 <strong className="block text-emerald-600 text-sm mt-1 logo-font">{completedOrder.trackingCode}</strong>
               </div>
             </div>
+
+            {/* Scheduled Delivery Details Banner */}
+            {completedOrder.deliveryDetails && (
+              <div className="w-full border border-emerald-100 bg-emerald-500/5 rounded-[24px] p-5 text-left flex items-start gap-4 mt-2">
+                <div className="h-10 w-10 rounded-full bg-emerald-500/10 flex items-center justify-center text-emerald-600 shrink-0">
+                  <Truck className="h-5 w-5" />
+                </div>
+                <div>
+                  <h4 className="text-xs font-black uppercase tracking-wider text-emerald-800 logo-font">Scheduled Pre-Launch Delivery</h4>
+                  <p className="text-[11.5px] font-semibold text-slate-600 leading-normal mt-1">
+                    Your delivery has been scheduled for <strong className="text-slate-800">{completedOrder.deliveryDetails.date}</strong> during the <strong className="text-slate-800">{completedOrder.deliveryDetails.timeSlot}</strong> delivery window. We will contact you at <strong>{completedOrder.formData.phone}</strong> or <strong>{completedOrder.formData.email}</strong> to coordinate.
+                  </p>
+                </div>
+              </div>
+            )}
 
             {/* Interac e-Transfer Action Instructions */}
             <div className="w-full border border-pink-100 bg-[#fffdfd] rounded-[24px] p-6 text-left space-y-4 shadow-sm relative overflow-hidden">
@@ -497,6 +590,219 @@ export default function CheckoutPage() {
 
         </form>
       </section>
+
+      {/* 11. Delivery Scheduling Modal */}
+      {isScheduleModalOpen && (
+        <div className="fixed inset-0 z-[99999] flex items-center justify-center p-3 sm:p-4 bg-slate-950/70 backdrop-blur-md transition-opacity duration-300 select-none font-sans">
+          
+          {/* Modal Outer Container */}
+          <div className="relative w-full max-w-[850px] rounded-[32px] bg-[#0c0a1a] text-white border border-pink-500/20 shadow-[0_0_60px_rgba(255,79,163,0.15)] overflow-hidden flex flex-col md:flex-row animate-scale-up max-h-[94vh] md:max-h-none overflow-y-auto md:overflow-visible">
+            
+            {/* Ambient glows inside the modal */}
+            <div className="absolute -top-32 -left-32 w-80 h-80 rounded-full bg-[#ff4fa3]/10 blur-[60px] pointer-events-none" />
+            <div className="absolute -bottom-32 -right-32 w-80 h-80 rounded-full bg-[#7b5cff]/10 blur-[60px] pointer-events-none" />
+
+            {/* Close Button */}
+            <button
+              type="button"
+              onClick={() => setIsScheduleModalOpen(false)}
+              className="absolute top-4 right-4 text-slate-400 hover:text-white transition-colors p-1.5 hover:bg-white/10 border border-slate-700/50 rounded-full cursor-pointer z-50"
+              aria-label="Close scheduling modal"
+            >
+              <X className="h-4.5 w-4.5" />
+            </button>
+
+            {/* LEFT COLUMN: Calendar & Info */}
+            <div className="w-full md:w-[42%] bg-gradient-to-b from-[#13102c] to-[#0c0a1a] p-6 sm:p-8 flex flex-col justify-between border-b md:border-b-0 md:border-r border-pink-500/10 shrink-0">
+              <div className="space-y-4">
+                <div className="border border-[#ff4fa3]/30 bg-[#ff4fa3]/5 px-3 py-1 rounded-full inline-flex items-center gap-1.5 text-[8.5px] font-black uppercase tracking-widest text-[#ff4fa3] logo-font leading-none">
+                  <span>✦</span>
+                  <span>Pre-Launch Booking</span>
+                  <span>✦</span>
+                </div>
+                
+                <div className="space-y-1.5">
+                  <h3 className="text-xl sm:text-2xl font-black uppercase tracking-tight leading-none logo-font">
+                    Schedule Your <span className="text-[#ff4fa3] block mt-1">Delivery Slot</span>
+                  </h3>
+                  <p className="text-[11px] font-semibold text-slate-400 leading-normal">
+                    Select a delivery date starting from June 25, 2026.
+                  </p>
+                </div>
+
+                {/* Calendar Render */}
+                <div className="bg-slate-900/40 border border-slate-800 rounded-2xl p-4.5 mt-4">
+                  {/* Calendar Month Header */}
+                  <div className="flex items-center justify-between mb-4">
+                    <span className="text-xs font-black uppercase tracking-wider text-white logo-font">
+                      {calendarMonth.toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
+                    </span>
+                    <div className="flex gap-1">
+                      <button
+                        type="button"
+                        onClick={handlePrevMonth}
+                        disabled={calendarMonth.getFullYear() === 2026 && calendarMonth.getMonth() === 5}
+                        className="p-1 rounded-lg border border-slate-700 bg-slate-800/40 text-slate-400 hover:text-white hover:bg-slate-700/50 disabled:opacity-30 disabled:pointer-events-none cursor-pointer"
+                      >
+                        <ChevronLeft className="h-4 w-4" />
+                      </button>
+                      <button
+                        type="button"
+                        onClick={handleNextMonth}
+                        className="p-1 rounded-lg border border-slate-700 bg-slate-800/40 text-slate-400 hover:text-white hover:bg-slate-700/50 cursor-pointer"
+                      >
+                        <ChevronRight className="h-4 w-4" />
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Weekday Titles */}
+                  <div className="grid grid-cols-7 gap-1 text-center text-[9px] font-black text-slate-400 uppercase tracking-widest mb-2">
+                    {['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'].map((d) => (
+                      <div key={d}>{d}</div>
+                    ))}
+                  </div>
+
+                  {/* Calendar Grid Days */}
+                  <div className="grid grid-cols-7 gap-1 text-center text-xs font-bold">
+                    {/* Blank days before day 1 */}
+                    {Array.from({ length: getFirstDayOfMonth(calendarMonth.getFullYear(), calendarMonth.getMonth()) }).map((_, i) => (
+                      <div key={`blank-${i}`} />
+                    ))}
+
+                    {/* Active Month Days */}
+                    {Array.from({ length: getDaysInMonth(calendarMonth.getFullYear(), calendarMonth.getMonth()) }).map((_, i) => {
+                      const dayNum = i + 1;
+                      const cellDate = new Date(calendarMonth.getFullYear(), calendarMonth.getMonth(), dayNum);
+                      const minSelectableDate = new Date(2026, 5, 25);
+                      
+                      const isDisabled = cellDate < minSelectableDate;
+                      const isSelected = selectedDate.getFullYear() === cellDate.getFullYear() &&
+                                         selectedDate.getMonth() === cellDate.getMonth() &&
+                                         selectedDate.getDate() === cellDate.getDate();
+
+                      return (
+                        <button
+                          key={dayNum}
+                          type="button"
+                          disabled={isDisabled}
+                          onClick={() => setSelectedDate(cellDate)}
+                          className={`h-7 w-7 rounded-full flex items-center justify-center transition-all ${
+                            isSelected
+                              ? 'bg-gradient-to-r from-[#ff4fa3] to-[#7b5cff] text-white font-extrabold shadow-sm scale-105'
+                              : isDisabled
+                              ? 'text-slate-600 line-through opacity-40 cursor-not-allowed'
+                              : 'text-slate-300 hover:bg-white/10 cursor-pointer'
+                          }`}
+                        >
+                          {dayNum}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+
+              </div>
+
+              {/* Bottom Notice */}
+              <div className="mt-6 flex items-center gap-2 border-t border-slate-800/80 pt-4 text-[10px] text-slate-400 font-semibold leading-normal">
+                <Truck className="h-4 w-4 text-[#ff4fa3] shrink-0" />
+                <span>Orders will ship to arrive starting June 25, 2026.</span>
+              </div>
+            </div>
+
+            {/* RIGHT COLUMN: Time Slots & Contact */}
+            <div className="flex-1 p-6 sm:p-8 flex flex-col justify-between gap-6 relative">
+              <div className="space-y-5">
+                
+                {/* Delivery Hours card */}
+                <div className="bg-slate-900/35 border border-slate-800/80 rounded-2xl p-4 flex items-center gap-3">
+                  <div className="h-8 w-8 rounded-full bg-[#7b5cff]/10 border border-[#7b5cff]/20 flex items-center justify-center text-[#7b5cff] shrink-0">
+                    <Calendar className="h-4 w-4" />
+                  </div>
+                  <div>
+                    <span className="block text-[10px] font-black uppercase text-slate-400 tracking-wider">Delivery Dispatch Hours</span>
+                    <span className="block text-[9.5px] font-semibold text-slate-300 leading-normal mt-0.5">
+                      Sunday – Thursday: 9:00 AM to 10:00 PM | Friday – Saturday: 9:00 AM to 11:00 PM
+                    </span>
+                  </div>
+                </div>
+
+                {/* Time slot selector */}
+                <div className="space-y-2.5">
+                  <span className="block text-[10px] font-black uppercase text-slate-400 tracking-wider">Select a Delivery Window</span>
+                  <div className="grid gap-2 sm:grid-cols-3">
+                    {['10:00 AM to 2:00 PM', '2:00 PM to 6:00 PM', '6:00 PM to 10:00 PM'].map((slot) => {
+                      const isSelected = selectedTimeSlot === slot;
+                      return (
+                        <button
+                          key={slot}
+                          type="button"
+                          onClick={() => setSelectedTimeSlot(slot)}
+                          className={`rounded-xl border p-2.5 text-center transition-all cursor-pointer flex flex-col items-center justify-center gap-1.5 ${
+                            isSelected
+                              ? 'border-[#ff4fa3] bg-[#ff4fa3]/5 text-[#ff4fa3] font-black shadow-sm'
+                              : 'border-slate-800 bg-slate-900/20 text-slate-400 hover:border-slate-700 hover:text-slate-200'
+                          }`}
+                        >
+                          <span className="text-[10px] font-bold tracking-wide">{slot}</span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                {/* Contact Confirmation details */}
+                <div className="space-y-3">
+                  <span className="block text-[10px] font-black uppercase text-slate-400 tracking-wider">Confirm Your Contact Information</span>
+                  <div className="grid gap-3 sm:grid-cols-2">
+                    <div className="relative flex items-center">
+                      <Mail className="absolute left-3.5 h-4 w-4 text-slate-500" />
+                      <input
+                        type="email"
+                        value={scheduleEmail}
+                        onChange={(e) => setScheduleEmail(e.target.value)}
+                        placeholder="Email Address"
+                        className="w-full h-10 rounded-xl border border-slate-800 bg-slate-900/30 pl-10 pr-4 text-xs font-semibold outline-none focus:border-[#ff4fa3] text-white placeholder:text-slate-600"
+                      />
+                    </div>
+                    <div className="relative flex items-center">
+                      <Phone className="absolute left-3.5 h-4 w-4 text-slate-500" />
+                      <input
+                        type="tel"
+                        value={schedulePhone}
+                        onChange={(e) => setSchedulePhone(e.target.value)}
+                        placeholder="Phone Number"
+                        className="w-full h-10 rounded-xl border border-slate-800 bg-slate-900/30 pl-10 pr-4 text-xs font-semibold outline-none focus:border-[#ff4fa3] text-white placeholder:text-slate-600"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Error Box */}
+                {scheduleError && (
+                  <div className="rounded-xl border border-red-500/20 bg-red-500/10 p-3 text-red-400 text-[11px] font-bold text-left">
+                    ⚠️ {scheduleError}
+                  </div>
+                )}
+
+              </div>
+
+              {/* Action Button */}
+              <button
+                type="button"
+                onClick={handleConfirmSchedule}
+                className="w-full h-11.5 inline-flex items-center justify-center rounded-2xl bg-gradient-to-r from-[#ff4fa3] via-[#a855f7] to-[#7b5cff] text-white font-black text-xs uppercase tracking-wider shadow-lg shadow-pink-500/10 hover:scale-[1.01] active:scale-95 transition-all cursor-pointer logo-font gap-2 mt-4"
+              >
+                <ShieldCheck className="h-4.5 w-4.5" />
+                <span>Confirm & Place Order</span>
+              </button>
+
+            </div>
+
+          </div>
+        </div>
+      )}
 
       <Footer />
     </main>

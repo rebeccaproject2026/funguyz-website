@@ -260,7 +260,7 @@ export default function TrackOrderPage() {
               { q: 'How long does dispatch take after order placement?', a: 'Orders are processed in our secure facility immediately. Payment confirmation typically completes in 1-2 hours. Once payment clears, package vacuum-sealing and dispatch takes place within 4 hours.' },
               { q: 'Where do I find my tracking code?', a: 'Your tracking code is automatically generated and emailed to your registered address as soon as Canada Post scans the parcel at the Ontario distribution hub.' },
               { q: 'Why is my tracking code showing as inactive?', a: 'When Canada Post receives the mail parcel, it can take up to 4-6 hours for their distribution hubs to scan the sorting tags and update the status in their database. Please check back later in the evening.' },
-              { q: 'What happens if my package is lost or delayed by Canada Post?', a: 'Every parcel shipped by the FunGuyz store carries full transit insurance. If your package is confirmed lost by Canada Post, we replace it instantly with free express delivery.' }
+              { q: 'What happens if my package is lost or delayed by Canada Post?', a: 'Every parcel shipped by the FunGuyz store carries full transit insurance. If your package is confirmed lost by Canada Post, we replace it instantly with express delivery.' }
             ].map((faq, idx) => (
               <div key={idx} className={`pt-4 first:pt-0 ${activeFaqIdx === idx ? 'pb-2' : ''}`}>
                 <button

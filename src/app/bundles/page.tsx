@@ -86,7 +86,7 @@ export default function BundlesCollectionPage() {
             <div className="grid gap-2.5 sm:grid-cols-3 w-full max-w-md mt-2">
               {[
                 { label: 'Save Up To 25%', desc: '🔥 Extra Savings' },
-                { label: 'Free Shipping', desc: '🚚 Express Delivery' },
+                { label: 'Express Shipping', desc: '🚚 Fast Discreet Delivery' },
                 { label: 'Most Popular Choice', desc: '⭐ Best Value' }
               ].map((prop, idx) => (
                 <div key={idx} className="bg-white/80 border border-pink-100/30 rounded-xl p-2.5 shadow-sm text-left">
@@ -155,7 +155,7 @@ export default function BundlesCollectionPage() {
         <div className="mx-auto max-w-7xl grid grid-cols-2 md:grid-cols-4 gap-6 text-center md:divide-x md:divide-purple-100/50">
           {[
             { val: 'Bundle Discounts', desc: '✓ Extra 15% - 25% Off' },
-            { val: 'Free Shipping', desc: '✓ Automatically Included' },
+            { val: '$20.00 Flat Rate', desc: '✓ Fast Discreet Delivery' },
             { val: 'Lab Tested', desc: '✓ Guaranteed Pure Potency' },
             { val: 'Customer Favorites', desc: '✓ Highest Rated Curations' }
           ].map((stat, idx) => (
@@ -515,7 +515,7 @@ export default function BundlesCollectionPage() {
               </div>
               <div className="flex justify-between">
                 <span>Discreet Shipping</span>
-                <strong className="text-slate-800">FREE</strong>
+                <strong className="text-[#ff4fa3]">$20.00</strong>
               </div>
               <div className="border-t border-slate-100 pt-4 flex justify-between text-sm">
                 <span className="text-slate-800 uppercase logo-font">Final Price</span>
@@ -552,7 +552,7 @@ export default function BundlesCollectionPage() {
             {[
               { title: 'More Savings', desc: 'Save up to 25% off compared to purchasing each organic compound individually.', icon: Smile },
               { title: 'More Variety', desc: 'Test multiple dried strains, edibles, and capsules inside one secure parcel.', icon: Sparkles },
-              { title: 'Free Shipping', desc: 'Secure guaranteed free Express Delivery automatically with every bundle.', icon: Truck },
+              { title: 'Discreet Shipping', desc: 'Secure guaranteed $20.00 Express Delivery with every bundle.', icon: Truck },
               { title: 'Exclusive Products', desc: 'Secure priority access to our rare, limited-run cultivation genetic batches.', icon: Compass },
               { title: 'Best Sellers Included', desc: 'Our curations strictly feature our highest rated customer favorite stacks.', icon: Award },
               { title: 'Beginner Friendly', desc: 'Carefully engineered stacks that offer highly safe, guided entry points.', icon: Leaf }
@@ -713,7 +713,7 @@ export default function BundlesCollectionPage() {
             {[
               { q: 'How do bundle discounts work?', a: 'Our bundle discounts are automatically baked into the price, saving you between 15% and 25% compared to buying individual products.' },
               { q: 'Can I customize pre-packaged bundles?', a: 'Our three main featured bundles are pre-packaged to ensure lightning-fast courier dispatch. However, you can use our "Build Your Own Bundle" engine above to create a fully customized package tailored precisely to your goals.' },
-              { q: 'Do bundles qualify for free shipping?', a: 'Yes, absolutely! Every single bundle in our collection exceeds the free shipping tier, guaranteeing free discreet vacuum-sealed courier delivery to your address.' },
+              { q: 'What are the shipping charges for bundles?', a: 'All orders (including bundles) are shipped via a flat-rate discreet vacuum-sealed courier or Express service for $20.00 flat.' },
               { q: 'Can I replace products inside a pre-packaged bundle?', a: 'Pre-packaged bundles cannot be altered, but our "Build Your Own Bundle" tool gives you total freedom to swap mushrooms, edibles, capsules, and microdose compounds.' }
             ].map((faqItem, idx) => (
               <div key={idx} className={`pt-4 first:pt-0 ${openFaqIdx === idx ? 'pb-2' : ''}`}>

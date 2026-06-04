@@ -12,7 +12,10 @@ const config: Config = {
       },
       fontFamily: {
         sans: ['var(--font-poppins)', 'sans-serif'],
-        display: ['var(--font-poppins)', 'sans-serif'],
+        display: ['var(--font-fredoka)', 'sans-serif'],
+        fredoka: ['var(--font-fredoka)', 'sans-serif'],
+        poppins: ['var(--font-poppins)', 'sans-serif'],
+        outfit: ['var(--font-outfit)', 'sans-serif'],
       },
       boxShadow: {
         soft: '0 24px 80px rgba(123,92,255,.12)'
