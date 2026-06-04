@@ -596,7 +596,7 @@ export default function CheckoutPage() {
         <div className="fixed inset-0 z-[99999] flex items-center justify-center p-3 sm:p-4 bg-slate-950/70 backdrop-blur-md transition-opacity duration-300 select-none font-sans">
 
           {/* Modal Outer Container */}
-          <div className="relative w-full max-w-[900px] flex flex-col md:flex-row gap-6 animate-scale-up max-h-[94vh] md:max-h-none overflow-y-auto md:overflow-visible p-4 md:p-0">
+          <div className="relative w-full max-w-[970px] flex flex-col md:flex-row gap-6 animate-scale-up max-h-[94vh] md:max-h-none overflow-y-auto md:overflow-visible p-4 md:p-0">
 
             {/* Background Ambient Glows */}
             <div className="absolute -top-20 -left-20 w-96 h-96 rounded-full bg-[#ff4fa3]/20 blur-[100px] pointer-events-none -z-10" />
@@ -738,7 +738,7 @@ export default function CheckoutPage() {
                           key={slot}
                           type="button"
                           onClick={() => setSelectedTimeSlot(slot)}
-                          className={`rounded-xl border p-2.5 text-center transition-all cursor-pointer flex flex-col items-center justify-center gap-1.5 ${isSelected
+                          className={`rounded-xl border p-2  text-center transition-all cursor-pointer flex flex-col items-center justify-center gap-1.5 ${isSelected
                             ? 'border-[#ff4fa3] bg-[#ff4fa3]/5 text-[#ff4fa3] font-black shadow-sm'
                             : 'border-slate-800 bg-slate-900/20 text-slate-400 hover:border-slate-700 hover:text-slate-200'
                             }`}
