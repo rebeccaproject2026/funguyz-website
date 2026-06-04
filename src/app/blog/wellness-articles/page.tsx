@@ -87,7 +87,7 @@ export default function WellnessArticlesPage() {
           <div className="flex flex-col items-start text-left gap-4">
             
             {/* Breadcrumb */}
-            <div className="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-slate-400 logo-font leading-none">
+            <div className="flex items-center gap-1.5 text-[12px] font-black uppercase tracking-widest text-slate-400 logo-font leading-none">
               <a href="/" className="hover:text-[#ff4fa3] transition-colors">Home</a>
               <span>&gt;</span>
               <a href="/blog" className="hover:text-[#ff4fa3] transition-colors">Blog</a>
@@ -97,7 +97,7 @@ export default function WellnessArticlesPage() {
 
             {/* Title */}
             <div className="space-y-1">
-              <span className="text-[10px] font-black uppercase tracking-widest text-[#ff4fa3] logo-font">Mindset & Intention</span>
+              <span className="text-[12px] font-black uppercase tracking-widest text-[#ff4fa3] logo-font">Mindset & Intention</span>
               <h1 className="text-3xl md:text-5xl font-black text-[#1b1533] uppercase tracking-tight logo-font leading-none">
                 Wellness & <br />
                 <span className="text-[#ff4fa3]">Lifestyle Hub</span>
@@ -124,7 +124,7 @@ export default function WellnessArticlesPage() {
             <div className="relative bg-white/70 backdrop-blur-md border border-pink-100/60 rounded-[40px] p-6 shadow-[0_24px_70px_rgba(255,79,163,0.12)] max-w-xs text-left space-y-3">
               <Smile className="h-6 w-6 text-[#ff4fa3]" />
               <h3 className="text-xs font-black uppercase text-[#1b1533] logo-font">Lifestyle Sync</h3>
-              <p className="text-[10px] font-semibold text-slate-400 leading-normal">
+              <p className="text-[12px] font-semibold text-slate-400 leading-normal">
                 Structured tips mapping adrenal recovery, sleep quality, and calm workplace performance.
               </p>
             </div>
@@ -136,7 +136,7 @@ export default function WellnessArticlesPage() {
       {/* 2. Highlighted Featured Article Banner */}
       <section className="mx-auto max-w-7xl px-4 pt-16 md:px-8">
         <div className="text-left mb-6">
-          <span className="text-[9px] font-black uppercase tracking-widest text-[#ff4fa3] logo-font border border-pink-100 bg-white px-3 py-1 rounded-full shadow-sm">Featured wellness Read</span>
+          <span className="text-[10px] font-black uppercase tracking-widest text-[#ff4fa3] logo-font border border-pink-100 bg-white px-3 py-1 rounded-full shadow-sm">Featured wellness Read</span>
         </div>
 
         <div className="bg-white border border-slate-100 rounded-[44px] p-6 md:p-8 shadow-sm grid gap-8 lg:grid-cols-[1.2fr_1fr] items-center hover:shadow-md transition-shadow group">
@@ -152,7 +152,7 @@ export default function WellnessArticlesPage() {
 
           {/* Article details */}
           <div className="flex flex-col items-start gap-4 text-left">
-            <span className="rounded bg-[#ff4fa3]/5 px-3 py-1 text-[9px] font-black uppercase tracking-widest text-[#ff4fa3]">
+            <span className="rounded bg-[#ff4fa3]/5 px-3 py-1 text-[10px] font-black uppercase tracking-widest text-[#ff4fa3]">
               {ARTICLES_DATA[0].category}
             </span>
             <h2 className="text-xl md:text-3xl font-black uppercase tracking-tight text-[#1b1533] logo-font leading-tight">
@@ -163,7 +163,7 @@ export default function WellnessArticlesPage() {
             </p>
 
             {/* Meta */}
-            <div className="flex flex-wrap items-center gap-4 text-[10px] font-bold text-slate-400 border-b border-slate-100 pb-4 w-full">
+            <div className="flex flex-wrap items-center gap-4 text-[12px] font-bold text-slate-400 border-b border-slate-100 pb-4 w-full">
               <span className="flex items-center gap-1"><Calendar className="h-3.5 w-3.5 text-[#ff4fa3]" /> {ARTICLES_DATA[0].date}</span>
               <span className="flex items-center gap-1"><Clock className="h-3.5 w-3.5 text-[#ff4fa3]" /> {ARTICLES_DATA[0].time}</span>
               <span className="flex items-center gap-1"><User className="h-3.5 w-3.5 text-[#ff4fa3]" /> Wellness Team</span>
@@ -214,14 +214,14 @@ export default function WellnessArticlesPage() {
               </div>
 
               <div className="space-y-2 w-full">
-                <span className="inline-block rounded bg-[#ff4fa3]/5 px-2.5 py-0.5 text-[8.5px] font-bold uppercase tracking-widest text-[#ff4fa3]">
+                <span className="inline-block rounded bg-[#ff4fa3]/5 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-widest text-[#ff4fa3]">
                   {article.category}
                 </span>
                 <h3 className="text-base font-black uppercase text-[#1b1533] logo-font leading-snug line-clamp-2 group-hover:text-[#ff4fa3] transition-colors">{article.title}</h3>
-                <p className="text-[11px] font-semibold leading-relaxed text-slate-400 line-clamp-3">{article.desc}</p>
+                <p className="text-[12px] font-semibold leading-relaxed text-slate-400 line-clamp-3">{article.desc}</p>
               </div>
 
-              <div className="border-t border-slate-100 pt-4 mt-auto w-full flex items-center justify-between text-[9px] font-bold text-slate-400">
+              <div className="border-t border-slate-100 pt-4 mt-auto w-full flex items-center justify-between text-[12px] font-bold text-slate-400">
                 <div className="flex gap-2">
                   <span>{article.date}</span>
                   <span>•</span>
@@ -229,7 +229,7 @@ export default function WellnessArticlesPage() {
                 </div>
                 <a 
                   href={`/blog/${article.slug}`}
-                  className="text-[9px] font-black uppercase tracking-wider text-[#ff4fa3] hover:underline logo-font flex items-center gap-1"
+                  className="text-[12px] font-black uppercase tracking-wider text-[#ff4fa3] hover:underline logo-font flex items-center gap-1"
                 >
                   Read Article <ChevronRight className="h-3 w-3 stroke-[2.5]" />
                 </a>
@@ -244,7 +244,7 @@ export default function WellnessArticlesPage() {
       <section className="bg-[#fff8f3] py-16 px-4 md:px-8 border-t border-purple-100/30">
         <div className="mx-auto max-w-7xl text-center space-y-8">
           <div className="space-y-2">
-            <span className="text-[10px] font-black uppercase tracking-widest text-[#ff4fa3] logo-font">Learn Suite</span>
+            <span className="text-[12px] font-black uppercase tracking-widest text-[#ff4fa3] logo-font">Learn Suite</span>
             <h3 className="text-2xl font-black text-[#1b1533] uppercase logo-font">Related Guides & Stacks</h3>
           </div>
 
@@ -259,9 +259,9 @@ export default function WellnessArticlesPage() {
                   {link.icon}
                 </div>
                 <div className="space-y-1">
-                  <h4 className="text-[8px] font-black uppercase text-slate-400 logo-font leading-none">Learn</h4>
+                  <h4 className="text-[12px] font-black uppercase text-slate-400 logo-font leading-none">Learn</h4>
                   <h3 className="text-sm font-black text-[#1b1533] uppercase logo-font leading-tight">{link.name}</h3>
-                  <p className="text-[10px] font-semibold text-slate-400 leading-relaxed line-clamp-3">{link.desc}</p>
+                  <p className="text-[12px] font-semibold text-slate-400 leading-relaxed line-clamp-3">{link.desc}</p>
                 </div>
                 <a 
                   href={link.url}

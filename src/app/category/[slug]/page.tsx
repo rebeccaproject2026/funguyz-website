@@ -50,6 +50,9 @@ interface CategoryDetails {
   infoBenefits: { title: string; desc: string; icon: React.ComponentType<any> }[];
   accentColor: string;
   accentBg: string;
+  titleTag?: string;
+  metaDescription?: string;
+  keywords?: string;
 }
 
 // Full custom category descriptions, items, and FAQs
@@ -171,12 +174,15 @@ const categoryDataMap: Record<string, CategoryDetails> = {
     accentBg: 'bg-[#7B5CFF]/5 text-[#7b5cff] border-[#7b5cff]/20'
   },
   'microdose': {
-    title: 'Daily Microdose Blends',
+    title: 'Premium Microdose Capsules',
     categoryName: 'Microdose',
-    shortDesc: 'Explore low-dose blends created for focus, creativity, mood support and mindful routines. Sub-perceptual microdosing blends crafted to unleash your high-productivity potential.',
+    shortDesc: 'Explore the complete FunGuyz collection of premium microdose capsules available for delivery throughout Toronto, Mississauga, Brampton, Scarborough, North York, Etobicoke, Vaughan, Markham, Richmond Hill, Pickering, Ajax, Whitby, Oshawa, Newmarket, Aurora, Barrie, and surrounding GTA communities. Our collection includes Golden Teacher Microdose, Penis Envy Microdose, Stamets Stack, Creativity Blend, Productivity Blend, and Wellness Blend capsules, all prepared with quality, consistency, and customer satisfaction in mind.',
     fullDesc: 'Microdosing involves consuming sub-perceptual quantities of psilocybin (typically 50mg to 250mg) on a scheduled basis (such as the Fadiman or Stamets stack). At this low level, there are zero visual hallucinations or cognitive distortions; instead, users experience enhanced creative problem-solving, elevated focus, reduced social anxiety, and positive mood elevation. All our microdose capsules are blended with pristine organic ingredients to support cognitive longevity. Ideal for professionals, creatives, and anyone seeking high-performance mental clarity.',
     icon: '⚡',
     heroImage: '/images/cat_microdose.webp',
+    titleTag: 'Microdose Capsules Delivery Toronto & GTA | FunGuyz',
+    metaDescription: 'Shop premium microdose capsules online with fast delivery throughout Toronto, Mississauga, Vaughan, Markham, Richmond Hill, Barrie and the GTA. Available from FunGuyz.',
+    keywords: 'microdose capsules toronto, microdose canada, mushroom microdose gta, microdose delivery toronto, microdosing products canada, funguyz microdose, microdose capsules near me',
     stats: [
       { label: 'Products', val: '12+', desc: 'Productivity Stacks' },
       { label: 'Experience', val: 'Sub-Perceptual', desc: 'No Hallucinations/Trips' },
@@ -216,51 +222,53 @@ const productsCatalog: Record<string, string[][]> = {
     ['Golden Teacher', 'Magic Mushrooms', '$59.99', 'Top Rated'],
     ['Penis Envy', 'Magic Mushrooms', '$79.99', 'Premium'],
     ['Blue Meanies', 'Magic Mushrooms', '$64.99', 'Best Seller'],
+    ['Albino Penis Envy (APE)', 'Magic Mushrooms', '$84.99', 'Rare'],
+    ['Tidal Wave', 'Magic Mushrooms', '$69.99', 'New'],
     ['Jack Frost', 'Magic Mushrooms', '$69.99', 'Rare'],
-    ['Albino Penis Envy', 'Magic Mushrooms', '$84.99', 'Premium'],
-    ['Tidal Wave', 'Magic Mushrooms', '$74.99', 'New'],
-    ['B+ Strain', 'Magic Mushrooms', '$49.99', 'Beginner'],
-    ['Texas Yellow Cap', 'Magic Mushrooms', '$54.99', 'Organic'],
-    ['Mazatapec', 'Magic Mushrooms', '$52.99', 'Traditional'],
-    ['Vietnamese Strains', 'Magic Mushrooms', '$59.99', 'Rare'],
-    ['Melmac Penis Envy', 'Magic Mushrooms', '$82.99', 'Max Potency'],
-    ['Jedi Mind Fuck', 'Magic Mushrooms', '$68.99', 'Top Rated']
+    ['Jedi Mind Fuck (JMF)', 'Magic Mushrooms', '$59.99', 'Popular'],
+    ['Mazatapec', 'Magic Mushrooms', '$54.99', 'Classic'],
+    ['B+', 'Magic Mushrooms', '$49.99', 'Best Seller'],
+    ['Treasure Coast', 'Magic Mushrooms', '$59.99', 'Rare'],
+    ['Melmac', 'Magic Mushrooms', '$74.99', 'Premium'],
+    ['Enigma', 'Magic Mushrooms', '$99.99', 'Rare'],
+    ['Hillbilly', 'Magic Mushrooms', '$54.99', 'New'],
+    ['Thai Pink Buffalo', 'Magic Mushrooms', '$59.99', 'Popular']
   ],
   'Edibles': [
-    ['Blue Raspberry Gummies', 'Edibles', '$34.99', 'Best Seller'],
-    ['Watermelon Gummies', 'Edibles', '$34.99', 'Popular'],
-    ['Milk Chocolate Bar', 'Edibles', '$27.99', 'Smooth'],
-    ['Dark Chocolate Bar', 'Edibles', '$29.99', 'Organic'],
-    ['Strawberry Gummies', 'Edibles', '$34.99', 'Sweet'],
-    ['Cookies & Cream Chocolate', 'Edibles', '$31.99', 'Gourmet'],
-    ['Mushroom Tea', 'Edibles', '$24.99', 'Calming'],
-    ['Peach Gummies', 'Edibles', '$34.99', 'Juicy'],
-    ['Salted Caramel Chocolate', 'Edibles', '$32.99', 'Luxury'],
-    ['Lemon Ginger Tea', 'Edibles', '$23.99', 'Digestive'],
-    ['Mushroom Hot Chocolate', 'Edibles', '$28.99', 'Relaxing']
+    ['Golden Teacher Original Chocolate (GT OG)', 'Edibles', '$29.99', 'Best Seller'],
+    ['Golden Teacher Concentrated Chocolate (GT CC)', 'Edibles', '$39.99', 'Premium'],
+    ['Penis Envy Original Chocolate (PE OG)', 'Edibles', '$34.99', 'Best Seller'],
+    ['Penis Envy Refined Concentrate Chocolate (PE RC)', 'Edibles', '$49.99', 'Premium'],
+    ['Penis Envy Concentrated Chocolate (PE CC)', 'Edibles', '$44.99', 'Strong'],
+    ['Blue Raspberry Gummies', 'Edibles', '$24.99', 'Best Seller'],
+    ['Watermelon Gummies', 'Edibles', '$24.99', 'Popular'],
+    ['Strawberry Gummies', 'Edibles', '$24.99', 'New'],
+    ['Mango Gummies', 'Edibles', '$24.99', 'Fruit'],
+    ['Green Apple Gummies', 'Edibles', '$24.99', 'Sour'],
+    ['Mixed Berry Gummies', 'Edibles', '$24.99', 'Juicy'],
+    ['Golden Teacher S\'Mores', 'Edibles', '$19.99', 'Sweet'],
+    ['Penis Envy S\'Mores', 'Edibles', '$24.99', 'Popular'],
+    ['Cookies & Cream S\'Mores', 'Edibles', '$22.99', 'New']
   ],
   'Capsules': [
-    ['Golden Teacher Capsules', 'Capsules', '$39.99', 'Wellness'],
-    ['Focus Capsules', 'Capsules', '$31.99', 'Focus'],
-    ['Energy Capsules', 'Capsules', '$31.99', 'Energy'],
-    ['Relax Capsules', 'Capsules', '$35.99', 'Calm'],
-    ['Lion’s Mane Capsules', 'Capsules', '$29.99', 'Cognitive'],
-    ['Penis Envy Capsules', 'Capsules', '$45.99', 'Potent Stacks'],
-    ['Focus & Clarity Capsules', 'Capsules', '$33.99', 'Focus'],
-    ['Mood Support Capsules', 'Capsules', '$34.99', 'Wellness'],
-    ['Creative Boost Capsules', 'Capsules', '$36.99', 'Premium'],
-    ['Balanced Mind Capsules', 'Capsules', '$32.99', 'Stability']
+    ['Lion\'s Mane Capsules', 'Capsules', '$34.99', 'Focus'],
+    ['Reishi Capsules', 'Capsules', '$34.99', 'Relax'],
+    ['Cordyceps Capsules', 'Capsules', '$34.99', 'Energy'],
+    ['Turkey Tail Capsules', 'Capsules', '$34.99', 'Wellness'],
+    ['Chaga Capsules', 'Capsules', '$34.99', 'Shield'],
+    ['Golden Teacher Extract', 'Capsules', '$49.99', 'Premium'],
+    ['Penis Envy Extract', 'Capsules', '$59.99', 'Strong'],
+    ['Lion\'s Mane Tincture', 'Capsules', '$29.99', 'Daily'],
+    ['Reishi Tincture', 'Capsules', '$29.99', 'Calm'],
+    ['Cordyceps Tincture', 'Capsules', '$29.99', 'Active']
   ],
   'Microdose': [
-    ['Microdose Daily Blend', 'Microdose', '$29.99', 'Daily'],
-    ['Focus & Clarity', 'Microdose', '$32.99', 'Clarity'],
-    ['Stamets Stack', 'Microdose', '$44.99', 'Synergy'],
-    ['Premium Microdose Blend', 'Microdose', '$39.99', 'Maximum'],
-    ['Golden Teacher Microdose', 'Microdose', '$34.99', 'Popular'],
-    ['Mindful Routine Blend', 'Microdose', '$28.99', 'Balance'],
-    ['Creative Boost Microdose', 'Microdose', '$33.99', 'Creativity'],
-    ['Beginner Friendly Microdose', 'Microdose', '$27.99', 'Mild'],
-    ['Relax & Chill Microdose', 'Microdose', '$31.99', 'Calming']
+    ['Golden Teacher Microdose', 'Microdose', '$39.99', 'Wellness'],
+    ['Penis Envy Microdose', 'Microdose', '$44.99', 'Premium'],
+    ['Stamets Stack Microdose', 'Microdose', '$49.99', 'Focus'],
+    ['Creativity Microdose Blend', 'Microdose', '$44.99', 'Creative'],
+    ['Productivity Microdose Blend', 'Microdose', '$44.99', 'Work'],
+    ['Wellness Microdose Blend', 'Microdose', '$39.99', 'Daily']
   ]
 };
 
@@ -306,6 +314,34 @@ export default function DedicatedCategoryPage({ params }: { params: Promise<{ sl
 
   const category = categoryDataMap[slugKey] || categoryDataMap['magic-mushrooms'];
 
+  React.useEffect(() => {
+    if (category) {
+      const titleTag = category.titleTag || `${category.title} Delivery Toronto & GTA | FunGuyz`;
+      const metaDescription = category.metaDescription || category.shortDesc;
+      const keywords = category.keywords || `${category.categoryName.toLowerCase()}, buy ${category.categoryName.toLowerCase()} canada, ${category.categoryName.toLowerCase()} delivery toronto`;
+
+      document.title = titleTag;
+
+      // Update or create meta description tag
+      let metaDesc = document.querySelector('meta[name="description"]');
+      if (!metaDesc) {
+        metaDesc = document.createElement('meta');
+        metaDesc.setAttribute('name', 'description');
+        document.head.appendChild(metaDesc);
+      }
+      metaDesc.setAttribute('content', metaDescription);
+
+      // Update or create meta keywords tag
+      let metaKeywords = document.querySelector('meta[name="keywords"]');
+      if (!metaKeywords) {
+        metaKeywords = document.createElement('meta');
+        metaKeywords.setAttribute('name', 'keywords');
+        document.head.appendChild(metaKeywords);
+      }
+      metaKeywords.setAttribute('content', keywords);
+    }
+  }, [category]);
+
 
   // ==========================================
   // RENDER CUSTOM BUNDLES COLLECTION PAGE (LEGACY ROUTE - DISABLED)
@@ -330,7 +366,7 @@ export default function DedicatedCategoryPage({ params }: { params: Promise<{ sl
             <div className="flex flex-col items-start text-left gap-4">
               
               {/* Breadcrumb */}
-              <div className="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-slate-400 logo-font leading-none">
+              <div className="flex items-center gap-1.5 text-[12px] font-black uppercase tracking-widest text-slate-400 logo-font leading-none">
                 <a href="/" className="hover:text-[#ff4fa3] transition-colors">Home</a>
                 <span>&gt;</span>
                 <span className="text-slate-600">Bundles</span>
@@ -353,8 +389,8 @@ export default function DedicatedCategoryPage({ params }: { params: Promise<{ sl
                   { label: 'Most Popular Choice', desc: '⭐ Best Value' }
                 ].map((prop, idx) => (
                   <div key={idx} className="bg-white/80 border border-pink-100/30 rounded-xl p-2.5 shadow-sm text-left">
-                    <span className="block text-[8px] uppercase tracking-wider text-slate-400 font-bold leading-none">{prop.desc}</span>
-                    <strong className="block text-[11px] font-black text-[#1b1533] logo-font mt-1.5 leading-none">{prop.label}</strong>
+                    <span className="block text-[12px] uppercase tracking-wider text-slate-400 font-bold leading-none">{prop.desc}</span>
+                    <strong className="block text-[12px] font-black text-[#1b1533] logo-font mt-1.5 leading-none">{prop.label}</strong>
                   </div>
                 ))}
               </div>
@@ -398,13 +434,13 @@ export default function DedicatedCategoryPage({ params }: { params: Promise<{ sl
                   ].map((elem, idx) => (
                     <div key={idx} className={`bg-gradient-to-tr ${elem.bg} border border-white/60 bg-white/70 rounded-2xl p-3 flex flex-col justify-center items-center text-center shadow-sm group hover:-translate-y-0.5 transition-transform`}>
                       <span className="text-2.5xl animate-bounce" style={{ animationDelay: `${idx * 0.15}s` }}>{elem.icon}</span>
-                      <strong className="block text-[10px] font-black uppercase text-[#1b1533] logo-font mt-2 leading-none">{elem.label}</strong>
+                      <strong className="block text-[12px] font-black uppercase text-[#1b1533] logo-font mt-2 leading-none">{elem.label}</strong>
                     </div>
                   ))}
                 </div>
 
                 {/* Secure seal stamp */}
-                <div className="flex items-center gap-1 mt-4 text-[9px] font-bold text-slate-400">
+                <div className="flex items-center gap-1 mt-4 text-[12px] font-bold text-slate-400">
                   <ShieldCheck className="h-3.5 w-3.5 text-emerald-500" /> Laboratory Pure Seals Included
                 </div>
               </div>
@@ -424,7 +460,7 @@ export default function DedicatedCategoryPage({ params }: { params: Promise<{ sl
             ].map((stat, idx) => (
               <div key={idx} className="flex flex-col items-center justify-center gap-1">
                 <span className="text-sm md:text-base font-black text-[#1b1533] uppercase logo-font leading-none">{stat.val}</span>
-                <span className="text-[10px] font-bold text-slate-400 mt-1">{stat.desc}</span>
+                <span className="text-[12px] font-bold text-slate-400 mt-1">{stat.desc}</span>
               </div>
             ))}
           </div>
@@ -433,7 +469,7 @@ export default function DedicatedCategoryPage({ params }: { params: Promise<{ sl
         {/* 3. Featured Bundles Section */}
         <section id="featured-bundles" className="mx-auto max-w-7xl px-4 py-16 md:px-8">
           <div className="text-center space-y-2 mb-12 max-w-md mx-auto">
-            <span className="text-[10px] font-black uppercase tracking-widest text-[#ff4fa3] logo-font">Featured Packs</span>
+            <span className="text-[12px] font-black uppercase tracking-widest text-[#ff4fa3] logo-font">Featured Packs</span>
             <h2 className="text-3xl font-black text-[#1b1533] uppercase logo-font">Shop Our Curated Stacks</h2>
             <p className="text-xs text-slate-400">Pre-packaged compound selections formulated by request to ensure maximum synergistic benefits and massive savings.</p>
           </div>
@@ -442,7 +478,7 @@ export default function DedicatedCategoryPage({ params }: { params: Promise<{ sl
             
             {/* Starter Bundle */}
             <div className="bg-white border border-slate-100 rounded-[36px] p-6 shadow-sm flex flex-col justify-between items-start text-left gap-6 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 relative group">
-              <span className="absolute left-6 top-6 bg-slate-50 border border-slate-100 text-slate-500 rounded-full px-3.5 py-1 text-[8.5px] font-black uppercase tracking-widest leading-none">
+              <span className="absolute left-6 top-6 bg-slate-50 border border-slate-100 text-slate-500 rounded-full px-3.5 py-1 text-[10px] font-black uppercase tracking-widest leading-none">
                 Entry Level
               </span>
               <div className="w-full text-right">
@@ -451,7 +487,7 @@ export default function DedicatedCategoryPage({ params }: { params: Promise<{ sl
 
               <div className="space-y-1.5 w-full mt-4">
                 <h3 className="text-xl font-black text-[#1b1533] uppercase logo-font leading-none">Starter Bundle</h3>
-                <span className="block text-[10px] text-slate-400 font-bold uppercase">Perfect For Beginners</span>
+                <span className="block text-[12px] text-slate-400 font-bold uppercase">Perfect For Beginners</span>
                 
                 {/* Product Checklist */}
                 <div className="pt-4 space-y-2 border-t border-slate-100/70 mt-4">
@@ -470,7 +506,7 @@ export default function DedicatedCategoryPage({ params }: { params: Promise<{ sl
 
               <div className="w-full border-t border-slate-100/70 pt-4 flex items-baseline justify-between mt-auto">
                 <div>
-                  <span className="block text-[8px] text-slate-400 font-black uppercase tracking-wider">Save 15%</span>
+                  <span className="block text-[12px] text-slate-400 font-black uppercase tracking-wider">Save 15%</span>
                   <strong className="text-2xl font-black text-[#1b1533] logo-font">$149.00</strong>
                 </div>
                 <button
@@ -489,7 +525,7 @@ export default function DedicatedCategoryPage({ params }: { params: Promise<{ sl
 
             {/* Best Seller Bundle */}
             <div className="bg-white border-2 border-[#ff4fa3] rounded-[36px] p-6 shadow-md flex flex-col justify-between items-start text-left gap-6 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 relative group">
-              <span className="absolute left-6 top-6 bg-[#ff4fa3] text-white rounded-full px-3.5 py-1 text-[8.5px] font-black uppercase tracking-widest leading-none shadow-sm shadow-pink-100 flex items-center gap-1 animate-pulse">
+              <span className="absolute left-6 top-6 bg-[#ff4fa3] text-white rounded-full px-3.5 py-1 text-[10px] font-black uppercase tracking-widest leading-none shadow-sm shadow-pink-100 flex items-center gap-1 animate-pulse">
                 <Flame className="h-3 w-3 fill-current" /> Best Seller
               </span>
               <div className="w-full text-right">
@@ -498,7 +534,7 @@ export default function DedicatedCategoryPage({ params }: { params: Promise<{ sl
 
               <div className="space-y-1.5 w-full mt-4">
                 <h3 className="text-xl font-black text-[#1b1533] uppercase logo-font leading-none">Best Seller Bundle</h3>
-                <span className="block text-[10px] text-slate-400 font-bold uppercase">Customer Favorite Stack</span>
+                <span className="block text-[12px] text-slate-400 font-bold uppercase">Customer Favorite Stack</span>
                 
                 {/* Product Checklist */}
                 <div className="pt-4 space-y-2 border-t border-slate-100/70 mt-4">
@@ -518,7 +554,7 @@ export default function DedicatedCategoryPage({ params }: { params: Promise<{ sl
 
               <div className="w-full border-t border-slate-100/70 pt-4 flex items-baseline justify-between mt-auto">
                 <div>
-                  <span className="block text-[8px] text-slate-400 font-black uppercase tracking-wider">Save 20%</span>
+                  <span className="block text-[12px] text-slate-400 font-black uppercase tracking-wider">Save 20%</span>
                   <strong className="text-2xl font-black text-[#ff4fa3] logo-font">$249.00</strong>
                 </div>
                 <button
@@ -537,7 +573,7 @@ export default function DedicatedCategoryPage({ params }: { params: Promise<{ sl
 
             {/* Ultimate Bundle */}
             <div className="bg-white border border-slate-100 rounded-[36px] p-6 shadow-sm flex flex-col justify-between items-start text-left gap-6 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 relative group">
-              <span className="absolute left-6 top-6 bg-[#7b5cff]/10 border border-[#7b5cff]/20 text-[#7b5cff] rounded-full px-3.5 py-1 text-[8.5px] font-black uppercase tracking-widest leading-none">
+              <span className="absolute left-6 top-6 bg-[#7b5cff]/10 border border-[#7b5cff]/20 text-[#7b5cff] rounded-full px-3.5 py-1 text-[10px] font-black uppercase tracking-widest leading-none">
                 👑 Premium Bundle
               </span>
               <div className="w-full text-right">
@@ -546,7 +582,7 @@ export default function DedicatedCategoryPage({ params }: { params: Promise<{ sl
 
               <div className="space-y-1.5 w-full mt-4">
                 <h3 className="text-xl font-black text-[#1b1533] uppercase logo-font leading-none">Ultimate Bundle</h3>
-                <span className="block text-[10px] text-slate-400 font-bold uppercase">Maximum Compound Variety</span>
+                <span className="block text-[12px] text-slate-400 font-bold uppercase">Maximum Compound Variety</span>
                 
                 {/* Product Checklist */}
                 <div className="pt-4 space-y-2 border-t border-slate-100/70 mt-4">
@@ -566,7 +602,7 @@ export default function DedicatedCategoryPage({ params }: { params: Promise<{ sl
 
               <div className="w-full border-t border-slate-100/70 pt-4 flex items-baseline justify-between mt-auto">
                 <div>
-                  <span className="block text-[8px] text-slate-400 font-black uppercase tracking-wider">Save 25%</span>
+                  <span className="block text-[12px] text-slate-400 font-black uppercase tracking-wider">Save 25%</span>
                   <strong className="text-2xl font-black text-[#1b1533] logo-font">$399.00</strong>
                 </div>
                 <button
@@ -590,7 +626,7 @@ export default function DedicatedCategoryPage({ params }: { params: Promise<{ sl
         <section id="build-bundle" className="mx-auto max-w-7xl px-4 py-16 md:px-8 border-t border-purple-100/30">
           
           <div className="text-center space-y-2 mb-12 max-w-md mx-auto">
-            <span className="text-[10px] font-black uppercase tracking-widest text-[#ff4fa3] logo-font">Interactive Builder</span>
+            <span className="text-[12px] font-black uppercase tracking-widest text-[#ff4fa3] logo-font">Interactive Builder</span>
             <h2 className="text-3xl font-black text-[#1b1533] uppercase logo-font">Build Your Own Bundle</h2>
             <p className="text-xs text-slate-400">Design your perfect compounding routine. Select one product from each compounding block below and save a flat **15% off** the total sum!</p>
           </div>
@@ -625,7 +661,7 @@ export default function DedicatedCategoryPage({ params }: { params: Promise<{ sl
                     >
                       <div className="leading-tight">
                         <span className="block text-xs font-black uppercase text-[#1b1533] logo-font">{opt.name}</span>
-                        <span className="block text-[9px] text-slate-400 font-semibold mt-0.5">{opt.desc}</span>
+                        <span className="block text-[12px] text-slate-400 font-semibold mt-0.5">{opt.desc}</span>
                       </div>
                       <strong className="text-emerald-600 text-xs font-black logo-font shrink-0 ml-2">+${opt.price}</strong>
                     </button>
@@ -731,7 +767,7 @@ export default function DedicatedCategoryPage({ params }: { params: Promise<{ sl
                 {/* Selected Mushroom */}
                 <div className="flex items-center justify-between text-xs font-semibold text-slate-500 pt-3 first:pt-0">
                   <div>
-                    <span className="block text-[8px] text-slate-400 font-bold uppercase">Step 1: Strains</span>
+                    <span className="block text-[12px] text-slate-400 font-bold uppercase">Step 1: Strains</span>
                     <strong className="text-slate-800 logo-font">{buildMushroom.name}</strong>
                   </div>
                   <strong className="text-slate-800 font-black">${buildMushroom.price.toFixed(2)}</strong>
@@ -740,7 +776,7 @@ export default function DedicatedCategoryPage({ params }: { params: Promise<{ sl
                 {/* Selected Edible */}
                 <div className="flex items-center justify-between text-xs font-semibold text-slate-500 pt-3">
                   <div>
-                    <span className="block text-[8px] text-slate-400 font-bold uppercase">Step 2: Edibles</span>
+                    <span className="block text-[12px] text-slate-400 font-bold uppercase">Step 2: Edibles</span>
                     <strong className="text-slate-800 logo-font">{buildEdible.name}</strong>
                   </div>
                   <strong className="text-slate-800 font-black">${buildEdible.price.toFixed(2)}</strong>
@@ -749,7 +785,7 @@ export default function DedicatedCategoryPage({ params }: { params: Promise<{ sl
                 {/* Selected Capsule */}
                 <div className="flex items-center justify-between text-xs font-semibold text-slate-500 pt-3">
                   <div>
-                    <span className="block text-[8px] text-slate-400 font-bold uppercase">Step 3: Capsules</span>
+                    <span className="block text-[12px] text-slate-400 font-bold uppercase">Step 3: Capsules</span>
                     <strong className="text-slate-800 logo-font">{buildCapsule.name}</strong>
                   </div>
                   <strong className="text-slate-800 font-black">${buildCapsule.price.toFixed(2)}</strong>
@@ -758,7 +794,7 @@ export default function DedicatedCategoryPage({ params }: { params: Promise<{ sl
                 {/* Selected Microdose */}
                 <div className="flex items-center justify-between text-xs font-semibold text-slate-500 pt-3">
                   <div>
-                    <span className="block text-[8px] text-slate-400 font-bold uppercase">Step 4: Microdosing</span>
+                    <span className="block text-[12px] text-slate-400 font-bold uppercase">Step 4: Microdosing</span>
                     <strong className="text-slate-800 logo-font">{buildMicrodose.name}</strong>
                   </div>
                   <strong className="text-slate-800 font-black">${buildMicrodose.price.toFixed(2)}</strong>
@@ -805,7 +841,7 @@ export default function DedicatedCategoryPage({ params }: { params: Promise<{ sl
           <div className="mx-auto max-w-7xl space-y-10 text-center">
             
             <div className="space-y-2">
-              <span className="text-[10px] font-black uppercase tracking-widest text-[#ff4fa3] logo-font leading-none">Synergy & Value</span>
+              <span className="text-[12px] font-black uppercase tracking-widest text-[#ff4fa3] logo-font leading-none">Synergy & Value</span>
               <h2 className="text-2xl md:text-3xl font-black text-[#1b1533] uppercase logo-font">Why Buy Bundles?</h2>
               <p className="text-xs text-slate-400 max-w-md mx-auto">compounding different psilocybin methods elevates the therapeutic threshold while securing massive discounts.</p>
             </div>
@@ -828,7 +864,7 @@ export default function DedicatedCategoryPage({ params }: { params: Promise<{ sl
                     </div>
                     <div className="leading-tight text-left">
                       <h4 className="text-xs font-black uppercase text-[#1b1533] logo-font">{benefit.title}</h4>
-                      <p className="text-[10.5px] font-semibold text-slate-400 mt-1.5 leading-relaxed">{benefit.desc}</p>
+                      <p className="text-[12px] font-semibold text-slate-400 mt-1.5 leading-relaxed">{benefit.desc}</p>
                     </div>
                   </div>
                 );
@@ -842,7 +878,7 @@ export default function DedicatedCategoryPage({ params }: { params: Promise<{ sl
         <section className="bg-gradient-to-tr from-[#fffdfc] to-[#fff7f2] py-16 border-b border-purple-100/30 px-4">
           <div className="mx-auto max-w-7xl space-y-6 text-left">
             <div className="space-y-1">
-              <span className="text-[9px] font-black uppercase tracking-widest text-[#ff4fa3] logo-font">Trending Stacks</span>
+              <span className="text-[12px] font-black uppercase tracking-widest text-[#ff4fa3] logo-font">Trending Stacks</span>
               <h3 className="text-xl font-black text-[#1b1533] uppercase logo-font">Popular Bundle Combinations</h3>
             </div>
 
@@ -866,13 +902,13 @@ export default function DedicatedCategoryPage({ params }: { params: Promise<{ sl
                   })}
                 >
                   <div>
-                    <span className="block text-[8px] text-slate-400 font-bold uppercase tracking-wider leading-none">Pre-Packaged</span>
+                    <span className="block text-[12px] text-slate-400 font-bold uppercase tracking-wider leading-none">Pre-Packaged</span>
                     <strong className="block text-sm font-black text-[#1b1533] logo-font leading-snug mt-2">{item.name}</strong>
-                    <span className="block text-[9.5px] text-slate-400 font-semibold mt-1.5 leading-relaxed">{item.items}</span>
+                    <span className="block text-[12px] text-slate-400 font-semibold mt-1.5 leading-relaxed">{item.items}</span>
                   </div>
                   <div className="flex items-center justify-between mt-6 pt-3 border-t border-slate-50 w-full">
                     <strong className="text-emerald-600 text-xs font-black logo-font">{item.price}</strong>
-                    <span className="text-[9px] font-black text-[#ff4fa3] uppercase tracking-wider group-hover:underline">Quick Buy</span>
+                    <span className="text-[12px] font-black text-[#ff4fa3] uppercase tracking-wider group-hover:underline">Quick Buy</span>
                   </div>
                 </div>
               ))}
@@ -885,7 +921,7 @@ export default function DedicatedCategoryPage({ params }: { params: Promise<{ sl
           <div className="mx-auto max-w-7xl space-y-10 text-center">
             
             <div className="space-y-2">
-              <span className="text-[10px] font-black uppercase tracking-widest text-[#ff4fa3] logo-font">Reviews</span>
+              <span className="text-[12px] font-black uppercase tracking-widest text-[#ff4fa3] logo-font">Reviews</span>
               <h2 className="text-2xl md:text-3xl font-black text-[#1b1533] uppercase logo-font">Verified Bundle Reviews</h2>
               <p className="text-xs text-slate-400 max-w-md mx-auto">Explore real compound synergy results and savings feedback from verified FunGuyz customers.</p>
             </div>
@@ -904,12 +940,12 @@ export default function DedicatedCategoryPage({ params }: { params: Promise<{ sl
                         <Star key={star} className="h-4 w-4 fill-current text-amber-400 stroke-none" />
                       ))}
                     </div>
-                    <span className="text-[9px] font-black uppercase text-[#ff4fa3] logo-font bg-pink-50/50 px-2 py-0.5 rounded-full">{rev.label}</span>
+                    <span className="text-[10px] font-black uppercase text-[#ff4fa3] logo-font bg-pink-50/50 px-2 py-0.5 rounded-full">{rev.label}</span>
                   </div>
 
                   <p className="text-xs text-slate-500 font-semibold leading-relaxed my-2">"{rev.text}"</p>
 
-                  <div className="border-t border-slate-100/50 pt-3 mt-auto w-full flex items-center justify-between text-[10px] font-bold text-slate-400">
+                  <div className="border-t border-slate-100/50 pt-3 mt-auto w-full flex items-center justify-between text-[12px] font-bold text-slate-400">
                     <strong>{rev.name}</strong>
                     <span>{rev.date}</span>
                   </div>
@@ -925,7 +961,7 @@ export default function DedicatedCategoryPage({ params }: { params: Promise<{ sl
           <div className="mx-auto max-w-4xl space-y-8 text-center">
             
             <div className="space-y-2">
-              <span className="text-[10px] font-black uppercase tracking-widest text-[#ff4fa3] logo-font">Curation Grid</span>
+              <span className="text-[12px] font-black uppercase tracking-widest text-[#ff4fa3] logo-font">Curation Grid</span>
               <h2 className="text-2xl md:text-3xl font-black text-[#1b1533] uppercase logo-font">Compare Our Bundles</h2>
               <p className="text-xs text-slate-400">Compare products, savings, and prices across our pre-packaged curations to find your optimal stack.</p>
             </div>
@@ -934,7 +970,7 @@ export default function DedicatedCategoryPage({ params }: { params: Promise<{ sl
             <div className="bg-[#fffdfb] border border-purple-100/30 rounded-3xl overflow-hidden shadow-sm">
               <table className="w-full text-left border-collapse text-xs md:text-sm font-semibold">
                 <thead>
-                  <tr className="bg-[#fff8f3] text-[#1b1533] uppercase logo-font border-b border-purple-100/30 text-[10px] tracking-wider font-black">
+                  <tr className="bg-[#fff8f3] text-[#1b1533] uppercase logo-font border-b border-purple-100/30 text-[12px] tracking-wider font-black">
                     <th className="p-4">Bundle Tier</th>
                     <th className="p-4">Included Products</th>
                     <th className="p-4">Discount</th>
@@ -966,7 +1002,7 @@ export default function DedicatedCategoryPage({ params }: { params: Promise<{ sl
           <div className="mx-auto max-w-3xl space-y-8 text-center">
             
             <div className="space-y-2">
-              <span className="text-[10px] font-black uppercase tracking-widest text-[#ff4fa3] logo-font">Got Questions?</span>
+              <span className="text-[12px] font-black uppercase tracking-widest text-[#ff4fa3] logo-font">Got Questions?</span>
               <h2 className="text-2xl md:text-3xl font-black text-[#1b1533] uppercase logo-font">Bundle FAQ Section</h2>
               <p className="text-xs text-slate-400">Discover everything you need to know about customizing packages, active compound synergies, and discreet shipping.</p>
             </div>
@@ -1010,7 +1046,7 @@ export default function DedicatedCategoryPage({ params }: { params: Promise<{ sl
           <div className="mx-auto max-w-7xl space-y-8 text-center">
             
             <div className="space-y-2">
-              <span className="text-[10px] font-black uppercase tracking-widest text-[#ff4fa3] logo-font">Browse More</span>
+              <span className="text-[12px] font-black uppercase tracking-widest text-[#ff4fa3] logo-font">Browse More</span>
               <h3 className="text-2xl md:text-3xl font-black text-[#1b1533] uppercase logo-font">Explore Other Collections</h3>
               <p className="text-xs text-slate-400 max-w-md mx-auto">Explore our laboratory-tested organic product catalogs, ranging from dried strains to daily wellness supplements.</p>
             </div>
@@ -1028,7 +1064,7 @@ export default function DedicatedCategoryPage({ params }: { params: Promise<{ sl
                     <div className="h-11 w-11 rounded-2xl bg-[#fff8f3] flex items-center justify-center text-2xl border border-slate-50">
                       {relCat.icon}
                     </div>
-                    <span className={`rounded-full border px-2.5 py-0.5 text-[8.5px] font-bold uppercase tracking-widest ${relCat.bg}`}>
+                    <span className={`rounded-full border px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-widest ${relCat.bg}`}>
                       Active
                     </span>
                   </div>
@@ -1036,7 +1072,7 @@ export default function DedicatedCategoryPage({ params }: { params: Promise<{ sl
                   <div className="space-y-1">
                     <h4 className="text-xs font-black uppercase text-slate-400 leading-none logo-font">Collection</h4>
                     <h3 className="text-base font-black text-[#1b1533] uppercase logo-font leading-tight truncate">{relCat.name}</h3>
-                    <p className="text-[10px] font-semibold text-slate-400 leading-relaxed line-clamp-3">{relCat.desc}</p>
+                    <p className="text-[12px] font-semibold text-slate-400 leading-relaxed line-clamp-3">{relCat.desc}</p>
                   </div>
 
                   <a 
@@ -1127,7 +1163,7 @@ export default function DedicatedCategoryPage({ params }: { params: Promise<{ sl
           <div className="flex flex-col items-start text-left gap-4">
             
             {/* Breadcrumbs */}
-            <div className="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-slate-400 logo-font leading-none">
+            <div className="flex items-center gap-1.5 text-[12px] font-black uppercase tracking-widest text-slate-400 logo-font leading-none">
               <a href="/" className="hover:text-[#ff4fa3] transition-colors">Home</a>
               <span>/</span>
               <a href="/shop" className="hover:text-[#ff4fa3] transition-colors">Shop</a>
@@ -1142,7 +1178,7 @@ export default function DedicatedCategoryPage({ params }: { params: Promise<{ sl
               </div>
               
               <div>
-                <span className="text-[10px] font-black uppercase tracking-widest text-[#ff4fa3] logo-font leading-none">Collection</span>
+                <span className="text-[12px] font-black uppercase tracking-widest text-[#ff4fa3] logo-font leading-none">Collection</span>
                 <h1 className="mt-1 text-3xl md:text-4xl font-black text-[#1b1533] uppercase leading-none tracking-tight logo-font">{category.title}</h1>
               </div>
             </div>
@@ -1160,7 +1196,7 @@ export default function DedicatedCategoryPage({ params }: { params: Promise<{ sl
                 )}
                 <button
                   onClick={() => setIsExpanded(!isExpanded)}
-                  className="text-[#ff4fa3] hover:text-black hover:underline font-black text-[10px] uppercase tracking-wider ml-2 cursor-pointer logo-font inline-flex items-center gap-0.5 mt-2 md:mt-0"
+                  className="text-[#ff4fa3] hover:text-black hover:underline font-black text-[12px] uppercase tracking-wider ml-2 cursor-pointer logo-font inline-flex items-center gap-0.5 mt-2 md:mt-0"
                 >
                   {isExpanded ? (
                     <>
@@ -1207,8 +1243,8 @@ export default function DedicatedCategoryPage({ params }: { params: Promise<{ sl
           {category.stats.map((stat, idx) => (
             <div key={idx} className="flex flex-col items-center justify-center gap-1">
               <span className="text-lg md:text-xl font-black text-[#1b1533] uppercase logo-font leading-none">{stat.val}</span>
-              <strong className="text-[10px] font-black uppercase tracking-wider text-slate-500 mt-1">{stat.label}</strong>
-              <span className="text-[9px] font-bold text-slate-400">{stat.desc}</span>
+              <strong className="text-[12px] font-black uppercase tracking-wider text-slate-500 mt-1">{stat.label}</strong>
+              <span className="text-[12px] font-bold text-slate-400">{stat.desc}</span>
             </div>
           ))}
         </div>
@@ -1233,7 +1269,7 @@ export default function DedicatedCategoryPage({ params }: { params: Promise<{ sl
                     setSelectedEffect('all');
                     setInStockOnly(true);
                   }}
-                  className="text-[10px] font-black uppercase text-[#ff4fa3] hover:underline cursor-pointer"
+                  className="text-[12px] font-black uppercase text-[#ff4fa3] hover:underline cursor-pointer"
                 >
                   Reset
                 </button>
@@ -1242,7 +1278,7 @@ export default function DedicatedCategoryPage({ params }: { params: Promise<{ sl
 
             {/* 1. Text Search Input */}
             <div className="space-y-2">
-              <label className="block text-[9.5px] font-black uppercase tracking-wider text-slate-400">Search Products</label>
+              <label className="block text-[12px] font-black uppercase tracking-wider text-slate-400">Search Products</label>
               <div className="flex items-center bg-slate-50 border border-slate-200/80 rounded-xl px-3 py-2 focus-within:border-[#ff4fa3] focus-within:bg-white transition-all shadow-inner">
                 <Search className="h-4 w-4 text-slate-400 mr-2" />
                 <input
@@ -1250,14 +1286,14 @@ export default function DedicatedCategoryPage({ params }: { params: Promise<{ sl
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder="e.g. Teacher"
-                  className="w-full bg-transparent border-none text-[11.5px] font-semibold text-[#1b1533] outline-none placeholder:text-slate-400"
+                  className="w-full bg-transparent border-none text-[12px] font-semibold text-[#1b1533] outline-none placeholder:text-slate-400"
                 />
               </div>
             </div>
 
             {/* 2. Potency/Strength */}
             <div className="space-y-2.5">
-              <label className="block text-[9.5px] font-black uppercase tracking-wider text-slate-400">Genetics Potency</label>
+              <label className="block text-[12px] font-black uppercase tracking-wider text-slate-400">Genetics Potency</label>
               <div className="space-y-2">
                 {[
                   { id: 'all', label: 'All Strengths' },
@@ -1281,7 +1317,7 @@ export default function DedicatedCategoryPage({ params }: { params: Promise<{ sl
 
             {/* 3. Intended Effects */}
             <div className="space-y-2.5">
-              <label className="block text-[9.5px] font-black uppercase tracking-wider text-slate-400">Intended Effects</label>
+              <label className="block text-[12px] font-black uppercase tracking-wider text-slate-400">Intended Effects</label>
               <div className="space-y-2">
                 {[
                   { id: 'all', label: 'All Effects' },
@@ -1306,7 +1342,7 @@ export default function DedicatedCategoryPage({ params }: { params: Promise<{ sl
 
             {/* 4. Price range */}
             <div className="space-y-2.5">
-              <label className="block text-[9.5px] font-black uppercase tracking-wider text-slate-400">Price Tier</label>
+              <label className="block text-[12px] font-black uppercase tracking-wider text-slate-400">Price Tier</label>
               <div className="space-y-2">
                 {[
                   { id: 'all', label: 'All Prices' },
@@ -1403,8 +1439,8 @@ export default function DedicatedCategoryPage({ params }: { params: Promise<{ sl
             <div className="absolute bottom-4 left-4 bg-white/90 backdrop-blur-md border border-slate-100 px-4 py-2.5 rounded-2xl flex items-center gap-2.5 shadow-md">
               <ShieldCheck className="h-5 w-5 text-emerald-500 shrink-0" />
               <div className="leading-none text-left">
-                <strong className="block text-[10px] font-black text-slate-800 uppercase logo-font">Lab Certified</strong>
-                <span className="text-[9px] text-slate-400 font-bold">100% Contaminant Free</span>
+                <strong className="block text-[12px] font-black text-slate-800 uppercase logo-font">Lab Certified</strong>
+                <span className="text-[12px] text-slate-400 font-bold">100% Contaminant Free</span>
               </div>
             </div>
           </div>
@@ -1412,7 +1448,7 @@ export default function DedicatedCategoryPage({ params }: { params: Promise<{ sl
           {/* Right Column: Benefits Header & Grid */}
           <div className="space-y-6 text-left">
             <div className="space-y-2">
-              <span className="text-[10px] font-black uppercase tracking-widest text-[#ff4fa3] logo-font leading-none">Why Choose FunGuyz</span>
+              <span className="text-[12px] font-black uppercase tracking-widest text-[#ff4fa3] logo-font leading-none">Why Choose FunGuyz</span>
               <h2 className="text-2xl md:text-3xl font-black text-[#1b1533] uppercase logo-font leading-tight">{category.infoTitle}</h2>
               <p className="text-xs md:text-sm font-semibold text-slate-500 leading-relaxed">{category.infoDesc}</p>
             </div>
@@ -1428,7 +1464,7 @@ export default function DedicatedCategoryPage({ params }: { params: Promise<{ sl
                     </div>
                     <div className="leading-tight text-left">
                       <h4 className="text-xs font-black uppercase text-[#1b1533] logo-font">{benefit.title}</h4>
-                      <p className="text-[9.5px] font-semibold text-slate-400 mt-0.5 leading-snug">{benefit.desc}</p>
+                      <p className="text-[12px] font-semibold text-slate-400 mt-0.5 leading-snug">{benefit.desc}</p>
                     </div>
                   </div>
                 );
@@ -1444,7 +1480,7 @@ export default function DedicatedCategoryPage({ params }: { params: Promise<{ sl
       <section className="bg-gradient-to-tr from-[#fffdfc] to-[#fff7f2] py-12 border-b border-purple-100/30 px-4">
         <div className="mx-auto max-w-7xl space-y-6 text-left">
           <div className="space-y-1">
-            <span className="text-[9px] font-black uppercase tracking-widest text-[#ff4fa3] logo-font">Trending Strains</span>
+            <span className="text-[12px] font-black uppercase tracking-widest text-[#ff4fa3] logo-font">Trending Strains</span>
             <h3 className="text-xl font-black text-[#1b1533] uppercase logo-font">Popular Strains & Formulations</h3>
           </div>
 
@@ -1462,7 +1498,7 @@ export default function DedicatedCategoryPage({ params }: { params: Promise<{ sl
                 <div className="leading-tight text-left">
                   <span className="block text-[10px] text-slate-400 font-bold uppercase">{item.badge}</span>
                   <strong className="block text-xs font-black text-[#1b1533] logo-font leading-snug truncate max-w-[130px]">{item.name}</strong>
-                  <span className="block text-[10px] font-black text-[#ff4fa3] mt-0.5">{item.price}</span>
+                  <span className="block text-[12px] font-black text-[#ff4fa3] mt-0.5">{item.price}</span>
                 </div>
               </div>
             ))}
@@ -1487,7 +1523,7 @@ export default function DedicatedCategoryPage({ params }: { params: Promise<{ sl
                 <div className={`h-10 w-10 rounded-full flex items-center justify-center border shadow-sm shrink-0 ${benefit.color}`}>
                   <Icon className="h-5 w-5 stroke-[2]" />
                 </div>
-                <strong className="text-[10px] font-black uppercase tracking-wider text-slate-500 leading-tight logo-font">{benefit.title}</strong>
+                <strong className="text-[12px] font-black uppercase tracking-wider text-slate-500 leading-tight logo-font">{benefit.title}</strong>
               </div>
             );
           })}
@@ -1498,7 +1534,7 @@ export default function DedicatedCategoryPage({ params }: { params: Promise<{ sl
       <section className="bg-white py-16 px-4 md:px-8 border-b border-purple-100/30">
         <div className="mx-auto max-w-3xl space-y-8 text-center">
           <div className="space-y-2">
-            <span className="text-[9px] font-black uppercase tracking-widest text-[#ff4fa3] logo-font">Got Questions?</span>
+            <span className="text-[12px] font-black uppercase tracking-widest text-[#ff4fa3] logo-font">Got Questions?</span>
             <h3 className="text-2xl md:text-3xl font-black text-[#1b1533] uppercase logo-font">Category Questions & Answers</h3>
             <p className="text-xs text-slate-400 max-w-md mx-auto">Explore frequently asked customer questions regarding {category.categoryName} dosages, storage, and standard active effects.</p>
           </div>
@@ -1535,7 +1571,7 @@ export default function DedicatedCategoryPage({ params }: { params: Promise<{ sl
       <section className="bg-[#fff8f3] py-16 px-4 md:px-8 border-b border-purple-100/30">
         <div className="mx-auto max-w-7xl space-y-8 text-center">
           <div className="space-y-2">
-            <span className="text-[9px] font-black uppercase tracking-widest text-[#ff4fa3] logo-font">Browse More</span>
+            <span className="text-[12px] font-black uppercase tracking-widest text-[#ff4fa3] logo-font">Browse More</span>
             <h3 className="text-2xl md:text-3xl font-black text-[#1b1533] uppercase logo-font">Explore Other Collections</h3>
             <p className="text-xs text-slate-400 max-w-md mx-auto">Explore our laboratory-tested organic product catalogs, ranging from dried strains to daily wellness supplements.</p>
           </div>
@@ -1553,7 +1589,7 @@ export default function DedicatedCategoryPage({ params }: { params: Promise<{ sl
                   <div className="h-11 w-11 rounded-2xl bg-[#fff8f3] flex items-center justify-center text-2xl border border-slate-50">
                     {relCat.icon}
                   </div>
-                  <span className={`rounded-full border px-2.5 py-0.5 text-[8.5px] font-bold uppercase tracking-widest ${relCat.bg}`}>
+                  <span className={`rounded-full border px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-widest ${relCat.bg}`}>
                     Active
                   </span>
                 </div>
@@ -1561,7 +1597,7 @@ export default function DedicatedCategoryPage({ params }: { params: Promise<{ sl
                 <div className="space-y-1">
                   <h4 className="text-xs font-black uppercase text-slate-400 leading-none logo-font">Collection</h4>
                   <h3 className="text-base font-black text-[#1b1533] uppercase logo-font leading-tight truncate">{relCat.name}</h3>
-                  <p className="text-[10px] font-semibold text-slate-400 leading-relaxed line-clamp-3">{relCat.desc}</p>
+                  <p className="text-[12px] font-semibold text-slate-400 leading-relaxed line-clamp-3">{relCat.desc}</p>
                 </div>
 
                 <a 

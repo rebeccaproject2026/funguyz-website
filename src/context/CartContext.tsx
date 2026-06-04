@@ -282,7 +282,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
                     {/* Item Details */}
                     <div className="flex-1 min-w-0 flex flex-col gap-1">
-                      <span className="text-[9px] font-bold uppercase tracking-widest text-[#ff4fa3] leading-none">{item.category}</span>
+                      <span className="text-[12px] font-bold uppercase tracking-widest text-[#ff4fa3] leading-none">{item.category}</span>
                       <h4 className="text-[13px] font-bold text-[#1b1533] leading-tight truncate logo-font">{item.title}</h4>
                       <span className="text-xs font-black text-[#1b1533]/90">{item.price}</span>
 
@@ -419,7 +419,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
                     {/* Item Details */}
                     <div className="flex-1 min-w-0 flex flex-col gap-1">
-                      <span className="text-[9px] font-bold uppercase tracking-widest text-slate-400 leading-none">{item.category}</span>
+                      <span className="text-[12px] font-bold uppercase tracking-widest text-slate-400 leading-none">{item.category}</span>
                       <h4 className="text-[13px] font-bold text-[#1b1533] leading-tight truncate logo-font">{item.title}</h4>
                       <span className="text-xs font-black text-[#1b1533]/90">{item.price}</span>
 
@@ -431,7 +431,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
                           setIsWishlistOpen(false);
                           setIsCartOpen(true);
                         }}
-                        className="mt-1.5 px-3.5 py-2 bg-[#ff4fa3] text-white border border-[#ff4fa3] rounded-xl text-[9px] font-black uppercase tracking-wider shadow-sm transition-all hover:bg-black hover:text-[#ff4fa3] hover:border-black flex items-center gap-1.5 self-start cursor-pointer logo-font"
+                        className="mt-1.5 px-3.5 py-2 bg-[#ff4fa3] text-white border border-[#ff4fa3] rounded-xl text-[12px] font-black uppercase tracking-wider shadow-sm transition-all hover:bg-black hover:text-[#ff4fa3] hover:border-black flex items-center gap-1.5 self-start cursor-pointer logo-font"
                       >
                         <ShoppingCart className="h-3 w-3" /> Add to Cart
                       </button>
@@ -496,12 +496,12 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
           {/* Toast Content Details */}
           <div className="flex-1 min-w-0 flex flex-col gap-0.5">
-            <span className="inline-flex items-center gap-1 text-[9px] font-black uppercase tracking-widest text-[#ff4fa3] leading-none">
+            <span className="inline-flex items-center gap-1 text-[12px] font-black uppercase tracking-widest text-[#ff4fa3] leading-none">
               <Check className="h-3 w-3 stroke-[3]" /> 
               {toast.type === 'cart' ? 'Added to Cart! 🛒' : toast.type === 'wishlist' ? 'Added to Wishlist! 💖' : 'Removed from Wishlist!'}
             </span>
             <h4 className="text-[12.5px] font-bold text-[#1b1533] leading-tight truncate logo-font mt-0.5">{toast.productTitle}</h4>
-            <span className="text-[11px] font-black text-slate-400">{toast.productPrice}</span>
+            <span className="text-[12px] font-black text-slate-400">{toast.productPrice}</span>
           </div>
 
           {/* WooCommerce-Style "View" Button inside Toast! */}
@@ -515,7 +515,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
                   setIsWishlistOpen(true);
                 }
               }}
-              className="px-3 py-1.5 bg-[#ff4fa3] text-white hover:bg-black hover:text-[#ff4fa3] border border-[#ff4fa3] hover:border-black transition-all rounded-xl text-[9px] font-black uppercase tracking-wider shrink-0 logo-font cursor-pointer flex items-center gap-1.5 shadow-sm"
+              className="px-3 py-1.5 bg-[#ff4fa3] text-white hover:bg-black hover:text-[#ff4fa3] border border-[#ff4fa3] hover:border-black transition-all rounded-xl text-[10px] font-black uppercase tracking-wider shrink-0 logo-font cursor-pointer flex items-center gap-1.5 shadow-sm"
             >
               View {toast.type === 'cart' ? 'Cart' : 'List'}
             </a>

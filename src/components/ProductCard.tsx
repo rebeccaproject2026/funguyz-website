@@ -1,15 +1,58 @@
 import { ShoppingCart, Star, Heart } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
-
+import { getProductUrl } from '@/data/products';
 const imageMap: Record<string, string> = {
+  // Magic Mushrooms
   'Golden Teacher': '/images/prod_golden_teacher.webp',
   'Penis Envy': '/images/prod_penis_envy.webp',
-  'Blue Raspberry Gummies': '/images/prod_blue_gummies.webp',
-  'Golden Teacher Capsules': '/images/prod_teacher_capsules.webp',
-  'Microdose Daily Blend': '/images/prod_daily_blend.webp',
+  'Blue Meanies': '/images/prod_penis_envy.webp',
+  'Albino Penis Envy (APE)': '/images/prod_penis_envy.webp',
+  'Tidal Wave': '/images/prod_golden_teacher.webp',
   'Jack Frost': '/images/prod_golden_teacher.webp',
-  'Milk Chocolate Bar': '/images/prod_blue_gummies.webp',
-  'Focus Capsules': '/images/prod_teacher_capsules.webp',
+  'Jedi Mind Fuck (JMF)': '/images/prod_golden_teacher.webp',
+  'Mazatapec': '/images/prod_golden_teacher.webp',
+  'B+': '/images/prod_golden_teacher.webp',
+  'Treasure Coast': '/images/prod_golden_teacher.webp',
+  'Melmac': '/images/prod_penis_envy.webp',
+  'Enigma': '/images/prod_penis_envy.webp',
+  'Hillbilly': '/images/prod_golden_teacher.webp',
+  'Thai Pink Buffalo': '/images/prod_golden_teacher.webp',
+
+  // Edibles
+  'Golden Teacher Original Chocolate (GT OG)': '/images/prod_blue_gummies.webp',
+  'Golden Teacher Concentrated Chocolate (GT CC)': '/images/prod_blue_gummies.webp',
+  'Penis Envy Original Chocolate (PE OG)': '/images/prod_blue_gummies.webp',
+  'Penis Envy Refined Concentrate Chocolate (PE RC)': '/images/prod_blue_gummies.webp',
+  'Penis Envy Concentrated Chocolate (PE CC)': '/images/prod_blue_gummies.webp',
+  'Blue Raspberry Gummies': '/images/prod_blue_gummies.webp',
+  'Watermelon Gummies': '/images/prod_blue_gummies.webp',
+  'Strawberry Gummies': '/images/prod_blue_gummies.webp',
+  'Mango Gummies': '/images/prod_blue_gummies.webp',
+  'Green Apple Gummies': '/images/prod_blue_gummies.webp',
+  'Mixed Berry Gummies': '/images/prod_blue_gummies.webp',
+  'Golden Teacher S\'Mores': '/images/prod_blue_gummies.webp',
+  'Penis Envy S\'Mores': '/images/prod_blue_gummies.webp',
+  'Cookies & Cream S\'Mores': '/images/prod_blue_gummies.webp',
+
+  // Capsules
+  'Lion\'s Mane Capsules': '/images/prod_teacher_capsules.webp',
+  'Reishi Capsules': '/images/prod_teacher_capsules.webp',
+  'Cordyceps Capsules': '/images/prod_teacher_capsules.webp',
+  'Turkey Tail Capsules': '/images/prod_teacher_capsules.webp',
+  'Chaga Capsules': '/images/prod_teacher_capsules.webp',
+  'Golden Teacher Extract': '/images/prod_teacher_capsules.webp',
+  'Penis Envy Extract': '/images/prod_teacher_capsules.webp',
+  'Lion\'s Mane Tincture': '/images/prod_teacher_capsules.webp',
+  'Reishi Tincture': '/images/prod_teacher_capsules.webp',
+  'Cordyceps Tincture': '/images/prod_teacher_capsules.webp',
+
+  // Microdose
+  'Golden Teacher Microdose': '/images/prod_daily_blend.webp',
+  'Penis Envy Microdose': '/images/prod_daily_blend.webp',
+  'Stamets Stack Microdose': '/images/prod_daily_blend.webp',
+  'Creativity Microdose Blend': '/images/prod_daily_blend.webp',
+  'Productivity Microdose Blend': '/images/prod_daily_blend.webp',
+  'Wellness Microdose Blend': '/images/prod_daily_blend.webp'
 };
 
 const badgeColors: Record<string, string> = {
@@ -163,7 +206,7 @@ export function ProductCard({ p, i }: { p: string[]; i: number }) {
         <Heart className={`h-3.5 w-3.5 transition-all duration-300 ${wishlisted ? 'fill-[#ff4fa3] text-[#ff4fa3] scale-110' : 'text-slate-400 group-hover/wish:text-[#ff4fa3]'
           }`} />
         {/* Smooth sliding tooltip */}
-        <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2.5 py-1 text-[9px] font-bold uppercase tracking-widest text-white bg-black rounded-lg opacity-0 pointer-events-none group-hover/wish:opacity-100 group-hover/wish:translate-y-0 translate-y-1 transition-all duration-200 shadow-md whitespace-nowrap logo-font z-50">
+        <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2.5 py-1 text-[12px] font-bold uppercase tracking-widest text-white bg-black rounded-lg opacity-0 pointer-events-none group-hover/wish:opacity-100 group-hover/wish:translate-y-0 translate-y-1 transition-all duration-200 shadow-md whitespace-nowrap logo-font z-50">
           {wishlisted ? 'Remove' : 'Wishlist'}
           <span className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-black" />
         </span>
@@ -171,11 +214,11 @@ export function ProductCard({ p, i }: { p: string[]; i: number }) {
 
       {/* Inner Image Container with Pure White Background (Clickable Link!) */}
       <a
-        href={`/product/${title.toLowerCase().replace(/\s+/g, '-')}`}
+        href={getProductUrl(title, category)}
         className="relative aspect-square w-full overflow-hidden bg-white flex items-center justify-center rounded-2xl sm:rounded-3xl border border-slate-100/50 cursor-pointer block"
       >
         {badge ? (
-          <span className={`absolute left-2 top-2 sm:left-3 sm:top-3 rounded-full border px-2 py-0.5 sm:px-2.5 sm:py-0.5 text-[7.5px] sm:text-[8.5px] font-bold uppercase tracking-widest shadow-sm backdrop-blur-md z-10 ${badgeColors[badge.toLowerCase()] || 'text-slate-700 bg-slate-50 border-slate-100'
+          <span className={`absolute left-2 top-2 sm:left-3 sm:top-3 rounded-full border px-2 py-0.5 sm:px-2.5 sm:py-0.5 text-[10px] sm:text-[10px] font-bold uppercase tracking-widest shadow-sm backdrop-blur-md z-10 ${badgeColors[badge.toLowerCase()] || 'text-slate-700 bg-slate-50 border-slate-100'
             }`}>
             {badge}
           </span>
@@ -191,17 +234,17 @@ export function ProductCard({ p, i }: { p: string[]; i: number }) {
       {/* Content Details Block */}
       <div className="p-1.5 sm:p-3 flex flex-col gap-1 sm:gap-1.5 mt-1 w-full">
         {/* Category string */}
-        <span className="text-[9px] sm:text-xs font-bold uppercase tracking-widest text-slate-400 leading-none">{category}</span>
+        <span className="text-[12px] sm:text-xs font-bold uppercase tracking-widest text-slate-400 leading-none">{category}</span>
 
         {/* Title (Clickable Link!) */}
         <h3 className="font-bold text-[13px] sm:text-base md:text-[17px] text-[#1b1533] leading-snug tracking-tight hover:text-[#ff4fa3] transition-colors duration-200 line-clamp-2 logo-font">
-          <a href={`/product/${title.toLowerCase().replace(/\s+/g, '-')}`} className="cursor-pointer">
+          <a href={getProductUrl(title, category)} className="cursor-pointer">
             {title}
           </a>
         </h3>
 
         {/* Rating Row */}
-        <div className="flex items-center gap-1 sm:gap-1.5 text-[10px] sm:text-xs md:text-[13px] font-semibold text-amber-500 leading-none">
+        <div className="flex items-center gap-1 sm:gap-1.5 text-[12px] sm:text-xs md:text-[13px] font-semibold text-amber-500 leading-none">
           <div className="flex gap-0.5">
             {Array.from({ length: 5 }).map((_, star) => (
               <Star key={star} className="h-3 w-3 sm:h-3.5 sm:w-3.5 fill-current text-amber-400 stroke-none" />
@@ -232,14 +275,14 @@ export function ProductCard({ p, i }: { p: string[]; i: number }) {
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center w-full mt-3 gap-2 sm:gap-0 select-none">
               {/* Left Column */}
               <div className="flex sm:flex-col justify-between sm:justify-between items-center sm:items-start w-full sm:w-auto h-auto sm:h-[38px]">
-                <span className="text-[9px] sm:text-[10px] font-black text-slate-400 uppercase tracking-widest leading-none font-poppins">POTENCY</span>
-                <span className="text-[11px] sm:text-[15px] font-black text-[#1b1533] font-poppins leading-none whitespace-nowrap">{potency.pctRange}</span>
+                <span className="text-[12px] sm:text-[12px] font-black text-slate-400 uppercase tracking-widest leading-none font-poppins">POTENCY</span>
+                <span className="text-[12px] sm:text-[15px] font-black text-[#1b1533] font-poppins leading-none whitespace-nowrap">{potency.pctRange}</span>
               </div>
 
               {/* Right Column */}
               <div className="flex sm:flex-col items-start sm:items-end justify-between w-full sm:w-auto h-auto sm:h-[38px] text-left sm:text-right gap-1.5 sm:gap-0">
                 <span
-                  className="text-[8px] sm:text-[9px] font-black uppercase tracking-widest px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-full leading-none font-poppins"
+                  className="text-[10px] sm:text-[10px] font-black uppercase tracking-widest px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-full leading-none font-poppins"
                   style={{ backgroundColor: colors.bg, color: colors.text }}
                 >
                   {potency.tier}
@@ -261,7 +304,7 @@ export function ProductCard({ p, i }: { p: string[]; i: number }) {
         <div className="mt-1 flex items-center justify-between w-full">
           <div className="flex items-baseline gap-1 sm:gap-1.5">
             <span className="text-[14px] sm:text-[17px] md:text-[19px] font-black text-[#1b1533] logo-font">{price}</span>
-            <span className="text-[9px] sm:text-xs md:text-sm font-semibold text-slate-400 line-through">{originalPrice}</span>
+            <span className="text-[12px] sm:text-xs md:text-sm font-semibold text-slate-400 line-through">{originalPrice}</span>
           </div>
           <button
             onClick={() => addToCart({ title, category, price, imageSrc })}
@@ -269,7 +312,7 @@ export function ProductCard({ p, i }: { p: string[]; i: number }) {
           >
             <ShoppingCart className="h-4 w-4 sm:h-5 sm:w-5" />
             {/* Smooth sliding tooltip */}
-            <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2.5 py-1 text-[9px] font-bold uppercase tracking-widest text-white bg-black rounded-lg opacity-0 pointer-events-none group-hover/btn:opacity-100 group-hover/btn:translate-y-0 translate-y-1 transition-all duration-200 shadow-md whitespace-nowrap logo-font z-30">
+            <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2.5 py-1 text-[12px] font-bold uppercase tracking-widest text-white bg-black rounded-lg opacity-0 pointer-events-none group-hover/btn:opacity-100 group-hover/btn:translate-y-0 translate-y-1 transition-all duration-200 shadow-md whitespace-nowrap logo-font z-30">
               Add to Cart
               {/* Caret Down Arrow */}
               <span className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-black" />

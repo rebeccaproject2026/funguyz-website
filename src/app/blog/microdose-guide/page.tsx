@@ -64,7 +64,7 @@ export default function MicrodoseGuidePage() {
           <div className="flex flex-col items-start text-left gap-4">
             
             {/* Breadcrumb */}
-            <div className="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-slate-400 logo-font leading-none">
+            <div className="flex items-center gap-1.5 text-[12px] font-black uppercase tracking-widest text-slate-400 logo-font leading-none">
               <a href="/" className="hover:text-[#ff4fa3] transition-colors">Home</a>
               <span>&gt;</span>
               <a href="/blog" className="hover:text-[#ff4fa3] transition-colors">Blog</a>
@@ -74,7 +74,7 @@ export default function MicrodoseGuidePage() {
 
             {/* Title */}
             <div className="space-y-1">
-              <span className="text-[10px] font-black uppercase tracking-widest text-[#ff4fa3] logo-font">Productivity & Flow</span>
+              <span className="text-[12px] font-black uppercase tracking-widest text-[#ff4fa3] logo-font">Productivity & Flow</span>
               <h1 className="text-3xl md:text-5xl font-black text-[#1b1533] uppercase tracking-tight logo-font leading-none">
                 The Art Of <br />
                 <span className="text-[#ff4fa3]">Microdosing</span>
@@ -101,7 +101,7 @@ export default function MicrodoseGuidePage() {
             <div className="relative bg-white/70 backdrop-blur-md border border-pink-100/60 rounded-[40px] p-6 shadow-[0_24px_70px_rgba(255,79,163,0.12)] max-w-xs text-left space-y-3">
               <Calendar className="h-6 w-6 text-[#ff4fa3]" />
               <h3 className="text-xs font-black uppercase text-[#1b1533] logo-font">Protocol Calendars</h3>
-              <p className="text-[10px] font-semibold text-slate-400 leading-normal">
+              <p className="text-[12px] font-semibold text-slate-400 leading-normal">
                 Determine your optimal intake schedules using the verified Fadiman Protocol or the Stamets Stack.
               </p>
             </div>
@@ -113,7 +113,7 @@ export default function MicrodoseGuidePage() {
       {/* 2. Microdosing Benefits Cards */}
       <section className="mx-auto max-w-7xl px-4 py-16 md:px-8">
         <div className="text-center space-y-2 mb-12 max-w-md mx-auto">
-          <span className="text-[10px] font-black uppercase tracking-widest text-[#ff4fa3] logo-font">Wellness Yield</span>
+          <span className="text-[12px] font-black uppercase tracking-widest text-[#ff4fa3] logo-font">Wellness Yield</span>
           <h2 className="text-2xl md:text-3xl font-black text-[#1b1533] uppercase logo-font">Microdose wellness Benefits</h2>
           <p className="text-xs text-slate-400 font-semibold">Sub-perceptual ingestion triggers profound, long-term cognitive and emotional improvements.</p>
         </div>
@@ -129,7 +129,7 @@ export default function MicrodoseGuidePage() {
                 <benefit.icon className="h-5 w-5 stroke-[2.2]" />
               </div>
               <h3 className="text-xs font-black uppercase text-[#1b1533] logo-font mb-2">{benefit.title}</h3>
-              <p className="text-[11px] font-semibold leading-relaxed text-slate-400">{benefit.desc}</p>
+              <p className="text-[12px] font-semibold leading-relaxed text-slate-400">{benefit.desc}</p>
             </div>
           ))}
         </div>
@@ -141,7 +141,7 @@ export default function MicrodoseGuidePage() {
           <div className="absolute top-0 right-0 h-44 w-44 rounded-full bg-[#ff4fa3]/5 blur-3xl pointer-events-none" />
           
           <div className="space-y-2 mb-8 max-w-md mx-auto">
-            <span className="text-[10px] font-black uppercase tracking-widest text-[#ff4fa3] logo-font">Interactive Planner</span>
+            <span className="text-[12px] font-black uppercase tracking-widest text-[#ff4fa3] logo-font">Interactive Planner</span>
             <h2 className="text-2xl md:text-3xl font-black text-[#1b1533] uppercase logo-font">Protocol Calendar Planner</h2>
             <p className="text-xs text-slate-400 font-semibold leading-relaxed">Toggle between the two primary clinical microdosing blueprints to map your active days, transition days, and body rest cycles.</p>
           </div>
@@ -181,12 +181,12 @@ export default function MicrodoseGuidePage() {
                     : 'border-slate-100 bg-[#fff8f3]/20 text-slate-400'
                 }`}
               >
-                <strong className={`text-[10px] font-black uppercase logo-font ${day.type === 'active' ? 'text-[#ff4fa3]' : 'text-slate-500'}`}>{day.name}</strong>
+                <strong className={`text-[12px] font-black uppercase logo-font ${day.type === 'active' ? 'text-[#ff4fa3]' : 'text-slate-500'}`}>{day.name}</strong>
                 <div className="mt-auto text-left">
-                  <span className={`block text-[9px] font-black uppercase tracking-wider leading-none logo-font ${day.type === 'active' ? 'text-[#ff4fa3]' : 'text-slate-400'}`}>
+                  <span className={`block text-[12px] font-black uppercase tracking-wider leading-none logo-font ${day.type === 'active' ? 'text-[#ff4fa3]' : 'text-slate-400'}`}>
                     {day.type === 'active' ? '⚡ Active' : '🕊️ Rest'}
                   </span>
-                  <span className="block text-[8px] font-bold leading-tight mt-1 truncate">{day.desc}</span>
+                  <span className="block text-[12px] font-bold leading-tight mt-1 truncate">{day.desc}</span>
                 </div>
               </div>
             ))}
@@ -197,14 +197,14 @@ export default function MicrodoseGuidePage() {
             {activeProtocol === 'fadiman' ? (
               <div className="space-y-1">
                 <strong className="block text-xs font-black text-[#1b1533] uppercase logo-font">Fadiman Protocol (1 On, 2 Off):</strong>
-                <p className="text-[10.5px] font-semibold leading-relaxed text-slate-400">
+                <p className="text-[12px] font-semibold leading-relaxed text-slate-400">
                   Developed by Dr. James Fadiman. You consume a microdose on Day 1, experience sub-clinical residuals on Day 2, rest completely on Day 3, and repeat. Perfect for beginners to observe specific state contrasts.
                 </p>
               </div>
             ) : (
               <div className="space-y-1">
                 <strong className="block text-xs font-black text-[#1b1533] uppercase logo-font">Stamets Stack (4 On, 3 Off):</strong>
-                <p className="text-[10.5px] font-semibold leading-relaxed text-slate-400">
+                <p className="text-[12px] font-semibold leading-relaxed text-slate-400">
                   Engineered by mycologist Paul Stamets. You microdose for 4 consecutive days (e.g. Mon-Thu) to accumulate cognitive focus factors, followed by 3 full days of rest (Fri-Sun) to reset serotonin receptor sensitivity.
                 </p>
               </div>
@@ -233,9 +233,9 @@ export default function MicrodoseGuidePage() {
                 <img src={prod.img} alt={prod.title} className="object-contain max-h-[140px] group-hover:scale-102 transition-transform duration-500" />
               </div>
               <div className="space-y-1.5 w-full">
-                <span className="text-[8px] font-black text-[#ff4fa3] uppercase tracking-wider logo-font">Wellness</span>
+                <span className="text-[12px] font-black text-[#ff4fa3] uppercase tracking-wider logo-font">Wellness</span>
                 <h3 className="text-base font-black uppercase text-[#1b1533] logo-font truncate">{prod.title}</h3>
-                <p className="text-[10px] font-semibold text-slate-400 leading-normal">{prod.desc}</p>
+                <p className="text-[12px] font-semibold text-slate-400 leading-normal">{prod.desc}</p>
               </div>
               <div className="w-full pt-3 border-t border-slate-100 flex items-center justify-between">
                 <strong className="text-sm font-black text-[#1b1533] logo-font">{prod.price}</strong>
@@ -246,7 +246,7 @@ export default function MicrodoseGuidePage() {
                     price: prod.price,
                     imageSrc: prod.img
                   })}
-                  className="rounded-xl bg-[#ff4fa3] text-white border border-[#ff4fa3] px-5 py-2 text-[10px] font-black uppercase tracking-wider hover:bg-black hover:text-[#ff4fa3] hover:border-black cursor-pointer transition-all logo-font flex items-center gap-1.5"
+                  className="rounded-xl bg-[#ff4fa3] text-white border border-[#ff4fa3] px-5 py-2 text-[12px] font-black uppercase tracking-wider hover:bg-black hover:text-[#ff4fa3] hover:border-black cursor-pointer transition-all logo-font flex items-center gap-1.5"
                 >
                   <Plus className="h-3.5 w-3.5" /> Buy
                 </button>
@@ -261,7 +261,7 @@ export default function MicrodoseGuidePage() {
         <div className="mx-auto max-w-4xl space-y-10 text-center">
           
           <div className="space-y-2">
-            <span className="text-[10px] font-black uppercase tracking-widest text-[#ff4fa3] logo-font leading-none">Protocol Help</span>
+            <span className="text-[12px] font-black uppercase tracking-widest text-[#ff4fa3] logo-font leading-none">Protocol Help</span>
             <h2 className="text-2xl md:text-3xl font-black text-[#1b1533] uppercase logo-font">Microdose Schedule FAQs</h2>
             <p className="text-xs text-slate-400 max-w-md mx-auto">Get detailed mycological answers regarding active compound integration and schedule plans.</p>
           </div>
@@ -302,7 +302,7 @@ export default function MicrodoseGuidePage() {
       <section className="bg-[#fff8f3] py-16 px-4 md:px-8">
         <div className="mx-auto max-w-7xl text-center space-y-8">
           <div className="space-y-2">
-            <span className="text-[10px] font-black uppercase tracking-widest text-[#ff4fa3] logo-font">Learn Suite</span>
+            <span className="text-[12px] font-black uppercase tracking-widest text-[#ff4fa3] logo-font">Learn Suite</span>
             <h3 className="text-2xl font-black text-[#1b1533] uppercase logo-font">Related Guides & Stacks</h3>
           </div>
 
@@ -317,9 +317,9 @@ export default function MicrodoseGuidePage() {
                   {link.icon}
                 </div>
                 <div className="space-y-1">
-                  <h4 className="text-[8px] font-black uppercase text-slate-400 logo-font leading-none">Learn</h4>
+                  <h4 className="text-[12px] font-black uppercase text-slate-400 logo-font leading-none">Learn</h4>
                   <h3 className="text-sm font-black text-[#1b1533] uppercase logo-font leading-tight">{link.name}</h3>
-                  <p className="text-[10px] font-semibold text-slate-400 leading-relaxed line-clamp-3">{link.desc}</p>
+                  <p className="text-[12px] font-semibold text-slate-400 leading-relaxed line-clamp-3">{link.desc}</p>
                 </div>
                 <a 
                   href={link.url}

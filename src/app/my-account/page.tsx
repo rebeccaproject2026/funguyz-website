@@ -70,7 +70,7 @@ export default function MyAccountPage() {
         <div className="absolute right-[5%] bottom-[5%] w-[300px] h-[300px] rounded-full bg-[#e0f2fe]/40 blur-[80px] pointer-events-none" />
         
         <div className="mx-auto max-w-3xl relative z-10 flex flex-col items-center gap-3">
-          <div className="inline-flex items-center gap-1.5 rounded-full bg-[#ff4fa3]/5 px-3.5 py-1.5 text-[9px] font-bold uppercase tracking-widest text-[#ff4fa3]">
+          <div className="inline-flex items-center gap-1.5 rounded-full bg-[#ff4fa3]/5 px-3.5 py-1.5 text-[10px] font-bold uppercase tracking-widest text-[#ff4fa3]">
             <Sparkles className="h-3 w-3" /> Secure Client Dashboard
           </div>
           <h1 className="text-4xl md:text-5xl font-black tracking-tight text-[#1b1533] uppercase logo-font">
@@ -139,7 +139,7 @@ export default function MyAccountPage() {
               <div className="space-y-6">
                 <div className="border-b border-slate-100 pb-4">
                   <h2 className="text-xl font-black text-[#1b1533] uppercase logo-font">Client Hub</h2>
-                  <p className="text-[11px] font-semibold text-slate-400 mt-1 uppercase tracking-wider">Overview & Quick Actions</p>
+                  <p className="text-[12px] font-semibold text-slate-400 mt-1 uppercase tracking-wider">Overview & Quick Actions</p>
                 </div>
                 
                 <p className="text-sm font-semibold text-slate-600 leading-8">
@@ -161,29 +161,29 @@ export default function MyAccountPage() {
                 {/* Quick Summary Cards */}
                 <div className="grid gap-6 sm:grid-cols-3 mt-6">
                   <div className="border border-slate-100 bg-[#fffdfd] p-5 rounded-2xl shadow-sm hover:shadow-md transition-shadow">
-                    <span className="text-[10px] font-bold uppercase tracking-widest text-[#ff4fa3]">Total Orders</span>
+                    <span className="text-[12px] font-bold uppercase tracking-widest text-[#ff4fa3]">Total Orders</span>
                     <b className="block text-2xl font-black text-[#1b1533] mt-2 logo-font">2 Active</b>
                     <button 
                       onClick={() => setActiveTab('orders')} 
-                      className="mt-3 text-[10px] font-bold uppercase tracking-wider text-[#7b5cff] hover:text-[#ff4fa3] flex items-center gap-1"
+                      className="mt-3 text-[12px] font-bold uppercase tracking-wider text-[#7b5cff] hover:text-[#ff4fa3] flex items-center gap-1"
                     >
                       View Orders <ArrowRight className="h-3 w-3" />
                     </button>
                   </div>
                   <div className="border border-slate-100 bg-[#fffdfd] p-5 rounded-2xl shadow-sm hover:shadow-md transition-shadow">
-                    <span className="text-[10px] font-bold uppercase tracking-widest text-[#ff4fa3]">Resource Files</span>
+                    <span className="text-[12px] font-bold uppercase tracking-widest text-[#ff4fa3]">Resource Files</span>
                     <b className="block text-2xl font-black text-[#1b1533] mt-2 logo-font">3 Available</b>
                     <button 
                       onClick={() => setActiveTab('downloads')} 
-                      className="mt-3 text-[10px] font-bold uppercase tracking-wider text-[#7b5cff] hover:text-[#ff4fa3] flex items-center gap-1"
+                      className="mt-3 text-[12px] font-bold uppercase tracking-wider text-[#7b5cff] hover:text-[#ff4fa3] flex items-center gap-1"
                     >
                       Access Downloads <ArrowRight className="h-3 w-3" />
                     </button>
                   </div>
                   <div className="border border-slate-100 bg-[#fffdfd] p-5 rounded-2xl shadow-sm hover:shadow-md transition-shadow">
-                    <span className="text-[10px] font-bold uppercase tracking-widest text-[#ff4fa3]">Shipping Tier</span>
+                    <span className="text-[12px] font-bold uppercase tracking-widest text-[#ff4fa3]">Shipping Tier</span>
                     <b className="block text-2xl font-black text-emerald-600 mt-2 logo-font">Express Delivery</b>
-                    <span className="block text-[9px] text-slate-400 mt-3 font-semibold uppercase">Canada Post Tracked</span>
+                    <span className="block text-[12px] text-slate-400 mt-3 font-semibold uppercase">Canada Post Tracked</span>
                   </div>
                 </div>
               </div>
@@ -194,7 +194,7 @@ export default function MyAccountPage() {
               <div className="space-y-6">
                 <div className="border-b border-slate-100 pb-4">
                   <h2 className="text-xl font-black text-[#1b1533] uppercase logo-font">Order History</h2>
-                  <p className="text-[11px] font-semibold text-slate-400 mt-1 uppercase tracking-wider">Your WooCommerce Transactions</p>
+                  <p className="text-[12px] font-semibold text-slate-400 mt-1 uppercase tracking-wider">Your WooCommerce Transactions</p>
                 </div>
 
                 <div className="overflow-x-auto">
@@ -213,7 +213,7 @@ export default function MyAccountPage() {
                         <td className="py-4.5 px-4 font-black text-[#ff4fa3]">#4981</td>
                         <td className="py-4.5 px-4">May 28, 2026</td>
                         <td className="py-4.5 px-4">
-                          <span className="inline-block rounded-full bg-amber-500/10 px-3 py-1 text-[9px] font-black uppercase tracking-widest text-amber-600">
+                          <span className="inline-block rounded-full bg-amber-500/10 px-3 py-1 text-[10px] font-black uppercase tracking-widest text-amber-600">
                             Processing
                           </span>
                         </td>
@@ -231,7 +231,7 @@ export default function MyAccountPage() {
                         <td className="py-4.5 px-4 font-black text-[#ff4fa3]">#4812</td>
                         <td className="py-4.5 px-4">May 15, 2026</td>
                         <td className="py-4.5 px-4">
-                          <span className="inline-block rounded-full bg-emerald-500/10 px-3 py-1 text-[9px] font-black uppercase tracking-widest text-emerald-600">
+                          <span className="inline-block rounded-full bg-emerald-500/10 px-3 py-1 text-[10px] font-black uppercase tracking-widest text-emerald-600">
                             Completed
                           </span>
                         </td>
@@ -256,7 +256,7 @@ export default function MyAccountPage() {
               <div className="space-y-6">
                 <div className="border-b border-slate-100 pb-4">
                   <h2 className="text-xl font-black text-[#1b1533] uppercase logo-font">Product Downloads</h2>
-                  <p className="text-[11px] font-semibold text-slate-400 mt-1 uppercase tracking-wider">Premium Guides & Resources</p>
+                  <p className="text-[12px] font-semibold text-slate-400 mt-1 uppercase tracking-wider">Premium Guides & Resources</p>
                 </div>
 
                 <div className="grid gap-6 sm:grid-cols-2">
@@ -271,14 +271,14 @@ export default function MyAccountPage() {
                         <p className="text-xs font-semibold text-slate-400 mt-1 leading-relaxed">{desc}</p>
                       </div>
                       <div className="border-t border-slate-50 pt-4 flex items-center justify-between">
-                        <span className="text-[9px] font-bold uppercase tracking-wider text-slate-400">Expires: {expires}</span>
+                        <span className="text-[12px] font-bold uppercase tracking-wider text-slate-400">Expires: {expires}</span>
                         <a
                           href="#"
                           onClick={(e) => {
                             e.preventDefault();
                             alert(`Simulated download of ${file} completed!`);
                           }}
-                          className="inline-flex items-center gap-1.5 rounded-xl bg-[#ff4fa3] text-white px-4 py-2 text-[10px] font-black uppercase tracking-wider hover:bg-black transition-all cursor-pointer shadow-sm shadow-pink-100"
+                          className="inline-flex items-center gap-1.5 rounded-xl bg-[#ff4fa3] text-white px-4 py-2 text-[12px] font-black uppercase tracking-wider hover:bg-black transition-all cursor-pointer shadow-sm shadow-pink-100"
                         >
                           <Download className="h-3 w-3" /> Download File
                         </a>
@@ -295,11 +295,11 @@ export default function MyAccountPage() {
                 <div className="border-b border-slate-100 pb-4 flex items-center justify-between">
                   <div>
                     <h2 className="text-xl font-black text-[#1b1533] uppercase logo-font">My Addresses</h2>
-                    <p className="text-[11px] font-semibold text-slate-400 mt-1 uppercase tracking-wider">WooCommerce Billing & Shipping</p>
+                    <p className="text-[12px] font-semibold text-slate-400 mt-1 uppercase tracking-wider">WooCommerce Billing & Shipping</p>
                   </div>
                   <button
                     type="submit"
-                    className="rounded-2xl bg-[#ff4fa3] text-white border border-[#ff4fa3] px-6 py-2.5 text-[10px] font-black uppercase tracking-widest shadow-md shadow-pink-100 transition-all duration-300 hover:bg-black hover:text-[#ff4fa3] hover:border-black hover:-translate-y-0.5 active:translate-y-0 cursor-pointer logo-font"
+                    className="rounded-2xl bg-[#ff4fa3] text-white border border-[#ff4fa3] px-6 py-2.5 text-[12px] font-black uppercase tracking-widest shadow-md shadow-pink-100 transition-all duration-300 hover:bg-black hover:text-[#ff4fa3] hover:border-black hover:-translate-y-0.5 active:translate-y-0 cursor-pointer logo-font"
                   >
                     Save Changes
                   </button>
@@ -312,7 +312,7 @@ export default function MyAccountPage() {
                     <h3 className="text-xs font-black uppercase tracking-wider text-[#ff4fa3] border-b border-slate-100 pb-2">Billing Address</h3>
                     <div className="grid gap-4">
                       <div className="grid grid-cols-2 gap-4">
-                        <label className="block text-[10px] font-black uppercase tracking-wider text-slate-400">
+                        <label className="block text-[12px] font-black uppercase tracking-wider text-slate-400">
                           First Name
                           <input 
                             type="text" 
@@ -321,7 +321,7 @@ export default function MyAccountPage() {
                             className="mt-1.5 w-full rounded-xl border border-slate-200 px-3.5 py-2.5 text-xs font-semibold outline-none focus:border-[#ff4fa3] focus:ring-4 focus:ring-pink-50/50"
                           />
                         </label>
-                        <label className="block text-[10px] font-black uppercase tracking-wider text-slate-400">
+                        <label className="block text-[12px] font-black uppercase tracking-wider text-slate-400">
                           Last Name
                           <input 
                             type="text" 
@@ -331,7 +331,7 @@ export default function MyAccountPage() {
                           />
                         </label>
                       </div>
-                      <label className="block text-[10px] font-black uppercase tracking-wider text-slate-400">
+                      <label className="block text-[12px] font-black uppercase tracking-wider text-slate-400">
                         Street Address
                         <input 
                           type="text" 
@@ -341,7 +341,7 @@ export default function MyAccountPage() {
                         />
                       </label>
                       <div className="grid grid-cols-3 gap-4">
-                        <label className="block text-[10px] font-black uppercase tracking-wider text-slate-400">
+                        <label className="block text-[12px] font-black uppercase tracking-wider text-slate-400">
                           City
                           <input 
                             type="text" 
@@ -350,7 +350,7 @@ export default function MyAccountPage() {
                             className="mt-1.5 w-full rounded-xl border border-slate-200 px-3.5 py-2.5 text-xs font-semibold outline-none focus:border-[#ff4fa3] focus:ring-4 focus:ring-pink-50/50"
                           />
                         </label>
-                        <label className="block text-[10px] font-black uppercase tracking-wider text-slate-400">
+                        <label className="block text-[12px] font-black uppercase tracking-wider text-slate-400">
                           Province
                           <input 
                             type="text" 
@@ -359,7 +359,7 @@ export default function MyAccountPage() {
                             className="mt-1.5 w-full rounded-xl border border-slate-200 px-3.5 py-2.5 text-xs font-semibold outline-none focus:border-[#ff4fa3] focus:ring-4 focus:ring-pink-50/50"
                           />
                         </label>
-                        <label className="block text-[10px] font-black uppercase tracking-wider text-slate-400">
+                        <label className="block text-[12px] font-black uppercase tracking-wider text-slate-400">
                           Postal Code
                           <input 
                             type="text" 
@@ -377,7 +377,7 @@ export default function MyAccountPage() {
                     <h3 className="text-xs font-black uppercase tracking-wider text-[#ff4fa3] border-b border-slate-100 pb-2">Shipping Address</h3>
                     <div className="grid gap-4">
                       <div className="grid grid-cols-2 gap-4">
-                        <label className="block text-[10px] font-black uppercase tracking-wider text-slate-400">
+                        <label className="block text-[12px] font-black uppercase tracking-wider text-slate-400">
                           First Name
                           <input 
                             type="text" 
@@ -386,7 +386,7 @@ export default function MyAccountPage() {
                             className="mt-1.5 w-full rounded-xl border border-slate-200 px-3.5 py-2.5 text-xs font-semibold outline-none focus:border-[#ff4fa3] focus:ring-4 focus:ring-pink-50/50"
                           />
                         </label>
-                        <label className="block text-[10px] font-black uppercase tracking-wider text-slate-400">
+                        <label className="block text-[12px] font-black uppercase tracking-wider text-slate-400">
                           Last Name
                           <input 
                             type="text" 
@@ -396,7 +396,7 @@ export default function MyAccountPage() {
                           />
                         </label>
                       </div>
-                      <label className="block text-[10px] font-black uppercase tracking-wider text-slate-400">
+                      <label className="block text-[12px] font-black uppercase tracking-wider text-slate-400">
                         Street Address
                         <input 
                           type="text" 
@@ -406,7 +406,7 @@ export default function MyAccountPage() {
                         />
                       </label>
                       <div className="grid grid-cols-3 gap-4">
-                        <label className="block text-[10px] font-black uppercase tracking-wider text-slate-400">
+                        <label className="block text-[12px] font-black uppercase tracking-wider text-slate-400">
                           City
                           <input 
                             type="text" 
@@ -415,7 +415,7 @@ export default function MyAccountPage() {
                             className="mt-1.5 w-full rounded-xl border border-slate-200 px-3.5 py-2.5 text-xs font-semibold outline-none focus:border-[#ff4fa3] focus:ring-4 focus:ring-pink-50/50"
                           />
                         </label>
-                        <label className="block text-[10px] font-black uppercase tracking-wider text-slate-400">
+                        <label className="block text-[12px] font-black uppercase tracking-wider text-slate-400">
                           Province
                           <input 
                             type="text" 
@@ -424,7 +424,7 @@ export default function MyAccountPage() {
                             className="mt-1.5 w-full rounded-xl border border-slate-200 px-3.5 py-2.5 text-xs font-semibold outline-none focus:border-[#ff4fa3] focus:ring-4 focus:ring-pink-50/50"
                           />
                         </label>
-                        <label className="block text-[10px] font-black uppercase tracking-wider text-slate-400">
+                        <label className="block text-[12px] font-black uppercase tracking-wider text-slate-400">
                           Postal Code
                           <input 
                             type="text" 
@@ -447,11 +447,11 @@ export default function MyAccountPage() {
                 <div className="border-b border-slate-100 pb-4 flex items-center justify-between">
                   <div>
                     <h2 className="text-xl font-black text-[#1b1533] uppercase logo-font">Account Details</h2>
-                    <p className="text-[11px] font-semibold text-slate-400 mt-1 uppercase tracking-wider">Personal Profile & Credentials</p>
+                    <p className="text-[12px] font-semibold text-slate-400 mt-1 uppercase tracking-wider">Personal Profile & Credentials</p>
                   </div>
                   <button
                     type="submit"
-                    className="rounded-2xl bg-[#ff4fa3] text-white border border-[#ff4fa3] px-6 py-2.5 text-[10px] font-black uppercase tracking-widest shadow-md shadow-pink-100 transition-all duration-300 hover:bg-black hover:text-[#ff4fa3] hover:border-black hover:-translate-y-0.5 active:translate-y-0 cursor-pointer logo-font"
+                    className="rounded-2xl bg-[#ff4fa3] text-white border border-[#ff4fa3] px-6 py-2.5 text-[12px] font-black uppercase tracking-widest shadow-md shadow-pink-100 transition-all duration-300 hover:bg-black hover:text-[#ff4fa3] hover:border-black hover:-translate-y-0.5 active:translate-y-0 cursor-pointer logo-font"
                   >
                     Save Changes
                   </button>
@@ -459,7 +459,7 @@ export default function MyAccountPage() {
 
                 <div className="grid gap-6">
                   <div className="grid gap-6 sm:grid-cols-2">
-                    <label className="block text-[10px] font-black uppercase tracking-wider text-slate-400">
+                    <label className="block text-[12px] font-black uppercase tracking-wider text-slate-400">
                       Display Name
                       <input 
                         type="text" 
@@ -468,7 +468,7 @@ export default function MyAccountPage() {
                         className="mt-1.5 w-full rounded-xl border border-slate-200 px-3.5 py-2.5 text-xs font-semibold outline-none focus:border-[#ff4fa3] focus:ring-4 focus:ring-pink-50/50"
                       />
                     </label>
-                    <label className="block text-[10px] font-black uppercase tracking-wider text-slate-400">
+                    <label className="block text-[12px] font-black uppercase tracking-wider text-slate-400">
                       Email Address
                       <input 
                         type="email" 
@@ -485,7 +485,7 @@ export default function MyAccountPage() {
                       <Lock className="h-4 w-4" /> Password Change
                     </h3>
                     <div className="grid gap-6 sm:grid-cols-3">
-                      <label className="block text-[10px] font-black uppercase tracking-wider text-slate-400">
+                      <label className="block text-[12px] font-black uppercase tracking-wider text-slate-400">
                         Current Password (leave blank to leave unchanged)
                         <input 
                           type="password" 
@@ -493,7 +493,7 @@ export default function MyAccountPage() {
                           className="mt-1.5 w-full rounded-xl border border-slate-200 px-3.5 py-2.5 text-xs font-semibold outline-none focus:border-[#ff4fa3] focus:ring-4 focus:ring-pink-50/50"
                         />
                       </label>
-                      <label className="block text-[10px] font-black uppercase tracking-wider text-slate-400">
+                      <label className="block text-[12px] font-black uppercase tracking-wider text-slate-400">
                         New Password (leave blank to leave unchanged)
                         <input 
                           type="password" 
@@ -501,7 +501,7 @@ export default function MyAccountPage() {
                           className="mt-1.5 w-full rounded-xl border border-slate-200 px-3.5 py-2.5 text-xs font-semibold outline-none focus:border-[#ff4fa3] focus:ring-4 focus:ring-pink-50/50"
                         />
                       </label>
-                      <label className="block text-[10px] font-black uppercase tracking-wider text-slate-400">
+                      <label className="block text-[12px] font-black uppercase tracking-wider text-slate-400">
                         Confirm New Password
                         <input 
                           type="password" 

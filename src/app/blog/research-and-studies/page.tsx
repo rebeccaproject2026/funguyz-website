@@ -76,7 +76,7 @@ export default function ResearchAndStudiesPage() {
           <div className="flex flex-col items-start text-left gap-4">
             
             {/* Breadcrumb */}
-            <div className="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-slate-400 logo-font leading-none">
+            <div className="flex items-center gap-1.5 text-[12px] font-black uppercase tracking-widest text-slate-400 logo-font leading-none">
               <a href="/" className="hover:text-[#ff4fa3] transition-colors">Home</a>
               <span>&gt;</span>
               <a href="/blog" className="hover:text-[#ff4fa3] transition-colors">Blog</a>
@@ -86,7 +86,7 @@ export default function ResearchAndStudiesPage() {
 
             {/* Title */}
             <div className="space-y-1">
-              <span className="text-[10px] font-black uppercase tracking-widest text-[#ff4fa3] logo-font">Clinical Science</span>
+              <span className="text-[12px] font-black uppercase tracking-widest text-[#ff4fa3] logo-font">Clinical Science</span>
               <h1 className="text-3xl md:text-5xl font-black text-[#1b1533] uppercase tracking-tight logo-font leading-none">
                 Research & <br />
                 <span className="text-[#ff4fa3]">Clinical Studies</span>
@@ -113,7 +113,7 @@ export default function ResearchAndStudiesPage() {
             <div className="relative bg-white/70 backdrop-blur-md border border-pink-100/60 rounded-[40px] p-6 shadow-[0_24px_70px_rgba(255,79,163,0.12)] max-w-xs text-left space-y-3">
               <BookOpen className="h-6 w-6 text-[#ff4fa3]" />
               <h3 className="text-xs font-black uppercase text-[#1b1533] logo-font">Scientific Validation</h3>
-              <p className="text-[10px] font-semibold text-slate-400 leading-normal">
+              <p className="text-[12px] font-semibold text-slate-400 leading-normal">
                 An active database mapping clinical journals, neurological breakthroughs, and cortisol regulation data.
               </p>
             </div>
@@ -137,7 +137,7 @@ export default function ResearchAndStudiesPage() {
               
               <div className="w-full flex justify-between items-start border-b border-slate-50 pb-4">
                 <div className="space-y-1.5">
-                  <span className="text-[8px] font-black uppercase text-[#ff4fa3] tracking-wider logo-font">{study.source} ({study.year})</span>
+                  <span className="text-[12px] font-black uppercase text-[#ff4fa3] tracking-wider logo-font">{study.source} ({study.year})</span>
                   <h3 className="text-base md:text-lg font-black uppercase text-[#1b1533] logo-font leading-snug">{study.title}</h3>
                 </div>
                 <button
@@ -158,17 +158,17 @@ export default function ResearchAndStudiesPage() {
               {/* Study data compartments */}
               <div className="space-y-4 text-xs font-semibold text-slate-500 leading-relaxed w-full">
                 <div>
-                  <strong className="block text-[8px] font-black uppercase text-slate-400 tracking-widest">Study Abstract</strong>
+                  <strong className="block text-[12px] font-black uppercase text-slate-400 tracking-widest">Study Abstract</strong>
                   <p className="mt-1 leading-relaxed">{study.abstract}</p>
                 </div>
 
                 <div className="grid gap-4 sm:grid-cols-2 divide-x divide-slate-100 border-t border-slate-50 pt-4">
                   <div>
-                    <strong className="block text-[8px] font-black uppercase text-slate-400 tracking-widest">Methodology</strong>
+                    <strong className="block text-[12px] font-black uppercase text-slate-400 tracking-widest">Methodology</strong>
                     <p className="mt-1 leading-normal text-slate-500 font-semibold">{study.methodology}</p>
                   </div>
                   <div className="pl-4">
-                    <strong className="block text-[8px] font-black uppercase text-slate-400 tracking-widest">Key Findings</strong>
+                    <strong className="block text-[12px] font-black uppercase text-slate-400 tracking-widest">Key Findings</strong>
                     <p className="mt-1 leading-normal text-slate-700 font-black">{study.findings}</p>
                   </div>
                 </div>
@@ -176,10 +176,10 @@ export default function ResearchAndStudiesPage() {
 
               {/* Approval footer stamp */}
               <div className="w-full bg-[#fff8f3]/60 border border-pink-100/10 rounded-2xl p-4 flex items-center justify-between gap-4 mt-2">
-                <span className="flex items-center gap-1.5 text-[9px] font-black uppercase text-[#ff4fa3] tracking-widest logo-font">
+                <span className="flex items-center gap-1.5 text-[12px] font-black uppercase text-[#ff4fa3] tracking-widest logo-font">
                   <ShieldCheck className="h-4 w-4 text-emerald-500" /> {study.potencyFactor}
                 </span>
-                <span className="text-[9px] text-slate-400 font-bold uppercase">Clinical Reference Active</span>
+                <span className="text-[12px] text-slate-400 font-bold uppercase">Clinical Reference Active</span>
               </div>
 
             </div>
@@ -193,7 +193,7 @@ export default function ResearchAndStudiesPage() {
         <div className="mx-auto max-w-4xl space-y-10 text-center">
           
           <div className="space-y-2">
-            <span className="text-[10px] font-black uppercase tracking-widest text-[#ff4fa3] logo-font leading-none">Clinical Help</span>
+            <span className="text-[12px] font-black uppercase tracking-widest text-[#ff4fa3] logo-font leading-none">Clinical Help</span>
             <h2 className="text-2xl md:text-3xl font-black text-[#1b1533] uppercase logo-font">Clinical Research FAQs</h2>
             <p className="text-xs text-slate-400 max-w-md mx-auto">Get detailed mycological answers regarding clinical studies, neuroplasticity details, and therapeutic standards.</p>
           </div>
@@ -234,7 +234,7 @@ export default function ResearchAndStudiesPage() {
       <section className="bg-[#fff8f3] py-16 px-4 md:px-8">
         <div className="mx-auto max-w-7xl text-center space-y-8">
           <div className="space-y-2">
-            <span className="text-[10px] font-black uppercase tracking-widest text-[#ff4fa3] logo-font">Learn Suite</span>
+            <span className="text-[12px] font-black uppercase tracking-widest text-[#ff4fa3] logo-font">Learn Suite</span>
             <h3 className="text-2xl font-black text-[#1b1533] uppercase logo-font">Related Guides & Stacks</h3>
           </div>
 
@@ -249,9 +249,9 @@ export default function ResearchAndStudiesPage() {
                   {link.icon}
                 </div>
                 <div className="space-y-1">
-                  <h4 className="text-[8px] font-black uppercase text-slate-400 logo-font leading-none">Learn</h4>
+                  <h4 className="text-[12px] font-black uppercase text-slate-400 logo-font leading-none">Learn</h4>
                   <h3 className="text-sm font-black text-[#1b1533] uppercase logo-font leading-tight">{link.name}</h3>
-                  <p className="text-[10px] font-semibold text-slate-400 leading-relaxed line-clamp-3">{link.desc}</p>
+                  <p className="text-[12px] font-semibold text-slate-400 leading-relaxed line-clamp-3">{link.desc}</p>
                 </div>
                 <a 
                   href={link.url}

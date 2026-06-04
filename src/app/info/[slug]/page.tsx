@@ -395,7 +395,7 @@ export default function DynamicInfoPage({ params }: { params: Promise<{ slug: st
           <div className="flex flex-col items-start text-left gap-4">
             
             {/* Breadcrumb */}
-            <div className="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-slate-400 logo-font leading-none">
+            <div className="flex items-center gap-1.5 text-[12px] font-black uppercase tracking-widest text-slate-400 logo-font leading-none">
               <a href="/" className="hover:text-[#ff4fa3] transition-colors">Home</a>
               <span>&gt;</span>
               <span className="text-slate-600 truncate max-w-xs">{content.title}</span>
@@ -403,7 +403,7 @@ export default function DynamicInfoPage({ params }: { params: Promise<{ slug: st
 
             {/* Title & Badge */}
             <div className="space-y-1">
-              <span className="text-[10px] font-black uppercase tracking-widest text-[#ff4fa3] logo-font">{content.category} Section</span>
+              <span className="text-[12px] font-black uppercase tracking-widest text-[#ff4fa3] logo-font">{content.category} Section</span>
               <h1 className="text-3xl md:text-5xl font-black text-[#1b1533] uppercase tracking-tight logo-font leading-none">
                 {content.title.split(' ').slice(0, 2).join(' ')} <br />
                 <span className="text-[#ff4fa3]">{content.title.split(' ').slice(2).join(' ')}</span>
@@ -432,7 +432,7 @@ export default function DynamicInfoPage({ params }: { params: Promise<{ slug: st
                 🛡️
               </div>
               <h3 className="text-xs font-black uppercase text-[#1b1533] logo-font">Assurance Stamp</h3>
-              <p className="text-[10px] font-semibold text-slate-400 leading-normal">
+              <p className="text-[12px] font-semibold text-slate-400 leading-normal">
                 Discreet Canada Post mailings, return-free refunds, and 256-bit encrypted e-Transfer channels protect your privacy.
               </p>
             </div>
@@ -486,7 +486,7 @@ export default function DynamicInfoPage({ params }: { params: Promise<{ slug: st
           </div>
 
           {/* Metadata details */}
-          <div className="bg-[#fff8f3] border border-pink-100/40 rounded-[28px] p-5 space-y-2 text-[10px] font-bold text-slate-400">
+          <div className="bg-[#fff8f3] border border-pink-100/40 rounded-[28px] p-5 space-y-2 text-[12px] font-bold text-slate-400">
             <div className="flex justify-between">
               <span>Last Updated</span>
               <strong className="text-[#1b1533] font-black">{content.lastUpdated}</strong>
@@ -509,7 +509,7 @@ export default function DynamicInfoPage({ params }: { params: Promise<{ slug: st
           {/* Header Action metadata */}
           <div className="flex flex-wrap items-center justify-between gap-4 border-b border-slate-100 pb-6">
             <div className="space-y-1">
-              <span className="text-[9px] font-black uppercase tracking-widest text-[#ff4fa3] logo-font">Compliance Protocol</span>
+              <span className="text-[12px] font-black uppercase tracking-widest text-[#ff4fa3] logo-font">Compliance Protocol</span>
               <h2 className="text-xl font-black uppercase text-[#1b1533] logo-font">{content.title}</h2>
             </div>
             <div className="flex gap-2">
@@ -554,15 +554,15 @@ export default function DynamicInfoPage({ params }: { params: Promise<{ slug: st
                 {slugKey === 'shipping-policy' && sec.anchor === 'rates' && (
                   <div className="border border-pink-100 bg-[#fff8f3]/40 rounded-[32px] p-6 space-y-6 mt-6 animate-scale-up">
                     <div className="text-center space-y-1">
-                      <span className="text-[8px] font-black uppercase tracking-widest text-[#ff4fa3] logo-font">Interactive Calculator</span>
+                      <span className="text-[12px] font-black uppercase tracking-widest text-[#ff4fa3] logo-font">Interactive Calculator</span>
                       <h4 className="text-xs font-black uppercase text-[#1b1533] logo-font">Shipping Rate Calculator</h4>
-                      <p className="text-[10px] text-slate-400 font-semibold leading-none">Drag the slider to adjust your mock order size and select your region.</p>
+                      <p className="text-[12px] text-slate-400 font-semibold leading-none">Drag the slider to adjust your mock order size and select your region.</p>
                     </div>
 
                     <div className="space-y-4">
                       {/* Slider Input */}
                       <div className="space-y-1.5">
-                        <div className="flex justify-between text-[10px] font-black text-[#1b1533] uppercase logo-font">
+                        <div className="flex justify-between text-[12px] font-black text-[#1b1533] uppercase logo-font">
                           <span>Order Subtotal</span>
                           <strong>${shipVal}</strong>
                         </div>
@@ -582,7 +582,7 @@ export default function DynamicInfoPage({ params }: { params: Promise<{ slug: st
                           <button
                             key={r}
                             onClick={() => setShipRegion(r as any)}
-                            className={`rounded-xl border py-2.5 text-[10px] font-black uppercase tracking-wide logo-font transition-all ${
+                            className={`rounded-xl border py-2.5 text-[12px] font-black uppercase tracking-wide logo-font transition-all ${
                               shipRegion === r 
                                 ? 'border-[#ff4fa3] bg-[#ff4fa3]/5 text-[#ff4fa3] shadow-sm'
                                 : 'border-slate-200 bg-white text-slate-600 hover:border-pink-300'
@@ -597,18 +597,18 @@ export default function DynamicInfoPage({ params }: { params: Promise<{ slug: st
                     {/* Result outputs */}
                     <div className="bg-white border border-slate-100 rounded-2xl p-4 grid grid-cols-3 gap-2 text-center divide-x divide-slate-100">
                       <div>
-                        <span className="block text-[8px] font-black text-slate-400 uppercase tracking-widest leading-none">Shipping Cost</span>
+                        <span className="block text-[12px] font-black text-slate-400 uppercase tracking-widest leading-none">Shipping Cost</span>
                         <strong className={`block text-xs font-black logo-font mt-1.5 ${isFree ? 'text-green-500' : 'text-[#1b1533]'}`}>
                           {isFree ? 'FREE' : `$${shipCost}.00`}
                         </strong>
                       </div>
                       <div>
-                        <span className="block text-[8px] font-black text-slate-400 uppercase tracking-widest leading-none">Transit Timings</span>
+                        <span className="block text-[12px] font-black text-slate-400 uppercase tracking-widest leading-none">Transit Timings</span>
                         <strong className="block text-xs font-black text-[#ff4fa3] logo-font mt-1.5 leading-none">{speed}</strong>
                       </div>
                       <div>
-                        <span className="block text-[8px] font-black text-slate-400 uppercase tracking-widest leading-none">Shipping Tier</span>
-                        <strong className="block text-[10px] font-bold text-slate-500 mt-1.5 leading-none">
+                        <span className="block text-[12px] font-black text-slate-400 uppercase tracking-widest leading-none">Shipping Tier</span>
+                        <strong className="block text-[12px] font-bold text-slate-500 mt-1.5 leading-none">
                           Flat Rate Shipping
                         </strong>
                       </div>
@@ -620,16 +620,16 @@ export default function DynamicInfoPage({ params }: { params: Promise<{ slug: st
                 {slugKey === 'payment-methods' && sec.anchor === 'etransfer' && (
                   <div className="border border-pink-100 bg-[#fff8f3]/40 rounded-[32px] p-6 space-y-4 mt-6 animate-scale-up">
                     <div className="text-center space-y-1">
-                      <span className="text-[8px] font-black uppercase tracking-widest text-[#ff4fa3] logo-font">Secure Payment</span>
+                      <span className="text-[12px] font-black uppercase tracking-widest text-[#ff4fa3] logo-font">Secure Payment</span>
                       <h4 className="text-xs font-black uppercase text-[#1b1533] logo-font">Interac e-Transfer Guide</h4>
-                      <p className="text-[10px] text-slate-400 font-semibold leading-none">Accepted payments are processed strictly via e-Transfer.</p>
+                      <p className="text-[12px] text-slate-400 font-semibold leading-none">Accepted payments are processed strictly via e-Transfer.</p>
                     </div>
 
                     {/* Step description */}
                     <div className="bg-white border border-slate-100 rounded-2xl p-5 text-left text-xs font-semibold leading-relaxed text-slate-500">
                       <div className="space-y-2">
                         <strong className="block text-xs font-black text-[#1b1533] uppercase logo-font">Interac e-Transfer Instructions:</strong>
-                        <ol className="list-decimal pl-4 space-y-1.5 text-[11px] font-bold text-slate-500">
+                        <ol className="list-decimal pl-4 space-y-1.5 text-[12px] font-bold text-slate-500">
                           <li>Check out with Interac e-Transfer.</li>
                           <li>Send payment through your online banking portal to <code className="bg-pink-50 text-[#ff4fa3] px-1 rounded">pay@funguyz.ca</code>.</li>
                           <li>Set your security password as your unique <code className="bg-slate-100 px-1 rounded text-slate-800 font-black">Order ID</code>.</li>
@@ -644,9 +644,9 @@ export default function DynamicInfoPage({ params }: { params: Promise<{ slug: st
                 {slugKey === 'returns-and-refunds' && sec.anchor === 'process' && (
                   <div className="border border-pink-100 bg-[#fff8f3]/40 rounded-[32px] p-6 space-y-6 mt-6 animate-scale-up text-center">
                     <div className="space-y-1">
-                      <span className="text-[8px] font-black uppercase tracking-widest text-[#ff4fa3] logo-font">Dispensary Standard</span>
+                      <span className="text-[12px] font-black uppercase tracking-widest text-[#ff4fa3] logo-font">Dispensary Standard</span>
                       <h4 className="text-xs font-black uppercase text-[#1b1533] logo-font">Return-Free Refund timeline</h4>
-                      <p className="text-[10px] text-slate-400 font-semibold leading-none">Our process has zero physical mailing requirements.</p>
+                      <p className="text-[12px] text-slate-400 font-semibold leading-none">Our process has zero physical mailing requirements.</p>
                     </div>
 
                     <div className="grid grid-cols-3 gap-2 relative">
@@ -663,8 +663,8 @@ export default function DynamicInfoPage({ params }: { params: Promise<{ slug: st
                             <step.icon className="h-4.5 w-4.5 stroke-[2]" />
                           </div>
                           <div>
-                            <strong className="block text-[10px] font-black text-[#1b1533] uppercase logo-font leading-none">{step.title}</strong>
-                            <span className="block text-[8px] text-slate-400 font-bold mt-1 leading-tight">{step.desc}</span>
+                            <strong className="block text-[12px] font-black text-[#1b1533] uppercase logo-font leading-none">{step.title}</strong>
+                            <span className="block text-[12px] text-slate-400 font-bold mt-1 leading-tight">{step.desc}</span>
                           </div>
                         </div>
                       ))}
@@ -676,15 +676,15 @@ export default function DynamicInfoPage({ params }: { params: Promise<{ slug: st
                 {slugKey === 'responsible-use' && sec.anchor === 'dosage' && (
                   <div className="border border-pink-100 bg-[#fff8f3]/40 rounded-[32px] p-6 space-y-6 mt-6 animate-scale-up">
                     <div className="text-center space-y-1">
-                      <span className="text-[8px] font-black uppercase tracking-widest text-[#ff4fa3] logo-font">Interactive Planner</span>
+                      <span className="text-[12px] font-black uppercase tracking-widest text-[#ff4fa3] logo-font">Interactive Planner</span>
                       <h4 className="text-xs font-black uppercase text-[#1b1533] logo-font">Dosage Advisor & Planner</h4>
-                      <p className="text-[10px] text-slate-400 font-semibold leading-none">Determine your optimal dosage based on body weight and intended intent.</p>
+                      <p className="text-[12px] text-slate-400 font-semibold leading-none">Determine your optimal dosage based on body weight and intended intent.</p>
                     </div>
 
                     <div className="space-y-4">
                       {/* Weight slider */}
                       <div className="space-y-1.5">
-                        <div className="flex justify-between text-[10px] font-black text-[#1b1533] uppercase logo-font">
+                        <div className="flex justify-between text-[12px] font-black text-[#1b1533] uppercase logo-font">
                           <span>Body Weight</span>
                           <strong>{userWeight} lbs ({weightKg.toFixed(0)} kg)</strong>
                         </div>
@@ -708,7 +708,7 @@ export default function DynamicInfoPage({ params }: { params: Promise<{ slug: st
                           <button
                             key={intent.id}
                             onClick={() => setUserIntent(intent.id as any)}
-                            className={`rounded-xl border py-2.5 text-[9px] font-black uppercase tracking-wide logo-font transition-all ${
+                            className={`rounded-xl border py-2.5 text-[12px] font-black uppercase tracking-wide logo-font transition-all ${
                               userIntent === intent.id
                                 ? 'border-[#ff4fa3] bg-[#ff4fa3]/5 text-[#ff4fa3] shadow-sm'
                                 : 'border-slate-200 bg-white text-slate-600 hover:border-pink-300'
@@ -724,21 +724,21 @@ export default function DynamicInfoPage({ params }: { params: Promise<{ slug: st
                     <div className="bg-white border border-slate-100 rounded-2xl p-5 text-left space-y-4">
                       <div className="grid grid-cols-2 gap-4 divide-x divide-slate-100">
                         <div>
-                          <span className="block text-[8px] font-black text-slate-400 uppercase tracking-widest leading-none">Recommended Dose</span>
+                          <span className="block text-[12px] font-black text-slate-400 uppercase tracking-widest leading-none">Recommended Dose</span>
                           <strong className="block text-sm font-black text-[#ff4fa3] logo-font mt-2">
                             {doseRange.min.toFixed(2)}g - {doseRange.max.toFixed(2)}g
                           </strong>
                         </div>
                         <div className="pl-4">
-                          <span className="block text-[8px] font-black text-slate-400 uppercase tracking-widest leading-none">Intended Outcome</span>
-                          <span className="block text-[10.5px] font-bold text-slate-600 mt-2 leading-tight">
+                          <span className="block text-[12px] font-black text-slate-400 uppercase tracking-widest leading-none">Intended Outcome</span>
+                          <span className="block text-[12px] font-bold text-slate-600 mt-2 leading-tight">
                             {doseRange.text}
                           </span>
                         </div>
                       </div>
                       <div className="border-t border-slate-100 pt-3">
-                        <span className="block text-[8px] font-black text-slate-400 uppercase tracking-widest leading-none">Recommended Schedule</span>
-                        <p className="text-[10px] font-semibold text-slate-500 mt-1">{scheduleText}</p>
+                        <span className="block text-[12px] font-black text-slate-400 uppercase tracking-widest leading-none">Recommended Schedule</span>
+                        <p className="text-[12px] font-semibold text-slate-500 mt-1">{scheduleText}</p>
                       </div>
                     </div>
                   </div>
@@ -755,7 +755,7 @@ export default function DynamicInfoPage({ params }: { params: Promise<{ slug: st
             </div>
             <div>
               <b className="block text-xs font-black text-[#1b1533] uppercase logo-font">Verified Official Dispensary Statement</b>
-              <p className="text-[10.5px] text-slate-400 mt-1 font-semibold leading-relaxed">
+              <p className="text-[12px] text-slate-400 mt-1 font-semibold leading-relaxed">
                 This document is certified by the FunGuyz compliance and client care departments. All regulations, policies, rates, and guides are actively verified and monitored to protect the anonymity and wellness of our clients.
               </p>
             </div>
@@ -769,7 +769,7 @@ export default function DynamicInfoPage({ params }: { params: Promise<{ slug: st
       <section className="bg-white border-t border-b border-purple-100/30 py-16 px-4 md:px-8">
         <div className="mx-auto max-w-7xl text-center space-y-8">
           <div className="space-y-2">
-            <span className="text-[10px] font-black uppercase tracking-widest text-[#ff4fa3] logo-font">Browse More</span>
+            <span className="text-[12px] font-black uppercase tracking-widest text-[#ff4fa3] logo-font">Browse More</span>
             <h3 className="text-2xl font-black text-[#1b1533] uppercase logo-font">Explore Other Policy Chapters</h3>
             <p className="text-xs text-slate-400 max-w-md mx-auto">Explore alternative compliance sheets, age restrictions, e-Transfer safety guides, and return policies.</p>
           </div>
@@ -781,14 +781,14 @@ export default function DynamicInfoPage({ params }: { params: Promise<{ slug: st
                   <div className="h-11 w-11 rounded-2xl bg-[#fff8f3] flex items-center justify-center text-2xl border border-slate-50">
                     📄
                   </div>
-                  <span className="rounded-full border border-slate-200 px-2.5 py-0.5 text-[8.5px] font-bold uppercase tracking-widest text-slate-400 bg-white">
+                  <span className="rounded-full border border-slate-200 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-widest text-slate-400 bg-white">
                     Policy
                   </span>
                 </div>
                 <div className="space-y-1">
-                  <h4 className="text-[8px] font-black uppercase text-slate-400 logo-font leading-none">Chapter</h4>
+                  <h4 className="text-[12px] font-black uppercase text-slate-400 logo-font leading-none">Chapter</h4>
                   <h3 className="text-sm font-black text-[#1b1533] uppercase logo-font leading-tight truncate w-full">{link.label}</h3>
-                  <p className="text-[9.5px] font-semibold text-slate-400 leading-normal line-clamp-3">Read authoritative terms, guidelines, and compliance maps under the official {link.label} statement.</p>
+                  <p className="text-[12px] font-semibold text-slate-400 leading-normal line-clamp-3">Read authoritative terms, guidelines, and compliance maps under the official {link.label} statement.</p>
                 </div>
                 <a 
                   href={`/info/${link.slug}`}

@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { ProductCard } from '@/components/ProductCard';
-import { products } from '@/data/products';
+import { products, getProductUrl } from '@/data/products';
 import { useCart } from '@/context/CartContext';
 import { 
   ShoppingBag, 
@@ -76,19 +76,19 @@ export default function CartPage() {
             <span className="text-slate-600">Shopping Cart</span>
           </div>
           
-          <div className="flex items-center gap-3 sm:gap-4 md:gap-5 text-[10px] font-black uppercase tracking-widest logo-font">
+          <div className="flex items-center gap-3 sm:gap-4 md:gap-5 text-[12px] font-black uppercase tracking-widest logo-font">
             <span className="text-[#ff4fa3] flex items-center gap-1.5 border-b-2 border-[#ff4fa3] pb-1">
-              <span className="grid h-5 w-5 place-items-center rounded-full bg-[#ff4fa3] text-white text-[9px]">1</span>
+              <span className="grid h-5 w-5 place-items-center rounded-full bg-[#ff4fa3] text-white text-[10px]">1</span>
               Shopping Cart
             </span>
             <ChevronRight className="h-3 w-3 text-slate-300" />
             <span className="text-slate-400 flex items-center gap-1.5 pb-1">
-              <span className="grid h-5 w-5 place-items-center rounded-full bg-slate-200 text-slate-500 text-[9px]">2</span>
+              <span className="grid h-5 w-5 place-items-center rounded-full bg-slate-200 text-slate-500 text-[10px]">2</span>
               Checkout Details
             </span>
             <ChevronRight className="h-3 w-3 text-slate-300" />
             <span className="text-slate-400 flex items-center gap-1.5 pb-1">
-              <span className="grid h-5 w-5 place-items-center rounded-full bg-slate-200 text-slate-500 text-[9px]">3</span>
+              <span className="grid h-5 w-5 place-items-center rounded-full bg-slate-200 text-slate-500 text-[10px]">3</span>
               Order Complete
             </span>
           </div>
@@ -111,7 +111,7 @@ export default function CartPage() {
               <div className="bg-white border border-slate-100 rounded-[32px] overflow-hidden shadow-sm">
                 
                 {/* Desktop Headers */}
-                <div className="hidden md:grid grid-cols-12 gap-4 border-b border-slate-100 px-8 py-5 text-[10px] font-black uppercase tracking-widest text-slate-400 select-none">
+                <div className="hidden md:grid grid-cols-12 gap-4 border-b border-slate-100 px-8 py-5 text-[12px] font-black uppercase tracking-widest text-slate-400 select-none">
                   <div className="col-span-6">Product</div>
                   <div className="col-span-2 text-center">Price</div>
                   <div className="col-span-2 text-center">Quantity</div>
@@ -148,14 +148,14 @@ export default function CartPage() {
                           </div>
 
                           <div className="flex-1 flex flex-col text-left min-w-0">
-                            <span className="text-[9px] font-black uppercase tracking-widest text-[#ff4fa3] leading-none mb-1 font-poppins">{item.category}</span>
+                            <span className="text-[12px] font-black uppercase tracking-widest text-[#ff4fa3] leading-none mb-1 font-poppins">{item.category}</span>
                             <h3 className="font-bold text-[#1b1533] text-sm md:text-base leading-snug truncate md:normal-case logo-font hover:text-[#ff4fa3] transition-colors">
-                              <a href={`/product/${cleanTitle.toLowerCase().replace(/\s+/g, '-')}`}>
+                              <a href={getProductUrl(cleanTitle, item.category)}>
                                 {cleanTitle}
                               </a>
                             </h3>
                             {weightTag && (
-                              <span className="inline-flex mt-1 text-[9px] font-black uppercase tracking-wider bg-purple-50 text-purple-600 px-2 py-0.5 rounded-md self-start font-poppins">
+                              <span className="inline-flex mt-1 text-[10px] font-black uppercase tracking-wider bg-purple-50 text-purple-600 px-2 py-0.5 rounded-md self-start font-poppins">
                                 {weightTag}
                               </span>
                             )}
@@ -197,7 +197,7 @@ export default function CartPage() {
 
                         {/* Subtotal - Mobile Inline Layout, Desktop standard column */}
                         <div className="w-full md:col-span-2 flex md:block items-center justify-between border-t border-slate-100 md:border-t-0 pt-3 md:pt-0 mt-1 md:mt-0 text-right">
-                          <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest md:hidden">Price / Subtotal</span>
+                          <span className="text-[12px] font-black text-slate-400 uppercase tracking-widest md:hidden">Price / Subtotal</span>
                           <span className="text-sm font-black text-[#1b1533] logo-font">
                             <span className="md:hidden text-slate-400 font-semibold mr-2">({item.quantity} × {item.price})</span>
                             ${itemSubtotal.toFixed(2)}
@@ -223,7 +223,7 @@ export default function CartPage() {
                     </div>
                     <button
                       type="submit"
-                      className="rounded-xl bg-[#1b1533] hover:bg-[#ff4fa3] text-white px-5 py-2.5 text-[10px] font-black uppercase tracking-wider transition-all duration-200 cursor-pointer logo-font shrink-0"
+                      className="rounded-xl bg-[#1b1533] hover:bg-[#ff4fa3] text-white px-5 py-2.5 text-[12px] font-black uppercase tracking-wider transition-all duration-200 cursor-pointer logo-font shrink-0"
                     >
                       Apply Coupon
                     </button>
@@ -231,7 +231,7 @@ export default function CartPage() {
 
                   <button
                     onClick={clearCart}
-                    className="rounded-xl border border-slate-200 hover:border-[#ff4fa3] hover:text-[#ff4fa3] bg-white px-5 py-2.5 text-[10px] font-black uppercase tracking-wider text-slate-500 shadow-sm transition-all duration-200 cursor-pointer logo-font flex items-center justify-center gap-1.5 self-end md:self-auto"
+                    className="rounded-xl border border-slate-200 hover:border-[#ff4fa3] hover:text-[#ff4fa3] bg-white px-5 py-2.5 text-[12px] font-black uppercase tracking-wider text-slate-500 shadow-sm transition-all duration-200 cursor-pointer logo-font flex items-center justify-center gap-1.5 self-end md:self-auto"
                   >
                     <RotateCcw className="h-3.5 w-3.5" /> Clear Cart
                   </button>
@@ -254,7 +254,7 @@ export default function CartPage() {
                   </div>
                   <button 
                     onClick={handleRemoveCoupon} 
-                    className="text-[10px] font-black uppercase tracking-wider text-emerald-800 hover:underline cursor-pointer ml-4"
+                    className="text-[12px] font-black uppercase tracking-wider text-emerald-800 hover:underline cursor-pointer ml-4"
                   >
                     Remove
                   </button>
@@ -310,7 +310,7 @@ export default function CartPage() {
                 </a>
 
                 {/* Assurance Badges */}
-                <div className="flex items-center justify-center gap-2 text-[10px] text-slate-400 font-bold uppercase tracking-wider select-none font-poppins pt-2">
+                <div className="flex items-center justify-center gap-2 text-[12px] text-slate-400 font-bold uppercase tracking-wider select-none font-poppins pt-2">
                   <Lock className="h-3.5 w-3.5 text-slate-300" />
                   <span>Secure 256-bit SSL Checkout</span>
                 </div>
@@ -347,7 +347,7 @@ export default function CartPage() {
 
             <div className="space-y-8">
               <div className="flex flex-col gap-1.5 text-center sm:text-left select-none">
-                <span className="text-[10px] font-black uppercase tracking-widest text-[#ff4fa3] logo-font leading-none">Curated Discovery</span>
+                <span className="text-[12px] font-black uppercase tracking-widest text-[#ff4fa3] logo-font leading-none">Curated Discovery</span>
                 <h3 className="text-2xl md:text-3xl font-black uppercase text-[#1b1533] logo-font leading-none">Popular E-Commerce Formulations</h3>
               </div>
 

@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { ProductCard } from '@/components/ProductCard';
-import { products, getProductSlug, getProductSeoMetadata, getProductSections } from '@/data/products';
+import { products, getProductSlug, getCategorySlug, getProductSeoMetadata, getProductSections } from '@/data/products';
 import { useCart } from '@/context/CartContext';
 import { 
   Sparkles,
@@ -13,7 +13,6 @@ import {
   ShieldCheck, 
   Truck, 
   Heart, 
-  Share2, 
   Check, 
   ChevronRight, 
   ChevronLeft,
@@ -87,37 +86,33 @@ const imageMap: Record<string, string> = {
 
 function getGalleryImagesList(title: string, category: string, mainImg: string): string[] {
   if (category === 'Edibles') {
-    return [
-      mainImg,
-      '/images/cat_edibles.webp',
-      '/images/footer_gummies.webp',
-      '/images/blog_2.webp',
-    ];
+    return [mainImg, '/images/cat_edibles.webp', '/images/footer_gummies.webp', '/images/blog_2.webp'];
   }
   if (category === 'Capsules') {
-    return [
-      mainImg,
-      '/images/cat_capsules.webp',
-      '/images/prod_daily_blend.webp',
-      '/images/blog_3.webp',
-    ];
+    return [mainImg, '/images/cat_capsules.webp', '/images/prod_daily_blend.webp', '/images/blog_3.webp'];
   }
   if (category === 'Microdose') {
-    return [
-      mainImg,
-      '/images/cat_microdose.webp',
-      '/images/prod_teacher_capsules.webp',
-      '/images/blog_4.webp',
-    ];
+    return [mainImg, '/images/cat_microdose.webp', '/images/prod_teacher_capsules.webp', '/images/blog_4.webp'];
   }
-  return [
-    mainImg,
-    '/images/cat_mushrooms.webp',
-  ];
+  return [mainImg, '/images/cat_mushrooms.webp', '/images/hero_composition.webp', '/images/blog_1.webp'];
 }
 
-export default function ProductDetailsPage({ params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = React.use(params);
+function getFallbackImage(category: string): string {
+  if (category === 'Edibles') return '/images/cat_edibles.webp';
+  if (category === 'Capsules') return '/images/cat_capsules.webp';
+  if (category === 'Microdose') return '/images/cat_microdose.webp';
+  return '/images/cat_mushrooms.webp';
+}
+
+function getCompoundsForCategory(category: string) {
+  if (category === 'Edibles') return { thc: '0%', cbd: 'Psilocybin', cbn: 'Trace' };
+  if (category === 'Capsules') return { thc: 'Sub-P', cbd: 'Adaptogens', cbn: 'NGF' };
+  if (category === 'Microdose') return { thc: '50-200mg', cbd: 'Lion\'s Mane', cbn: 'Niacin' };
+  return { thc: '0.63%', cbd: '0.05%', cbn: '0.02%' };
+}
+
+export default function CategoryProductPage({ params }: { params: Promise<{ categorySlug: string; productSlug: string }> }) {
+  const { categorySlug, productSlug } = React.use(params);
   const { addToCart, toggleWishlist, isWishlisted } = useCart();
   const [selectedWeight, setSelectedWeight] = useState<string>('7g');
   const [quantity, setQuantity] = useState<number>(1);
@@ -131,13 +126,19 @@ export default function ProductDetailsPage({ params }: { params: Promise<{ slug:
     ['David K.', 'Excellent gummies! The watermelon flavor is completely organic and has zero heavy body load. Ideal microdosing stack for creative coding and design focus!', 5]
   ]);
 
-  // Parse dynamic slug and match product from our central products data
-  let matched = products.find(p => getProductSlug(p[0]) === slug);
+  // Match product by both categorySlug AND productSlug for precision routing
+  let matched = products.find(p =>
+    getCategorySlug(p[1]) === categorySlug && getProductSlug(p[0]) === productSlug
+  );
+  // Fallback: match only by productSlug across all categories
   if (!matched) {
-    matched = products[0]; // Fallback to Golden Teacher
+    matched = products.find(p => getProductSlug(p[0]) === productSlug);
+  }
+  // Final fallback
+  if (!matched) {
+    matched = products[0];
   }
 
-  // Retrieve SEO metadata
   const seoData = getProductSeoMetadata(matched[0], matched[1]);
   const sectionsData = getProductSections(matched[0], matched[1], seoData.description);
 
@@ -154,8 +155,6 @@ export default function ProductDetailsPage({ params }: { params: Promise<{ slug:
 
   React.useEffect(() => {
     document.title = seoData.titleTag;
-    
-    // Update or create meta description tag
     let metaDesc = document.querySelector('meta[name="description"]');
     if (!metaDesc) {
       metaDesc = document.createElement('meta');
@@ -163,8 +162,6 @@ export default function ProductDetailsPage({ params }: { params: Promise<{ slug:
       document.head.appendChild(metaDesc);
     }
     metaDesc.setAttribute('content', seoData.metaDescription);
-    
-    // Update or create meta keywords tag
     let metaKeywords = document.querySelector('meta[name="keywords"]');
     if (!metaKeywords) {
       metaKeywords = document.createElement('meta');
@@ -174,10 +171,7 @@ export default function ProductDetailsPage({ params }: { params: Promise<{ slug:
     metaKeywords.setAttribute('content', seoData.keywords);
   }, [seoData]);
 
-  // Curate high-end WooCommerce specifications based on product data matches
   const basePriceNum = parseFloat(matched[2].replace('$', ''));
-  
-  // Custom weights pricing multipliers
   const pricingMap: Record<string, number> = {
     '3.5g': Math.round(basePriceNum * 0.6),
     '7g': Math.round(basePriceNum),
@@ -205,10 +199,9 @@ export default function ProductDetailsPage({ params }: { params: Promise<{ slug:
   const [selectedGalleryImage, setSelectedGalleryImage] = useState<string | null>(null);
   const activeImage = selectedGalleryImage || mainImg;
 
-  // Reset selected gallery image state when slug changes so new products display their correct default image
-  const [prevSlug, setPrevSlug] = useState(slug);
-  if (slug !== prevSlug) {
-    setPrevSlug(slug);
+  const [prevSlug, setPrevSlug] = useState(productSlug);
+  if (productSlug !== prevSlug) {
+    setPrevSlug(productSlug);
     setSelectedGalleryImage(null);
   }
 
@@ -229,8 +222,6 @@ export default function ProductDetailsPage({ params }: { params: Promise<{ slug:
   };
 
   const wishlisted = isWishlisted(productData.title);
-
-  // Multiplier price for dynamic size selection
   const calculatedPrice = productData.pricingMap[selectedWeight] || parseFloat(productData.price.replace('$', ''));
   const calculatedOriginalPrice = Math.round(calculatedPrice * 1.25);
 
@@ -254,18 +245,18 @@ export default function ProductDetailsPage({ params }: { params: Promise<{ slug:
           <ChevronRight className="h-3 w-3" />
           <a href="/shop" className="hover:text-[#ff4fa3]">Shop</a>
           <ChevronRight className="h-3 w-3" />
+          <a href={`/category/${getCategorySlug(matched[1])}`} className="hover:text-[#ff4fa3]">{matched[1]}</a>
+          <ChevronRight className="h-3 w-3" />
           <span className="text-slate-600">{productData.title}</span>
         </div>
       </div>
 
       {/* Main Single Product Layout */}
       <section className="mx-auto max-w-7xl px-4 py-12 md:px-8">
-        
-        {/* Success message handled dynamically by the WooCommerce sliding toast */}
 
         <div className="grid gap-12 lg:grid-cols-2 items-start">
-          
-          {/* Left Block: Gallery and Product Image */}
+
+          {/* Left Block: Gallery */}
           <div className="space-y-6">
             <div className="relative aspect-square w-full rounded-[24px] sm:rounded-[40px] bg-white border border-slate-100 shadow-sm overflow-hidden flex items-center justify-center group">
               <img
@@ -276,8 +267,6 @@ export default function ProductDetailsPage({ params }: { params: Promise<{ slug:
               <span className="absolute top-5 left-5 inline-flex items-center gap-1.5 rounded-full bg-[#ff4fa3]/5 px-3 py-1.5 text-[10px] font-bold uppercase tracking-widest text-[#ff4fa3] shadow-sm backdrop-blur-md">
                 <Sparkles className="h-3 w-3" /> 100% Lab Tested
               </span>
-
-              {/* Carousel Arrow Buttons */}
               {galleryImages.length > 1 && (
                 <>
                   <button
@@ -298,7 +287,7 @@ export default function ProductDetailsPage({ params }: { params: Promise<{ slug:
               )}
             </div>
 
-            {/* Micro Gallery Thumbnails */}
+            {/* Thumbnails */}
             <div className="grid grid-cols-4 gap-4">
               {galleryImages.map((img, idx) => (
                 <button
@@ -314,12 +303,11 @@ export default function ProductDetailsPage({ params }: { params: Promise<{ slug:
             </div>
           </div>
 
-          {/* Right Block: Content Details */}
+          {/* Right Block: Product Info */}
           <div className="flex flex-col">
             <span className="text-[12px] font-black uppercase tracking-widest text-[#ff4fa3] logo-font leading-none">{productData.category}</span>
             <h1 className="mt-3.5 text-2xl sm:text-4xl md:text-5xl font-black text-[#1b1533] uppercase leading-none tracking-tight logo-font">{productData.title}</h1>
-            
-            {/* Rating Stars row */}
+
             <div className="flex items-center gap-2 mt-4 text-xs font-semibold leading-none text-amber-500">
               <div className="flex gap-0.5">
                 {Array.from({ length: 5 }).map((_, star) => (
@@ -329,18 +317,15 @@ export default function ProductDetailsPage({ params }: { params: Promise<{ slug:
               <span className="text-slate-400 font-bold ml-1">({productData.reviews})</span>
             </div>
 
-            {/* Dynamic Price Display */}
             <div className="flex items-baseline gap-2.5 mt-6">
               <span className="text-2xl sm:text-3xl font-black text-[#ff4fa3] logo-font">${calculatedPrice.toFixed(2)}</span>
               <span className="text-sm font-semibold text-slate-400 line-through">${calculatedOriginalPrice.toFixed(2)}</span>
             </div>
 
-            {/* Description Short */}
             <p className="mt-6 text-xs md:text-sm font-semibold text-slate-500 leading-relaxed border-b border-slate-100 pb-6">
               {productData.desc} All online packages are processed inside certified facilities, featuring vacuum-sealed medical packaging with zero external branding for absolute security and discrete Canadian shipping.
             </p>
 
-            {/* Weight Selectors (WooCommerce Style Weight Pills) */}
             {productData.category !== 'Edibles' && (
               <div className="mt-6 space-y-3">
                 <span className="block text-[12px] font-black uppercase tracking-wider text-slate-400">Select Dosage / Weight:</span>
@@ -362,11 +347,8 @@ export default function ProductDetailsPage({ params }: { params: Promise<{ slug:
               </div>
             )}
 
-            {/* Quantity and Actions Block */}
             <div className="mt-8 flex flex-col sm:flex-row gap-4 items-stretch sm:items-center">
-              {/* Mobile-Only Row for Quantity Picker & Wishlist */}
               <div className="flex gap-3 w-full sm:w-auto">
-                {/* Quantity Picker */}
                 <div className="flex-1 sm:flex-initial flex items-center justify-between border border-slate-200 bg-white rounded-2xl p-1.5 w-full sm:w-36 h-12 shadow-sm shrink-0">
                   <button
                     onClick={() => setQuantity(Math.max(1, quantity - 1))}
@@ -383,27 +365,16 @@ export default function ProductDetailsPage({ params }: { params: Promise<{ slug:
                   </button>
                 </div>
 
-                {/* Mobile Wishlist Button */}
                 <button
-                  onClick={() => {
-                    toggleWishlist({
-                      title: productData.title,
-                      category: productData.category,
-                      price: productData.price,
-                      imageSrc: productData.imageSrc
-                    });
-                  }}
+                  onClick={() => toggleWishlist({ title: productData.title, category: productData.category, price: productData.price, imageSrc: productData.imageSrc })}
                   className={`grid sm:hidden h-12 w-12 place-items-center rounded-2xl border transition-all cursor-pointer shrink-0 ${
-                    wishlisted 
-                      ? 'bg-pink-50 border-pink-100 text-[#ff4fa3]' 
-                      : 'bg-white border-slate-200 text-slate-400 hover:border-pink-300 hover:text-[#ff4fa3] shadow-sm'
+                    wishlisted ? 'bg-pink-50 border-pink-100 text-[#ff4fa3]' : 'bg-white border-slate-200 text-slate-400 hover:border-pink-300 hover:text-[#ff4fa3] shadow-sm'
                   }`}
                 >
                   <Heart className={`h-5 w-5 ${wishlisted ? 'fill-[#ff4fa3] text-[#ff4fa3]' : ''}`} />
                 </button>
               </div>
 
-              {/* Add to Cart CTA */}
               <button
                 onClick={handleAddToCart}
                 className="w-full sm:flex-1 inline-flex items-center justify-center rounded-2xl bg-[#ff4fa3] text-white border border-[#ff4fa3] py-4 text-xs font-black uppercase tracking-wider shadow-md shadow-pink-100 transition-all duration-300 hover:bg-black hover:text-[#ff4fa3] hover:border-black hover:-translate-y-0.5 active:translate-y-0 cursor-pointer gap-2.5 logo-font h-12 whitespace-nowrap"
@@ -411,27 +382,16 @@ export default function ProductDetailsPage({ params }: { params: Promise<{ slug:
                 <ShoppingBag className="h-4.5 w-4.5" /> Add to Shopping Cart
               </button>
 
-              {/* Desktop-Only Wishlist Button */}
               <button
-                onClick={() => {
-                  toggleWishlist({
-                    title: productData.title,
-                    category: productData.category,
-                    price: productData.price,
-                    imageSrc: productData.imageSrc
-                  });
-                }}
+                onClick={() => toggleWishlist({ title: productData.title, category: productData.category, price: productData.price, imageSrc: productData.imageSrc })}
                 className={`hidden sm:grid h-12 w-12 place-items-center rounded-2xl border transition-all cursor-pointer shrink-0 ${
-                  wishlisted 
-                    ? 'bg-pink-50 border-pink-100 text-[#ff4fa3]' 
-                    : 'bg-white border-slate-200 text-slate-400 hover:border-pink-300 hover:text-[#ff4fa3] shadow-sm'
+                  wishlisted ? 'bg-pink-50 border-pink-100 text-[#ff4fa3]' : 'bg-white border-slate-200 text-slate-400 hover:border-pink-300 hover:text-[#ff4fa3] shadow-sm'
                 }`}
               >
                 <Heart className={`h-5 w-5 ${wishlisted ? 'fill-[#ff4fa3] text-[#ff4fa3]' : ''}`} />
               </button>
             </div>
 
-            {/* Discreet Trust Icons Banner */}
             <div className="grid grid-cols-3 divide-x divide-slate-100 items-center bg-white border border-slate-100 rounded-2xl p-4 shadow-sm mt-8 w-full text-center">
               <div className="flex flex-col items-center gap-1.5">
                 <ShieldCheck className="h-5 w-5 text-emerald-500" />
@@ -446,14 +406,12 @@ export default function ProductDetailsPage({ params }: { params: Promise<{ slug:
                 <span className="text-[12px] font-black uppercase tracking-wider text-[#1b1533] leading-none mt-1">Secure Key</span>
               </div>
             </div>
-
           </div>
         </div>
 
-        {/* Sticky Sidebar Profile Layout */}
+        {/* Sticky Sidebar + Sections */}
         <div className="mt-16 grid gap-8 lg:grid-cols-[280px_1fr] items-start">
-          
-          {/* Left Column: Sticky Navigation */}
+
           <aside className="lg:sticky lg:top-24 space-y-2 bg-white border border-slate-100 rounded-[28px] p-5 shadow-sm overflow-x-auto lg:overflow-x-visible scrollbar-none flex lg:flex-col gap-2 lg:gap-0 flex-nowrap z-20">
             <span className="hidden lg:block text-[11px] font-black uppercase tracking-widest text-slate-400 mb-3 px-3 leading-none logo-font">Product Profile</span>
             {sectionsList.map((sec) => {
@@ -478,10 +436,9 @@ export default function ProductDetailsPage({ params }: { params: Promise<{ slug:
             })}
           </aside>
 
-          {/* Right Column: Content Sections */}
           <div className="space-y-12">
-            
-            {/* 1. Overview Section */}
+
+            {/* 1. Overview */}
             <section id="sec-overview" className="bg-white border border-slate-100 rounded-[32px] p-6 md:p-8 shadow-sm space-y-6 scroll-mt-28">
               <div className="flex items-center gap-3 border-b border-slate-100 pb-4">
                 <div className="h-10 w-10 rounded-xl bg-pink-50 flex items-center justify-center text-[#ff4fa3]">
@@ -490,7 +447,6 @@ export default function ProductDetailsPage({ params }: { params: Promise<{ slug:
                 <h3 className="text-lg font-black text-[#1b1533] uppercase logo-font">{sectionsData.overview.title}</h3>
               </div>
               <p className="text-xs md:text-sm font-semibold leading-relaxed text-slate-500">{sectionsData.overview.content}</p>
-              
               <div className="grid gap-3 sm:grid-cols-3">
                 {sectionsData.overview.highlights.map((hl, index) => (
                   <div key={index} className="bg-[#fff8f3] border border-pink-100/10 rounded-2xl p-4 flex items-center gap-3">
@@ -499,46 +455,32 @@ export default function ProductDetailsPage({ params }: { params: Promise<{ slug:
                   </div>
                 ))}
               </div>
-
-              {/* Potency Profile graph summary */}
               <div className="pt-4 space-y-4 border-t border-slate-100">
                 <div className="flex flex-col gap-1">
                   <span className="text-[11px] font-black uppercase tracking-widest text-[#ff4fa3] logo-font">Chemical Analysis</span>
                   <h4 className="text-xs font-black text-[#1b1533] uppercase logo-font">Potency Profile Summary</h4>
                 </div>
                 <div className="grid gap-4 sm:grid-cols-3">
-                  <div className="border border-slate-100 rounded-2xl p-4 bg-[#fffdfd] flex items-center gap-3.5">
-                    <div className="h-9 w-9 shrink-0 rounded-xl bg-pink-50 flex items-center justify-center font-black text-pink-500 text-xs">
-                      {productData.compounds.thc}
+                  {[
+                    { label: 'THC Analysis', val: productData.compounds.thc, color: 'pink' },
+                    { label: 'CBD Analysis', val: productData.compounds.cbd, color: 'purple' },
+                    { label: 'CBN Analysis', val: productData.compounds.cbn, color: 'indigo' },
+                  ].map((item, idx) => (
+                    <div key={idx} className="border border-slate-100 rounded-2xl p-4 bg-[#fffdfd] flex items-center gap-3.5">
+                      <div className={`h-9 w-9 shrink-0 rounded-xl bg-${item.color}-50 flex items-center justify-center font-black text-${item.color}-500 text-xs`}>
+                        {item.val}
+                      </div>
+                      <div>
+                        <span className="block text-[10px] font-bold text-slate-400 uppercase tracking-widest">Active Level</span>
+                        <strong className="block text-xs font-black uppercase text-[#1b1533] mt-0.5">{item.label}</strong>
+                      </div>
                     </div>
-                    <div>
-                      <span className="block text-[10px] font-bold text-slate-400 uppercase tracking-widest">Active Level</span>
-                      <strong className="block text-xs font-black uppercase text-[#1b1533] mt-0.5">THC Analysis</strong>
-                    </div>
-                  </div>
-                  <div className="border border-slate-100 rounded-2xl p-4 bg-[#fffdfd] flex items-center gap-3.5">
-                    <div className="h-9 w-9 shrink-0 rounded-xl bg-purple-50 flex items-center justify-center font-black text-purple-500 text-xs">
-                      {productData.compounds.cbd}
-                    </div>
-                    <div>
-                      <span className="block text-[10px] font-bold text-slate-400 uppercase tracking-widest">Active Level</span>
-                      <strong className="block text-xs font-black uppercase text-[#1b1533] mt-0.5">CBD Analysis</strong>
-                    </div>
-                  </div>
-                  <div className="border border-slate-100 rounded-2xl p-4 bg-[#fffdfd] flex items-center gap-3.5">
-                    <div className="h-9 w-9 shrink-0 rounded-xl bg-indigo-50 flex items-center justify-center font-black text-indigo-500 text-xs">
-                      {productData.compounds.cbn}
-                    </div>
-                    <div>
-                      <span className="block text-[10px] font-bold text-slate-400 uppercase tracking-widest">Active Level</span>
-                      <strong className="block text-xs font-black uppercase text-[#1b1533] mt-0.5">CBN Analysis</strong>
-                    </div>
-                  </div>
+                  ))}
                 </div>
               </div>
             </section>
 
-            {/* 2. Appearance Section */}
+            {/* 2. Appearance */}
             <section id="sec-appearance" className="bg-white border border-slate-100 rounded-[32px] p-6 md:p-8 shadow-sm space-y-6 scroll-mt-28">
               <div className="flex items-center gap-3 border-b border-slate-100 pb-4">
                 <div className="h-10 w-10 rounded-xl bg-pink-50 flex items-center justify-center text-[#ff4fa3]">
@@ -557,7 +499,7 @@ export default function ProductDetailsPage({ params }: { params: Promise<{ slug:
               </div>
             </section>
 
-            {/* 3. Genetics Section */}
+            {/* 3. Genetics */}
             <section id="sec-genetics" className="bg-white border border-slate-100 rounded-[32px] p-6 md:p-8 shadow-sm space-y-6 scroll-mt-28">
               <div className="flex items-center gap-3 border-b border-slate-100 pb-4">
                 <div className="h-10 w-10 rounded-xl bg-pink-50 flex items-center justify-center text-[#ff4fa3]">
@@ -575,7 +517,7 @@ export default function ProductDetailsPage({ params }: { params: Promise<{ slug:
               </div>
             </section>
 
-            {/* 4. Popularity Section */}
+            {/* 4. Popularity */}
             <section id="sec-popularity" className="bg-white border border-slate-100 rounded-[32px] p-6 md:p-8 shadow-sm space-y-6 scroll-mt-28">
               <div className="flex items-center gap-3 border-b border-slate-100 pb-4">
                 <div className="h-10 w-10 rounded-xl bg-pink-50 flex items-center justify-center text-[#ff4fa3]">
@@ -589,7 +531,7 @@ export default function ProductDetailsPage({ params }: { params: Promise<{ slug:
               </div>
             </section>
 
-            {/* 5. Why Choose It Section */}
+            {/* 5. Why Choose It */}
             <section id="sec-why-choose-us" className="bg-white border border-slate-100 rounded-[32px] p-6 md:p-8 shadow-sm space-y-6 scroll-mt-28">
               <div className="flex items-center gap-3 border-b border-slate-100 pb-4">
                 <div className="h-10 w-10 rounded-xl bg-pink-50 flex items-center justify-center text-[#ff4fa3]">
@@ -610,7 +552,7 @@ export default function ProductDetailsPage({ params }: { params: Promise<{ slug:
               </div>
             </section>
 
-            {/* 6. Strain Information Section */}
+            {/* 6. Strain Information */}
             <section id="sec-strain-info" className="bg-white border border-slate-100 rounded-[32px] p-6 md:p-8 shadow-sm space-y-6 scroll-mt-28">
               <div className="flex items-center gap-3 border-b border-slate-100 pb-4">
                 <div className="h-10 w-10 rounded-xl bg-pink-50 flex items-center justify-center text-[#ff4fa3]">
@@ -618,7 +560,6 @@ export default function ProductDetailsPage({ params }: { params: Promise<{ slug:
                 </div>
                 <h3 className="text-lg font-black text-[#1b1533] uppercase logo-font">{sectionsData.strainInfo.title}</h3>
               </div>
-              
               <div className="border border-slate-100 rounded-2xl overflow-hidden shadow-inner bg-slate-50/10">
                 <div className="divide-y divide-slate-100">
                   {sectionsData.strainInfo.specs.map((spec, index) => (
@@ -631,7 +572,7 @@ export default function ProductDetailsPage({ params }: { params: Promise<{ slug:
               </div>
             </section>
 
-            {/* 7. FAQ Section */}
+            {/* 7. FAQ */}
             <section id="sec-faq" className="bg-white border border-slate-100 rounded-[32px] p-6 md:p-8 shadow-sm space-y-6 scroll-mt-28">
               <div className="flex items-center gap-3 border-b border-slate-100 pb-4">
                 <div className="h-10 w-10 rounded-xl bg-pink-50 flex items-center justify-center text-[#ff4fa3]">
@@ -639,7 +580,6 @@ export default function ProductDetailsPage({ params }: { params: Promise<{ slug:
                 </div>
                 <h3 className="text-lg font-black text-[#1b1533] uppercase logo-font">{sectionsData.faq.title}</h3>
               </div>
-
               <div className="space-y-4">
                 {sectionsData.faq.items.map((item, index) => {
                   const isOpen = openFaqTab === index;
@@ -665,7 +605,7 @@ export default function ProductDetailsPage({ params }: { params: Promise<{ slug:
               </div>
             </section>
 
-            {/* 8. Reviews Section */}
+            {/* 8. Reviews */}
             <section id="sec-reviews" className="bg-white border border-slate-100 rounded-[32px] p-6 md:p-8 shadow-sm space-y-6 scroll-mt-28">
               <div className="flex items-center gap-3 border-b border-slate-100 pb-4">
                 <div className="h-10 w-10 rounded-xl bg-pink-50 flex items-center justify-center text-[#ff4fa3]">
@@ -690,9 +630,7 @@ export default function ProductDetailsPage({ params }: { params: Promise<{ slug:
                         </div>
                       </div>
                     </div>
-                    <p className="mt-3 text-xs font-semibold leading-relaxed text-slate-500 pl-13 italic">
-                      "{text}"
-                    </p>
+                    <p className="mt-3 text-xs font-semibold leading-relaxed text-slate-500 pl-13 italic">"{text}"</p>
                   </div>
                 ))}
               </div>
@@ -708,7 +646,7 @@ export default function ProductDetailsPage({ params }: { params: Promise<{ slug:
                     <h4 className="text-xs font-black text-[#1b1533] uppercase logo-font leading-none">Write a Customer Review</h4>
                     <p className="text-[12px] text-slate-400 mt-2 font-semibold leading-normal max-w-[280px]">You must be logged in to write a review on this product.</p>
                   </div>
-                  <button 
+                  <button
                     onClick={() => setIsLoggedIn(true)}
                     className="rounded-2xl bg-[#ff4fa3] text-white border border-[#ff4fa3] px-6 py-2.5 text-[12px] font-black uppercase tracking-widest shadow-md shadow-pink-100 transition-all duration-300 hover:bg-black hover:text-[#ff4fa3] hover:border-black hover:-translate-y-0.5 active:translate-y-0 cursor-pointer logo-font flex items-center gap-1.5"
                   >
@@ -716,9 +654,8 @@ export default function ProductDetailsPage({ params }: { params: Promise<{ slug:
                   </button>
                 </div>
               ) : (
-                <div className="bg-slate-50/50 border border-slate-100 rounded-3xl p-6 max-w-xl space-y-4 animate-scale-up">
+                <div className="bg-slate-50/50 border border-slate-100 rounded-3xl p-6 max-w-xl space-y-4">
                   <h4 className="text-xs font-black text-[#1b1533] uppercase logo-font leading-none">Write a Customer Review</h4>
-                  
                   <div className="space-y-1.5">
                     <span className="block text-[12px] font-black uppercase tracking-wider text-slate-400">Select Rating:</span>
                     <div className="flex gap-1.5">
@@ -729,36 +666,24 @@ export default function ProductDetailsPage({ params }: { params: Promise<{ slug:
                           onClick={() => setNewReviewRating(star)}
                           className="hover:scale-110 transition-transform duration-100 focus:outline-none cursor-pointer"
                         >
-                          <Star 
-                            className={`h-4.5 w-4.5 stroke-none ${
-                              star <= newReviewRating ? 'fill-amber-400' : 'fill-slate-200'
-                            }`} 
-                          />
+                          <Star className={`h-4.5 w-4.5 stroke-none ${star <= newReviewRating ? 'fill-amber-400' : 'fill-slate-200'}`} />
                         </button>
                       ))}
                     </div>
                   </div>
-
                   <div className="space-y-1.5">
                     <label className="block text-[12px] font-black uppercase tracking-wider text-slate-400">Your Review:</label>
                     <textarea
                       value={newReviewText}
                       onChange={(e) => setNewReviewText(e.target.value)}
-                      placeholder="Share your thoughts on the taste, potency, genetic purity, or experience of this formulation..."
+                      placeholder="Share your thoughts on the taste, potency, or experience..."
                       className="w-full h-24 rounded-2xl border border-slate-200 bg-white p-4 text-xs font-semibold outline-none focus:border-[#ff4fa3] focus:ring-4 focus:ring-pink-50/50 transition-all resize-none"
                     />
                   </div>
-
                   <button
                     onClick={() => {
-                      if (!newReviewText.trim()) {
-                        alert("Please write some text for your review!");
-                        return;
-                      }
-                      setReviewsList([
-                        ...reviewsList,
-                        ['Naveen Kumar', newReviewText.trim(), newReviewRating]
-                      ]);
+                      if (!newReviewText.trim()) return;
+                      setReviewsList([...reviewsList, ['Valued Customer', newReviewText.trim(), newReviewRating]]);
                       setNewReviewText('');
                     }}
                     className="inline-flex items-center justify-center rounded-2xl bg-[#ff4fa3] text-white border border-[#ff4fa3] px-6 py-2.5 text-[12px] font-black uppercase tracking-wider shadow-md shadow-pink-100 hover:bg-black hover:text-[#ff4fa3] hover:border-black hover:-translate-y-0.5 active:translate-y-0 cursor-pointer logo-font"
@@ -771,10 +696,9 @@ export default function ProductDetailsPage({ params }: { params: Promise<{ slug:
 
           </div>
         </div>
-
       </section>
 
-      {/* Related Products Section */}
+      {/* Related Products */}
       <section className="mx-auto max-w-7xl px-4 py-16 border-t border-purple-100/50 md:px-8">
         <h2 className="text-3xl font-black text-[#1b1533] uppercase logo-font">Related Formulations</h2>
         <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
@@ -787,40 +711,4 @@ export default function ProductDetailsPage({ params }: { params: Promise<{ slug:
       <Footer />
     </main>
   );
-}
-
-// Fallback images based on product categories
-function getFallbackImage(category: string): string {
-  if (category === 'Edibles') return '/images/cat_edibles.webp';
-  if (category === 'Capsules') return '/images/cat_capsules.webp';
-  if (category === 'Microdose') return '/images/cat_microdose.webp';
-  return '/images/cat_mushrooms.webp';
-}
-
-// Custom descriptions for top product items
-function getCustomDescription(title: string, category: string): string {
-  if (category === 'Edibles') {
-    return 'These delicious infused e-commerce gummies provide a precise, safe, and controlled active wellness experience. Crafted using organic cane juices and organic flavor infusions.';
-  }
-  if (category === 'Capsules') {
-    return 'Our custom capsules are designed for high-density cognitive wellness, daily mental focus, stress reduction, and deep neurological recovery. Includes Stamets formulations.';
-  }
-  if (category === 'Microdose') {
-    return 'Optimally formulated with sub-perceptual psilocybin levels alongside organic adaptogenic blends like Lion’s Mane and Chaga. Ideal for high productivity cycles.';
-  }
-  return 'A gorgeous and highly potent dried magic mushroom strain, selected by our mycological experts for balanced strength, rich spiritual introspections, and high genetic purity.';
-}
-
-// Custom potency metrics
-function getCompoundsForCategory(category: string) {
-  if (category === 'Edibles') {
-    return { thc: '20%', thcColor: '#ff4fa3', cbd: '15%', cbdColor: '#3b82f6', cbn: '0%', cbnColor: '#10b981' };
-  }
-  if (category === 'Capsules') {
-    return { thc: '2%', thcColor: '#ff4fa3', cbd: '80%', cbdColor: '#3b82f6', cbn: '10%', cbnColor: '#10b981' };
-  }
-  if (category === 'Microdose') {
-    return { thc: '5%', thcColor: '#ff4fa3', cbd: '45%', cbdColor: '#3b82f6', cbn: '15%', cbnColor: '#10b981' };
-  }
-  return { thc: '28%', thcColor: '#ff4fa3', cbd: '1.5%', cbdColor: '#3b82f6', cbn: '0.8%', cbnColor: '#10b981' };
 }

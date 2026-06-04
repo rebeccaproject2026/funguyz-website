@@ -92,7 +92,7 @@ export default function BlogDetailsPage({ params }: { params: Promise<{ slug: st
 
         {/* Hero Metadata */}
         <div className="space-y-4">
-          <span className="inline-block rounded bg-[#ff4fa3]/5 px-3 py-1 text-[9px] font-black uppercase tracking-widest text-[#ff4fa3] shadow-sm">
+          <span className="inline-block rounded bg-[#ff4fa3]/5 px-3 py-1 text-[10px] font-black uppercase tracking-widest text-[#ff4fa3] shadow-sm">
             {post.category}
           </span>
           <h1 className="text-3xl md:text-5xl font-black tracking-tight text-[#1b1533] uppercase leading-tight logo-font">
@@ -176,9 +176,9 @@ export default function BlogDetailsPage({ params }: { params: Promise<{ slug: st
             🍄
           </span>
           <div>
-            <span className="text-[9px] font-black uppercase tracking-widest text-[#ff4fa3]">Written By</span>
+            <span className="text-[12px] font-black uppercase tracking-widest text-[#ff4fa3]">Written By</span>
             <b className="block text-sm font-black text-[#1b1533] uppercase logo-font mt-0.5">FunGuyz Mycological Team</b>
-            <p className="text-[11px] text-slate-400 mt-1 font-semibold leading-relaxed">
+            <p className="text-[12px] text-slate-400 mt-1 font-semibold leading-relaxed">
               Our clinical research mycologists publish regular science-backed guides regarding microdosing protocols, psilocybin studies, and wellness applications.
             </p>
           </div>

@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from 'react';
-import { X, Check, Copy, Mail, Shield, MapPin, Gift, Phone } from 'lucide-react';
 import { usePathname } from 'next/navigation';
+import { X, Check, Copy, Mail, Shield, MapPin, Gift, Phone } from 'lucide-react';
 
 export function LaunchPopup() {
   const pathname = usePathname();
@@ -118,6 +118,7 @@ export function LaunchPopup() {
 
   // If closed but user dismissed and not yet submitted, render sticky bottom banner
   if (!isOpen && isDismissed && !submitted) {
+    if (pathname !== '/') return null;
     return (
       <div className="fixed bottom-16 md:bottom-0 left-0 right-0 z-[998] bg-[#0c0a1a]/95 backdrop-blur-md border-t border-pink-500/20 px-4 py-3 sm:px-6 sm:py-3.5 flex flex-col md:flex-row items-center justify-between gap-3 text-white shadow-[0_-8px_30px_rgba(0,0,0,0.6)] animate-slide-in-up select-none font-sans">
         <style dangerouslySetInnerHTML={{
@@ -134,15 +135,15 @@ export function LaunchPopup() {
         <div className="absolute inset-0 bg-gradient-to-r from-pink-500/5 via-purple-500/5 to-transparent pointer-events-none" />
         <div className="flex items-center gap-2.5 text-center md:text-left relative z-10">
           <span className="flex h-2 w-2 shrink-0 rounded-full bg-pink-500 animate-pulse" />
-          <p className="text-[11px] sm:text-xs font-semibold tracking-wide text-slate-300 leading-normal">
-            🍁 <span className="text-white font-extrabold uppercase logo-font tracking-wider mr-1 text-[#ff4fa3]">Grand Opening Coming Soon:</span>
+          <p className="text-[12px] sm:text-xs font-semibold tracking-wide text-slate-300 leading-normal">
+            🍁 <span className="text-white font-extrabold uppercase logo-font tracking-wider mr-1 text-[#ff4fa3]">Grand Opening Coming Soon:</span> 
             We are launching our new site for secure Canada-Wide delivery & shipping! Pre-order now to secure <b className="text-[#ff4fa3] font-black">20% OFF</b>.
           </p>
         </div>
         <div className="flex items-center gap-3 relative z-10 shrink-0">
           <button
             onClick={() => setIsOpen(true)}
-            className="h-8.5 sm:h-9.5 px-4 sm:px-5 inline-flex items-center justify-center rounded-xl bg-gradient-to-r from-[#ff4fa3] to-[#7b5cff] text-white font-black text-[10px] sm:text-[11px] uppercase tracking-wider hover:scale-[1.02] active:scale-95 transition-all cursor-pointer logo-font gap-1.5 shadow-md shadow-pink-500/10"
+            className="h-8.5 sm:h-9.5 px-4 sm:px-5 inline-flex items-center justify-center rounded-xl bg-gradient-to-r from-[#ff4fa3] to-[#7b5cff] text-white font-black text-[12px] sm:text-[12px] uppercase tracking-wider hover:scale-[1.02] active:scale-95 transition-all cursor-pointer logo-font gap-1.5 shadow-md shadow-pink-500/10"
           >
             <span>Claim 20% Off</span>
             <Gift className="h-3.5 w-3.5" />
@@ -177,14 +178,14 @@ export function LaunchPopup() {
             {/* Header Icon Composition with Sparkles and Badges */}
             <div className="relative mt-1 sm:mt-2 shrink-0">
               {/* Star Badge */}
-              <div className="absolute -top-1 -right-1 z-10 w-5 h-5 sm:w-5.5 sm:h-5.5 rounded-full bg-amber-400 border-2 border-[#0c0a1a] flex items-center justify-center text-[8px] sm:text-[9.5px] text-[#0c0a1a] font-extrabold shadow-sm animate-pulse">
+              <div className="absolute -top-1 -right-1 z-10 w-5 h-5 sm:w-5.5 sm:h-5.5 rounded-full bg-amber-400 border-2 border-[#0c0a1a] flex items-center justify-center text-[10px] sm:text-[10px] text-[#0c0a1a] font-extrabold shadow-sm animate-pulse">
                 ★
               </div>
 
               {/* Floating Sparkles & Confetti Background Elements */}
               <div className="absolute -left-5 -top-2 text-purple-400 text-xs animate-bounce">✦</div>
               <div className="absolute -right-5 top-5 text-pink-400 text-xs animate-pulse">✦</div>
-              <div className="absolute left-8 -top-5 text-yellow-300 text-[10px]">✨</div>
+              <div className="absolute left-8 -top-5 text-yellow-300 text-[12px]">✨</div>
               <div className="absolute -left-3 bottom-2 w-1.5 h-1.5 rounded-full bg-purple-500 animate-ping" />
               <div className="absolute -right-3 bottom-3 w-1 h-1 rounded-full bg-pink-500 animate-pulse" />
 
@@ -197,7 +198,7 @@ export function LaunchPopup() {
             </div>
 
             {/* Announcement Badge */}
-            <div className="border border-[#ff4fa3]/30 bg-[#ff4fa3]/5 px-3.5 py-1 rounded-full inline-flex items-center gap-1.5 text-[8.5px] sm:text-[9.5px] font-black uppercase tracking-widest text-[#ff4fa3] logo-font leading-none shrink-0">
+            <div className="border border-[#ff4fa3]/30 bg-[#ff4fa3]/5 px-3.5 py-1 rounded-full inline-flex items-center gap-1.5 text-[10px] sm:text-[10px] font-black uppercase tracking-widest text-[#ff4fa3] logo-font leading-none shrink-0">
               <span>✦</span>
               <span>Grand Opening</span>
               <span>✦</span>
@@ -241,7 +242,7 @@ export function LaunchPopup() {
             </div>
 
             {/* Description: Scaled font size to fit smaller viewports */}
-            <p className="text-[11.5px] sm:text-[13px] font-semibold leading-relaxed text-slate-300 max-w-sm shrink-0">
+            <p className="text-[12px] sm:text-[13px] font-semibold leading-relaxed text-slate-300 max-w-sm shrink-0">
               We are launching our new site for secure delivery & shipping across Canada soon! Enter your details below to get notified of our grand opening experience and secure <b className="text-[#ff4fa3] font-black">20% OFF</b> your first pre-order.
             </p>
 
@@ -254,7 +255,7 @@ export function LaunchPopup() {
                   value={emailVal}
                   onChange={(e) => setEmailVal(e.target.value)}
                   placeholder="Email Address"
-                  className="w-full h-11 sm:h-12 rounded-2xl border border-slate-700 bg-slate-900/35 pl-11 pr-5 text-[11px] sm:text-xs font-semibold outline-none focus:border-[#ff4fa3] focus:ring-4 focus:ring-pink-500/10 transition-all text-white placeholder:text-slate-500"
+                  className="w-full h-11 sm:h-12 rounded-2xl border border-slate-700 bg-slate-900/35 pl-11 pr-5 text-[12px] sm:text-xs font-semibold outline-none focus:border-[#ff4fa3] focus:ring-4 focus:ring-pink-500/10 transition-all text-white placeholder:text-slate-500"
                 />
               </div>
 
@@ -265,19 +266,19 @@ export function LaunchPopup() {
                   value={phoneVal}
                   onChange={(e) => setPhoneVal(e.target.value)}
                   placeholder="Phone Number"
-                  className="w-full h-11 sm:h-12 rounded-2xl border border-slate-700 bg-slate-900/35 pl-11 pr-5 text-[11px] sm:text-xs font-semibold outline-none focus:border-[#ff4fa3] focus:ring-4 focus:ring-pink-500/10 transition-all text-white placeholder:text-slate-500"
+                  className="w-full h-11 sm:h-12 rounded-2xl border border-slate-700 bg-slate-900/35 pl-11 pr-5 text-[12px] sm:text-xs font-semibold outline-none focus:border-[#ff4fa3] focus:ring-4 focus:ring-pink-500/10 transition-all text-white placeholder:text-slate-500"
                 />
               </div>
 
               {errorMsg && (
-                <span className="text-[11px] font-bold text-red-400 block text-left px-1.5">
+                <span className="text-[12px] font-bold text-red-400 block text-left px-1.5">
                   ⚠️ {errorMsg}
                 </span>
               )}
 
               <button
                 type="submit"
-                className="w-full h-11 sm:h-12 inline-flex items-center justify-center rounded-2xl bg-gradient-to-r from-[#ff4fa3] via-[#a855f7] to-[#7b5cff] text-white font-black text-[11px] sm:text-xs uppercase tracking-wider shadow-lg shadow-pink-500/15 hover:scale-[1.01] active:scale-95 transition-all cursor-pointer logo-font gap-2"
+                className="w-full h-11 sm:h-12 inline-flex items-center justify-center rounded-2xl bg-gradient-to-r from-[#ff4fa3] via-[#a855f7] to-[#7b5cff] text-white font-black text-[12px] sm:text-xs uppercase tracking-wider shadow-lg shadow-pink-500/15 hover:scale-[1.01] active:scale-95 transition-all cursor-pointer logo-font gap-2"
               >
                 <span>Claim 20% Off & Notify Me</span>
                 <svg className="h-4 w-4 fill-none stroke-current stroke-[2.2]" viewBox="0 0 24 24">
@@ -296,8 +297,8 @@ export function LaunchPopup() {
               <div className="flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-1.5 px-0.5">
                 <Shield className="h-4 w-4 sm:h-4.5 sm:w-4.5 text-[#ff4fa3] stroke-[1.8] shrink-0" />
                 <div className="text-center sm:text-left leading-none shrink-0">
-                  <span className="block text-[7px] sm:text-[8px] font-black text-slate-400 uppercase tracking-widest">Secure</span>
-                  <span className="block text-[7px] sm:text-[8px] font-black text-slate-400 uppercase tracking-widest mt-0.5 sm:mt-0">Shipping</span>
+                  <span className="block text-[12px] sm:text-[12px] font-black text-slate-400 uppercase tracking-widest">Secure</span>
+                  <span className="block text-[12px] sm:text-[12px] font-black text-slate-400 uppercase tracking-widest mt-0.5 sm:mt-0">Shipping</span>
                 </div>
               </div>
 
@@ -305,8 +306,8 @@ export function LaunchPopup() {
               <div className="flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-1.5 px-0.5">
                 <MapPin className="h-4 w-4 sm:h-4.5 sm:w-4.5 text-[#00d8ff] stroke-[1.8] shrink-0" />
                 <div className="text-center sm:text-left leading-none shrink-0">
-                  <span className="block text-[7px] sm:text-[8px] font-black text-slate-400 uppercase tracking-widest">Across</span>
-                  <span className="block text-[7px] sm:text-[8px] font-black text-slate-400 uppercase tracking-widest mt-0.5 sm:mt-0">Canada</span>
+                  <span className="block text-[12px] sm:text-[12px] font-black text-slate-400 uppercase tracking-widest">Across</span>
+                  <span className="block text-[12px] sm:text-[12px] font-black text-slate-400 uppercase tracking-widest mt-0.5 sm:mt-0">Canada</span>
                 </div>
               </div>
 
@@ -314,8 +315,8 @@ export function LaunchPopup() {
               <div className="flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-1.5 px-0.5">
                 <Gift className="h-4 w-4 sm:h-4.5 sm:w-4.5 text-[#a855f7] stroke-[1.8] shrink-0" />
                 <div className="text-center sm:text-left leading-none shrink-0">
-                  <span className="block text-[7px] sm:text-[8px] font-black text-slate-400 uppercase tracking-widest">Exclusive</span>
-                  <span className="block text-[7px] sm:text-[8px] font-black text-slate-400 uppercase tracking-widest mt-0.5 sm:mt-0">Offers</span>
+                  <span className="block text-[12px] sm:text-[12px] font-black text-slate-400 uppercase tracking-widest">Exclusive</span>
+                  <span className="block text-[12px] sm:text-[12px] font-black text-slate-400 uppercase tracking-widest mt-0.5 sm:mt-0">Offers</span>
                 </div>
               </div>
 
@@ -324,7 +325,7 @@ export function LaunchPopup() {
             {/* Dismiss link */}
             <button
               onClick={handleDismiss}
-              className="text-[9px] sm:text-[10px] font-black uppercase tracking-widest text-slate-500 hover:text-slate-400 transition-colors duration-200 cursor-pointer logo-font border-b border-dashed border-slate-600/50 pb-0.5 shrink-0"
+              className="text-[12px] sm:text-[12px] font-black uppercase tracking-widest text-slate-500 hover:text-slate-400 transition-colors duration-200 cursor-pointer logo-font border-b border-dashed border-slate-600/50 pb-0.5 shrink-0"
             >
               No thanks, just browsing
             </button>
@@ -337,7 +338,7 @@ export function LaunchPopup() {
             </div>
 
             <div className="space-y-1">
-              <span className="text-[9px] sm:text-[10px] font-black uppercase tracking-widest text-emerald-400 logo-font block">
+              <span className="text-[12px] sm:text-[12px] font-black uppercase tracking-widest text-emerald-400 logo-font block">
                 VIP Access Guaranteed
               </span>
               <h2 className="text-xl sm:text-2xl font-black uppercase tracking-tight leading-tight logo-font mt-1">
@@ -345,19 +346,19 @@ export function LaunchPopup() {
               </h2>
             </div>
 
-            <p className="text-[11.5px] sm:text-[13px] font-semibold leading-relaxed text-slate-300 max-w-xs">
+            <p className="text-[12px] sm:text-[13px] font-semibold leading-relaxed text-slate-300 max-w-xs">
               Thank you! We will reach out to you with our exclusive grand opening experience. Here is your 20% off pre-order discount code:
             </p>
 
             {/* Coupon Code Dotted Container */}
             <div className="border-2 border-dashed border-[#ff4fa3]/40 bg-[#ff4fa3]/5 rounded-2xl p-4 flex items-center justify-between w-full mt-2">
               <div className="text-left">
-                <span className="block text-[8px] font-bold text-slate-400 uppercase tracking-widest">Pre-Order Discount Code</span>
+                <span className="block text-[12px] font-bold text-slate-400 uppercase tracking-widest">Pre-Order Discount Code</span>
                 <strong className="block text-base sm:text-lg font-black tracking-widest text-[#ff4fa3] logo-font mt-0.5">LAUNCH20</strong>
               </div>
               <button
                 onClick={handleCopy}
-                className="px-3.5 py-2 bg-white text-[#1b1533] hover:bg-[#ff4fa3] hover:text-white rounded-xl text-[9px] sm:text-[10px] font-black uppercase tracking-wider transition-all duration-200 cursor-pointer shadow-sm shrink-0 flex items-center gap-1"
+                className="px-3.5 py-2 bg-white text-[#1b1533] hover:bg-[#ff4fa3] hover:text-white rounded-xl text-[12px] sm:text-[12px] font-black uppercase tracking-wider transition-all duration-200 cursor-pointer shadow-sm shrink-0 flex items-center gap-1"
               >
                 {copied ? (
                   <>
@@ -376,7 +377,7 @@ export function LaunchPopup() {
             {/* Dismiss CTA */}
             <button
               onClick={handleDismiss}
-              className="w-full h-11 sm:h-12 inline-flex items-center justify-center rounded-2xl bg-white/5 border border-white/10 text-white font-black text-[11px] sm:text-xs uppercase tracking-widest hover:bg-white/10 active:scale-95 transition-all cursor-pointer logo-font mt-3"
+              className="w-full h-11 sm:h-12 inline-flex items-center justify-center rounded-2xl bg-white/5 border border-white/10 text-white font-black text-[12px] sm:text-xs uppercase tracking-widest hover:bg-white/10 active:scale-95 transition-all cursor-pointer logo-font mt-3"
             >
               Continue to Site
             </button>
