@@ -28,6 +28,12 @@ interface ToastState {
   type: 'cart' | 'wishlist' | 'remove_wishlist';
 }
 
+interface AppliedCoupon {
+  code: string;
+  discount: number;
+  label: string;
+}
+
 interface CartContextType {
   cartItems: CartItem[];
   wishlistItems: WishlistItem[];
@@ -45,15 +51,30 @@ interface CartContextType {
   totalQuantity: number;
   totalWishlistQuantity: number;
   subtotal: number;
+  // Coupon
+  appliedCoupon: AppliedCoupon | null;
+  applyCoupon: (code: string) => { success: boolean; message: string };
+  removeCoupon: () => void;
+  VALID_COUPONS: Record<string, { discount: number; label: string }>;
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
+
+// Valid coupon codes — single source of truth
+const VALID_COUPONS: Record<string, { discount: number; label: string }> = {
+  'FUNGUYZ10': { discount: 0.10, label: '10% Off' },
+  'SHROOM20':  { discount: 0.20, label: '20% Off' },
+  'LAUNCH15':  { discount: 0.15, label: '15% Off' },
+  'WELCOME5':  { discount: 0.05, label: '5% Off' },
+  'FUNGUYZ15': { discount: 0.15, label: '15% Off' },
+};
 
 export function CartProvider({ children }: { children: React.ReactNode }) {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [wishlistItems, setWishlistItems] = useState<WishlistItem[]>([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isWishlistOpen, setIsWishlistOpen] = useState(false);
+  const [appliedCoupon, setAppliedCoupon] = useState<AppliedCoupon | null>(null);
   const [toast, setToast] = useState<ToastState>({
     visible: false,
     productTitle: '',
@@ -67,19 +88,15 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     if (typeof window !== 'undefined') {
       const storedCart = localStorage.getItem('funguyz_cart');
       if (storedCart) {
-        try {
-          setCartItems(JSON.parse(storedCart));
-        } catch (e) {
-          console.error(e);
-        }
+        try { setCartItems(JSON.parse(storedCart)); } catch (e) { console.error(e); }
       }
       const storedWish = localStorage.getItem('funguyz_wishlist');
       if (storedWish) {
-        try {
-          setWishlistItems(JSON.parse(storedWish));
-        } catch (e) {
-          console.error(e);
-        }
+        try { setWishlistItems(JSON.parse(storedWish)); } catch (e) { console.error(e); }
+      }
+      const storedCoupon = localStorage.getItem('funguyz_coupon');
+      if (storedCoupon) {
+        try { setAppliedCoupon(JSON.parse(storedCoupon)); } catch (e) { console.error(e); }
       }
     }
   }, []);
@@ -153,6 +170,32 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
   const clearCart = () => {
     saveCart([]);
+    // Also clear coupon on order completion
+    setAppliedCoupon(null);
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem('funguyz_coupon');
+    }
+  };
+
+  const applyCoupon = (code: string): { success: boolean; message: string } => {
+    const normalized = code.trim().toUpperCase();
+    if (!normalized) return { success: false, message: 'Please enter a coupon code.' };
+    if (VALID_COUPONS[normalized]) {
+      const coupon = { code: normalized, ...VALID_COUPONS[normalized] };
+      setAppliedCoupon(coupon);
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('funguyz_coupon', JSON.stringify(coupon));
+      }
+      return { success: true, message: `Coupon "${normalized}" applied — ${VALID_COUPONS[normalized].label}!` };
+    }
+    return { success: false, message: 'Invalid coupon code. Please try again.' };
+  };
+
+  const removeCoupon = () => {
+    setAppliedCoupon(null);
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem('funguyz_coupon');
+    }
   };
 
   // Toggle Wishlist handler
@@ -236,6 +279,10 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         totalQuantity,
         totalWishlistQuantity,
         subtotal,
+        appliedCoupon,
+        applyCoupon,
+        removeCoupon,
+        VALID_COUPONS,
       }}
     >
       {children}

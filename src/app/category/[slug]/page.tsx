@@ -5,6 +5,7 @@ import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { ProductCard } from '@/components/ProductCard';
 import { useCart } from '@/context/CartContext';
+import { products } from '@/data/products';
 import { 
   Sparkles, 
   ArrowUpDown, 
@@ -218,58 +219,10 @@ const categoryDataMap: Record<string, CategoryDetails> = {
 
 // Rich products array specifically expanded to guarantee 1-16 product items dynamically for e-commerce catalog
 const productsCatalog: Record<string, string[][]> = {
-  'Magic Mushrooms': [
-    ['Golden Teacher', 'Magic Mushrooms', '$59.99', 'Top Rated'],
-    ['Penis Envy', 'Magic Mushrooms', '$79.99', 'Premium'],
-    ['Blue Meanies', 'Magic Mushrooms', '$64.99', 'Best Seller'],
-    ['Albino Penis Envy (APE)', 'Magic Mushrooms', '$84.99', 'Rare'],
-    ['Tidal Wave', 'Magic Mushrooms', '$69.99', 'New'],
-    ['Jack Frost', 'Magic Mushrooms', '$69.99', 'Rare'],
-    ['Jedi Mind Fuck (JMF)', 'Magic Mushrooms', '$59.99', 'Popular'],
-    ['Mazatapec', 'Magic Mushrooms', '$54.99', 'Classic'],
-    ['B+', 'Magic Mushrooms', '$49.99', 'Best Seller'],
-    ['Treasure Coast', 'Magic Mushrooms', '$59.99', 'Rare'],
-    ['Melmac', 'Magic Mushrooms', '$74.99', 'Premium'],
-    ['Enigma', 'Magic Mushrooms', '$99.99', 'Rare'],
-    ['Hillbilly', 'Magic Mushrooms', '$54.99', 'New'],
-    ['Thai Pink Buffalo', 'Magic Mushrooms', '$59.99', 'Popular']
-  ],
-  'Edibles': [
-    ['Golden Teacher Original Chocolate (GT OG)', 'Edibles', '$29.99', 'Best Seller'],
-    ['Golden Teacher Concentrated Chocolate (GT CC)', 'Edibles', '$39.99', 'Premium'],
-    ['Penis Envy Original Chocolate (PE OG)', 'Edibles', '$34.99', 'Best Seller'],
-    ['Penis Envy Refined Concentrate Chocolate (PE RC)', 'Edibles', '$49.99', 'Premium'],
-    ['Penis Envy Concentrated Chocolate (PE CC)', 'Edibles', '$44.99', 'Strong'],
-    ['Blue Raspberry Gummies', 'Edibles', '$24.99', 'Best Seller'],
-    ['Watermelon Gummies', 'Edibles', '$24.99', 'Popular'],
-    ['Strawberry Gummies', 'Edibles', '$24.99', 'New'],
-    ['Mango Gummies', 'Edibles', '$24.99', 'Fruit'],
-    ['Green Apple Gummies', 'Edibles', '$24.99', 'Sour'],
-    ['Mixed Berry Gummies', 'Edibles', '$24.99', 'Juicy'],
-    ['Golden Teacher S\'Mores', 'Edibles', '$19.99', 'Sweet'],
-    ['Penis Envy S\'Mores', 'Edibles', '$24.99', 'Popular'],
-    ['Cookies & Cream S\'Mores', 'Edibles', '$22.99', 'New']
-  ],
-  'Capsules': [
-    ['Lion\'s Mane Capsules', 'Capsules', '$34.99', 'Focus'],
-    ['Reishi Capsules', 'Capsules', '$34.99', 'Relax'],
-    ['Cordyceps Capsules', 'Capsules', '$34.99', 'Energy'],
-    ['Turkey Tail Capsules', 'Capsules', '$34.99', 'Wellness'],
-    ['Chaga Capsules', 'Capsules', '$34.99', 'Shield'],
-    ['Golden Teacher Extract', 'Capsules', '$49.99', 'Premium'],
-    ['Penis Envy Extract', 'Capsules', '$59.99', 'Strong'],
-    ['Lion\'s Mane Tincture', 'Capsules', '$29.99', 'Daily'],
-    ['Reishi Tincture', 'Capsules', '$29.99', 'Calm'],
-    ['Cordyceps Tincture', 'Capsules', '$29.99', 'Active']
-  ],
-  'Microdose': [
-    ['Golden Teacher Microdose', 'Microdose', '$39.99', 'Wellness'],
-    ['Penis Envy Microdose', 'Microdose', '$44.99', 'Premium'],
-    ['Stamets Stack Microdose', 'Microdose', '$49.99', 'Focus'],
-    ['Creativity Microdose Blend', 'Microdose', '$44.99', 'Creative'],
-    ['Productivity Microdose Blend', 'Microdose', '$44.99', 'Work'],
-    ['Wellness Microdose Blend', 'Microdose', '$39.99', 'Daily']
-  ]
+  'Magic Mushrooms': products.filter(p => p[1] === 'Magic Mushrooms'),
+  'Edibles': products.filter(p => p[1] === 'Edibles'),
+  'Capsules': products.filter(p => p[1] === 'Capsules'),
+  'Microdose': products.filter(p => p[1] === 'Microdose'),
 };
 
 export default function DedicatedCategoryPage({ params }: { params: Promise<{ slug: string }> }) {
@@ -1498,7 +1451,16 @@ export default function DedicatedCategoryPage({ params }: { params: Promise<{ sl
                 <div className="leading-tight text-left">
                   <span className="block text-[10px] text-slate-400 font-bold uppercase">{item.badge}</span>
                   <strong className="block text-xs font-black text-[#1b1533] logo-font leading-snug truncate max-w-[130px]">{item.name}</strong>
-                  <span className="block text-[12px] font-black text-[#ff4fa3] mt-0.5">{item.price}</span>
+                  <span className="block text-[12px] font-black text-[#ff4fa3] mt-0.5">
+                    {(() => {
+                      const dbMatch = products.find(p => {
+                        const name1 = p[0].toLowerCase();
+                        const name2 = item.name.toLowerCase();
+                        return name1 === name2 || name1.includes(name2) || name2.includes(name1);
+                      });
+                      return dbMatch ? dbMatch[2] : item.price;
+                    })()}
+                  </span>
                 </div>
               </div>
             ))}

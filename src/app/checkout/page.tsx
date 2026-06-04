@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { useCart } from '@/context/CartContext';
+import { useAuth } from '@/context/AuthContext';
 import { 
   Sparkles, 
   ShoppingBag, 
@@ -23,11 +24,16 @@ import {
   ChevronLeft,
   ChevronRight,
   Calendar,
-  X
+  X,
+  Tag,
+  BadgePercent,
+  KeyRound,
+  UserPlus
 } from 'lucide-react';
 
 export default function CheckoutPage() {
-  const { cartItems, subtotal, clearCart } = useCart();
+  const { cartItems, subtotal, clearCart, appliedCoupon, applyCoupon, removeCoupon } = useCart();
+  const { createUserFromOrder } = useAuth();
   const [paymentMethod, setPaymentMethod] = useState<'etransfer'>('etransfer');
   const [shippingMethod, setShippingMethod] = useState<'sameday' | 'express'>('express');
   const [formData, setFormData] = useState({
@@ -44,6 +50,12 @@ export default function CheckoutPage() {
   const [isCompleted, setIsCompleted] = useState(false);
   const [completedOrder, setCompletedOrder] = useState<any>(null);
   const [errors, setErrors] = useState<string[]>([]);
+  const [accountCredentials, setAccountCredentials] = useState<{ password: string; isNewUser: boolean } | null>(null);
+
+  // Coupon state (UI feedback only — actual coupon lives in CartContext)
+  const [couponInput, setCouponInput] = useState('');
+  const [couponError, setCouponError] = useState('');
+  const [couponSuccess, setCouponSuccess] = useState('');
 
   // Scheduling Modal State
   const [isScheduleModalOpen, setIsScheduleModalOpen] = useState(false);
@@ -57,8 +69,28 @@ export default function CheckoutPage() {
   // Calculate pricing metrics
   const parsedSubtotal = subtotal;
   const shippingCost = 20.00;
-  const taxes = parsedSubtotal * 0.13; // 13% HST Ontario
-  const grandTotal = parsedSubtotal + shippingCost + taxes;
+  const taxes = 0.00; // No tax
+  const discountAmount = appliedCoupon ? parsedSubtotal * appliedCoupon.discount : 0;
+  const grandTotal = parsedSubtotal - discountAmount + shippingCost + taxes;
+
+  const handleApplyCoupon = () => {
+    const result = applyCoupon(couponInput);
+    if (result.success) {
+      setCouponInput('');
+      setCouponSuccess(result.message);
+      setCouponError('');
+    } else {
+      setCouponError(result.message);
+      setCouponSuccess('');
+    }
+  };
+
+  const handleRemoveCoupon = () => {
+    removeCoupon();
+    setCouponError('');
+    setCouponSuccess('');
+    setCouponInput('');
+  };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -122,27 +154,37 @@ export default function CheckoutPage() {
     setScheduleError('');
     setIsScheduleModalOpen(false);
 
-    // Success order generation
+
+
+
+    // ── Auto-create / update account ──────────────────────────────────────
+    setErrors([]);
     const trackingCode = `CX${Math.floor(100000000 + Math.random() * 900000000)}CA`;
-    setCompletedOrder({
+    const orderRecord = {
       orderId: `#FG-${Math.floor(10000 + Math.random() * 90000)}`,
       date: new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }),
       trackingCode,
       grandTotal: `$${grandTotal.toFixed(2)}`,
       items: [...cartItems],
-      formData: {
-        ...formData,
-        email: email,
-        phone: phone
-      },
       deliveryDetails: {
         date: selectedDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }),
         timeSlot: selectedTimeSlot
-      }
+      },
+      status: 'processing' as const,
+    };
+
+    const creds = createUserFromOrder(
+      { email: email, firstName: formData.firstName, lastName: formData.lastName },
+      orderRecord
+    );
+    setAccountCredentials(creds);
+
+    setCompletedOrder({
+      ...orderRecord,
+      formData: { ...formData, email, phone },
     });
-    
-    setErrors([]);
-    clearCart(); // Empty client e-commerce cart
+
+    clearCart();
     setIsCompleted(true);
     window.scrollTo({ top: 100, behavior: 'smooth' });
   };
@@ -281,13 +323,67 @@ export default function CheckoutPage() {
               </p>
             </div>
 
+            {/* ── Account Created / Welcome Back Banner ──────────────────── */}
+            {accountCredentials && accountCredentials.isNewUser && (
+              <div className="w-full border border-violet-200 bg-gradient-to-br from-violet-50 to-purple-50 rounded-[24px] p-6 text-left space-y-4 shadow-sm relative overflow-hidden">
+                <div className="absolute right-0 top-0 w-20 h-20 bg-violet-500/5 rounded-bl-[80px] pointer-events-none" />
+                <div className="flex items-center gap-3">
+                  <div className="h-9 w-9 rounded-xl bg-violet-100 flex items-center justify-center text-violet-600 shrink-0">
+                    <UserPlus className="h-5 w-5" />
+                  </div>
+                  <div>
+                    <h4 className="text-xs font-black uppercase tracking-wider text-violet-800 logo-font">Account Created For You!</h4>
+                    <p className="text-[11px] font-semibold text-violet-600 mt-0.5">Use these credentials to access your order history at <a href="/my-account" className="underline font-bold">My Account</a></p>
+                  </div>
+                </div>
+                <div className="grid gap-3 sm:grid-cols-3 bg-white p-4 rounded-2xl border border-violet-100/60 text-xs font-semibold">
+                  <div className="space-y-1">
+                    <span className="block text-[11px] text-slate-400 uppercase tracking-widest">Login Email</span>
+                    <strong className="block text-slate-700 font-bold">{completedOrder.formData.email}</strong>
+                    <button type="button" onClick={() => { navigator.clipboard.writeText(completedOrder.formData.email); alert('Email copied!'); }} className="text-[11px] font-black uppercase text-violet-600 hover:underline cursor-pointer tracking-wider">Copy</button>
+                  </div>
+                  <div className="space-y-1">
+                    <span className="block text-[11px] text-slate-400 uppercase tracking-widest">Temp Password</span>
+                    <strong className="block text-slate-700 font-mono font-bold text-sm">{accountCredentials.password}</strong>
+                    <button type="button" onClick={() => { navigator.clipboard.writeText(accountCredentials.password); alert('Password copied!'); }} className="text-[11px] font-black uppercase text-violet-600 hover:underline cursor-pointer tracking-wider">Copy</button>
+                  </div>
+                  <div className="space-y-1">
+                    <span className="block text-[11px] text-slate-400 uppercase tracking-widest">Action Required</span>
+                    <span className="block text-[11px] font-semibold text-amber-600 leading-relaxed">Change your password after first login</span>
+                    <a href="/my-account" className="text-[11px] font-black uppercase text-violet-600 hover:underline tracking-wider block mt-1">Go to My Account →</a>
+                  </div>
+                </div>
+                <p className="text-[11px] text-slate-400 font-semibold">📧 These credentials have been sent to <strong className="text-slate-600">{completedOrder.formData.email}</strong> — please save your temporary password now.</p>
+              </div>
+            )}
+
+            {accountCredentials && !accountCredentials.isNewUser && (
+              <div className="w-full border border-blue-100 bg-blue-50/40 rounded-[24px] p-5 text-left flex items-center gap-4">
+                <div className="h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 shrink-0">
+                  <User className="h-5 w-5" />
+                </div>
+                <div>
+                  <h4 className="text-xs font-black uppercase tracking-wider text-blue-800 logo-font">Order Added to Your Account</h4>
+                  <p className="text-[12px] font-semibold text-slate-600 mt-1">This order has been added to your existing account. <a href="/my-account" className="text-[#ff4fa3] font-bold hover:underline">View in My Account →</a></p>
+                </div>
+              </div>
+            )}
+
             {/* Back Home Action */}
-            <a
-              href="/"
-              className="inline-flex items-center justify-center rounded-2xl bg-[#ff4fa3] text-white border border-[#ff4fa3] px-10 py-4 text-xs font-black uppercase tracking-wider shadow-md shadow-pink-100 transition-all duration-300 hover:bg-black hover:text-[#ff4fa3] hover:border-black hover:-translate-y-0.5 active:translate-y-0 cursor-pointer gap-2 logo-font w-full sm:w-auto mt-4"
-            >
-              Continue Shopping <ArrowRight className="h-4 w-4 stroke-[2.5]" />
-            </a>
+            <div className="flex flex-col sm:flex-row gap-3 w-full mt-4">
+              <a
+                href="/"
+                className="flex-1 inline-flex items-center justify-center rounded-2xl bg-[#ff4fa3] text-white border border-[#ff4fa3] px-10 py-4 text-xs font-black uppercase tracking-wider shadow-md shadow-pink-100 transition-all duration-300 hover:bg-black hover:text-[#ff4fa3] hover:border-black hover:-translate-y-0.5 active:translate-y-0 cursor-pointer gap-2 logo-font"
+              >
+                Continue Shopping <ArrowRight className="h-4 w-4 stroke-[2.5]" />
+              </a>
+              <a
+                href="/my-account"
+                className="flex-1 inline-flex items-center justify-center rounded-2xl bg-white text-[#1b1533] border border-slate-200 px-10 py-4 text-xs font-black uppercase tracking-wider transition-all duration-300 hover:border-[#ff4fa3] hover:text-[#ff4fa3] hover:-translate-y-0.5 cursor-pointer gap-2 logo-font"
+              >
+                <User className="h-4 w-4" /> My Account
+              </a>
+            </div>
 
           </div>
         </section>
@@ -558,20 +654,78 @@ export default function CheckoutPage() {
               </div>
             </div>
 
+            {/* Coupon / Promo Code */}
+            <div className="border-t border-slate-100 pt-6 space-y-3">
+              <h3 className="text-xs font-black uppercase tracking-wider text-[#1b1533] logo-font flex items-center gap-1.5">
+                <Tag className="h-3.5 w-3.5 text-[#ff4fa3]" /> Coupon / Promo Code
+              </h3>
+
+              {appliedCoupon ? (
+                <div className="flex items-center justify-between rounded-xl border border-emerald-200 bg-emerald-50 px-3.5 py-2.5">
+                  <div className="flex items-center gap-2">
+                    <BadgePercent className="h-4 w-4 text-emerald-600 shrink-0" />
+                    <div>
+                      <span className="block text-[11px] font-black uppercase tracking-wider text-emerald-700">{appliedCoupon.code}</span>
+                      <span className="block text-[11px] font-semibold text-emerald-600">{appliedCoupon.label} — saving ${discountAmount.toFixed(2)}</span>
+                    </div>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={handleRemoveCoupon}
+                    className="text-slate-400 hover:text-red-500 transition-colors p-1 rounded-full hover:bg-red-50 cursor-pointer"
+                    aria-label="Remove coupon"
+                  >
+                    <X className="h-3.5 w-3.5" />
+                  </button>
+                </div>
+              ) : (
+                <div className="flex gap-2">
+                  <div className="relative flex-1">
+                    <Tag className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-slate-400" />
+                    <input
+                      type="text"
+                      value={couponInput}
+                      onChange={(e) => { setCouponInput(e.target.value); setCouponError(''); setCouponSuccess(''); }}
+                      onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), handleApplyCoupon())}
+                      placeholder="Enter promo code"
+                      className="w-full rounded-xl border border-slate-200 pl-9 pr-3.5 py-2.5 text-xs font-semibold outline-none focus:border-[#ff4fa3] focus:ring-4 focus:ring-pink-50/50 uppercase placeholder:normal-case placeholder:text-slate-400"
+                    />
+                  </div>
+                  <button
+                    type="button"
+                    onClick={handleApplyCoupon}
+                    className="shrink-0 rounded-xl bg-[#ff4fa3] text-white px-4 py-2.5 text-[11px] font-black uppercase tracking-wider transition-all hover:bg-black hover:text-[#ff4fa3] cursor-pointer"
+                  >
+                    Apply
+                  </button>
+                </div>
+              )}
+
+              {couponError && (
+                <p className="text-[11px] font-bold text-red-500 flex items-center gap-1">⚠️ {couponError}</p>
+              )}
+              {couponSuccess && (
+                <p className="text-[11px] font-bold text-emerald-600 flex items-center gap-1">✓ {couponSuccess}</p>
+              )}
+            </div>
+
             {/* Calculations summaries */}
             <div className="border-t border-slate-100 pt-6 space-y-3.5 text-xs font-bold text-slate-400">
               <div className="flex justify-between">
                 <span>Subtotal</span>
                 <strong className="text-slate-800">${parsedSubtotal.toFixed(2)}</strong>
               </div>
+              {appliedCoupon && (
+                <div className="flex justify-between text-emerald-600">
+                  <span>Discount ({appliedCoupon.label})</span>
+                  <strong>-${discountAmount.toFixed(2)}</strong>
+                </div>
+              )}
               <div className="flex justify-between">
                 <span>Discreet Shipping</span>
                 <strong className="text-slate-800">${shippingCost.toFixed(2)}</strong>
               </div>
-              <div className="flex justify-between">
-                <span>Taxes (13% HST)</span>
-                <strong className="text-slate-800">${taxes.toFixed(2)}</strong>
-              </div>
+
               <div className="border-t border-slate-100 pt-4 flex justify-between text-sm">
                 <span className="text-slate-800 uppercase logo-font">Total Amount</span>
                 <strong className="text-[#ff4fa3] font-black logo-font text-base">${grandTotal.toFixed(2)}</strong>

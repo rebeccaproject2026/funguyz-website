@@ -36,31 +36,6 @@ export function Footer() {
             Your trusted Canadian source for premium magic mushrooms, edibles,
             capsules & microdose products. Quality, purity & experience.
           </p>
-          <div className="flex items-center gap-4 mt-2">
-            <a href="#instagram" className="text-white/60 hover:text-white transition-colors duration-200">
-              <svg className="h-5 w-5 fill-none stroke-current" strokeWidth="2.2" viewBox="0 0 24 24">
-                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
-                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
-                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
-              </svg>
-            </a>
-            <a href="#facebook" className="text-white/60 hover:text-white transition-colors duration-200">
-              <svg className="h-5 w-5 fill-none stroke-current" strokeWidth="2.2" viewBox="0 0 24 24">
-                <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
-              </svg>
-            </a>
-            <a href="#tiktok" className="text-white/60 hover:text-white transition-colors duration-200">
-              <svg className="h-5 w-5 fill-none stroke-current" strokeWidth="2.2" viewBox="0 0 24 24">
-                <path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"></path>
-              </svg>
-            </a>
-            <a href="#twitter" className="text-white/60 hover:text-white transition-colors duration-200">
-              <svg className="h-4.5 w-4.5 fill-none stroke-current" strokeWidth="2.2" viewBox="0 0 24 24">
-                <path d="M4 4l11.733 16h4.267l-11.733 -16z"></path>
-                <path d="M4 20l6.768 -6.768m2.46 -2.46l6.772 -6.772"></path>
-              </svg>
-            </a>
-          </div>
         </div>
 
         {/* Dynamic Columns */}
@@ -131,19 +106,12 @@ export function Footer() {
             <li className="flex items-start gap-3">
               <MapPin className="h-4 w-4 text-[#2fdfff] shrink-0 mt-0.5" />
               <div className="flex flex-col gap-1 text-[11px] leading-relaxed text-white/60">
-                <span>10am-10pm Mon-Thr</span>
-                <span>10am-11pm fri-sat</span>
-                <span>11am - 10pm sun</span>
+                <span>24/7 Online Ordering</span>
+                <span>Delivery Available 9AM–11PM</span>
+                <span>7 Days A Week</span>
               </div>
             </li>
-            <li className="flex items-center gap-3 pt-1">
-              <button
-                onClick={() => setIsSupportOpen(true)}
-                className="inline-flex items-center gap-2 rounded-xl bg-[#ff4fa3] hover:bg-white hover:text-[#ff4fa3] border border-[#ff4fa3] px-3.5 py-2 text-[10px] font-black uppercase tracking-wider text-white shadow-sm transition-all cursor-pointer logo-font"
-              >
-                Support Request
-              </button>
-            </li>
+
             <li className="flex items-center gap-3">
               <span className="text-sm select-none">🇨🇦</span>
               <span>Canada</span>

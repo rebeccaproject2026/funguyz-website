@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Fredoka, Outfit, Poppins } from 'next/font/google';
 import './globals.css';
 import { CartProvider } from '@/context/CartContext';
+import { AuthProvider } from '@/context/AuthContext';
 import { LaunchPopup } from '@/components/LaunchPopup';
 
 const fredoka = Fredoka({
@@ -34,10 +35,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" className={`scroll-smooth ${fredoka.variable} ${outfit.variable} ${poppins.variable}`}>
       <body className="antialiased font-sans">
-        <CartProvider>
-          {children}
-          <LaunchPopup />
-        </CartProvider>
+        <AuthProvider>
+          <CartProvider>
+            {children}
+            <LaunchPopup />
+          </CartProvider>
+        </AuthProvider>
       </body>
     </html>
   );

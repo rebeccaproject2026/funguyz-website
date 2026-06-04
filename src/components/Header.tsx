@@ -59,6 +59,9 @@ import {
   Shield,
   Layers,
   Hammer,
+  Truck,
+  Package,
+  Lock,
 } from 'lucide-react';
 import { Logo } from './Logo';
 import { useCart } from '@/context/CartContext';
@@ -104,34 +107,21 @@ function MushroomWithStarsIcon(props: React.ComponentProps<'svg'>) {
 }
 
 const MARQUEE_ITEMS = [
-  {
-    title: "Canada’s Largest Magic Mushroom Dispensary",
-    details: "FunGuyz is Canada's premier online magic mushroom dispensary, serving over 100,000 customers nationwide with premium quality psilocybin products, lab-tested genetics, and guaranteed discreet shipping."
-  },
-  {
-    title: "Toronto Magic Mushroom Delivery Same-Day",
-    details: "Order before 2:00 PM EST in the Greater Toronto Area (GTA) to receive same-day courier delivery right to your door. Fully discreet packaging and real-time SMS delivery tracking."
-  },
-  {
-    title: "Ottawa Magic Mushroom Delivery Same-Day",
-    details: "Same-day express delivery is available in Ottawa and surrounding regions. Fast, safe, and discreet drop-offs within 2-4 hours of placing your order."
-  },
-  {
-    title: "$20 Flat Rate Express Delivery Canada-Wide",
-    details: "We offer secure, flat-rate express shipping via Canada Post Express Delivery for only $20.00 on all orders. Delivered within 1-3 business days with tracking number provided."
-  },
-  {
-    title: "30% OFF All Products + Promo Coupons",
-    details: "New customers receive 30% off their first order! Use code FUN30 at checkout. Check our promotions page for additional weekly coupons, gift bundle codes, and community rewards."
-  },
-  {
-    title: "Express Delivery Under 2 Hours",
-    details: "Need it now? Our ultra-fast local express courier option delivers magic mushrooms to your location in under 2 hours in selected metropolitan service areas."
-  },
-  {
-    title: "Buy Magic Mushrooms Canada-Wide Shipping",
-    details: "We ship securely to every province and territory in Canada, including British Columbia, Alberta, Quebec, and the Maritimes. Sealed, odorless, vacuum-packed delivery."
-  }
+  { text: "Fast Delivery Across Toronto, Barrie, Halton, Peel & The GTA", icon: Truck },
+  { text: "Discreet Shipping Across Canada • Private Packaging", icon: Package },
+  { text: "New Delivery & Shipping Website • Save 20% Today", icon: PartyPopper },
+  { text: "Trusted By Canadians For Years • Delivered Better", icon: ShieldCheck },
+  { text: "Same-Day Delivery Available In Select GTA Locations", icon: Zap },
+  { text: "Secure Checkout • Fast Fulfillment • Private Delivery", icon: Lock },
+  { text: "Order Online • Delivered Directly To Your Door", icon: Home },
+  { text: "Supporting Canadian Communities With Every Order", icon: Heart },
+  { text: "Toronto, Mississauga, Brampton, Oakville & Barrie Delivery", icon: Truck },
+  { text: "GTA Delivery Specialists • Fast, Reliable & Discreet", icon: MapPin },
+  { text: "New Website Launch Offer • Save 20% On Your First Order", icon: Gift },
+  { text: "Premium Products • Fast Delivery • Total Privacy", icon: Star },
+  { text: "Delivery Across Peel, Halton, York, Durham & Simcoe", icon: Truck },
+  { text: "No Storefront Needed • Fast Shipping Across Canada", icon: Package },
+  { text: "Canada's New Delivery Experience Is Now Live", icon: Flame }
 ];
 
 const navItems = [
@@ -281,7 +271,6 @@ function getSubcategoryIcon(sub: string, parentLabel: string) {
 
 export function Header() {
   const pathname = usePathname();
-  const [selectedItem, setSelectedItem] = useState<typeof MARQUEE_ITEMS[0] | null>(null);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const { totalQuantity, setIsCartOpen, totalWishlistQuantity, setIsWishlistOpen } = useCart();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -304,23 +293,24 @@ export function Header() {
   };
 
   const renderTrackItems = () => {
-    return MARQUEE_ITEMS.map((item, idx) => (
-      <React.Fragment key={idx}>
-        <button
-          onClick={() => setSelectedItem(item)}
-          className="text-white hover:text-[#ff4fa3] transition-colors duration-200 cursor-pointer text-left focus:outline-none shrink-0 font-bold"
-        >
-          {item.title}
-        </button>
-        <span className="text-zinc-500 shrink-0 select-none">•</span>
-      </React.Fragment>
-    ));
+    return MARQUEE_ITEMS.map((item, idx) => {
+      const IconComponent = item.icon;
+      return (
+        <React.Fragment key={idx}>
+          <div className="inline-flex items-center gap-1.5 text-white shrink-0 font-light">
+            <IconComponent className="h-3.5 w-3.5 text-[#ff4fa3] shrink-0 stroke-[2.5]" />
+            <span>{item.text}</span>
+          </div>
+          <span className="text-zinc-500 shrink-0 select-none">•</span>
+        </React.Fragment>
+      );
+    });
   };
 
   return (
     <>
       {/* 1. Announcement Bar */}
-      <div className="bg-[#110d24] py-2 text-[12px] font-bold text-white shadow-sm relative z-50 overflow-hidden select-none border-b border-white/5">
+      <div className="bg-[#110d24] py-2 text-[12px] font-light text-white shadow-sm relative z-50 overflow-hidden select-none border-b border-white/5">
         <div className="flex whitespace-nowrap overflow-hidden marquee-container">
           {/* Track 1 */}
           <div className="inline-flex items-center gap-6 animate-custom-marquee pr-6 shrink-0">
@@ -681,54 +671,7 @@ export function Header() {
         </button>
       </div>
 
-      {selectedItem && (
-        <div
-          className="fixed inset-0 bg-slate-900/50 backdrop-blur-md z-[999] flex items-center justify-center p-4"
-          onClick={() => setSelectedItem(null)}
-        >
-          <div
-            className="relative w-full max-w-md bg-[#fff8f3] border border-pink-100/80 rounded-2xl p-6 shadow-[0_32px_100px_rgba(255,79,163,0.15)] text-[#1b1533] max-h-[90vh] overflow-y-auto"
-            onClick={(e) => e.stopPropagation()}
-          >
-            {/* Close Button X */}
-            <button
-              onClick={() => setSelectedItem(null)}
-              className="absolute top-4 right-4 text-slate-400 hover:text-[#ff4fa3] transition-colors p-1.5 hover:bg-slate-100 rounded-full cursor-pointer"
-            >
-              <X className="h-5 w-5" />
-            </button>
 
-            {/* Icon & Category */}
-            <div className="flex items-center gap-3 mb-4">
-              <div className="h-9 w-9 rounded-xl bg-gradient-to-tr from-[#ff4fa3] to-[#7b5cff] flex items-center justify-center text-lg shadow-md shadow-pink-500/10 text-white">
-                🍄
-              </div>
-              <div>
-                <span className="text-[12px] font-black uppercase tracking-widest text-[#ff4fa3]">Announcement Detail</span>
-                <h3 className="text-xs font-bold text-slate-400">FunGuyz Store</h3>
-              </div>
-            </div>
-
-            {/* Content Title & Details */}
-            <div className="space-y-3">
-              <h2 className="text-base font-black tracking-tight leading-snug text-[#1b1533]">
-                {selectedItem.title}
-              </h2>
-              <p className="text-[12px] font-semibold leading-relaxed text-[#1b1533]/85 bg-white p-4 rounded-xl border border-pink-50/50 shadow-sm">
-                {selectedItem.details}
-              </p>
-            </div>
-
-            {/* Bottom Primary Close Action */}
-            <button
-              onClick={() => setSelectedItem(null)}
-              className="w-full mt-6 inline-flex items-center justify-center rounded-2xl bg-[#ff4fa3] text-white border border-[#ff4fa3] py-4 text-xs font-black uppercase tracking-wider shadow-md shadow-pink-100 transition-all duration-300 hover:bg-black hover:text-[#ff4fa3] hover:border-black hover:-translate-y-0.5 active:translate-y-0 cursor-pointer logo-font"
-            >
-              Understand & Close
-            </button>
-          </div>
-        </div>
-      )}
 
       {/* Mobile Category Bottom Sheet */}
       {isMobileCategoryOpen && (

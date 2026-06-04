@@ -27,38 +27,42 @@ export default function CartPage() {
     removeFromCart, 
     updateQuantity, 
     clearCart, 
-    subtotal 
+    subtotal,
+    appliedCoupon,
+    applyCoupon,
+    removeCoupon,
   } = useCart();
 
   const [couponCode, setCouponCode] = useState('');
-  const [appliedCoupon, setAppliedCoupon] = useState<{ code: string; rate: number } | null>(null);
   const [couponError, setCouponError] = useState('');
+  const [couponSuccess, setCouponSuccess] = useState('');
 
   // Coupon handling logic
   const handleApplyCoupon = (e: React.FormEvent) => {
     e.preventDefault();
     setCouponError('');
-    const code = couponCode.trim().toUpperCase();
-    if (code === 'FUNGUYZ15') {
-      setAppliedCoupon({ code: 'FUNGUYZ15', rate: 0.15 });
+    setCouponSuccess('');
+    const result = applyCoupon(couponCode);
+    if (result.success) {
       setCouponCode('');
-    } else if (code === '') {
-      setCouponError('Please enter a coupon code.');
+      setCouponSuccess(result.message);
     } else {
-      setCouponError('Invalid coupon code. Try FUNGUYZ15 for 15% off!');
+      setCouponError(result.message);
     }
   };
 
   const handleRemoveCoupon = () => {
-    setAppliedCoupon(null);
+    removeCoupon();
+    setCouponSuccess('');
+    setCouponError('');
   };
 
   // Calculate pricing metrics (simplified - no shipping on Cart page!)
   const discountAmount = appliedCoupon 
-    ? subtotal * appliedCoupon.rate 
+    ? subtotal * appliedCoupon.discount 
     : 0.00;
 
-  const taxAmount = (subtotal - discountAmount) * 0.13; // 13% GST/HST
+  const taxAmount = 0.00; // No tax
   const totalAmount = subtotal - discountAmount + taxAmount;
 
   return (
@@ -246,11 +250,18 @@ export default function CartPage() {
                 </div>
               )}
 
+              {couponSuccess && (
+                <div className="rounded-2xl border border-emerald-100 bg-emerald-50/60 p-4 text-xs font-semibold text-emerald-700 flex items-center gap-2.5 animate-fade-in font-poppins">
+                  <CheckCircle className="h-4.5 w-4.5 shrink-0 text-emerald-600" />
+                  <span>{couponSuccess}</span>
+                </div>
+              )}
+
               {appliedCoupon && (
                 <div className="rounded-2xl border border-emerald-100 bg-emerald-50/60 p-4 text-xs font-semibold text-emerald-700 flex items-center justify-between gap-2.5 animate-fade-in font-poppins">
                   <div className="flex items-center gap-2.5">
                     <CheckCircle className="h-4.5 w-4.5 shrink-0 text-emerald-600" />
-                    <span>Coupon <strong>{appliedCoupon.code}</strong> applied! You saved 15%.</span>
+                    <span>Coupon <strong>{appliedCoupon.code}</strong> applied! {appliedCoupon.label}</span>
                   </div>
                   <button 
                     onClick={handleRemoveCoupon} 
@@ -282,17 +293,13 @@ export default function CartPage() {
                   {appliedCoupon && (
                     <div className="flex justify-between items-center text-emerald-600 bg-emerald-50/50 px-3 py-2.5 rounded-xl border border-emerald-100/50">
                       <span className="flex items-center gap-1">
-                        <Tag className="h-3.5 w-3.5" /> Discount (15%)
+                        <Tag className="h-3.5 w-3.5" /> Discount ({appliedCoupon.label})
                       </span>
                       <strong className="text-sm font-bold">-${discountAmount.toFixed(2)}</strong>
                     </div>
                   )}
 
-                  {/* GST/HST */}
-                  <div className="flex justify-between items-center text-slate-500">
-                    <span>GST/HST (13%)</span>
-                    <strong className="text-sm font-bold text-[#1b1533]">${taxAmount.toFixed(2)}</strong>
-                  </div>
+
 
                   {/* Total */}
                   <div className="border-t border-slate-100 pt-4 flex justify-between items-baseline select-none">

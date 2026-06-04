@@ -30,7 +30,7 @@ import 'swiper/css';
 import { Footer } from '@/components/Footer';
 import { Header } from '@/components/Header';
 import { ProductCard } from '@/components/ProductCard';
-import { categories, products } from '@/data/products';
+import { categories, products, getCategorySlug } from '@/data/products';
 
 const categoryKinds = ['Magic Mushrooms', 'Edibles', 'Capsules', 'Microdose'];
 const categoryImages = [
@@ -152,6 +152,28 @@ export default function Home() {
   const [bestSellersSwiper, setBestSellersSwiper] = useState<any>(null);
   const bestSellersRef = useRef<HTMLDivElement>(null);
 
+  React.useEffect(() => {
+    document.title = "FunGuyz | Mushroom Delivery Toronto & Canada";
+
+    // Update or create meta description tag
+    let metaDesc = document.querySelector('meta[name="description"]');
+    if (!metaDesc) {
+      metaDesc = document.createElement('meta');
+      metaDesc.setAttribute('name', 'description');
+      document.head.appendChild(metaDesc);
+    }
+    metaDesc.setAttribute('content', 'Fast mushroom delivery in Toronto, Mississauga, Brampton, Oakville, Barrie and the GTA. Canada-wide shipping, discreet packaging, secure checkout, and premium products.');
+
+    // Update or create meta keywords tag
+    let metaKeywords = document.querySelector('meta[name="keywords"]');
+    if (!metaKeywords) {
+      metaKeywords = document.createElement('meta');
+      metaKeywords.setAttribute('name', 'keywords');
+      document.head.appendChild(metaKeywords);
+    }
+    metaKeywords.setAttribute('content', 'mushroom delivery toronto, mushroom delivery gta, mushroom delivery mississauga, mushroom delivery brampton, mushroom delivery oakville, mushroom delivery barrie, mushroom shipping canada, canada wide mushroom shipping, fast mushroom delivery, same day mushroom delivery, mushroom delivery near me, premium mushroom products, discreet mushroom shipping, online mushroom store canada, mushroom shop toronto, mushroom products canada, funguyz, funguyz delivery, funguyz canada');
+  }, []);
+
   const reviews = [
     {
       name: 'Jake M.',
@@ -228,11 +250,10 @@ export default function Home() {
               <span>Premium. Pure. Powerful.</span>
             </div>
 
-            <h1 className="max-w-2xl text-3xl sm:text-5xl font-black leading-[0.95] tracking-wide text-[#1b1533] md:text-6xl lg:text-7xl logo-font">
-              Discover Your{' '}
-              <span className="block mt-0.5">
-                <span className="text-[#ff4fa3]">Next</span>{' '}
-                <span className="text-[#3b82f6]">Experience</span>
+            <h1 className="max-w-3xl text-xl sm:text-3xl md:text-4xl lg:text-5xl font-black leading-[1.05] tracking-wide text-[#1b1533] logo-font">
+              Fast Mushroom <span className="text-[#ff4fa3]">Delivery</span>
+              <span className="block mt-1 sm:mt-2 text-[#3b82f6]">
+                in Toronto, GTA & Canada
               </span>
             </h1>
             <p className="max-w-lg text-sm sm:text-base font-semibold leading-relaxed sm:leading-8 text-slate-600/90">
@@ -265,14 +286,14 @@ export default function Home() {
             {/* Hero CTA buttons */}
             <div className="mt-5 flex flex-col sm:flex-row gap-3 sm:gap-4 w-full sm:w-auto">
               <a
-                href="#shop-by-category"
+                href="/shop"
                 className="w-full sm:w-auto inline-flex items-center justify-center rounded-2xl bg-[#ff4fa3] text-white border border-[#ff4fa3] px-6 sm:px-9 py-4 text-xs font-black uppercase tracking-wider shadow-md shadow-pink-100 transition-all duration-300 hover:bg-black hover:text-[#ff4fa3] hover:border-black hover:-translate-y-0.5 active:translate-y-0 cursor-pointer gap-2 logo-font whitespace-nowrap"
               >
                 <ShoppingBag className="h-4.5 w-4.5" />
                 <span>Shop Now</span>
               </a>
               <a
-                href="#featured-collections"
+                href="#featured-products"
                 className="w-full sm:w-auto inline-flex items-center justify-center rounded-2xl border border-slate-200 bg-white px-6 sm:px-9 py-4 text-xs font-black uppercase tracking-wider text-[#1b1533] shadow-sm transition-all duration-300 hover:bg-black hover:text-[#ff4fa3] hover:border-black hover:-translate-y-0.5 active:translate-y-0 cursor-pointer gap-2 logo-font whitespace-nowrap"
               >
                 <Sparkles className="h-4.5 w-4.5 text-[#ff4fa3]" />
@@ -337,9 +358,10 @@ export default function Home() {
 
         <div className="mt-4 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {categories.map((category, i) => (
-            <div
+            <a
               key={category.name}
-              className="relative aspect-[4/5] w-full overflow-hidden rounded-3xl shadow-[0_12px_36px_rgba(27,21,51,0.04)] hover:shadow-[0_24px_50px_rgba(27,21,51,0.15)] hover:-translate-y-1.5 transition-all duration-500 group cursor-pointer"
+              href={`/category/${getCategorySlug(category.name)}`}
+              className="relative aspect-[4/5] w-full overflow-hidden rounded-3xl shadow-[0_12px_36px_rgba(27,21,51,0.04)] hover:shadow-[0_24px_50px_rgba(27,21,51,0.15)] hover:-translate-y-1.5 transition-all duration-500 group cursor-pointer block"
             >
               {/* Cover Image */}
               <img
@@ -358,11 +380,11 @@ export default function Home() {
                 <p className="mx-auto max-w-[210px] text-[12px] font-medium leading-relaxed text-slate-200/90">
                   {category.desc}
                 </p>
-                <button className="mt-2.5 inline-flex items-center gap-1.5 self-center rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 px-5 py-2 text-[12px] font-bold uppercase tracking-widest text-white shadow-sm transition-all duration-300 hover:bg-white hover:text-[#1b1533] hover:border-white hover:-translate-y-0.5 active:translate-y-0 cursor-pointer logo-font">
+                <div className="mt-2.5 inline-flex items-center gap-1.5 self-center rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 px-5 py-2 text-[12px] font-bold uppercase tracking-widest text-white shadow-sm transition-all duration-300 hover:bg-white hover:text-[#1b1533] hover:border-white hover:-translate-y-0.5 active:translate-y-0 cursor-pointer logo-font">
                   Shop Now <ArrowRight className="h-3 w-3 stroke-[2.5]" />
-                </button>
+                </div>
               </div>
-            </div>
+            </a>
           ))}
         </div>
       </section>
@@ -790,7 +812,7 @@ export default function Home() {
 
           {/* Happy Customers Trust Info - Re-Themed Brand-Pink Colorful Card */}
           <div
-            className="rounded-3xl bg-cover bg-center text-[#1b1533] p-6 shadow-xl shadow-pink-100/30 border-2 border-pink-100/60 flex flex-col gap-5 relative overflow-hidden group"
+            className="rounded-3xl bg-cover bg-center text-[#1b1533] p-8 shadow-xl shadow-pink-100/30 border-2 border-pink-100/60 flex flex-col gap-5 relative overflow-hidden group"
             style={{ backgroundImage: "url('/images/colorful_footer_bg.webp')" }}
           >
             {/* High-contrast white glassmorphic overlay for perfect legibility */}

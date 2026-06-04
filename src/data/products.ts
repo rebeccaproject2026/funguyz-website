@@ -99,57 +99,57 @@ export const menuGroups: Record<string, GroupedCategoryItem[]> = {
 };
 
 export const products = [
-  // Magic Mushrooms
-  ['Golden Teacher', 'Magic Mushrooms', '$59.99', 'Top Rated'],
-  ['Penis Envy', 'Magic Mushrooms', '$79.99', 'Premium'],
-  ['Blue Meanies', 'Magic Mushrooms', '$64.99', 'Best Seller'],
-  ['Albino Penis Envy (APE)', 'Magic Mushrooms', '$84.99', 'Rare'],
-  ['Tidal Wave', 'Magic Mushrooms', '$69.99', 'New'],
-  ['Jack Frost', 'Magic Mushrooms', '$69.99', 'Rare'],
-  ['Jedi Mind Fuck (JMF)', 'Magic Mushrooms', '$59.99', 'Popular'],
-  ['Mazatapec', 'Magic Mushrooms', '$54.99', 'Classic'],
-  ['B+', 'Magic Mushrooms', '$49.99', 'Best Seller'],
-  ['Treasure Coast', 'Magic Mushrooms', '$59.99', 'Rare'],
-  ['Melmac', 'Magic Mushrooms', '$74.99', 'Premium'],
-  ['Enigma', 'Magic Mushrooms', '$99.99', 'Rare'],
-  ['Hillbilly', 'Magic Mushrooms', '$54.99', 'New'],
-  ['Thai Pink Buffalo', 'Magic Mushrooms', '$59.99', 'Popular'],
+  // Magic Mushrooms (starting 3.5g price)
+  ['Golden Teacher', 'Magic Mushrooms', '$66.00', 'Top Rated'],
+  ['Penis Envy', 'Magic Mushrooms', '$84.00', 'Premium'],
+  ['Blue Meanies', 'Magic Mushrooms', '$78.00', 'Best Seller'],
+  ['Albino Penis Envy (APE)', 'Magic Mushrooms', '$102.00', 'Rare'],
+  ['Tidal Wave', 'Magic Mushrooms', '$90.00', 'New'],
+  ['Jack Frost', 'Magic Mushrooms', '$90.00', 'Rare'],
+  ['Jedi Mind Fuck (JMF)', 'Magic Mushrooms', '$96.00', 'Popular'],
+  ['Mazatapec', 'Magic Mushrooms', '$66.00', 'Classic'],
+  ['B+', 'Magic Mushrooms', '$60.00', 'Best Seller'],
+  ['Treasure Coast', 'Magic Mushrooms', '$78.00', 'Rare'],
+  ['Melmac', 'Magic Mushrooms', '$102.00', 'Premium'],
+  ['Enigma', 'Magic Mushrooms', '$114.00', 'Rare'],
+  ['Hillbilly', 'Magic Mushrooms', '$72.00', 'New'],
+  ['Thai Pink Buffalo', 'Magic Mushrooms', '$72.00', 'Popular'],
 
   // Edibles
-  ['Golden Teacher Original Chocolate (GT OG)', 'Edibles', '$29.99', 'Best Seller'],
-  ['Golden Teacher Concentrated Chocolate (GT CC)', 'Edibles', '$39.99', 'Premium'],
-  ['Penis Envy Original Chocolate (PE OG)', 'Edibles', '$34.99', 'Best Seller'],
-  ['Penis Envy Refined Concentrate Chocolate (PE RC)', 'Edibles', '$49.99', 'Premium'],
-  ['Penis Envy Concentrated Chocolate (PE CC)', 'Edibles', '$44.99', 'Strong'],
-  ['Blue Raspberry Gummies', 'Edibles', '$24.99', 'Best Seller'],
-  ['Watermelon Gummies', 'Edibles', '$24.99', 'Popular'],
-  ['Strawberry Gummies', 'Edibles', '$24.99', 'New'],
-  ['Mango Gummies', 'Edibles', '$24.99', 'Fruit'],
-  ['Green Apple Gummies', 'Edibles', '$24.99', 'Sour'],
-  ['Mixed Berry Gummies', 'Edibles', '$24.99', 'Juicy'],
-  ['Golden Teacher S\'Mores', 'Edibles', '$19.99', 'Sweet'],
-  ['Penis Envy S\'Mores', 'Edibles', '$24.99', 'Popular'],
-  ['Cookies & Cream S\'Mores', 'Edibles', '$22.99', 'New'],
+  ['Golden Teacher Original Chocolate (GT OG)', 'Edibles', '$54.00', 'Best Seller'],
+  ['Golden Teacher Concentrated Chocolate (GT CC)', 'Edibles', '$60.00', 'Premium'],
+  ['Penis Envy Original Chocolate (PE OG)', 'Edibles', '$60.00', 'Best Seller'],
+  ['Penis Envy Refined Concentrate Chocolate (PE RC)', 'Edibles', '$66.00', 'Premium'],
+  ['Penis Envy Concentrated Chocolate (PE CC)', 'Edibles', '$66.00', 'Strong'],
+  ['Blue Raspberry Gummies', 'Edibles', '$72.00', 'Best Seller'],
+  ['Watermelon Gummies', 'Edibles', '$72.00', 'Popular'],
+  ['Strawberry Gummies', 'Edibles', '$72.00', 'New'],
+  ['Mango Gummies', 'Edibles', '$72.00', 'Fruit'],
+  ['Green Apple Gummies', 'Edibles', '$72.00', 'Sour'],
+  ['Mixed Berry Gummies', 'Edibles', '$72.00', 'Juicy'],
+  ['Golden Teacher S\'Mores', 'Edibles', '$66.00', 'Sweet'],
+  ['Penis Envy S\'Mores', 'Edibles', '$66.00', 'Popular'],
+  ['Cookies & Cream S\'Mores', 'Edibles', '$66.00', 'New'],
 
   // Capsules
-  ['Lion\'s Mane Capsules', 'Capsules', '$34.99', 'Focus'],
-  ['Reishi Capsules', 'Capsules', '$34.99', 'Relax'],
-  ['Cordyceps Capsules', 'Capsules', '$34.99', 'Energy'],
-  ['Turkey Tail Capsules', 'Capsules', '$34.99', 'Wellness'],
-  ['Chaga Capsules', 'Capsules', '$34.99', 'Shield'],
-  ['Golden Teacher Extract', 'Capsules', '$49.99', 'Premium'],
-  ['Penis Envy Extract', 'Capsules', '$59.99', 'Strong'],
-  ['Lion\'s Mane Tincture', 'Capsules', '$29.99', 'Daily'],
-  ['Reishi Tincture', 'Capsules', '$29.99', 'Calm'],
-  ['Cordyceps Tincture', 'Capsules', '$29.99', 'Active'],
+  ['Lion\'s Mane Capsules', 'Capsules', '$42.00', 'Focus'],
+  ['Reishi Capsules', 'Capsules', '$42.00', 'Relax'],
+  ['Cordyceps Capsules', 'Capsules', '$48.00', 'Energy'],
+  ['Turkey Tail Capsules', 'Capsules', '$42.00', 'Wellness'],
+  ['Chaga Capsules', 'Capsules', '$42.00', 'Shield'],
+  ['Golden Teacher Extract', 'Capsules', '$60.00', 'Premium'],
+  ['Penis Envy Extract', 'Capsules', '$66.00', 'Strong'],
+  ['Lion\'s Mane Tincture', 'Capsules', '$54.00', 'Daily'],
+  ['Reishi Tincture', 'Capsules', '$54.00', 'Calm'],
+  ['Cordyceps Tincture', 'Capsules', '$54.00', 'Active'],
 
   // Microdose
-  ['Golden Teacher Microdose', 'Microdose', '$39.99', 'Wellness'],
-  ['Penis Envy Microdose', 'Microdose', '$44.99', 'Premium'],
-  ['Stamets Stack Microdose', 'Microdose', '$49.99', 'Focus'],
-  ['Creativity Microdose Blend', 'Microdose', '$44.99', 'Creative'],
-  ['Productivity Microdose Blend', 'Microdose', '$44.99', 'Work'],
-  ['Wellness Microdose Blend', 'Microdose', '$39.99', 'Daily']
+  ['Golden Teacher Microdose', 'Microdose', '$66.00', 'Wellness'],
+  ['Penis Envy Microdose', 'Microdose', '$72.00', 'Premium'],
+  ['Stamets Stack Microdose', 'Microdose', '$72.00', 'Focus'],
+  ['Creativity Microdose Blend', 'Microdose', '$72.00', 'Creative'],
+  ['Productivity Microdose Blend', 'Microdose', '$72.00', 'Work'],
+  ['Wellness Microdose Blend', 'Microdose', '$66.00', 'Daily']
 ];
 
 export function getSubcategories(label: string): string[] {
@@ -717,6 +717,23 @@ export function getProductSections(title: string, category: string, seoDescripti
     }
   };
 }
+
+export const mushroomPricingTable: Record<string, Record<string, number>> = {
+  'Golden Teacher': { '3.5g': 66, '7g': 118, '14g': 218, '28g': 410 },
+  'Penis Envy': { '3.5g': 84, '7g': 152, '14g': 282, '28g': 530 },
+  'Blue Meanies': { '3.5g': 78, '7g': 140, '14g': 260, '28g': 490 },
+  'Albino Penis Envy (APE)': { '3.5g': 102, '7g': 184, '14g': 340, '28g': 640 },
+  'Tidal Wave': { '3.5g': 90, '7g': 162, '14g': 300, '28g': 565 },
+  'Jack Frost': { '3.5g': 90, '7g': 162, '14g': 300, '28g': 565 },
+  'Jedi Mind Fuck (JMF)': { '3.5g': 96, '7g': 172, '14g': 318, '28g': 600 },
+  'Mazatapec': { '3.5g': 66, '7g': 118, '14g': 218, '28g': 410 },
+  'B+': { '3.5g': 60, '7g': 108, '14g': 200, '28g': 375 },
+  'Treasure Coast': { '3.5g': 78, '7g': 140, '14g': 260, '28g': 490 },
+  'Melmac': { '3.5g': 102, '7g': 184, '14g': 340, '28g': 640 },
+  'Enigma': { '3.5g': 114, '7g': 205, '14g': 380, '28g': 715 },
+  'Hillbilly': { '3.5g': 72, '7g': 130, '14g': 240, '28g': 450 },
+  'Thai Pink Buffalo': { '3.5g': 72, '7g': 130, '14g': 240, '28g': 450 }
+};
 
 
 

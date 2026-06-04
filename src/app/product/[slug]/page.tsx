@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { ProductCard } from '@/components/ProductCard';
-import { products, getProductSlug, getProductSeoMetadata, getProductSections } from '@/data/products';
+import { products, getProductSlug, getProductSeoMetadata, getProductSections, mushroomPricingTable } from '@/data/products';
 import { useCart } from '@/context/CartContext';
 import { 
   Sparkles,
@@ -119,7 +119,7 @@ function getGalleryImagesList(title: string, category: string, mainImg: string):
 export default function ProductDetailsPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = React.use(params);
   const { addToCart, toggleWishlist, isWishlisted } = useCart();
-  const [selectedWeight, setSelectedWeight] = useState<string>('7g');
+  const [selectedWeight, setSelectedWeight] = useState<string>('3.5g');
   const [quantity, setQuantity] = useState<number>(1);
   const [activeSection, setActiveSection] = useState<string>('overview');
   const [openFaqTab, setOpenFaqTab] = useState<number | null>(null);
@@ -177,12 +177,9 @@ export default function ProductDetailsPage({ params }: { params: Promise<{ slug:
   // Curate high-end WooCommerce specifications based on product data matches
   const basePriceNum = parseFloat(matched[2].replace('$', ''));
   
-  // Custom weights pricing multipliers
-  const pricingMap: Record<string, number> = {
-    '3.5g': Math.round(basePriceNum * 0.6),
-    '7g': Math.round(basePriceNum),
-    '14g': Math.round(basePriceNum * 1.8),
-    '28g': Math.round(basePriceNum * 3.2)
+  // Custom weights pricing map using exact docx pricing table for magic mushrooms
+  const pricingMap: Record<string, number> = mushroomPricingTable[matched[0]] || {
+    '3.5g': basePriceNum
   };
 
   const mainImg = imageMap[matched[0]] || getFallbackImage(matched[1]);
@@ -236,7 +233,9 @@ export default function ProductDetailsPage({ params }: { params: Promise<{ slug:
 
   const handleAddToCart = () => {
     addToCart({
-      title: `${productData.title} (${selectedWeight})`,
+      title: productData.category === 'Magic Mushrooms'
+        ? `${productData.title} (${selectedWeight})`
+        : productData.title,
       category: productData.category,
       price: `$${calculatedPrice.toFixed(2)}`,
       imageSrc: productData.imageSrc
@@ -341,7 +340,7 @@ export default function ProductDetailsPage({ params }: { params: Promise<{ slug:
             </p>
 
             {/* Weight Selectors (WooCommerce Style Weight Pills) */}
-            {productData.category !== 'Edibles' && (
+            {productData.category === 'Magic Mushrooms' && (
               <div className="mt-6 space-y-3">
                 <span className="block text-[12px] font-black uppercase tracking-wider text-slate-400">Select Dosage / Weight:</span>
                 <div className="grid grid-cols-4 gap-2 w-full sm:w-auto">
