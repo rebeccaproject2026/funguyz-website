@@ -31,3 +31,6 @@ yarn-error.log*
 # temporary workspace files
 scratch_*
 *.zip
+
+# typescript
+*.tsbuildinfo
