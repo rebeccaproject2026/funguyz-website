@@ -171,7 +171,7 @@ function getSubcategoryIcon(sub: string, parentLabel: string) {
     if (s.includes('albino treasure coast')) return Gem;
     if (s.includes('treasure coast')) return Coins;
     if (s.includes('cambodian')) return Crown;
-    
+
     // Potency strains (making each separate one unique!)
     if (s === 'penis envy' || s.includes('penis envy')) return Flame;
     if (s.includes('golden penis envy')) return Sparkles;
@@ -184,7 +184,7 @@ function getSubcategoryIcon(sub: string, parentLabel: string) {
     if (s.includes('enigma')) return Skull;
     if (s.includes('hillbilly')) return Compass;
     if (s.includes('buffalo')) return Globe;
-    
+
     // Albino Strains (making each separate one unique!)
     if (s.includes('albino penis envy') || s.includes('ape')) return Dna;
     if (s.includes('albino extra terrestrial')) return Rocket;
@@ -199,7 +199,7 @@ function getSubcategoryIcon(sub: string, parentLabel: string) {
     if (s.includes('full moon party')) return PartyPopper;
     if (s.includes('koh samui')) return Palmtree;
     if (s.includes('shakti')) return Heart;
-    
+
     return Sprout;
   }
 
@@ -213,7 +213,7 @@ function getSubcategoryIcon(sub: string, parentLabel: string) {
     if (s.includes('mixed berry')) return Sparkles;
     if (s.includes('mango')) return Citrus;
     if (s.includes('apple')) return Sprout;
-    
+
     if (s.includes('milk chocolate')) return Grid;
     if (s.includes('dark chocolate')) return Moon;
     if (s.includes('cookies & cream')) return Cookie;
@@ -222,14 +222,14 @@ function getSubcategoryIcon(sub: string, parentLabel: string) {
     if (s.includes('white chocolate')) return Sun;
     if (s.includes('chocolate')) return Grid;
     if (s.includes('s\'mores')) return Cookie;
-    
+
     if (s.includes('chai')) return Coffee;
     if (s.includes('lemon ginger')) return CupSoda;
     if (s.includes('berry hibiscus')) return Flower;
     if (s.includes('relaxation')) return Smile;
     if (s.includes('energy')) return Zap;
     if (s.includes('hot chocolate')) return Coffee;
-    
+
     return Cookie;
   }
 
@@ -250,9 +250,9 @@ function getSubcategoryIcon(sub: string, parentLabel: string) {
     if (s.includes('cordyceps')) return Activity;
     if (s.includes('chaga')) return Shield;
     if (s.includes('turkey')) return Layers;
-    
+
     if (s.includes('tincture') || s.includes('extract')) return CupSoda;
-    
+
     return Pill;
   }
 
@@ -272,7 +272,7 @@ function getSubcategoryIcon(sub: string, parentLabel: string) {
     if (s.includes('lion')) return PawPrint;
     if (s.includes('stamets')) return Layers;
     if (s.includes('premium')) return Crown;
-    
+
     return Gauge;
   }
 
@@ -363,7 +363,7 @@ export function Header() {
 
             {/* Right: Wishlist & Cart Icons */}
             <div className="flex items-center gap-1 text-[#1b1533]">
-              <button 
+              <button
                 onClick={() => setIsWishlistOpen(true)}
                 className="relative p-2 text-[#1b1533] hover:text-[#ff4fa3] transition-colors focus:outline-none cursor-pointer"
                 aria-label="Wishlist"
@@ -375,7 +375,7 @@ export function Header() {
                   </span>
                 )}
               </button>
-              <button 
+              <button
                 onClick={() => setIsCartOpen(true)}
                 className="relative p-2 text-[#1b1533] hover:text-[#ff4fa3] transition-colors focus:outline-none cursor-pointer"
                 aria-label="Cart"
@@ -487,26 +487,26 @@ export function Header() {
 
             {/* Right Block: Action Items */}
             <div className="flex items-center gap-8 text-[#1b1533] shrink-0">
-              <IconAction 
-                icon={<Search className="h-5.5 w-5.5 stroke-[1.8]" />} 
-                label="Search" 
+              <IconAction
+                icon={<Search className="h-5.5 w-5.5 stroke-[1.8]" />}
+                label="Search"
                 onClick={() => setIsSearchOpen(true)}
               />
-              <IconAction 
-                icon={<UserRound className="h-5.5 w-5.5 stroke-[1.8]" />} 
-                label="Account" 
+              <IconAction
+                icon={<UserRound className="h-5.5 w-5.5 stroke-[1.8]" />}
+                label="Account"
                 onClick={() => window.location.href = '/my-account'}
               />
-              <IconAction 
-                icon={<Heart className="h-5.5 w-5.5 stroke-[1.8]" />} 
-                label="Wishlist" 
-                badge={totalWishlistQuantity.toString()} 
+              <IconAction
+                icon={<Heart className="h-5.5 w-5.5 stroke-[1.8]" />}
+                label="Wishlist"
+                badge={totalWishlistQuantity.toString()}
                 onClick={() => setIsWishlistOpen(true)}
               />
-              <IconAction 
-                icon={<ShoppingCart className="h-5.5 w-5.5 stroke-[1.8]" />} 
-                label="Cart" 
-                badge={totalQuantity.toString()} 
+              <IconAction
+                icon={<ShoppingCart className="h-5.5 w-5.5 stroke-[1.8]" />}
+                label="Cart"
+                badge={totalQuantity.toString()}
                 onClick={() => setIsCartOpen(true)}
               />
             </div>
@@ -516,18 +516,18 @@ export function Header() {
 
       {/* Mobile Drawer Menu */}
       {isMobileMenuOpen && (
-        <div 
+        <div
           className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[9999] transition-opacity duration-300 animate-fade-in md:hidden"
           onClick={() => setIsMobileMenuOpen(false)}
         >
-          <div 
+          <div
             className="fixed inset-y-0 left-0 w-full max-w-[300px] bg-[#fff8f3] shadow-2xl flex flex-col justify-between transition-transform duration-500 ease-out z-[10000] translate-x-0 animate-slide-in-left border-r border-pink-100/50"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Drawer Header */}
             <div className="p-5 border-b border-pink-100/40 bg-white flex items-center justify-between">
               <Logo />
-              <button 
+              <button
                 onClick={() => setIsMobileMenuOpen(false)}
                 className="grid h-8 w-8 place-items-center rounded-xl bg-slate-50 text-slate-400 hover:bg-[#ff4fa3] hover:text-white hover:scale-105 transition-all duration-300 cursor-pointer"
               >
@@ -651,28 +651,28 @@ export function Header() {
 
       {/* Mobile Sticky Bottom Navigation Bar */}
       <div className="fixed bottom-0 left-0 right-0 z-[999] md:hidden bg-white/90 backdrop-blur-md border-t border-slate-150/80 shadow-[0_-4px_24px_rgba(27,21,51,0.06)] h-16 flex items-center justify-around px-2 py-1 select-none">
-        <a 
-          href="/shop" 
+        <a
+          href="/shop"
           className={`flex flex-col items-center justify-center active:scale-95 transition-all w-12 h-12 ${(pathname === '/shop' || pathname.startsWith('/shop/') || pathname.startsWith('/category/') || pathname.startsWith('/product/')) ? 'text-[#ff4fa3]' : 'text-slate-500 hover:text-[#ff4fa3]'}`}
         >
           <ShoppingBag className="h-5 w-5 stroke-[1.8]" />
           <span className="text-[12px] font-bold mt-1 uppercase tracking-wider whitespace-nowrap">Shop</span>
         </a>
-        <a 
-          href="/bundles" 
+        <a
+          href="/bundles"
           className={`flex flex-col items-center justify-center active:scale-95 transition-all w-12 h-12 ${(pathname === '/bundles' || pathname.startsWith('/bundles/')) ? 'text-[#ff4fa3]' : 'text-slate-500 hover:text-[#ff4fa3]'}`}
         >
           <Gift className="h-5 w-5 stroke-[1.8]" />
           <span className="text-[12px] font-bold mt-1 uppercase tracking-wider whitespace-nowrap">Bundles</span>
         </a>
-        <a 
-          href="/coupons" 
+        <a
+          href="/coupons"
           className={`flex flex-col items-center justify-center active:scale-95 transition-all w-12 h-12 ${(pathname === '/coupons' || pathname.startsWith('/coupons/')) ? 'text-[#ff4fa3]' : 'text-slate-500 hover:text-[#ff4fa3]'}`}
         >
           <Ticket className="h-5 w-5 stroke-[1.8]" />
           <span className="text-[12px] font-bold mt-1 uppercase tracking-wider whitespace-nowrap">Coupons</span>
         </a>
-        <button 
+        <button
           onClick={() => setIsMobileCategoryOpen(true)}
           className={`flex flex-col items-center justify-center active:scale-95 transition-all w-12 h-12 cursor-pointer focus:outline-none ${isMobileCategoryOpen ? 'text-[#ff4fa3]' : 'text-slate-500 hover:text-[#ff4fa3]'}`}
         >
@@ -682,11 +682,11 @@ export function Header() {
       </div>
 
       {selectedItem && (
-        <div 
+        <div
           className="fixed inset-0 bg-slate-900/50 backdrop-blur-md z-[999] flex items-center justify-center p-4"
           onClick={() => setSelectedItem(null)}
         >
-          <div 
+          <div
             className="relative w-full max-w-md bg-[#fff8f3] border border-pink-100/80 rounded-2xl p-6 shadow-[0_32px_100px_rgba(255,79,163,0.15)] text-[#1b1533] max-h-[90vh] overflow-y-auto"
             onClick={(e) => e.stopPropagation()}
           >
@@ -732,11 +732,11 @@ export function Header() {
 
       {/* Mobile Category Bottom Sheet */}
       {isMobileCategoryOpen && (
-        <div 
+        <div
           className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[9999] transition-opacity duration-300 animate-fade-in md:hidden"
           onClick={() => setIsMobileCategoryOpen(false)}
         >
-          <div 
+          <div
             className="fixed inset-x-0 bottom-0 max-h-[82vh] bg-[#fff8f3]/95 backdrop-blur-md rounded-t-[32px] border-t border-pink-100 shadow-[0_-16px_48px_rgba(27,21,51,0.15)] flex flex-col transition-transform duration-500 ease-out z-[10000] translate-y-0 animate-slide-in-up"
             onClick={(e) => e.stopPropagation()}
           >
@@ -751,7 +751,7 @@ export function Header() {
                     <p className="text-[12px] font-semibold text-slate-400">Select a formulation to explore</p>
                   </div>
                 </div>
-                <button 
+                <button
                   onClick={() => setIsMobileCategoryOpen(false)}
                   className="grid h-8 w-8 place-items-center rounded-xl bg-slate-50 text-slate-400 hover:bg-[#ff4fa3] hover:text-white hover:scale-105 transition-all duration-300 cursor-pointer"
                 >
@@ -767,7 +767,7 @@ export function Header() {
                   const categorySlug = item.label.toLowerCase().replace(/\s+/g, '-');
                   const linkUrl = `/category/${categorySlug}`;
                   const subcategories = getSubcategories(item.label);
-                  
+
                   // Specific styles for cards
                   let bgGradient = "from-[#f3efff] to-white border-purple-100";
                   let iconBg = "bg-purple-50 text-[#7b5cff]";
@@ -783,7 +783,7 @@ export function Header() {
                   }
 
                   return (
-                    <div 
+                    <div
                       key={item.label}
                       className={`rounded-2xl border bg-gradient-to-br ${bgGradient} p-3.5 flex flex-col justify-between shadow-sm hover:shadow-md transition-all duration-300 min-h-[140px]`}
                     >
@@ -791,7 +791,7 @@ export function Header() {
                         <div className={`p-2 rounded-xl ${iconBg} shadow-sm shrink-0`}>
                           <item.icon className="h-5 w-5 stroke-[2.2]" />
                         </div>
-                        <a 
+                        <a
                           href={linkUrl}
                           onClick={() => setIsMobileCategoryOpen(false)}
                           className="text-[12px] font-black uppercase tracking-wider text-[#ff4fa3] bg-pink-50/50 hover:bg-[#ff4fa3] hover:text-white px-2 py-1 rounded-lg transition-all border border-pink-100/50 logo-font shrink-0"
@@ -799,16 +799,16 @@ export function Header() {
                           View
                         </a>
                       </div>
-                      
+
                       <div className="mt-4 text-left">
-                        <a 
+                        <a
                           href={linkUrl}
                           onClick={() => setIsMobileCategoryOpen(false)}
                           className="text-[13px] font-black text-[#1b1533] hover:text-[#ff4fa3] transition-colors leading-none tracking-tight block logo-font"
                         >
                           {item.label}
                         </a>
-                        
+
                         {/* Subcategory short links (show top 3) */}
                         {subcategories.length > 0 && (
                           <div className="flex flex-wrap gap-1 mt-2.5">
@@ -845,7 +845,7 @@ export function Header() {
                     <p className="text-[12px] font-semibold text-slate-400">Discover Canada's best dispensary deals</p>
                   </div>
                 </div>
-                <a 
+                <a
                   href="/shop"
                   onClick={() => setIsMobileCategoryOpen(false)}
                   className="bg-[#ff4fa3] text-white hover:bg-black text-[12px] font-black uppercase tracking-wider px-3.5 py-2 rounded-xl transition-all shadow-md shadow-pink-100 logo-font shrink-0"
@@ -860,11 +860,11 @@ export function Header() {
 
       {/* Dynamic Pop-up Modal for Search Overlay */}
       {isSearchOpen && (
-        <div 
+        <div
           className="fixed inset-0 bg-slate-900/60 backdrop-blur-md z-[999] flex items-start justify-center pt-24 px-4"
           onClick={() => setIsSearchOpen(false)}
         >
-          <div 
+          <div
             className="relative w-full max-w-xl bg-[#fff8f3] border border-pink-100/80 rounded-2xl p-6 shadow-[0_32px_120px_rgba(255,79,163,0.18)] text-[#1b1533] animate-scale-up"
             onClick={(e) => e.stopPropagation()}
           >
@@ -917,7 +917,7 @@ function IconAction({
   onClick?: () => void;
 }) {
   return (
-    <button 
+    <button
       onClick={onClick}
       className="group relative flex flex-col items-center gap-1 text-[12px] font-bold text-slate-700 hover:text-[#ff4fa3] transition-colors duration-200 focus:outline-none cursor-pointer"
     >
