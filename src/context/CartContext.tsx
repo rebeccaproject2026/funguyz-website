@@ -32,6 +32,8 @@ interface AppliedCoupon {
   code: string;
   discount: number;
   label: string;
+  type: 'percent' | 'shipping';
+  minOrder?: number;
 }
 
 interface CartContextType {
@@ -53,20 +55,18 @@ interface CartContextType {
   subtotal: number;
   // Coupon
   appliedCoupon: AppliedCoupon | null;
-  applyCoupon: (code: string) => { success: boolean; message: string };
+  applyCoupon: (code: string, currentSubtotal?: number) => { success: boolean; message: string };
   removeCoupon: () => void;
-  VALID_COUPONS: Record<string, { discount: number; label: string }>;
+  VALID_COUPONS: Record<string, { discount: number; label: string; type: 'percent' | 'shipping'; minOrder?: number }>;
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
-// Valid coupon codes — single source of truth
-const VALID_COUPONS: Record<string, { discount: number; label: string }> = {
-  'FUNGUYZ10': { discount: 0.10, label: '10% Off' },
-  'SHROOM20':  { discount: 0.20, label: '20% Off' },
-  'LAUNCH15':  { discount: 0.15, label: '15% Off' },
-  'WELCOME5':  { discount: 0.05, label: '5% Off' },
-  'FUNGUYZ15': { discount: 0.15, label: '15% Off' },
+// Valid coupon codes — single source of truth (must match /coupons page)
+const VALID_COUPONS: Record<string, { discount: number; label: string; type: 'percent' | 'shipping'; minOrder?: number }> = {
+  'LAUNCH20':    { discount: 0.20, label: '20% Off',       type: 'percent'  },
+  'BULK25':      { discount: 0.25, label: '25% Off',       type: 'percent',  minOrder: 500  },
+  'FREESHIP200': { discount: 0,    label: 'Free Delivery & Free Shipping',  type: 'shipping', minOrder: 200  },
 };
 
 export function CartProvider({ children }: { children: React.ReactNode }) {
@@ -177,16 +177,21 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
-  const applyCoupon = (code: string): { success: boolean; message: string } => {
+  const applyCoupon = (code: string, currentSubtotal?: number): { success: boolean; message: string } => {
     const normalized = code.trim().toUpperCase();
     if (!normalized) return { success: false, message: 'Please enter a coupon code.' };
     if (VALID_COUPONS[normalized]) {
-      const coupon = { code: normalized, ...VALID_COUPONS[normalized] };
+      const couponDef = VALID_COUPONS[normalized];
+      // Check minimum order requirement
+      if (couponDef.minOrder && (currentSubtotal ?? subtotal) < couponDef.minOrder) {
+        return { success: false, message: `This coupon requires a minimum order of $${couponDef.minOrder}. Your current subtotal is $${(currentSubtotal ?? subtotal).toFixed(2)}.` };
+      }
+      const coupon: AppliedCoupon = { code: normalized, ...couponDef };
       setAppliedCoupon(coupon);
       if (typeof window !== 'undefined') {
         localStorage.setItem('funguyz_coupon', JSON.stringify(coupon));
       }
-      return { success: true, message: `Coupon "${normalized}" applied — ${VALID_COUPONS[normalized].label}!` };
+      return { success: true, message: `Coupon "${normalized}" applied — ${couponDef.label}!` };
     }
     return { success: false, message: 'Invalid coupon code. Please try again.' };
   };

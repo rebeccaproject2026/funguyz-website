@@ -64,6 +64,7 @@ import {
   Lock,
 } from 'lucide-react';
 import { Logo } from './Logo';
+import { InfoPopup } from './InfoPopup';
 import { useCart } from '@/context/CartContext';
 import { usePathname } from 'next/navigation';
 import { getSubcategories, menuGroups, getProductSlug, getProductUrl, getCategorySlug } from '@/data/products';
@@ -107,21 +108,21 @@ function MushroomWithStarsIcon(props: React.ComponentProps<'svg'>) {
 }
 
 const MARQUEE_ITEMS = [
-  { text: "Fast Delivery Across Toronto, Barrie, Halton, Peel & The GTA", icon: Truck },
-  { text: "Discreet Shipping Across Canada • Private Packaging", icon: Package },
-  { text: "New Delivery & Shipping Website • Save 20% Today", icon: PartyPopper },
-  { text: "Trusted By Canadians For Years • Delivered Better", icon: ShieldCheck },
-  { text: "Same-Day Delivery Available In Select GTA Locations", icon: Zap },
-  { text: "Secure Checkout • Fast Fulfillment • Private Delivery", icon: Lock },
-  { text: "Order Online • Delivered Directly To Your Door", icon: Home },
-  { text: "Supporting Canadian Communities With Every Order", icon: Heart },
-  { text: "Toronto, Mississauga, Brampton, Oakville & Barrie Delivery", icon: Truck },
-  { text: "GTA Delivery Specialists • Fast, Reliable & Discreet", icon: MapPin },
-  { text: "New Website Launch Offer • Save 20% On Your First Order", icon: Gift },
-  { text: "Premium Products • Fast Delivery • Total Privacy", icon: Star },
-  { text: "Delivery Across Peel, Halton, York, Durham & Simcoe", icon: Truck },
-  { text: "No Storefront Needed • Fast Shipping Across Canada", icon: Package },
-  { text: "Canada's New Delivery Experience Is Now Live", icon: Flame }
+  { text: "Fast Delivery Across Toronto, Barrie, Halton, Peel & The GTA", icon: Truck, category: 'delivery' as const },
+  { text: "Discreet Shipping Across Canada • Private Packaging", icon: Package, category: 'shipping' as const },
+  { text: "New Delivery & Shipping Website • Save 20% Today", icon: PartyPopper, category: 'promo' as const },
+  { text: "Trusted By Canadians For Years • Delivered Better", icon: ShieldCheck, category: 'security' as const },
+  { text: "Same-Day Delivery Available In Select GTA Locations", icon: Zap, category: 'delivery' as const },
+  { text: "Secure Checkout • Fast Fulfillment • Private Delivery", icon: Lock, category: 'security' as const },
+  { text: "Order Online • Delivered Directly To Your Door", icon: Home, category: 'delivery' as const },
+  { text: "Supporting Canadian Communities With Every Order", icon: Heart, category: 'security' as const },
+  { text: "Toronto, Mississauga, Brampton, Oakville & Barrie Delivery", icon: Truck, category: 'delivery' as const },
+  { text: "GTA Delivery Specialists • Fast, Reliable & Discreet", icon: MapPin, category: 'delivery' as const },
+  { text: "New Website Launch Offer • Save 20% On Your First Order", icon: Gift, category: 'promo' as const },
+  { text: "Premium Products • Fast Delivery • Total Privacy", icon: Star, category: 'security' as const },
+  { text: "Delivery Across Peel, Halton, York, Durham & Simcoe", icon: Truck, category: 'delivery' as const },
+  { text: "No Storefront Needed • Fast Shipping Across Canada", icon: Package, category: 'shipping' as const },
+  { text: "Canada's New Delivery Experience Is Now Live", icon: Flame, category: 'promo' as const }
 ];
 
 const navItems = [
@@ -278,6 +279,9 @@ export function Header() {
   const [expandedMobileCategories, setExpandedMobileCategories] = useState<Record<string, boolean>>({});
   const [mobileSearchQuery, setMobileSearchQuery] = useState('');
 
+  const [isInfoOpen, setIsInfoOpen] = useState(false);
+  const [selectedAnnouncement, setSelectedAnnouncement] = useState<string | null>(null);
+
   const toggleMobileCategory = (label: string) => {
     setExpandedMobileCategories(prev => ({
       ...prev,
@@ -297,7 +301,14 @@ export function Header() {
       const IconComponent = item.icon;
       return (
         <React.Fragment key={idx}>
-          <div className="inline-flex items-center gap-1.5 text-white shrink-0 font-light">
+          <div 
+            className="inline-flex items-center gap-1.5 text-white shrink-0 font-light cursor-pointer hover:underline hover:text-[#ff4fa3] transition-colors"
+            onClick={() => {
+              setSelectedAnnouncement(item.text);
+              setIsInfoOpen(true);
+            }}
+            title={`Click for details on: ${item.text}`}
+          >
             <IconComponent className="h-3.5 w-3.5 text-[#ff4fa3] shrink-0 stroke-[2.5]" />
             <span>{item.text}</span>
           </div>
@@ -844,6 +855,13 @@ export function Header() {
           </div>
         </div>
       )}
+
+      {/* Dynamic Pop-up Modal for Announcement Info */}
+      <InfoPopup
+        isOpen={isInfoOpen}
+        onClose={() => setIsInfoOpen(false)}
+        announcementText={selectedAnnouncement}
+      />
     </>
   );
 }

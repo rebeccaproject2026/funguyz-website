@@ -759,6 +759,16 @@ export default function CheckoutPage() {
             <div className="absolute -top-20 -left-20 w-96 h-96 rounded-full bg-[#ff4fa3]/20 blur-[100px] pointer-events-none -z-10" />
             <div className="absolute -bottom-20 -right-20 w-96 h-96 rounded-full bg-[#7b5cff]/20 blur-[100px] pointer-events-none -z-10" />
 
+            {/* Close Button — top-right of entire modal */}
+            <button
+              type="button"
+              onClick={() => setIsScheduleModalOpen(false)}
+              className="absolute -top-4 -right-4 md:-top-5 md:-right-5 z-50 text-slate-200 hover:text-white transition-colors p-2 hover:bg-white/10 rounded-full cursor-pointer border border-slate-700 bg-[#0c0a1a] shadow-lg"
+              aria-label="Close scheduling modal"
+            >
+              <X className="h-4 w-4" />
+            </button>
+
             {/* LEFT COLUMN: Calendar & Info */}
             <div className="w-full md:w-[45%] bg-[#0c0a1a] border border-[#ff4fa3]/20 rounded-3xl p-6 sm:p-8 flex flex-col justify-between shrink-0 shadow-[0_0_40px_rgba(255,79,163,0.1)]">
               <div className="space-y-4">
@@ -773,7 +783,7 @@ export default function CheckoutPage() {
                     Schedule Your <span className="text-[#ff4fa3] block mt-1">Delivery Slot</span>
                   </h3>
                   <p className="text-[12px] font-semibold text-slate-400 leading-normal">
-                    Select a delivery date starting from June 25, 2026.
+                    Orders are processed from <strong className="text-[#ff4fa3]">June 25, 2026</strong>. Select your preferred delivery date.
                   </p>
                 </div>
 
@@ -853,21 +863,12 @@ export default function CheckoutPage() {
               {/* Bottom Notice */}
               <div className="mt-6 flex items-center gap-2 border-t border-slate-800/80 pt-4 text-[12px] text-slate-400 font-semibold leading-normal">
                 <Truck className="h-4 w-4 text-[#ff4fa3] shrink-0" />
-                <span>Orders will ship to arrive starting June 25, 2026.</span>
+                <span>Orders will be processed &amp; fulfilled starting <strong className="text-white">June 25, 2026</strong>.</span>
               </div>
             </div>
 
             {/* RIGHT COLUMN: Time Slots & Contact */}
-            <div className="flex-1 bg-[#0c0a1a] border border-[#ff4fa3]/30 rounded-3xl p-6 sm:p-8 flex flex-col justify-between gap-6 relative shadow-[0_0_40px_rgba(255,79,163,0.1)]">
-              {/* Close Button Inside Right Card */}
-              <button
-                type="button"
-                onClick={() => setIsScheduleModalOpen(false)}
-                className="absolute top-4 right-4 md:top-6 md:right-6 text-slate-200 hover:text-white transition-colors p-1.5 hover:bg-white/10 rounded-full cursor-pointer z-50 border border-slate-800"
-                aria-label="Close scheduling modal"
-              >
-                <X className="h-4.5 w-4.5" />
-              </button>
+            <div className="flex-1 bg-[#0c0a1a] border border-[#ff4fa3]/30 rounded-3xl p-6 sm:p-8 flex flex-col justify-between gap-6 shadow-[0_0_40px_rgba(255,79,163,0.1)]">
 
               <div className="space-y-5">
 

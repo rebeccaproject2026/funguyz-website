@@ -45,7 +45,7 @@ h1, h2, h3, h4, h5, h6, .font-display, .font-fredoka {
 .animate-custom-marquee {
   display: inline-flex !important;
   white-space: nowrap !important;
-  animation: customMarquee 60s linear infinite !important;
+  animation: customMarquee 120s linear infinite !important;
 }
 
 .marquee-container:hover .animate-custom-marquee {
