@@ -7,6 +7,11 @@ const blogPostsData = [
   { slug: 'integrating-your-psychedelic-experience' }
 ];
 
+export function generateStaticParams() {
+  return blogPostsData.map((post) => ({
+    slug: post.slug,
+  }));
+}
 
 export default function BlogSlugLayout({ children }: { children: React.ReactNode }) {
   return <>{children}</>;
