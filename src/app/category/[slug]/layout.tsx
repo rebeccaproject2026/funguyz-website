@@ -7,11 +7,6 @@ const categories = [
   'microdose'
 ];
 
-export function generateStaticParams() {
-  return categories.map((slug) => ({
-    slug,
-  }));
-}
 
 export default function CategorySlugLayout({ children }: { children: React.ReactNode }) {
   return <>{children}</>;
