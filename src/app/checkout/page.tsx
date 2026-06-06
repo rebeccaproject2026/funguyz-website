@@ -177,6 +177,20 @@ export default function CheckoutPage() {
       { email: email, firstName: formData.firstName, lastName: formData.lastName },
       orderRecord
     );
+
+    // --- Send Email via Next.js API ---
+    fetch(`/api/checkout`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        orderDetails: orderRecord,
+        customerEmail: email,
+        adminEmail: 'hello@funguyz.ca', // Admin email to receive notification
+      }),
+    }).catch(err => console.error('Error sending checkout email:', err));
+
     setAccountCredentials(creds);
 
     setCompletedOrder({
