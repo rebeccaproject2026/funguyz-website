@@ -2,12 +2,13 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { usePathname } from 'next/navigation';
-import { X, Check, Copy, Mail, Shield, MapPin, Gift, Phone, Lock, Truck, Zap, Heart, ShieldCheck } from 'lucide-react';
+import { X, Check, Copy, Mail, Shield, MapPin, Gift, Phone, Lock, Truck, Zap, Heart, ShieldCheck, User } from 'lucide-react';
 
 export function LaunchPopup() {
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isDismissed, setIsDismissed] = useState<boolean>(false);
+  const [usernameVal, setUsernameVal] = useState<string>('');
   const [emailVal, setEmailVal] = useState<string>('');
   const [phoneVal, setPhoneVal] = useState<string>('');
   const [submitted, setSubmitted] = useState<boolean>(false);
@@ -75,10 +76,16 @@ export function LaunchPopup() {
     localStorage.setItem('funguyz_launch_popup_dismissed_at', Date.now().toString());
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    const username = usernameVal.trim();
     const email = emailVal.trim();
     const phone = phoneVal.trim();
+
+    if (!username) {
+      setErrorMsg('Please enter your full name.');
+      return;
+    }
 
     if (!email && !phone) {
       setErrorMsg('Please enter either your email or phone number.');
@@ -103,11 +110,23 @@ export function LaunchPopup() {
       return;
     }
 
-    setErrorMsg('');
-    setSubmitted(true);
-    localStorage.setItem('funguyz_launch_popup_submitted', 'true');
-    const contactInfo = [email ? `Email: ${email}` : '', phone ? `Phone: ${phone}` : ''].filter(Boolean).join(' | ');
-    localStorage.setItem('funguyz_launch_popup_contact', contactInfo);
+    try {
+      const response = await fetch('/api/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: username, email, phone }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to subscribe');
+      }
+
+      setErrorMsg('');
+      setSubmitted(true);
+      localStorage.setItem('funguyz_launch_popup_submitted', 'true');
+    } catch (err) {
+      setErrorMsg('Something went wrong. Please try again.');
+    }
   };
 
   const handleCopy = () => {
@@ -263,7 +282,7 @@ export function LaunchPopup() {
             </div>
 
             {/* Offer Box with neon pink border */}
-            <div className="w-full border border-[#ff4fa3]/30 bg-[#ff4fa3]/5 p-4 sm:p-4.5 rounded-[20px] flex flex-col gap-3.5 relative overflow-hidden shadow-[inset_0_0_15px_rgba(255,79,163,0.02)] mt-1">
+            <div className="w-full border border-[#ff4fa3]/30 bg-[#ff4fa3]/5 p-4 sm:p-4.5 rounded-[20px] flex flex-col gap-2.5 relative shadow-[inset_0_0_15px_rgba(255,79,163,0.02)] mt-1 shrink-0">
               <div className="flex items-center justify-between gap-2 w-full px-1">
                 {/* Neon Bird */}
                 <div className="shrink-0 text-[#ff4fa3] filter drop-shadow-[0_0_4px_rgba(255,79,163,0.8)] hidden sm:block">
@@ -271,7 +290,7 @@ export function LaunchPopup() {
                     <path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z" />
                   </svg>
                 </div>
-                
+
                 <span className="text-[11px] sm:text-xs font-black uppercase tracking-widest text-[#ff4fa3] logo-font text-center flex-1">
                   EARLY BIRDS GET 20% OFF!
                 </span>
@@ -288,6 +307,16 @@ export function LaunchPopup() {
 
               {/* Form Input Section */}
               <form onSubmit={handleSubmit} className="w-full flex flex-col gap-2.5 shrink-0">
+                <div className="relative w-full flex items-center">
+                  <User className="absolute left-4.5 h-4 w-4 text-slate-400" />
+                  <input
+                    type="text"
+                    value={usernameVal}
+                    onChange={(e) => setUsernameVal(e.target.value)}
+                    placeholder="Full Name"
+                    className="w-full h-10 sm:h-11 rounded-xl border border-slate-700 bg-slate-950/60 pl-11 pr-5 text-[11.5px] sm:text-xs font-semibold outline-none focus:border-[#ff4fa3] focus:ring-4 focus:ring-pink-500/10 transition-all text-white placeholder:text-slate-500"
+                  />
+                </div>
                 <div className="relative w-full flex items-center">
                   <Mail className="absolute left-4.5 h-4 w-4 text-slate-400" />
                   <input
@@ -318,7 +347,7 @@ export function LaunchPopup() {
 
                 <button
                   type="submit"
-                  className="w-full h-10 sm:h-11 inline-flex items-center justify-center rounded-xl bg-gradient-to-r from-[#ff4fa3] via-[#a855f7] to-[#7b5cff] text-white font-black text-[11px] sm:text-xs uppercase tracking-wider shadow-lg shadow-pink-500/15 hover:scale-[1.01] active:scale-95 transition-all cursor-pointer logo-font gap-2"
+                  className="w-full h-10 sm:h-11 inline-flex items-center justify-center rounded-xl bg-gradient-to-r from-[#ff4fa3] via-[#a855f7] to-[#7b5cff] text-white font-black text-[11px] sm:text-xs uppercase tracking-wider shadow-lg shadow-pink-500/15 hover:scale-[1.01] active:scale-95 transition-all cursor-pointer logo-font gap-2 mt-1"
                 >
                   <span>YES! NOTIFY ME & SEND MY 20% OFF</span>
                   <span className="text-sm font-normal">➔</span>

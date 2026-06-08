@@ -17,31 +17,60 @@ import {
 
 const blogPostsData = [
   {
-    title: 'The Art of Microdosing: A Beginner’s Guide',
-    desc: 'Everything you need to know about starting a sub-perceptual psilocybin microdose ritual safely.',
+    title: 'Magic Mushrooms 101: A Beginner\'s Guide',
+    desc: 'Understand the dosage, effects, and benefits before your first journey.',
     category: 'Guides',
+    date: 'May 10, 2026',
+    time: '5 min read',
+    image: '/images/blog_1.webp',
+  },
+  {
+    title: 'How Edibles Work: What You Need to Know',
+    desc: 'Why edibles feel different and how long the peak effects typically last.',
+    category: 'Edibles',
+    date: 'May 6, 2026',
+    time: '6 min read',
+    image: '/images/blog_2.webp',
+  },
+  {
+    title: 'Microdosing Benefits For Daily Wellness',
+    desc: 'Discover why thousands of professionals are microdosing for focus.',
+    category: 'Research',
+    date: 'May 2, 2026',
+    time: '5 min read',
+    image: '/images/blog_3.webp',
+  },
+  {
+    title: 'Different Mushroom Strains And Their Effects',
+    desc: 'From Golden Teacher to Penis Envy - find the perfect strain for you.',
+    category: 'Strains',
     date: 'Apr 28, 2026',
+    time: '7 min read',
+    image: '/images/blog_4.webp',
+  },
+  {
+    title: 'The Ultimate Guide to Mushroom Tea Brewing',
+    desc: 'Learn how to brew a perfect cup of soothing mushroom tea at home easily.',
+    category: 'Recipes',
+    date: 'Apr 24, 2026',
     time: '4 min read',
     image: '/images/blog_1.webp',
-    slug: 'the-art-of-microdosing-a-beginners-guide'
   },
   {
     title: 'Psilocybin and Neuroplasticity: The Science',
-    desc: 'How magic mushrooms promote brain connectivity and long-term structural changes.',
+    desc: 'How magic mushrooms stimulate new neural pathways and connections in the brain.',
     category: 'Science',
-    date: 'May 12, 2026',
-    time: '6 min read',
+    date: 'Apr 20, 2026',
+    time: '8 min read',
     image: '/images/blog_2.webp',
-    slug: 'psilocybin-and-neuroplasticity-the-science'
   },
   {
     title: 'Setting Your Intentions: Psychedelic Journeys',
-    desc: 'Why the mindset and environment are the most critical factors for a positive trip.',
-    category: 'Guides',
-    date: 'Apr 28, 2026',
-    time: '5 min read',
+    desc: 'Why set and setting are crucial for a positive and transformational experience.',
+    category: 'Mindset',
+    date: 'Apr 15, 2026',
+    time: '6 min read',
     image: '/images/blog_3.webp',
-    slug: 'setting-your-intentions-psychedelic-journeys'
   },
   {
     title: 'Integrating Your Psychedelic Experience',
@@ -50,7 +79,30 @@ const blogPostsData = [
     date: 'Apr 10, 2026',
     time: '5 min read',
     image: '/images/blog_4.webp',
-    slug: 'integrating-your-psychedelic-experience'
+  },
+  {
+    title: 'The Art of Microdosing: A Beginner’s Guide',
+    desc: 'Everything you need to know about starting a sub-perceptual psilocybin microdose ritual safely.',
+    category: 'Guides',
+    date: 'Apr 28, 2026',
+    time: '4 min read',
+    image: '/images/blog_1.webp',
+  },
+  {
+    title: 'A Deep Dive Into Golden Teacher Strains',
+    desc: 'Exploring the genetic origin, potency characteristics, and spiritual introspection profiles of the beloved Golden Teacher.',
+    category: 'Guides',
+    date: 'May 05, 2026',
+    time: '7 min read',
+    image: '/images/blog_1.webp',
+  },
+  {
+    title: 'Clinical Studies on Microdosing & Stress',
+    desc: 'Reviewing recent clinical research abstracts demonstrating psilocybin efficacy in regulating cortisol levels.',
+    category: 'Science',
+    date: 'Apr 28, 2026',
+    time: '9 min read',
+    image: '/images/blog_2.webp',
   }
 ];
 
@@ -59,7 +111,7 @@ export default function BlogDetailsPage({ params }: { params: Promise<{ slug: st
   const [bookmarked, setBookmarked] = useState<boolean>(false);
 
   const normalizedSlug = decodeURIComponent(slug).toLowerCase();
-  let post = blogPostsData.find(p => p.title.toLowerCase().replace(/\s+/g, '-') === normalizedSlug || p.slug === normalizedSlug);
+  let post = blogPostsData.find(p => p.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '') === normalizedSlug || (p as any).slug === normalizedSlug);
   if (!post) {
     post = blogPostsData[0]; // Fallback to first post
   }

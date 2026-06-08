@@ -1,8 +1,7 @@
 // src/lib/emailTemplates.ts
+// Force cache refresh
 
 const baseStyles = `
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800;900&display=swap');
-    
     body {
       margin: 0;
       padding: 0;
@@ -67,13 +66,20 @@ const baseStyles = `
       margin-bottom: 24px;
     }
     .info-row {
-      display: table;
+      display: block;
       width: 100%;
+      text-align: left;
+      font-size: 0;
     }
     .info-col {
-      display: table-cell;
-      width: 25%;
+      display: inline-block;
       vertical-align: top;
+      width: 32%;
+      min-width: 120px;
+      font-size: 14px;
+      box-sizing: border-box;
+      padding-right: 16px;
+      margin-bottom: 16px;
     }
     .label {
       color: #9CA3AF;
@@ -205,23 +211,53 @@ const baseStyles = `
       text-decoration: none;
       font-weight: 700;
     }
+
+    @media only screen and (max-width: 600px) {
+      .container {
+        padding: 24px !important;
+        margin: 20px auto !important;
+      }
+      .title {
+        font-size: 24px !important;
+      }
+      .info-row {
+        display: block !important;
+      }
+      .info-col {
+        display: block !important;
+        width: 100% !important;
+        margin-bottom: 20px !important;
+        box-sizing: border-box;
+      }
+      .info-col:last-child {
+        margin-bottom: 0 !important;
+      }
+    }
 `;
 
 export const generateCustomerEmailHtml = (orderDetails: any, customerEmail: string) => {
   const {
-    orderId = '#FG-17247',
-    grandTotal = '$86.00',
+    orderId = '#FG-33422',
+    grandTotal = '$59.20',
+    subtotal = '$74.00',
+    discountAmount = '-$14.80',
     deliveryDetails = {},
     trackingNumber = 'CX307775569CA',
-    contactPhone = '+918585885858',
-    contactEmail = 'tinysocio@gmail.com',
     date = new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }),
-    interacEmail = 'funguys.rock@gmail.com',
-    interacQuestion = 'Canada7247',
+    items = []
   } = orderDetails;
 
   const deliveryDate = deliveryDetails?.date || 'June 25, 2026';
-  const deliveryTime = deliveryDetails?.timeSlot || '3:00 PM to 6:00 PM';
+  const deliveryTime = deliveryDetails?.timeSlot || '9:00 AM to 12:00 PM';
+
+  const itemsHtml = items.length > 0 ? items.map((item: any) => `
+    <tr>
+      <td style="padding: 6px 0; border-bottom: 1px dashed #E5E7EB; color: #374151;">${item.quantity} &times; ${item.title || item.name}</td>
+      <td style="padding: 6px 0; text-align: right; border-bottom: 1px dashed #E5E7EB; color: #374151;"><strong>${typeof item.price === 'number' ? `$${item.price.toFixed(2)}` : item.price}</strong></td>
+    </tr>
+  `).join('') : `
+    <tr><td colspan="2" style="padding: 6px 0; color: #6B7280;">No items found</td></tr>
+  `;
 
   return `
 <!DOCTYPE html>
@@ -234,15 +270,15 @@ export const generateCustomerEmailHtml = (orderDetails: any, customerEmail: stri
     ${baseStyles}
   </style>
 </head>
-<body style="margin: 0; padding: 0; background-color: #FFF8F5; font-family: 'Poppins', Helvetica, Arial, sans-serif;">
+<body style="margin: 0; padding: 0; background-color: #FFF8F5; font-family: Helvetica, Arial, sans-serif;">
   <div style="padding: 40px 20px; background-color: #FFF8F5; width: 100%; box-sizing: border-box;">
-    <div class="container" style="max-width: 600px; margin: 0 auto; background-color: #FFFFFF; border-radius: 24px; padding: 40px; box-shadow: 0 4px 20px rgba(0,0,0,0.03);">
+    <div class="container">
+      
       <div class="text-center">
         <div class="icon-container">&#10004;&#xFE0E;</div>
-        
-        <div class="status-text">ORDER PLACED SUCCESSFULLY!</div>
-        <h1 class="title">THANK YOU FOR YOUR ORDER</h1>
-        <p class="subtitle">Your discreet package is currently being processed. You will receive an email confirmation containing your invoices and shipping details.</p>
+        <div class="status-text">RESERVATION CONFIRMED</div>
+        <h1 class="title">YOUR DELIVERY SLOT IS SECURED</h1>
+        <p class="subtitle">Thank you for placing your order. Your products have been successfully reserved and scheduled for delivery during our upcoming launch.</p>
       </div>
 
       <div class="info-block">
@@ -252,59 +288,79 @@ export const generateCustomerEmailHtml = (orderDetails: any, customerEmail: stri
             <div class="value">${orderId}</div>
           </div>
           <div class="info-col">
-            <div class="label">DATE</div>
+            <div class="label">DATE PLACED</div>
             <div class="value">${date}</div>
           </div>
           <div class="info-col">
-            <div class="label">TOTAL AMOUNT</div>
-            <div class="value pink">${grandTotal}</div>
-          </div>
-          <div class="info-col">
-            <div class="label">CANADA POST</div>
+            <div class="label">TRACKING NUMBER</div>
             <div class="value green">${trackingNumber}</div>
           </div>
         </div>
       </div>
 
+      <div class="info-block" style="background-color: #FFFFFF; border: 1px solid #F3F4F6;">
+        <div class="delivery-title" style="color: #111827;">
+          &#128230; ORDER SUMMARY
+        </div>
+        <table width="100%" cellpadding="0" cellspacing="0" style="font-size: 14px; margin-bottom: 8px;">
+          ${itemsHtml}
+          <tr>
+            <td style="padding: 12px 0 4px 0; color: #6B7280; font-weight: 600;">Subtotal</td>
+            <td style="padding: 12px 0 4px 0; text-align: right; color: #111827;"><strong>${subtotal}</strong></td>
+          </tr>
+          <tr>
+            <td style="padding: 4px 0; color: #6B7280; font-weight: 600;">Early Access Discount (20%)</td>
+            <td style="padding: 4px 0; text-align: right; color: #FF3366;"><strong>${discountAmount}</strong></td>
+          </tr>
+          <tr>
+            <td style="padding: 16px 0 4px 0; font-size: 16px; font-weight: 800; color: #111827;">GRAND TOTAL</td>
+            <td style="padding: 16px 0 4px 0; text-align: right; font-size: 16px; font-weight: 800; color: #FF3366;">${grandTotal}</td>
+          </tr>
+        </table>
+      </div>
+
       <div class="delivery-block">
         <div class="delivery-title">
-          <span style="margin-right: 8px; font-size: 14px;">&#128666;</span> SCHEDULED PRE-LAUNCH DELIVERY
+          &#128666; PRIORITY PRE-LAUNCH DELIVERY
         </div>
         <p class="delivery-text">
-          Your delivery has been scheduled for <strong>${deliveryDate}</strong> during the <strong>${deliveryTime}</strong> delivery window. We will contact you at <strong>${contactPhone}</strong> or <strong>${contactEmail}</strong> to coordinate.
+          Your order has been reserved for our official delivery launch on:
+        </p>
+        <p class="delivery-text" style="font-size: 16px; margin-top: 8px;">
+          <strong style="color: #047857;">${deliveryDate}</strong><br>
+          <span style="font-size: 14px;">Delivery Window: <strong>${deliveryTime}</strong></span>
         </p>
       </div>
 
-      <div class="interac-block">
-        <div class="interac-title">
-          <span style="margin-right: 8px; font-size: 14px;">&#10024;</span> INTERAC E-TRANSFER INSTRUCTIONS
+      <div class="interac-block" style="background-color: #FEF3C7; border: 1px solid #FDE68A;">
+        <div class="interac-title" style="color: #D97706;">
+          &#127881; EARLY ACCESS SAVINGS
         </div>
-        <p class="interac-text">Once payment is sent, your order will be processed and prepared for delivery.</p>
-        <div class="interac-details">
-          <div class="info-row">
-            <div class="info-col" style="width: 42%;">
-              <div class="label">RECIPIENT EMAIL</div>
-              <div class="value">${interacEmail}</div>
-              <a href="#" class="action-link">COPY EMAIL</a>
-            </div>
-            <div class="info-col" style="width: 38%;">
-              <div class="label">QUESTION / PASSWORD</div>
-              <div class="value">${interacQuestion}</div>
-              <a href="#" class="action-link">COPY PASSWORD</a>
-            </div>
-            <div class="info-col" style="width: 20%;">
-              <div class="label">AMOUNT DUE</div>
-              <div class="value pink" style="font-size: 16px;">${grandTotal}</div>
-              <div class="label" style="margin-top: 6px;">CAD DOLLARS</div>
-            </div>
-          </div>
-        </div>
-        <div class="footer-note">
-          * Note: Fast &bull; Secure &bull; Discreet Delivery Across Canada &#127464;&#127462;
-        </div>
+        <p class="interac-text" style="color: #92400E; margin-bottom: 0;">
+          You received an exclusive 20% pre-launch discount for reserving your order before our official launch date.<br><br>
+          <strong>Total Saved: ${discountAmount.replace('-', '')}</strong>
+        </p>
       </div>
 
+      <div class="interac-block" style="background-color: #F3F4F6; border: 1px solid #E5E7EB;">
+        <div class="interac-title" style="color: #374151;">
+          &#128179; PAYMENT INFORMATION
+        </div>
+        <p class="interac-text" style="color: #4B5563; margin-bottom: 0;">
+          <strong>No payment is required at this time.</strong><br><br>
+          Once our team reviews and confirms your order, we will contact you by SMS and/or email with Interac e-Transfer instructions. Payment will only be requested after your order has been verified and approved for fulfillment.
+        </p>
+      </div>
 
+      <div class="interac-block" style="background-color: #EFF6FF; border: 1px solid #BFDBFE;">
+        <div class="interac-title" style="color: #1D4ED8;">
+          &#128242; DELIVERY UPDATES
+        </div>
+        <p class="interac-text" style="color: #1E3A8A; margin-bottom: 0;">
+          We'll send SMS and/or email updates before delivery, including order confirmation, payment instructions, delivery reminders, and your estimated arrival time (ETA), so you know exactly when to expect your order.<br><br>
+          Your products have been secured and added to our priority fulfillment queue. We appreciate your early support and look forward to serving you on launch day.
+        </p>
+      </div>
 
     </div>
   </div>
@@ -382,4 +438,78 @@ export const generateAdminEmailHtml = (orderDetails: any, customerEmail: string)
 </body>
 </html>
   `;
+};
+
+export const generateRegistrationEmailTemplate = (name: string) => {
+  const firstName = name.split(' ')[0] || 'there';
+
+  const html = `
+    <!DOCTYPE html>
+    <html>
+      <head>
+        <meta charset="utf-8">
+        <style>${baseStyles}</style>
+      </head>
+      <body style="margin: 0; padding: 0; background-color: #FFF8F5; font-family: 'Poppins', Helvetica, Arial, sans-serif;">
+        <div style="padding: 40px 20px; background-color: #FFF8F5; width: 100%; box-sizing: border-box;">
+          <div class="container" style="max-width: 600px; margin: 0 auto; background-color: #FFFFFF; border-radius: 24px; padding: 40px; box-shadow: 0 4px 20px rgba(0,0,0,0.03);">
+            <div class="text-center">
+              <div class="icon-container" style="color: #FF3366; background-color: #FFF0F5;">🚀</div>
+            <div class="status-text">You're officially on the list</div>
+            <h1 class="title">Hello ${firstName},</h1>
+            <p class="subtitle">Thank you for signing up for launch notifications.</p>
+          </div>
+
+          <div class="info-block" style="background-color: #F9FAFB; border-left: 4px solid #FF3366;">
+            <p style="font-size: 15px; font-weight: 800; color: #111827; margin-top: 0;">As one of our early subscribers, you'll receive:</p>
+            <ul style="list-style-type: none; padding-left: 0; margin-bottom: 0;">
+              <li style="margin-bottom: 10px; color: #4B5563; font-size: 14px; font-weight: 600;"><span style="color: #059669; font-weight: 900; margin-right: 8px;">✓</span> Early access to shop</li>
+              <li style="margin-bottom: 10px; color: #4B5563; font-size: 14px; font-weight: 600;"><span style="color: #059669; font-weight: 900; margin-right: 8px;">✓</span> Launch-day promotions</li>
+              <li style="margin-bottom: 10px; color: #4B5563; font-size: 14px; font-weight: 600;"><span style="color: #059669; font-weight: 900; margin-right: 8px;">✓</span> Exclusive discounts</li>
+              <li style="margin-bottom: 10px; color: #4B5563; font-size: 14px; font-weight: 600;"><span style="color: #059669; font-weight: 900; margin-right: 8px;">✓</span> Delivery and shipping updates</li>
+              <li style="color: #4B5563; font-size: 14px; font-weight: 600;"><span style="color: #059669; font-weight: 900; margin-right: 8px;">✓</span> SMS and email notifications</li>
+            </ul>
+          </div>
+
+          <p style="color: #6B7280; font-size: 14px; line-height: 1.6; font-weight: 600; text-align: center;">
+            We'll contact you as soon as we're ready to open, along with any special offers available to early supporters.
+          </p>
+
+          <p style="color: #6B7280; font-size: 14px; line-height: 1.6; font-weight: 600; text-align: center;">
+            Thank you for joining us. We look forward to serving you soon.
+          </p>
+
+          <div style="text-align: center; margin-top: 40px; padding-top: 20px; border-top: 1px solid #E5E7EB; color: #9CA3AF; font-size: 12px; font-weight: 600;">
+            <div style="margin-bottom: 8px; font-weight: 800; letter-spacing: 0.5px;">The Delivery & Shipping Team</div>
+            <div>funguyz.ca</div>
+            <p style="margin-top: 16px;">Please do not reply to this email.</p>
+          </div>
+          </div>
+        </div>
+      </body>
+    </html>
+  `;
+
+  const text = `Hello ${firstName},
+
+You're officially on the list.
+
+Thank you for signing up for launch notifications.
+
+As one of our early subscribers, you'll receive:
+
+✓ Early access to shop
+✓ Launch-day promotions
+✓ Exclusive discounts
+✓ Delivery and shipping updates
+✓ SMS and email notifications
+
+We'll contact you as soon as we're ready to open, along with any special offers available to early supporters.
+
+Thank you for joining us. We look forward to serving you soon.
+
+The Delivery & Shipping Team
+`;
+
+  return { html, text };
 };

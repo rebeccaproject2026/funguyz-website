@@ -164,6 +164,8 @@ export default function CheckoutPage() {
       orderId: `#FG-${Math.floor(10000 + Math.random() * 90000)}`,
       date: new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }),
       trackingCode,
+      subtotal: `$${parsedSubtotal.toFixed(2)}`,
+      discountAmount: discountAmount > 0 ? `-$${discountAmount.toFixed(2)}` : '$0.00',
       grandTotal: `$${grandTotal.toFixed(2)}`,
       items: [...cartItems],
       deliveryDetails: {

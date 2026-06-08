@@ -12,9 +12,7 @@ const infoPages = [
   'terms-and-conditions'
 ];
 
-export function generateStaticParams() {
-  return infoPages.map((slug) => ({ slug }));
-}
+
 
 export default function InfoSlugLayout({ children }: { children: React.ReactNode }) {
   return <>{children}</>;

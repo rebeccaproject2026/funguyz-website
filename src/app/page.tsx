@@ -710,32 +710,34 @@ export default function Home() {
         >
           {blogPosts.map((post) => (
             <SwiperSlide key={post.title} className="!h-auto">
-              <article className="group overflow-hidden rounded-2xl border border-slate-100 bg-white shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between hover:-translate-y-0.5 h-full w-full">
-                <div className="relative aspect-video w-full overflow-hidden bg-slate-100">
-                  <img
-                    src={post.image}
-                    alt={post.title}
-                    className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                    loading="lazy"
-                  />
-                </div>
-                <div className="p-5 flex flex-col gap-3">
-                  <div className="flex items-center justify-between text-[12px] font-black uppercase tracking-wider text-slate-400">
-                    <span className="bg-[#ff4fa3]/5 text-[#ff4fa3] px-2 py-0.5 rounded">{post.category}</span>
-                    <span>{post.date}</span>
+              <a href={`/blog/${post.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')}`} className="block h-full w-full">
+                <article className="group overflow-hidden rounded-2xl border border-slate-100 bg-white shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between hover:-translate-y-0.5 h-full w-full">
+                  <div className="relative aspect-video w-full overflow-hidden bg-slate-100">
+                    <img
+                      src={post.image}
+                      alt={post.title}
+                      className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                      loading="lazy"
+                    />
                   </div>
-                  <h3 className="font-black text-sm text-[#1b1533] line-clamp-2 leading-snug group-hover:text-[#ff4fa3] transition-colors duration-200 mt-1">
-                    {post.title}
-                  </h3>
-                  <p className="text-[12px] font-semibold text-slate-500 leading-relaxed line-clamp-2">
-                    {post.desc}
-                  </p>
-                  <div className="mt-2 flex items-center gap-1.5 text-[12px] font-black uppercase tracking-wider text-slate-400">
-                    <Clock className="h-3 w-3 stroke-[2.5]" />
-                    <span>{post.time}</span>
+                  <div className="p-5 flex flex-col gap-3">
+                    <div className="flex items-center justify-between text-[12px] font-black uppercase tracking-wider text-slate-400">
+                      <span className="bg-[#ff4fa3]/5 text-[#ff4fa3] px-2 py-0.5 rounded">{post.category}</span>
+                      <span>{post.date}</span>
+                    </div>
+                    <h3 className="font-black text-sm text-[#1b1533] line-clamp-2 leading-snug group-hover:text-[#ff4fa3] transition-colors duration-200 mt-1">
+                      {post.title}
+                    </h3>
+                    <p className="text-[12px] font-semibold text-slate-500 leading-relaxed line-clamp-2">
+                      {post.desc}
+                    </p>
+                    <div className="mt-2 flex items-center gap-1.5 text-[12px] font-black uppercase tracking-wider text-slate-400">
+                      <Clock className="h-3 w-3 stroke-[2.5]" />
+                      <span>{post.time}</span>
+                    </div>
                   </div>
-                </div>
-              </article>
+                </article>
+              </a>
             </SwiperSlide>
           ))}
         </Swiper>
