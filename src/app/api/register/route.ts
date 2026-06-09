@@ -18,6 +18,13 @@ export async function POST(req: Request) {
       );
     }
 
+    if (typeof name !== 'string' || typeof email !== 'string' || (phone && typeof phone !== 'string')) {
+      return NextResponse.json(
+        { success: false, message: 'Invalid input format' },
+        { status: 400 }
+      );
+    }
+
     const existingRegistration = await Register.findOne({ email: email.toLowerCase() });
     
     if (existingRegistration) {

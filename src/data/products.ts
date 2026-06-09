@@ -209,66 +209,101 @@ export interface ProductSeoData {
 
 export const productSeoMetadata: Record<string, ProductSeoData> = {
   // Magic Mushrooms
+  'Golden Teacher': {
+    titleTag: 'Golden Teacher Mushroom Delivery Canada | FunGuyz',
+    metaDescription: "Shop Golden Teacher mushrooms, one of Canada's most popular beginner-friendly strains. Fast delivery across Toronto, the GTA and Canada-wide shipping.",
+    keywords: 'golden teacher delivery, golden teacher mushrooms canada, beginner magic mushrooms, mushroom delivery toronto',
+    h1: 'Golden Teacher Magic Mushrooms',
+    description: 'Golden Teacher is a highly acclaimed Psilocybe Cubensis strain that first appeared in the late 1980s. Its exact origin is unknown, but it is beloved in mycological research for its robust genetic stability, mild learning curve, and clean spore presentation.'
+  },
+  'Penis Envy': {
+    titleTag: 'Penis Envy Mushroom Delivery Canada | FunGuyz',
+    metaDescription: 'Order Penis Envy mushrooms, a highly sought-after strain known for its potency and dense caps. Fast delivery throughout Toronto, the GTA and Canada.',
+    keywords: 'penis envy delivery, penis envy mushrooms canada, strong magic mushrooms, mushroom delivery gta',
+    h1: 'Penis Envy Magic Mushrooms',
+    description: 'Penis Envy is legendary for its mutation that prevents it from fully opening its cap, leading to highly concentrated active alkaloids. First isolated by pioneering researchers, it represents one of the most potent genetic lines available globally.'
+  },
+  'Blue Meanies': {
+    titleTag: 'Blue Meanies Mushroom Delivery Canada | FunGuyz',
+    metaDescription: 'Shop Blue Meanies mushrooms, a popular strain recognized for its unique appearance and strong reputation. Fast delivery and Canada-wide shipping.',
+    keywords: 'blue meanies delivery, blue meanies mushrooms canada, mushroom delivery canada',
+    h1: 'Blue Meanies Magic Mushrooms',
+    description: 'Our Blue Meanies strain represents a stabilized, high-potency Psilocybe Cubensis strain selected for its rapid colonization rates and heavy blue bruising characteristics.'
+  },
+  'Albino Penis Envy (APE)': {
+    titleTag: 'Albino Penis Envy (APE) Delivery Canada | FunGuyz',
+    metaDescription: 'Order Albino Penis Envy (APE) mushrooms, a premium strain prized by experienced enthusiasts. Fast delivery across Toronto, the GTA and Canada.',
+    keywords: 'ape delivery, albino penis envy canada, ape mushrooms delivery',
+    h1: 'Albino Penis Envy Magic Mushrooms',
+    description: 'Albino Penis Envy (APE) is one of the most visually striking and potent cultivated strains in existence, inheriting the impressive potency of Penis Envy with a stark white, albino pigmentation.'
+  },
+  'Tidal Wave': {
+    titleTag: 'Tidal Wave Mushroom Delivery Canada | FunGuyz',
+    metaDescription: 'Shop Tidal Wave mushrooms, an award-winning hybrid strain known for its distinctive genetics. Fast delivery and discreet Canada-wide shipping.',
+    keywords: 'tidal wave delivery, tidal wave mushrooms canada, mushroom delivery',
+    h1: 'Tidal Wave Magic Mushrooms',
+    description: 'Tidal Wave is a famous hybrid crossing B+ and Penis Envy. It won the original Psilocybin Cup and is prized for its aggressive growth, high potency, and fascinating genetic stability.'
+  },
   'Jack Frost': {
-    titleTag: 'Jack Frost Magic Mushrooms Delivery Toronto & GTA | FunGuyz',
-    metaDescription: 'Buy Jack Frost magic mushrooms online with fast Toronto, GTA and Barrie delivery. Premium quality Jack Frost mushrooms available from FunGuyz.',
-    keywords: 'jack frost mushrooms, jack frost shrooms, jack frost delivery toronto, buy jack frost mushrooms canada, jack frost gta, mushroom delivery toronto, magic mushroom delivery gta, funguyz jack frost, barrie mushroom delivery',
+    titleTag: 'Jack Frost Mushroom Delivery Canada | FunGuyz',
+    metaDescription: 'Order Jack Frost mushrooms featuring bright frosty coloration and growing popularity among collectors. Fast delivery throughout Canada.',
+    keywords: 'jack frost delivery, jack frost mushrooms canada',
     h1: 'Jack Frost Magic Mushrooms',
     description: 'Jack Frost is a premium hybrid Psilocybe Cubensis strain that has rapidly gained popularity among mushroom enthusiasts throughout Canada. Easily recognized by its bright frosted appearance and unique genetics, Jack Frost has become one of the most sought-after mushroom strains available online.\n\nCustomers searching for premium mushroom delivery throughout Toronto, Mississauga, Vaughan, Markham, Richmond Hill, Pickering, Ajax, Whitby, Barrie, and surrounding GTA communities frequently choose Jack Frost due to its growing reputation and premium cultivation characteristics. Every batch is selected for freshness, appearance, and overall quality before being prepared for discreet delivery.'
   },
   'Jedi Mind Fuck (JMF)': {
-    titleTag: 'Jedi Mind Fuck Mushrooms Delivery Toronto & GTA | FunGuyz',
-    metaDescription: 'Shop Jedi Mind Fuck magic mushrooms with fast Toronto and GTA delivery. Premium JMF mushrooms available throughout the Greater Toronto Area.',
-    keywords: 'jedi mind fuck mushrooms, jmf mushrooms, jmf delivery toronto, buy jmf canada, jedi mind fuck gta, mushroom delivery toronto, funguyz jmf, magic mushrooms barrie',
+    titleTag: 'Jedi Mind Fuck Mushroom Delivery Canada | FunGuyz',
+    metaDescription: 'Shop Jedi Mind Fuck mushrooms, a legendary strain known for large fruiting bodies and loyal followers. Fast delivery and Canada-wide shipping.',
+    keywords: 'jedi mind fuck delivery, jmf mushrooms canada',
     h1: 'Jedi Mind Fuck Magic Mushrooms',
     description: 'Jedi Mind Fuck, commonly known as JMF, is one of the most recognized mushroom strains available in Canada. Known for its strong reputation, attractive appearance, and premium genetics, JMF continues to be one of the most searched mushroom strains throughout Toronto and the GTA.\n\nCustomers throughout Mississauga, Vaughan, Richmond Hill, Markham, Pickering, Barrie, and surrounding regions regularly seek out Jedi Mind Fuck because of its popularity and established reputation within the mushroom community. Each batch is selected for consistency, freshness, and quality before fulfillment.'
   },
   'Mazatapec': {
-    titleTag: 'Mazatapec Magic Mushrooms Delivery Toronto & GTA | FunGuyz',
-    metaDescription: 'Order Mazatapec magic mushrooms online with fast Toronto, GTA and Barrie delivery. Premium Mazatapec mushrooms available from FunGuyz.',
-    keywords: 'mazatapec mushrooms, mazatapec delivery toronto, buy mazatapec mushrooms canada, mazatapec gta, mushroom delivery toronto, funguyz mazatapec, magic mushroom delivery barrie',
+    titleTag: 'Mazatapec Mushroom Delivery Canada | FunGuyz',
+    metaDescription: 'Order Mazatapec mushrooms, a classic strain with deep roots in mushroom culture. Fast delivery across Toronto, the GTA and Canada.',
+    keywords: 'mazatapec delivery, mazatapec mushrooms canada',
     h1: 'Mazatapec Magic Mushrooms',
     description: 'Mazatapec is a classic Psilocybe Cubensis strain known throughout the mushroom community for its long history, stable genetics, and respected reputation. This traditional strain remains a popular choice among customers searching for premium mushroom delivery in Toronto and surrounding GTA communities.\n\nFunGuyz carefully selects each batch for freshness, appearance, and quality. Customers throughout Toronto, Mississauga, Vaughan, Markham, Richmond Hill, Barrie, and surrounding areas frequently choose Mazatapec because of its trusted reputation and premium characteristics.'
   },
   'B+': {
-    titleTag: 'B+ Magic Mushrooms Delivery Toronto & GTA | FunGuyz',
-    metaDescription: 'Buy B+ magic mushrooms online with discreet Toronto and GTA delivery. Premium B Plus mushrooms available from FunGuyz.',
-    keywords: 'b plus mushrooms, b+ mushrooms, b plus delivery toronto, buy b plus canada, b plus gta, mushroom delivery toronto, funguyz b plus, magic mushrooms barrie',
+    titleTag: 'B+ Mushroom Delivery Canada | FunGuyz',
+    metaDescription: 'Shop B+ mushrooms, one of the most recognized and versatile strains available today. Fast delivery and discreet Canada-wide shipping.',
+    keywords: 'b plus delivery, b plus mushrooms canada',
     h1: 'B+ Magic Mushrooms',
     description: 'B+ is one of the most widely recognized mushroom strains in the world and continues to be one of the most requested mushroom varieties throughout Canada. Known for its strong genetics, attractive appearance, and popularity, B+ remains a favorite among customers searching for premium mushroom delivery throughout Toronto and the GTA.\n\nEvery batch is selected for freshness, consistency, and visual quality before fulfillment. Customers throughout Mississauga, Vaughan, Markham, Richmond Hill, Pickering, Ajax, Whitby, Barrie, and surrounding communities regularly choose B+ because of its trusted reputation and widespread popularity.'
   },
   'Treasure Coast': {
-    titleTag: 'Treasure Coast Mushrooms Delivery Toronto & GTA | FunGuyz',
-    metaDescription: 'Buy Treasure Coast mushrooms online with fast Toronto, GTA and Barrie delivery. Premium mushroom products available from FunGuyz.',
-    keywords: 'treasure coast mushrooms, treasure coast delivery toronto, treasure coast shrooms canada, mushroom delivery gta, buy treasure coast mushrooms, funguyz treasure coast',
+    titleTag: 'Treasure Coast Mushroom Delivery Canada | FunGuyz',
+    metaDescription: 'Order Treasure Coast mushrooms, a sought-after strain known for its unique lineage and popularity. Fast delivery throughout Canada.',
+    keywords: 'treasure coast delivery, treasure coast mushrooms canada',
     h1: 'Treasure Coast Magic Mushrooms',
     description: 'Treasure Coast is a premium Psilocybe Cubensis strain recognized for its quality genetics and growing popularity among mushroom enthusiasts throughout Canada. This respected strain continues to attract customers searching for premium mushroom delivery throughout Toronto, Mississauga, Vaughan, Markham, Richmond Hill, Barrie, and surrounding GTA regions.\n\nEach batch is selected for quality, freshness, and consistency before packaging. Treasure Coast remains one of the most respected premium mushroom strains available online today.'
   },
   'Melmac': {
-    titleTag: 'Melmac Magic Mushrooms Delivery Toronto & GTA | FunGuyz',
-    metaDescription: 'Order Melmac magic mushrooms online with fast Toronto and GTA delivery. Premium Melmac mushrooms available throughout Ontario.',
-    keywords: 'melmac mushrooms, melmac delivery toronto, buy melmac mushrooms canada, melmac gta, mushroom delivery toronto, funguyz melmac, premium mushrooms barrie',
+    titleTag: 'Melmac Mushroom Delivery Canada | FunGuyz',
+    metaDescription: 'Shop Melmac mushrooms, a rare Penis Envy genetic variant recognized for its distinctive appearance. Fast delivery and Canada-wide shipping.',
+    keywords: 'melmac delivery, melmac mushrooms canada',
     h1: 'Melmac Magic Mushrooms',
     description: 'Melmac is a highly sought-after mushroom strain known for its unique lineage and premium genetics. Recognized throughout Canada for its distinctive appearance and increasing popularity, Melmac continues to be one of the most requested mushroom strains among customers seeking premium mushroom delivery.\n\nCustomers throughout Toronto, Mississauga, Vaughan, Richmond Hill, Markham, Barrie, and surrounding GTA communities frequently search for Melmac because of its strong reputation and premium quality.'
   },
   'Enigma': {
-    titleTag: 'Enigma Magic Mushrooms Delivery Toronto & GTA | FunGuyz',
-    metaDescription: 'Buy Enigma magic mushrooms online with fast Toronto, GTA and Barrie delivery. Rare premium mushroom strain available from FunGuyz.',
-    keywords: 'enigma mushrooms, enigma delivery toronto, buy enigma mushrooms canada, enigma gta, rare mushrooms toronto, mushroom delivery gta, funguyz enigma',
+    titleTag: 'Enigma Mushroom Delivery Canada | FunGuyz',
+    metaDescription: 'Order Enigma mushrooms, a unique mutation strain admired for its unusual growth structure. Fast delivery throughout Canada.',
+    keywords: 'enigma delivery, enigma mushrooms canada',
     h1: 'Enigma Magic Mushrooms',
     description: 'Enigma is one of the rarest and most unique mushroom mutations available in Canada. Known for its unusual appearance and limited availability, Enigma has become one of the most searched premium mushroom products throughout Toronto and the GTA.\n\nFunGuyz carefully sources and selects Enigma batches for freshness, appearance, and quality. Customers searching for rare mushroom delivery in Toronto, Vaughan, Richmond Hill, Markham, Mississauga, Barrie, and surrounding communities frequently seek out this exclusive strain.'
   },
   'Hillbilly': {
-    titleTag: 'Hillbilly Magic Mushrooms Delivery Toronto & GTA | FunGuyz',
-    metaDescription: 'Shop Hillbilly magic mushrooms online with fast Toronto and GTA delivery. Premium Hillbilly mushrooms available from FunGuyz.',
-    keywords: 'hillbilly mushrooms, hillbilly delivery toronto, buy hillbilly mushrooms canada, hillbilly gta, mushroom delivery toronto, funguyz hillbilly, magic mushrooms barrie',
+    titleTag: 'Hillbilly Mushroom Delivery Canada | FunGuyz',
+    metaDescription: 'Shop Hillbilly mushrooms, a well-known strain valued for consistent cultivation and popularity. Fast delivery and Canada-wide shipping.',
+    keywords: 'hillbilly delivery, hillbilly mushrooms canada',
     h1: 'Hillbilly Magic Mushrooms',
     description: 'Hillbilly is a respected Psilocybe Cubensis strain known for its dependable genetics, strong reputation, and premium quality. Customers searching for premium mushroom delivery throughout Toronto and the GTA continue to choose Hillbilly because of its consistency and popularity.\n\nEvery batch is selected for visual quality, freshness, and cultivation standards before being prepared for discreet delivery throughout Toronto, Mississauga, Vaughan, Markham, Richmond Hill, Barrie, and surrounding regions.'
   },
   'Thai Pink Buffalo': {
-    titleTag: 'Thai Pink Buffalo Mushrooms Delivery Toronto & GTA | FunGuyz',
-    metaDescription: 'Buy Thai Pink Buffalo mushrooms online with fast Toronto, GTA and Barrie delivery. Premium mushroom strain available from FunGuyz.',
-    keywords: 'thai pink buffalo mushrooms, thai pink buffalo delivery toronto, pink buffalo mushrooms canada, mushroom delivery gta, buy thai pink buffalo mushrooms, funguyz thai pink buffalo',
+    titleTag: 'Thai Pink Buffalo Mushroom Delivery Canada | FunGuyz',
+    metaDescription: 'Order Thai Pink Buffalo mushrooms, a famous strain originating from Thailand. Fast delivery across Toronto, the GTA and Canada.',
+    keywords: 'thai pink buffalo delivery, thai pink buffalo mushrooms canada',
     h1: 'Thai Pink Buffalo Magic Mushrooms',
     description: 'Thai Pink Buffalo is a premium mushroom strain originating from Thailand and recognized for its respected genetics and growing popularity throughout Canada. This strain continues to attract customers searching for premium mushroom delivery throughout Toronto, Mississauga, Vaughan, Markham, Richmond Hill, Barrie, and surrounding GTA communities.\n\nSelected for freshness, appearance, and quality, Thai Pink Buffalo remains one of the most respected international mushroom strains available online. FunGuyz carefully prepares every order using discreet packaging methods designed to maintain freshness and privacy throughout the delivery process.'
   },

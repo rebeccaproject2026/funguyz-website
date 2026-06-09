@@ -162,7 +162,7 @@ export default function Home() {
       metaDesc.setAttribute('name', 'description');
       document.head.appendChild(metaDesc);
     }
-    metaDesc.setAttribute('content', 'Fast mushroom delivery in Toronto, Mississauga, Brampton, Oakville, Barrie and the GTA. Canada-wide shipping, discreet packaging, secure checkout, and premium products.');
+    metaDesc.setAttribute('content', 'Fast mushroom delivery in Toronto, Mississauga, Brampton, Oakville, Barrie & the GTA. Canada-wide shipping, discreet packaging and premium products.');
 
     // Update or create meta keywords tag
     let metaKeywords = document.querySelector('meta[name="keywords"]');
