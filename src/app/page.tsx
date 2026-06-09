@@ -152,27 +152,6 @@ export default function Home() {
   const [bestSellersSwiper, setBestSellersSwiper] = useState<any>(null);
   const bestSellersRef = useRef<HTMLDivElement>(null);
 
-  React.useEffect(() => {
-    document.title = "FunGuyz | Mushroom Delivery Toronto & Canada";
-
-    // Update or create meta description tag
-    let metaDesc = document.querySelector('meta[name="description"]');
-    if (!metaDesc) {
-      metaDesc = document.createElement('meta');
-      metaDesc.setAttribute('name', 'description');
-      document.head.appendChild(metaDesc);
-    }
-    metaDesc.setAttribute('content', 'Fast mushroom delivery in Toronto, Mississauga, Brampton, Oakville, Barrie & the GTA. Canada-wide shipping, discreet packaging and premium products.');
-
-    // Update or create meta keywords tag
-    let metaKeywords = document.querySelector('meta[name="keywords"]');
-    if (!metaKeywords) {
-      metaKeywords = document.createElement('meta');
-      metaKeywords.setAttribute('name', 'keywords');
-      document.head.appendChild(metaKeywords);
-    }
-    metaKeywords.setAttribute('content', 'mushroom delivery toronto, mushroom delivery gta, mushroom delivery mississauga, mushroom delivery brampton, mushroom delivery oakville, mushroom delivery barrie, mushroom shipping canada, canada wide mushroom shipping, fast mushroom delivery, same day mushroom delivery, mushroom delivery near me, premium mushroom products, discreet mushroom shipping, online mushroom store canada, mushroom shop toronto, mushroom products canada, funguyz, funguyz delivery, funguyz canada');
-  }, []);
 
   const reviews = [
     {
