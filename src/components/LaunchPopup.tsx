@@ -20,13 +20,22 @@ export function LaunchPopup() {
   if (pathname === '/checkout/') return null;
 
   useEffect(() => {
-    const dismissedAtStr = localStorage.getItem('funguyz_launch_popup_dismissed_at');
     const subbed = localStorage.getItem('funguyz_launch_popup_submitted') === 'true';
-
     if (subbed) {
       setSubmitted(true);
-      setIsOpen(false);
-      setIsDismissed(false);
+    }
+
+    const handleOpen = () => {
+      setIsOpen(true);
+    };
+    window.addEventListener('open-launch-popup', handleOpen);
+    return () => {
+      window.removeEventListener('open-launch-popup', handleOpen);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (submitted) {
       return;
     }
 
@@ -38,6 +47,7 @@ export function LaunchPopup() {
       return;
     }
 
+    const dismissedAtStr = localStorage.getItem('funguyz_launch_popup_dismissed_at');
     const oneHour = 3600000;
 
     if (dismissedAtStr) {

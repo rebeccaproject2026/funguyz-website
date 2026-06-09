@@ -42,7 +42,7 @@ export default function CartPage() {
     e.preventDefault();
     setCouponError('');
     setCouponSuccess('');
-    const result = applyCoupon(couponCode);
+    const result = applyCoupon(couponCode, subtotal);
     if (result.success) {
       setCouponCode('');
       setCouponSuccess(result.message);
@@ -57,13 +57,15 @@ export default function CartPage() {
     setCouponError('');
   };
 
-  // Calculate pricing metrics (simplified - no shipping on Cart page!)
-  const discountAmount = appliedCoupon 
-    ? subtotal * appliedCoupon.discount 
+  // Calculate pricing metrics
+  const isShippingCoupon = appliedCoupon?.type === 'shipping';
+  const discountAmount = appliedCoupon && !isShippingCoupon
+    ? subtotal * appliedCoupon.discount
     : 0.00;
+  const shippingCost = isShippingCoupon ? 0 : 20.00;
 
   const taxAmount = 0.00; // No tax
-  const totalAmount = subtotal - discountAmount + taxAmount;
+  const totalAmount = subtotal - discountAmount + shippingCost + taxAmount;
 
   return (
     <main className="bg-[#fff8f3] text-[#1b1533] min-h-screen selection:bg-[#ff4fa3] selection:text-white antialiased font-sans">
@@ -290,7 +292,7 @@ export default function CartPage() {
                   </div>
 
                   {/* Discount */}
-                  {appliedCoupon && (
+                  {appliedCoupon && !isShippingCoupon && (
                     <div className="flex justify-between items-center text-emerald-600 bg-emerald-50/50 px-3 py-2.5 rounded-xl border border-emerald-100/50">
                       <span className="flex items-center gap-1">
                         <Tag className="h-3.5 w-3.5" /> Discount ({appliedCoupon.label})
@@ -299,8 +301,17 @@ export default function CartPage() {
                     </div>
                   )}
 
-
-
+                  {/* Shipping */}
+                  <div className="flex justify-between items-center text-slate-500">
+                    <span>Shipping</span>
+                    {isShippingCoupon ? (
+                      <span className="flex items-center gap-1 text-emerald-600 font-black text-sm">
+                        <Tag className="h-3.5 w-3.5" /> FREE
+                      </span>
+                    ) : (
+                      <strong className="text-sm font-bold text-[#ff4fa3]">$20.00 Flat Rate</strong>
+                    )}
+                  </div>
                   {/* Total */}
                   <div className="border-t border-slate-100 pt-4 flex justify-between items-baseline select-none">
                     <span className="text-sm font-black uppercase text-[#1b1533] logo-font">Total</span>

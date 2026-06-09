@@ -261,12 +261,11 @@ export default function Home() {
             </p>
 
             {/* Bottom Floating Trust Badges Card */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-0 sm:divide-x divide-slate-100 items-center bg-white border border-slate-100 rounded-2xl p-3 shadow-sm mt-4 max-w-2xl w-full">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-0 sm:divide-x divide-slate-100 items-center bg-white border border-slate-100 rounded-2xl p-3 shadow-sm mt-4 max-w-2xl w-full">
               {[
                 ['Lab Tested', 'For Purity', ShieldCheck, 'text-pink-500 bg-pink-50'],
                 ['100% Natural', 'Premium Quality', Leaf, 'text-emerald-500 bg-emerald-50'],
                 ['Discreet Delivery', 'Private & Secure', Truck, 'text-indigo-500 bg-indigo-50'],
-                ['Secure Checkout', 'SSL Encrypted', Lock, 'text-blue-500 bg-blue-50'],
               ].map(([title, desc, Icon, colors]: any, idx) => (
                 <div
                   key={title}
@@ -490,7 +489,7 @@ export default function Home() {
           </div>
 
           <div className="grid gap-6 grid-cols-2 lg:grid-cols-4">
-            {products.map((p, i) => (
+            {products.slice(0, 8).map((p, i) => (
               <div key={p[0]} className="w-full">
                 <ProductCard p={p} i={i} />
               </div>
