@@ -6,18 +6,18 @@ import { Footer } from '@/components/Footer';
 import { ProductCard } from '@/components/ProductCard';
 import { products, getProductSlug, getCategorySlug, getProductSeoMetadata, getProductSections, mushroomPricingTable } from '@/data/products';
 import { useCart } from '@/context/CartContext';
-import { 
+import {
   Sparkles,
   ShoppingBag,
-  Star, 
-  ShieldCheck, 
-  Truck, 
-  Heart, 
-  Check, 
-  ChevronRight, 
+  Star,
+  ShieldCheck,
+  Truck,
+  Heart,
+  Check,
+  ChevronRight,
   ChevronLeft,
-  Minus, 
-  Plus, 
+  Minus,
+  Plus,
   AlertCircle,
   Lock,
   ArrowRight,
@@ -153,24 +153,6 @@ export default function CategoryProductPage({ params }: { params: Promise<{ cate
     { id: 'reviews', label: `Reviews (${reviewsList.length})`, icon: MessageSquare }
   ];
 
-  React.useEffect(() => {
-    document.title = seoData.titleTag;
-    let metaDesc = document.querySelector('meta[name="description"]');
-    if (!metaDesc) {
-      metaDesc = document.createElement('meta');
-      metaDesc.setAttribute('name', 'description');
-      document.head.appendChild(metaDesc);
-    }
-    metaDesc.setAttribute('content', seoData.metaDescription);
-    let metaKeywords = document.querySelector('meta[name="keywords"]');
-    if (!metaKeywords) {
-      metaKeywords = document.createElement('meta');
-      metaKeywords.setAttribute('name', 'keywords');
-      document.head.appendChild(metaKeywords);
-    }
-    metaKeywords.setAttribute('content', seoData.keywords);
-  }, [seoData]);
-
   const basePriceNum = parseFloat(matched[2].replace('$', ''));
   const pricingMap: Record<string, number> = mushroomPricingTable[matched[0]] || {
     '3.5g': basePriceNum
@@ -290,9 +272,8 @@ export default function CategoryProductPage({ params }: { params: Promise<{ cate
                 <button
                   key={idx}
                   onClick={() => setSelectedGalleryImage(img)}
-                  className={`aspect-square rounded-2xl border bg-white overflow-hidden flex items-center justify-center hover:border-[#ff4fa3] transition-all cursor-pointer ${
-                    activeImage === img ? 'border-[#ff4fa3] ring-2 ring-pink-50' : 'border-slate-100'
-                  }`}
+                  className={`aspect-square rounded-2xl border bg-white overflow-hidden flex items-center justify-center hover:border-[#ff4fa3] transition-all cursor-pointer ${activeImage === img ? 'border-[#ff4fa3] ring-2 ring-pink-50' : 'border-slate-100'
+                    }`}
                 >
                   <img src={img} className="h-full w-full object-cover" alt="Thumbnail" loading="lazy" />
                 </button>
@@ -331,11 +312,10 @@ export default function CategoryProductPage({ params }: { params: Promise<{ cate
                     <button
                       key={s}
                       onClick={() => setSelectedWeight(s)}
-                      className={`rounded-2xl py-3 text-xs font-black uppercase tracking-wider logo-font transition-all duration-200 cursor-pointer border text-center ${
-                        selectedWeight === s
+                      className={`rounded-2xl py-3 text-xs font-black uppercase tracking-wider logo-font transition-all duration-200 cursor-pointer border text-center ${selectedWeight === s
                           ? 'bg-[#ff4fa3] border-[#ff4fa3] text-white shadow-md shadow-pink-100'
                           : 'bg-white border-slate-200 text-[#1b1533] shadow-sm hover:border-[#ff4fa3] hover:text-[#ff4fa3]'
-                      }`}
+                        }`}
                     >
                       {s}
                     </button>
@@ -364,9 +344,8 @@ export default function CategoryProductPage({ params }: { params: Promise<{ cate
 
                 <button
                   onClick={() => toggleWishlist({ title: productData.title, category: productData.category, price: productData.price, imageSrc: productData.imageSrc })}
-                  className={`grid sm:hidden h-12 w-12 place-items-center rounded-2xl border transition-all cursor-pointer shrink-0 ${
-                    wishlisted ? 'bg-pink-50 border-pink-100 text-[#ff4fa3]' : 'bg-white border-slate-200 text-slate-400 hover:border-pink-300 hover:text-[#ff4fa3] shadow-sm'
-                  }`}
+                  className={`grid sm:hidden h-12 w-12 place-items-center rounded-2xl border transition-all cursor-pointer shrink-0 ${wishlisted ? 'bg-pink-50 border-pink-100 text-[#ff4fa3]' : 'bg-white border-slate-200 text-slate-400 hover:border-pink-300 hover:text-[#ff4fa3] shadow-sm'
+                    }`}
                 >
                   <Heart className={`h-5 w-5 ${wishlisted ? 'fill-[#ff4fa3] text-[#ff4fa3]' : ''}`} />
                 </button>
@@ -381,9 +360,8 @@ export default function CategoryProductPage({ params }: { params: Promise<{ cate
 
               <button
                 onClick={() => toggleWishlist({ title: productData.title, category: productData.category, price: productData.price, imageSrc: productData.imageSrc })}
-                className={`hidden sm:grid h-12 w-12 place-items-center rounded-2xl border transition-all cursor-pointer shrink-0 ${
-                  wishlisted ? 'bg-pink-50 border-pink-100 text-[#ff4fa3]' : 'bg-white border-slate-200 text-slate-400 hover:border-pink-300 hover:text-[#ff4fa3] shadow-sm'
-                }`}
+                className={`hidden sm:grid h-12 w-12 place-items-center rounded-2xl border transition-all cursor-pointer shrink-0 ${wishlisted ? 'bg-pink-50 border-pink-100 text-[#ff4fa3]' : 'bg-white border-slate-200 text-slate-400 hover:border-pink-300 hover:text-[#ff4fa3] shadow-sm'
+                  }`}
               >
                 <Heart className={`h-5 w-5 ${wishlisted ? 'fill-[#ff4fa3] text-[#ff4fa3]' : ''}`} />
               </button>
@@ -420,11 +398,10 @@ export default function CategoryProductPage({ params }: { params: Promise<{ cate
                     setActiveSection(sec.id);
                     document.getElementById(`sec-${sec.id}`)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
                   }}
-                  className={`flex items-center gap-3.5 px-4.5 py-3.5 text-xs font-black uppercase tracking-widest rounded-2xl cursor-pointer transition-all duration-200 whitespace-nowrap lg:w-full text-left leading-none ${
-                    activeSection === sec.id
+                  className={`flex items-center gap-3.5 px-4.5 py-3.5 text-xs font-black uppercase tracking-widest rounded-2xl cursor-pointer transition-all duration-200 whitespace-nowrap lg:w-full text-left leading-none ${activeSection === sec.id
                       ? 'bg-[#ff4fa3] text-white shadow-md shadow-pink-100'
                       : 'text-slate-500 hover:text-[#ff4fa3] hover:bg-slate-50'
-                  }`}
+                    }`}
                 >
                   <IconComponent className="h-4.5 w-4.5 shrink-0 stroke-[2.2]" />
                   <span className="logo-font">{sec.label}</span>

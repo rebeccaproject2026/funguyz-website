@@ -310,216 +310,216 @@ export const productSeoMetadata: Record<string, ProductSeoData> = {
 
   // Edibles
   'Golden Teacher Original Chocolate (GT OG)': {
-    titleTag: 'Golden Teacher Chocolate Delivery Toronto & GTA | FunGuyz',
-    metaDescription: 'Buy Golden Teacher chocolate online with fast Toronto, GTA and Barrie delivery. Premium mushroom chocolate available from FunGuyz.',
-    keywords: 'golden teacher chocolate, mushroom chocolate toronto, golden teacher chocolate canada, mushroom edibles gta, buy mushroom chocolate online, funguyz chocolate, mushroom delivery toronto',
+    titleTag: 'Golden Teacher Chocolate Delivery Canada | FunGuyz',
+    metaDescription: 'Shop Golden Teacher Original Chocolate, a smooth mushroom edible option with fast delivery across Toronto, the GTA and Canada.',
+    keywords: 'Golden Teacher chocolate delivery, mushroom chocolate Canada, mushroom edibles delivery',
     h1: 'Golden Teacher Original Chocolate',
     description: 'Golden Teacher Original Chocolate combines premium mushroom ingredients with rich chocolate for a convenient and enjoyable edible experience. Customers throughout Toronto, Mississauga, Vaughan, Markham, Richmond Hill, Barrie, and surrounding GTA communities frequently choose Golden Teacher Chocolate due to its popularity, quality, and convenient format.'
   },
   'Golden Teacher Concentrated Chocolate (GT CC)': {
-    titleTag: 'Golden Teacher Concentrated Chocolate Toronto | FunGuyz',
-    metaDescription: 'Shop Golden Teacher Concentrated Chocolate with fast Toronto and GTA delivery. Premium mushroom chocolate available online.',
-    keywords: 'golden teacher concentrated chocolate, mushroom chocolate toronto, concentrated mushroom chocolate, funguyz edibles, mushroom delivery gta',
+    titleTag: 'Golden Teacher Concentrated Chocolate Delivery | FunGuyz',
+    metaDescription: 'Order Golden Teacher Concentrated Chocolate, crafted for stronger edible shoppers. Fast delivery across Toronto, the GTA and Canada.',
+    keywords: 'Golden Teacher concentrated chocolate, mushroom chocolate delivery, edible delivery Canada',
     h1: 'Golden Teacher Concentrated Chocolate',
     description: 'Golden Teacher Concentrated Chocolate is designed for customers seeking a premium mushroom edible option in a convenient chocolate format. Carefully prepared and packaged, this product remains popular throughout Toronto and the Greater Toronto Area.'
   },
   'Penis Envy Original Chocolate (PE OG)': {
-    titleTag: 'Penis Envy Chocolate Delivery Toronto & GTA | FunGuyz',
-    metaDescription: 'Buy Penis Envy mushroom chocolate online with fast Toronto, GTA and Barrie delivery. Premium edible products available from FunGuyz.',
-    keywords: 'penis envy chocolate, mushroom chocolate toronto, penis envy edibles, mushroom chocolate gta, funguyz edibles, mushroom delivery toronto',
+    titleTag: 'Penis Envy Chocolate Delivery Canada | FunGuyz',
+    metaDescription: 'Shop Penis Envy Original Chocolate, a popular mushroom edible made for PE fans. Fast delivery across Toronto, the GTA and Canada.',
+    keywords: 'Penis Envy chocolate delivery, PE mushroom chocolate, mushroom edibles Canada',
     h1: 'Penis Envy Original Chocolate',
     description: 'Penis Envy Original Chocolate remains one of the most requested mushroom edible products available online. Customers throughout Toronto, Mississauga, Vaughan, Markham, Richmond Hill, and Barrie frequently choose this premium edible format.'
   },
   'Penis Envy Refined Concentrate Chocolate (PE RC)': {
-    titleTag: 'Penis Envy Refined Chocolate Toronto | FunGuyz',
-    metaDescription: 'Order Penis Envy Refined Concentrate Chocolate online with fast Toronto and GTA delivery. Premium mushroom edible available from FunGuyz.',
-    keywords: 'penis envy concentrate chocolate, mushroom chocolate delivery toronto, premium mushroom edibles, funguyz chocolate, mushroom delivery gta',
+    titleTag: 'Penis Envy Refined Chocolate Delivery | FunGuyz',
+    metaDescription: 'Order Penis Envy Refined Concentrate Chocolate, a premium edible choice with fast delivery across Toronto, the GTA and Canada.',
+    keywords: 'Penis Envy refined chocolate, mushroom chocolate delivery, edible delivery Canada',
     h1: 'Penis Envy Refined Concentrate Chocolate',
     description: 'Penis Envy Refined Concentrate Chocolate is crafted for customers seeking a premium edible experience. Its convenient format and growing popularity make it a frequently searched product throughout Toronto and surrounding GTA communities.'
   },
   'Penis Envy Concentrated Chocolate (PE CC)': {
-    titleTag: 'Penis Envy Concentrated Chocolate Toronto | FunGuyz',
-    metaDescription: 'Buy Penis Envy Concentrated Chocolate online with fast GTA delivery. Premium mushroom chocolate available throughout Toronto and Barrie.',
-    keywords: 'penis envy concentrated chocolate, mushroom chocolate gta, buy mushroom chocolate toronto, funguyz edibles, premium mushroom chocolate',
+    titleTag: 'Penis Envy Concentrated Chocolate Delivery | FunGuyz',
+    metaDescription: 'Shop Penis Envy Concentrated Chocolate, a strong edible option for PE buyers. Fast delivery across Toronto, the GTA and Canada.',
+    keywords: 'Penis Envy concentrated chocolate, mushroom chocolate Canada, mushroom edible delivery',
     h1: 'Penis Envy Concentrated Chocolate',
     description: 'Penis Envy Concentrated Chocolate remains one of the most popular premium edible products available online. Customers searching for mushroom chocolate delivery throughout Toronto and the GTA frequently choose this premium chocolate format.'
   },
   'Blue Raspberry Gummies': {
-    titleTag: 'Blue Raspberry Mushroom Gummies Toronto | FunGuyz',
-    metaDescription: 'Buy Blue Raspberry mushroom gummies online with fast Toronto, GTA and Barrie delivery. Premium edible gummies from FunGuyz.',
-    keywords: 'blue raspberry gummies, mushroom gummies toronto, buy mushroom gummies canada, gummy delivery toronto, funguyz gummies',
+    titleTag: 'Blue Raspberry Mushroom Gummies Delivery | FunGuyz',
+    metaDescription: 'Shop Blue Raspberry mushroom gummies with fruity flavour and fast delivery across Toronto, the GTA and Canada-wide shipping.',
+    keywords: 'Blue Raspberry mushroom gummies, mushroom gummies delivery, mushroom edibles Canada',
     h1: 'Blue Raspberry Mushroom Gummies',
     description: 'Blue Raspberry Gummies are among the most popular mushroom edible options available online. Their flavorful format and convenient serving style continue to make them a customer favorite throughout Toronto and the GTA.'
   },
   'Watermelon Gummies': {
-    titleTag: 'Watermelon Mushroom Gummies Toronto | FunGuyz',
-    metaDescription: 'Order Watermelon mushroom gummies online with fast Toronto and GTA delivery. Premium edible gummies available from FunGuyz.',
-    keywords: 'watermelon gummies, mushroom gummies canada, edible gummies toronto, gummy delivery gta, funguyz gummies',
+    titleTag: 'Watermelon Mushroom Gummies Delivery Canada | FunGuyz',
+    metaDescription: 'Order Watermelon mushroom gummies with sweet flavour and fast delivery across Toronto, the GTA and Canada-wide shipping.',
+    keywords: 'Watermelon mushroom gummies, mushroom gummies delivery, edible delivery Canada',
     h1: 'Watermelon Mushroom Gummies',
     description: 'Watermelon Gummies offer a delicious edible format that continues to attract customers searching for mushroom gummies throughout Toronto, Vaughan, Mississauga, Barrie, and surrounding regions.'
   },
   'Strawberry Gummies': {
-    titleTag: 'Strawberry Mushroom Gummies Delivery Toronto | FunGuyz',
-    metaDescription: 'Buy Strawberry mushroom gummies online with fast Toronto and GTA delivery. Premium mushroom gummies from FunGuyz.',
-    keywords: 'strawberry gummies, mushroom gummies toronto, buy gummies canada, edible gummies gta, funguyz edibles',
+    titleTag: 'Strawberry Mushroom Gummies Delivery Canada | FunGuyz',
+    metaDescription: 'Shop Strawberry mushroom gummies with a classic fruit flavour and fast delivery across Toronto, the GTA and Canada.',
+    keywords: 'Strawberry mushroom gummies, mushroom gummies Canada, mushroom edibles delivery',
     h1: 'Strawberry Mushroom Gummies',
     description: 'Strawberry Gummies remain one of the most popular fruit-flavored mushroom edible products available online and continue to be a favorite among customers throughout Toronto and surrounding GTA communities.'
   },
   'Mango Gummies': {
-    titleTag: 'Mango Mushroom Gummies Delivery Toronto | FunGuyz',
-    metaDescription: 'Shop Mango mushroom gummies online with fast Toronto, GTA and Barrie delivery. Premium gummies available from FunGuyz.',
-    keywords: 'mango gummies, mushroom gummies gta, edible gummies toronto, buy mushroom gummies canada, funguyz gummies',
+    titleTag: 'Mango Mushroom Gummies Delivery Canada | FunGuyz',
+    metaDescription: 'Order Mango mushroom gummies with tropical flavour and fast delivery across Toronto, the GTA and Canada-wide shipping.',
+    keywords: 'Mango mushroom gummies, mushroom gummies delivery, edible delivery Canada',
     h1: 'Mango Mushroom Gummies',
     description: 'Mango Gummies combine convenience and flavor in a premium mushroom edible format. Customers throughout Toronto, Vaughan, Richmond Hill, Barrie, and surrounding GTA regions regularly search for this popular product.'
   },
   'Green Apple Gummies': {
-    titleTag: 'Green Apple Mushroom Gummies Toronto | FunGuyz',
-    metaDescription: 'Buy Green Apple mushroom gummies online with fast Toronto and GTA delivery. Premium gummies available throughout the GTA.',
-    keywords: 'green apple gummies, mushroom gummies toronto, edible gummies gta, gummy delivery toronto, funguyz gummies',
+    titleTag: 'Green Apple Mushroom Gummies Delivery | FunGuyz',
+    metaDescription: 'Shop Green Apple mushroom gummies with a crisp fruit flavour and fast delivery across Toronto, the GTA and Canada.',
+    keywords: 'Green Apple mushroom gummies, mushroom gummies Canada, edible delivery Canada',
     h1: 'Green Apple Mushroom Gummies',
     description: 'Green Apple Gummies are a premium edible option known for their popularity and convenient format. Customers throughout Toronto and the GTA frequently choose this product for its enjoyable flavor profile.'
   },
   'Mixed Berry Gummies': {
-    titleTag: 'Mixed Berry Mushroom Gummies Toronto | FunGuyz',
-    metaDescription: 'Order Mixed Berry mushroom gummies online with fast Toronto, GTA and Barrie delivery. Premium edible products available from FunGuyz.',
-    keywords: 'mixed berry gummies, mushroom gummies canada, edible gummies toronto, mushroom gummy delivery gta, funguyz gummies',
+    titleTag: 'Mixed Berry Mushroom Gummies Delivery Canada | FunGuyz',
+    metaDescription: 'Order Mixed Berry mushroom gummies with bold berry flavour and fast delivery across Toronto, the GTA and Canada-wide shipping.',
+    keywords: 'Mixed Berry mushroom gummies, mushroom gummies delivery, mushroom edibles Canada',
     h1: 'Mixed Berry Mushroom Gummies',
     description: 'Mixed Berry Gummies continue to be one of the most popular mushroom edible products throughout Toronto and the GTA. Their convenient format and customer demand make them a frequently searched product online.'
   },
   'Golden Teacher S\'Mores': {
-    titleTag: 'Golden Teacher S\'Mores Delivery Toronto | FunGuyz',
-    metaDescription: 'Buy Golden Teacher S\'Mores online with fast Toronto and GTA delivery. Premium mushroom edibles available from FunGuyz.',
-    keywords: 'golden teacher smores, mushroom smores canada, edible delivery toronto, mushroom treats gta, funguyz edibles',
+    titleTag: 'Golden Teacher S’mores Delivery Canada | FunGuyz',
+    metaDescription: 'Shop Golden Teacher S’mores, a dessert-style mushroom edible with fast delivery across Toronto, the GTA and Canada.',
+    keywords: 'Golden Teacher smores, mushroom smores delivery, mushroom edibles Canada',
     h1: 'Golden Teacher S\'Mores',
     description: 'Golden Teacher S\'Mores combine premium mushroom ingredients with delicious marshmallow, chocolate, and graham cracker flavors for a convenient and enjoyable edible experience. Perfect for customers seeking a unique sweet treat in Toronto and the GTA.'
   },
   'Penis Envy S\'Mores': {
-    titleTag: 'Penis Envy S\'Mores Delivery Toronto | FunGuyz',
-    metaDescription: 'Shop Penis Envy S\'Mores online with fast GTA delivery. Premium mushroom edible products available from FunGuyz.',
-    keywords: 'penis envy smores, mushroom smores toronto, edible delivery gta, funguyz edibles',
+    titleTag: 'Penis Envy S’mores Delivery Canada | FunGuyz',
+    metaDescription: 'Order Penis Envy S’mores, a dessert-style PE mushroom edible with fast delivery across Toronto, the GTA and Canada.',
+    keywords: 'Penis Envy smores, PE mushroom smores, mushroom edible delivery',
     h1: 'Penis Envy S\'Mores',
     description: 'Penis Envy S\'Mores are a popular and convenient mushroom edible product featuring high-potency ingredients and classic sweet flavors. Customers throughout Toronto, Mississauga, Vaughan, Markham, Richmond Hill, and Barrie frequently choose this premium format.'
   },
   'Cookies & Cream S\'Mores': {
-    titleTag: 'Cookies & Cream S\'Mores Toronto | FunGuyz',
-    metaDescription: 'Buy Cookies & Cream S\'Mores online with fast Toronto and GTA delivery. Premium mushroom treats available from FunGuyz.',
-    keywords: 'cookies and cream smores, mushroom smores canada, edible delivery toronto, funguyz edibles',
+    titleTag: 'Cookies & Cream S’mores Delivery Canada | FunGuyz',
+    metaDescription: 'Shop Cookies & Cream S’mores, a sweet mushroom edible with fast delivery across Toronto, the GTA and Canada-wide shipping.',
+    keywords: 'Cookies and Cream smores, mushroom smores delivery, mushroom edibles Canada',
     h1: 'Cookies & Cream S\'Mores',
     description: 'Cookies & Cream S\'Mores offer a delicious white-chocolate, cookies & cream cookie crumb, and marshmallow edible format. A customer favorite sweet mushroom treat throughout Toronto, Barrie, and the GTA.'
   },
 
   // Capsules
   'Lion\'s Mane Capsules': {
-    titleTag: "Lion's Mane Capsules Delivery Toronto & GTA | FunGuyz",
-    metaDescription: "Buy Lion's Mane capsules online with fast Toronto, GTA and Barrie delivery. Premium functional mushroom capsules available from FunGuyz.",
-    keywords: "lion's mane capsules, lion's mane toronto, lion's mane canada, mushroom capsules toronto, buy lion's mane online, funguyz capsules, functional mushrooms canada",
+    titleTag: 'Lion’s Mane Capsules Delivery Canada | FunGuyz',
+    metaDescription: 'Shop Lion’s Mane capsules, a popular functional mushroom supplement for daily routines. Fast delivery across Toronto, the GTA and Canada.',
+    keywords: 'Lion’s Mane capsules Canada, Lion’s Mane delivery, functional mushroom capsules',
     h1: "Lion's Mane Capsules",
     description: "Lion's Mane is one of the most recognized functional mushroom supplements available today. Known for its distinctive appearance and growing popularity, Lion's Mane capsules continue to attract customers throughout Toronto, Mississauga, Vaughan, Markham, Richmond Hill, Barrie, and surrounding GTA communities. Each capsule is carefully prepared for consistency, quality, and convenience."
   },
   'Reishi Capsules': {
-    titleTag: "Reishi Capsules Delivery Toronto & GTA | FunGuyz",
-    metaDescription: "Shop Reishi capsules online with fast Toronto and GTA delivery. Premium functional mushroom supplements available from FunGuyz.",
-    keywords: "reishi capsules, reishi mushroom capsules, reishi canada, mushroom supplements toronto, buy reishi online, funguyz capsules",
+    titleTag: 'Reishi Capsules Delivery Canada | FunGuyz',
+    metaDescription: 'Order Reishi capsules, a trusted functional mushroom option for wellness-focused routines. Fast delivery across Toronto, the GTA and Canada.',
+    keywords: 'Reishi capsules Canada, Reishi delivery, functional mushroom capsules Canada',
     h1: "Reishi Capsules",
     description: "Reishi is one of the most respected functional mushrooms in the world. Reishi capsules remain popular among customers searching for premium mushroom supplements throughout Toronto, Vaughan, Markham, Richmond Hill, Mississauga, Barrie, and surrounding GTA communities."
   },
   'Cordyceps Capsules': {
-    titleTag: "Cordyceps Capsules Delivery Toronto & GTA | FunGuyz",
-    metaDescription: "Buy Cordyceps capsules online with fast Toronto, GTA and Barrie delivery. Premium mushroom capsules available from FunGuyz.",
-    keywords: "cordyceps capsules, cordyceps mushroom capsules, cordyceps canada, mushroom supplements toronto, buy cordyceps online, funguyz capsules",
+    titleTag: 'Cordyceps Capsules Delivery Canada | FunGuyz',
+    metaDescription: 'Shop Cordyceps capsules, a popular functional mushroom supplement for active lifestyles. Fast delivery across Toronto, the GTA and Canada.',
+    keywords: 'Cordyceps capsules Canada, Cordyceps delivery, mushroom capsules Canada',
     h1: "Cordyceps Capsules",
     description: "Cordyceps capsules are a popular functional mushroom supplement chosen by customers throughout Toronto and the GTA. Known for their premium quality and convenient capsule format, Cordyceps products continue to gain popularity across Canada."
   },
   'Turkey Tail Capsules': {
-    titleTag: "Turkey Tail Capsules Delivery Toronto & GTA | FunGuyz",
-    metaDescription: "Order Turkey Tail capsules online with fast Toronto and GTA delivery. Premium mushroom supplements available from FunGuyz.",
-    keywords: "turkey tail capsules, turkey tail mushroom canada, mushroom capsules toronto, functional mushrooms gta, buy turkey tail online, funguyz capsules",
+    titleTag: 'Turkey Tail Capsules Delivery Canada | FunGuyz',
+    metaDescription: 'Order Turkey Tail capsules, a respected functional mushroom choice for daily wellness routines. Fast delivery across Canada.',
+    keywords: 'Turkey Tail capsules Canada, Turkey Tail delivery, mushroom supplement Canada',
     h1: "Turkey Tail Capsules",
     description: "Turkey Tail capsules are among the most recognized functional mushroom products available online. Customers throughout Toronto, Mississauga, Vaughan, Markham, Barrie, and surrounding regions continue to choose Turkey Tail due to its popularity and premium quality."
   },
   'Chaga Capsules': {
-    titleTag: "Chaga Capsules Delivery Toronto & GTA | FunGuyz",
-    metaDescription: "Buy Chaga capsules online with fast Toronto, GTA and Barrie delivery. Premium functional mushroom capsules available from FunGuyz.",
-    keywords: "chaga capsules, chaga mushroom capsules, chaga canada, mushroom supplements toronto, buy chaga online, funguyz capsules",
+    titleTag: 'Chaga Capsules Delivery Canada | FunGuyz',
+    metaDescription: 'Shop Chaga capsules, a popular functional mushroom product for daily wellness support. Fast delivery across Toronto, the GTA and Canada.',
+    keywords: 'Chaga capsules Canada, Chaga delivery, functional mushroom capsules',
     h1: "Chaga Capsules",
     description: "Chaga capsules continue to grow in popularity among customers searching for premium functional mushroom supplements. FunGuyz offers high-quality Chaga capsules with delivery throughout Toronto, Mississauga, Vaughan, Markham, Richmond Hill, Barrie, and surrounding GTA communities."
   },
   'Golden Teacher Extract': {
-    titleTag: "Golden Teacher Extract Delivery Toronto & GTA | FunGuyz",
-    metaDescription: "Buy Golden Teacher extract online with fast Toronto and GTA delivery. Premium mushroom extract products available from FunGuyz.",
-    keywords: "golden teacher extract, mushroom extract toronto, golden teacher canada, mushroom products gta, funguyz extracts",
+    titleTag: 'Golden Teacher Extract Delivery Canada | FunGuyz',
+    metaDescription: 'Order Golden Teacher extract, a concentrated mushroom product with fast delivery across Toronto, the GTA and Canada-wide shipping.',
+    keywords: 'Golden Teacher extract, mushroom extract delivery, mushroom extract Canada',
     h1: "Golden Teacher Extract",
     description: "Golden Teacher Extract provides a premium mushroom extract option for customers throughout Toronto and the GTA. Carefully prepared and packaged, this product continues to attract customers looking for high-quality mushroom extracts online."
   },
   'Penis Envy Extract': {
-    titleTag: "Penis Envy Extract Delivery Toronto & GTA | FunGuyz",
-    metaDescription: "Order Penis Envy extract online with fast Toronto and GTA delivery. Premium mushroom extract products available from FunGuyz.",
-    keywords: "penis envy extract, mushroom extract canada, penis envy products toronto, premium mushroom extracts, funguyz extracts",
+    titleTag: 'Penis Envy Extract Delivery Canada | FunGuyz',
+    metaDescription: 'Shop Penis Envy extract, a concentrated PE mushroom product with fast delivery across Toronto, the GTA and Canada-wide shipping.',
+    keywords: 'Penis Envy extract, PE extract delivery, mushroom extract Canada',
     h1: "Penis Envy Extract",
     description: "Penis Envy Extract remains one of the most searched mushroom extract products available online. Customers throughout Toronto, Vaughan, Markham, Richmond Hill, Barrie, and surrounding GTA regions continue to seek this premium extract format."
   },
   'Lion\'s Mane Tincture': {
-    titleTag: "Lion's Mane Tincture Delivery Toronto & GTA | FunGuyz",
-    metaDescription: "Buy Lion's Mane tincture online with fast Toronto, GTA and Barrie delivery. Premium mushroom tinctures available from FunGuyz.",
-    keywords: "lion's mane tincture, lion's mane extract toronto, mushroom tinctures canada, functional mushrooms gta, funguyz tinctures",
+    titleTag: 'Lion’s Mane Tincture Delivery Canada | FunGuyz',
+    metaDescription: 'Shop Lion’s Mane tincture, a convenient functional mushroom liquid format with fast delivery across Toronto, the GTA and Canada.',
+    keywords: 'Lion’s Mane tincture Canada, Lion’s Mane delivery, mushroom tincture Canada',
     h1: "Lion's Mane Tincture",
     description: "Lion's Mane Tincture is a premium liquid mushroom extract option that continues to gain popularity throughout Toronto and the GTA. Customers frequently choose tinctures due to their convenience and ease of use."
   },
   'Reishi Tincture': {
-    titleTag: "Reishi Tincture Delivery Toronto & GTA | FunGuyz",
-    metaDescription: "Shop Reishi tincture online with fast Toronto and GTA delivery. Premium mushroom tinctures available from FunGuyz.",
-    keywords: "reishi tincture, reishi extract canada, mushroom tinctures toronto, buy reishi tincture online, funguyz tinctures",
+    titleTag: 'Reishi Tincture Delivery Canada | FunGuyz',
+    metaDescription: 'Order Reishi tincture, a convenient functional mushroom liquid option with fast delivery across Toronto, the GTA and Canada.',
+    keywords: 'Reishi tincture Canada, Reishi delivery, mushroom tincture Canada',
     h1: "Reishi Tincture",
     description: "Reishi Tincture offers customers a premium liquid mushroom supplement format. FunGuyz provides quality Reishi tinctures with delivery throughout Toronto, Mississauga, Vaughan, Markham, Richmond Hill, Barrie, and surrounding GTA communities."
   },
   'Cordyceps Tincture': {
-    titleTag: "Cordyceps Tincture Delivery Toronto & GTA | FunGuyz",
-    metaDescription: "Buy Cordyceps tincture online with fast Toronto, GTA and Barrie delivery. Premium mushroom tinctures available from FunGuyz.",
-    keywords: "cordyceps tincture, cordyceps extract canada, mushroom tinctures toronto, buy cordyceps tincture online, funguyz tinctures",
+    titleTag: 'Cordyceps Tincture Delivery Canada | FunGuyz',
+    metaDescription: 'Shop Cordyceps tincture, a functional mushroom liquid format for daily routines. Fast delivery across Toronto, the GTA and Canada.',
+    keywords: 'Cordyceps tincture Canada, Cordyceps delivery, mushroom tincture Canada',
     h1: "Cordyceps Tincture",
     description: "Cordyceps Tincture is a premium liquid mushroom extract product available for customers throughout Toronto and the GTA. Carefully prepared and packaged, it continues to be a popular choice among customers searching for mushroom tinctures online."
   },
 
   // Microdose
   'Golden Teacher Microdose': {
-    titleTag: "Golden Teacher Microdose Delivery Toronto & GTA | FunGuyz",
-    metaDescription: "Buy Golden Teacher microdose capsules online with fast Toronto, GTA and Barrie delivery. Premium microdose products available from FunGuyz.",
-    keywords: "golden teacher microdose, microdose capsules toronto, microdosing canada, golden teacher capsules, microdose delivery toronto, funguyz microdose, microdose gta",
+    titleTag: 'Golden Teacher Microdose Delivery Canada | FunGuyz',
+    metaDescription: 'Shop Golden Teacher microdose capsules, a popular choice for structured microdosing. Fast delivery across Toronto, the GTA and Canada.',
+    keywords: 'Golden Teacher microdose, microdose delivery Canada, microdose capsules Canada',
     h1: "Golden Teacher Microdose Capsules",
     description: "Golden Teacher Microdose capsules are among the most popular microdosing products available online. Carefully prepared using premium Golden Teacher mushroom material, these capsules provide a convenient format for customers throughout Toronto, Mississauga, Vaughan, Markham, Richmond Hill, Barrie, and surrounding GTA communities. FunGuyz offers discreet delivery and premium quality products designed for customers seeking a reliable microdose capsule option."
   },
   'Penis Envy Microdose': {
-    titleTag: "Penis Envy Microdose Delivery Toronto & GTA | FunGuyz",
-    metaDescription: "Shop Penis Envy microdose capsules online with fast Toronto and GTA delivery. Premium microdose products available from FunGuyz.",
-    keywords: "penis envy microdose, microdose capsules toronto, penis envy capsules canada, mushroom microdose gta, microdose delivery toronto, funguyz microdose",
+    titleTag: 'Penis Envy Microdose Delivery Canada | FunGuyz',
+    metaDescription: 'Order Penis Envy microdose capsules, a PE-based microdose option with fast delivery across Toronto, the GTA and Canada.',
+    keywords: 'Penis Envy microdose, PE microdose delivery, microdose capsules Canada',
     h1: "Penis Envy Microdose Capsules",
     description: "Penis Envy Microdose capsules continue to grow in popularity among customers searching for premium microdosing products throughout Toronto and the GTA. Each capsule is prepared for consistency and convenience, making it a popular option among customers throughout Mississauga, Vaughan, Markham, Richmond Hill, Barrie, and surrounding communities."
   },
   'Stamets Stack Microdose': {
-    titleTag: "Stamets Stack Microdose Delivery Toronto | FunGuyz",
-    metaDescription: "Buy Stamets Stack microdose capsules online with fast Toronto, GTA and Barrie delivery. Premium microdose blends available from FunGuyz.",
-    keywords: "stamets stack canada, stamets stack microdose, microdose capsules toronto, mushroom capsules gta, microdose delivery toronto, funguyz stamets stack",
+    titleTag: 'Stamets Stack Microdose Delivery Canada | FunGuyz',
+    metaDescription: 'Order Stamets Stack microdose capsules, a known blend format for microdosing routines. Fast delivery across Toronto, the GTA and Canada.',
+    keywords: 'Stamets Stack microdose, microdose capsules Canada, microdose delivery',
     h1: "Stamets Stack Microdose Capsules",
     description: "Stamets Stack remains one of the most recognized microdose capsule formats available today. This premium blend continues to attract customers throughout Toronto, Mississauga, Vaughan, Richmond Hill, Markham, Barrie, and surrounding GTA regions looking for convenient microdose products."
   },
   'Creativity Microdose Blend': {
-    titleTag: "Creativity Microdose Blend Delivery Toronto | FunGuyz",
-    metaDescription: "Order Creativity Microdose Blend capsules online with fast Toronto and GTA delivery. Premium microdose products available from FunGuyz.",
-    keywords: "creativity microdose blend, microdose capsules toronto, mushroom microdose canada, microdose delivery gta, funguyz microdose",
+    titleTag: 'Creativity Microdose Blend Delivery Canada | FunGuyz',
+    metaDescription: 'Shop Creativity Microdose Blend capsules for creative-focused routines. Fast delivery across Toronto, the GTA and Canada.',
+    keywords: 'Creativity microdose blend, microdose delivery Canada, mushroom microdose',
     h1: "Creativity Microdose Blend",
     description: "Creativity Microdose Blend is designed for customers seeking a convenient microdose capsule format. This premium product continues to attract customers throughout Toronto, Vaughan, Markham, Richmond Hill, Mississauga, Barrie, and surrounding GTA communities."
   },
   'Productivity Microdose Blend': {
-    titleTag: "Productivity Microdose Blend Toronto & GTA | FunGuyz",
-    metaDescription: "Buy Productivity Microdose Blend capsules online with fast Toronto, GTA and Barrie delivery. Premium microdose products available from FunGuyz.",
-    keywords: "productivity microdose blend, microdose capsules toronto, microdosing canada, mushroom capsules gta, funguyz microdose, microdose delivery toronto",
+    titleTag: 'Productivity Microdose Blend Delivery Canada | FunGuyz',
+    metaDescription: 'Shop Productivity Microdose Blend capsules for routine-focused shoppers. Fast delivery across Toronto, the GTA and Canada.',
+    keywords: 'Productivity microdose blend, microdose delivery Canada, microdose capsules',
     h1: "Productivity Microdose Blend",
     description: "Productivity Microdose Blend remains a popular microdose capsule option for customers throughout Toronto and the GTA. Carefully prepared and packaged, this premium microdose product continues to attract growing interest throughout Mississauga, Vaughan, Markham, Richmond Hill, Barrie, and surrounding areas."
   },
   'Wellness Microdose Blend': {
-    titleTag: "Wellness Microdose Blend Delivery Toronto | FunGuyz",
-    metaDescription: "Shop Wellness Microdose Blend capsules online with fast Toronto, GTA and Barrie delivery. Premium microdose products available from FunGuyz.",
-    keywords: "wellness microdose blend, microdose capsules toronto, microdosing canada, mushroom capsules gta, microdose delivery toronto, funguyz microdose",
+    titleTag: 'Wellness Microdose Blend Delivery Canada | FunGuyz',
+    metaDescription: 'Order Wellness Microdose Blend capsules for balanced daily routines. Fast delivery across Toronto, the GTA and Canada.',
+    keywords: 'Wellness microdose blend, microdose delivery Canada, microdose capsules Canada',
     h1: "Wellness Microdose Blend",
     description: "Wellness Microdose Blend is a premium capsule product designed for customers seeking a convenient microdose format. Available throughout Toronto, Mississauga, Vaughan, Markham, Richmond Hill, Barrie, and surrounding GTA communities, this product continues to be one of the growing categories within the FunGuyz microdose collection."
   }

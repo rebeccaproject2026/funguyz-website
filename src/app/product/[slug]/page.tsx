@@ -152,27 +152,7 @@ export default function ProductDetailsPage({ params }: { params: Promise<{ slug:
     { id: 'reviews', label: `Reviews (${reviewsList.length})`, icon: MessageSquare }
   ];
 
-  React.useEffect(() => {
-    document.title = seoData.titleTag;
-    
-    // Update or create meta description tag
-    let metaDesc = document.querySelector('meta[name="description"]');
-    if (!metaDesc) {
-      metaDesc = document.createElement('meta');
-      metaDesc.setAttribute('name', 'description');
-      document.head.appendChild(metaDesc);
-    }
-    metaDesc.setAttribute('content', seoData.metaDescription);
-    
-    // Update or create meta keywords tag
-    let metaKeywords = document.querySelector('meta[name="keywords"]');
-    if (!metaKeywords) {
-      metaKeywords = document.createElement('meta');
-      metaKeywords.setAttribute('name', 'keywords');
-      document.head.appendChild(metaKeywords);
-    }
-    metaKeywords.setAttribute('content', seoData.keywords);
-  }, [seoData]);
+
 
   // Curate high-end WooCommerce specifications based on product data matches
   const basePriceNum = parseFloat(matched[2].replace('$', ''));

@@ -6,25 +6,25 @@ import { Footer } from '@/components/Footer';
 import { ProductCard } from '@/components/ProductCard';
 import { useCart } from '@/context/CartContext';
 import { products } from '@/data/products';
-import { 
-  Sparkles, 
-  ArrowUpDown, 
-  ChevronDown, 
-  ChevronUp, 
-  Search, 
-  Filter, 
-  Flame, 
-  Heart, 
-  ShoppingCart, 
-  ShieldCheck, 
-  Truck, 
-  Layers, 
-  Star, 
-  Smile, 
-  Brain, 
-  Compass, 
-  Coffee, 
-  Leaf, 
+import {
+  Sparkles,
+  ArrowUpDown,
+  ChevronDown,
+  ChevronUp,
+  Search,
+  Filter,
+  Flame,
+  Heart,
+  ShoppingCart,
+  ShieldCheck,
+  Truck,
+  Layers,
+  Star,
+  Smile,
+  Brain,
+  Compass,
+  Coffee,
+  Leaf,
   ArrowRight,
   HelpCircle,
   Eye,
@@ -96,9 +96,15 @@ const categoryDataMap: Record<string, CategoryDetails> = {
       { title: 'Natural Wellness', desc: '100% organic mycological extracts, zero synthetic pesticides.', icon: Leaf }
     ],
     accentColor: '#FF4FA3',
-    accentBg: 'bg-[#FF4fa3]/5 text-[#ff4fa3] border-[#ff4fa3]/20'
+    accentBg: 'bg-[#FF4fa3]/5 text-[#ff4fa3] border-[#ff4fa3]/20',
+    titleTag: 'Magic Mushroom Delivery Canada | Premium Strains | FunGuyz',
+    metaDescription: 'Browse premium magic mushroom strains with fast delivery across Toronto, the GTA and Canada-wide shipping.',
+    keywords: 'magic mushroom delivery, mushroom delivery Canada, psilocybin mushrooms Canada, mushroom strains, FunGuyz'
   },
   'edibles': {
+    titleTag: 'Mushroom Edibles Delivery Canada | FunGuyz',
+    metaDescription: 'Shop mushroom chocolates, gummies and infused edibles with fast delivery across Toronto, the GTA and Canada-wide shipping.',
+    keywords: 'mushroom edibles Canada, mushroom chocolate delivery, mushroom gummies Canada, edible delivery Canada',
     title: 'Delicious Mushroom Edibles',
     categoryName: 'Edibles',
     shortDesc: 'Discover gummies, chocolates and teas crafted for taste, quality and a smooth shopping experience. Our precise, lab-tested edible formulations offer a tasty, controlled, and smoke-free way to navigate your wellness journey.',
@@ -181,9 +187,9 @@ const categoryDataMap: Record<string, CategoryDetails> = {
     fullDesc: 'Microdosing involves consuming sub-perceptual quantities of psilocybin (typically 50mg to 250mg) on a scheduled basis (such as the Fadiman or Stamets stack). At this low level, there are zero visual hallucinations or cognitive distortions; instead, users experience enhanced creative problem-solving, elevated focus, reduced social anxiety, and positive mood elevation. All our microdose capsules are blended with pristine organic ingredients to support cognitive longevity. Ideal for professionals, creatives, and anyone seeking high-performance mental clarity.',
     icon: '⚡',
     heroImage: '/images/cat_microdose.webp',
-    titleTag: 'Microdose Capsules Delivery Toronto & GTA | FunGuyz',
-    metaDescription: 'Shop premium microdose capsules online with fast delivery throughout Toronto, Mississauga, Vaughan, Markham, Richmond Hill, Barrie and the GTA. Available from FunGuyz.',
-    keywords: 'microdose capsules toronto, microdose canada, mushroom microdose gta, microdose delivery toronto, microdosing products canada, funguyz microdose, microdose capsules near me',
+    titleTag: 'Microdose Capsules Delivery Canada | FunGuyz',
+    metaDescription: 'Browse microdose capsules and blends with fast delivery across Toronto, the GTA and Canada-wide shipping.',
+    keywords: 'microdose capsules Canada, microdose delivery Canada, mushroom microdose, microdosing Canada',
     stats: [
       { label: 'Products', val: '12+', desc: 'Productivity Stacks' },
       { label: 'Experience', val: 'Sub-Perceptual', desc: 'No Hallucinations/Trips' },
@@ -228,17 +234,17 @@ const productsCatalog: Record<string, string[][]> = {
 export default function DedicatedCategoryPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = React.use(params);
   const slugKey = slug.toLowerCase();
-  
+
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
   const [sortBy, setSortBy] = useState<string>('default');
-  
+
   // Sidebar Interactive Filter States
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [selectedStrength, setSelectedStrength] = useState<string>('all');
   const [selectedEffect, setSelectedEffect] = useState<string>('all');
   const [selectedPriceRange, setSelectedPriceRange] = useState<string>('all');
   const [inStockOnly, setInStockOnly] = useState<boolean>(true);
-  
+
   // FAQ accordion open states (mapped by index)
   const [openFaqIdx, setOpenFaqIdx] = useState<number | null>(null);
 
@@ -267,33 +273,7 @@ export default function DedicatedCategoryPage({ params }: { params: Promise<{ sl
 
   const category = categoryDataMap[slugKey] || categoryDataMap['magic-mushrooms'];
 
-  React.useEffect(() => {
-    if (category) {
-      const titleTag = category.titleTag || `${category.title} Delivery Toronto & GTA | FunGuyz`;
-      const metaDescription = category.metaDescription || category.shortDesc;
-      const keywords = category.keywords || `${category.categoryName.toLowerCase()}, buy ${category.categoryName.toLowerCase()} canada, ${category.categoryName.toLowerCase()} delivery toronto`;
 
-      document.title = titleTag;
-
-      // Update or create meta description tag
-      let metaDesc = document.querySelector('meta[name="description"]');
-      if (!metaDesc) {
-        metaDesc = document.createElement('meta');
-        metaDesc.setAttribute('name', 'description');
-        document.head.appendChild(metaDesc);
-      }
-      metaDesc.setAttribute('content', metaDescription);
-
-      // Update or create meta keywords tag
-      let metaKeywords = document.querySelector('meta[name="keywords"]');
-      if (!metaKeywords) {
-        metaKeywords = document.createElement('meta');
-        metaKeywords.setAttribute('name', 'keywords');
-        document.head.appendChild(metaKeywords);
-      }
-      metaKeywords.setAttribute('content', keywords);
-    }
-  }, [category]);
 
 
   // ==========================================
@@ -312,12 +292,12 @@ export default function DedicatedCategoryPage({ params }: { params: Promise<{ sl
           {/* Faded Background Glows */}
           <div className="absolute left-[5%] top-[10%] w-[300px] h-[300px] rounded-full bg-[#ffe8db]/30 blur-[90px] pointer-events-none" />
           <div className="absolute right-[5%] bottom-[5%] w-[300px] h-[300px] rounded-full bg-[#e0f2fe]/40 blur-[90px] pointer-events-none" />
-          
+
           <div className="mx-auto max-w-7xl relative z-10 grid gap-10 md:grid-cols-[1.2fr_1fr] items-center">
-            
+
             {/* Left Side Hero Content */}
             <div className="flex flex-col items-start text-left gap-4">
-              
+
               {/* Breadcrumb */}
               <div className="flex items-center gap-1.5 text-[12px] font-black uppercase tracking-widest text-slate-400 logo-font leading-none">
                 <a href="/" className="hover:text-[#ff4fa3] transition-colors">Home</a>
@@ -329,7 +309,7 @@ export default function DedicatedCategoryPage({ params }: { params: Promise<{ sl
                 Save More With <br />
                 <span className="text-[#ff4fa3]">Premium Bundles</span>
               </h1>
-              
+
               <p className="text-xs md:text-sm font-semibold leading-relaxed text-slate-500 max-w-md">
                 Hand-picked mushroom bundles designed for better value, convenience and variety. Curated compounds to secure the ultimate synergistic savings.
               </p>
@@ -370,13 +350,13 @@ export default function DedicatedCategoryPage({ params }: { params: Promise<{ sl
             <div className="relative flex justify-center items-center h-full w-full">
               {/* Floating compositions back circle glow */}
               <div className="absolute h-[320px] w-[320px] rounded-full bg-gradient-to-tr from-[#ff4fa3]/10 via-[#2fdfff]/10 to-[#7b5cff]/10 blur-3xl pointer-events-none animate-pulse" />
-              
+
               {/* Premium contained delivery box container */}
               <div className="relative w-full max-w-[340px] aspect-square rounded-[40px] border border-white/60 bg-white/35 backdrop-blur-md p-6 shadow-2xl flex flex-col justify-between items-center overflow-hidden animate-float">
                 <span className="text-[10px] font-black uppercase tracking-widest text-[#ff4fa3] logo-font border border-pink-100 bg-white/75 px-3 py-1 rounded-full shadow-sm">
                   FunGuyz Box
                 </span>
-                
+
                 {/* Floating miniature cards inside */}
                 <div className="grid grid-cols-2 gap-3.5 w-full mt-4">
                   {[
@@ -428,7 +408,7 @@ export default function DedicatedCategoryPage({ params }: { params: Promise<{ sl
           </div>
 
           <div className="grid gap-8 md:grid-cols-3">
-            
+
             {/* Starter Bundle */}
             <div className="bg-white border border-slate-100 rounded-[36px] p-6 shadow-sm flex flex-col justify-between items-start text-left gap-6 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 relative group">
               <span className="absolute left-6 top-6 bg-slate-50 border border-slate-100 text-slate-500 rounded-full px-3.5 py-1 text-[10px] font-black uppercase tracking-widest leading-none">
@@ -441,7 +421,7 @@ export default function DedicatedCategoryPage({ params }: { params: Promise<{ sl
               <div className="space-y-1.5 w-full mt-4">
                 <h3 className="text-xl font-black text-[#1b1533] uppercase logo-font leading-none">Starter Bundle</h3>
                 <span className="block text-[12px] text-slate-400 font-bold uppercase">Perfect For Beginners</span>
-                
+
                 {/* Product Checklist */}
                 <div className="pt-4 space-y-2 border-t border-slate-100/70 mt-4">
                   {[
@@ -488,7 +468,7 @@ export default function DedicatedCategoryPage({ params }: { params: Promise<{ sl
               <div className="space-y-1.5 w-full mt-4">
                 <h3 className="text-xl font-black text-[#1b1533] uppercase logo-font leading-none">Best Seller Bundle</h3>
                 <span className="block text-[12px] text-slate-400 font-bold uppercase">Customer Favorite Stack</span>
-                
+
                 {/* Product Checklist */}
                 <div className="pt-4 space-y-2 border-t border-slate-100/70 mt-4">
                   {[
@@ -536,7 +516,7 @@ export default function DedicatedCategoryPage({ params }: { params: Promise<{ sl
               <div className="space-y-1.5 w-full mt-4">
                 <h3 className="text-xl font-black text-[#1b1533] uppercase logo-font leading-none">Ultimate Bundle</h3>
                 <span className="block text-[12px] text-slate-400 font-bold uppercase">Maximum Compound Variety</span>
-                
+
                 {/* Product Checklist */}
                 <div className="pt-4 space-y-2 border-t border-slate-100/70 mt-4">
                   {[
@@ -577,7 +557,7 @@ export default function DedicatedCategoryPage({ params }: { params: Promise<{ sl
 
         {/* 4. Build Your Own Bundle Section (Large Interactive Section) */}
         <section id="build-bundle" className="mx-auto max-w-7xl px-4 py-16 md:px-8 border-t border-purple-100/30">
-          
+
           <div className="text-center space-y-2 mb-12 max-w-md mx-auto">
             <span className="text-[12px] font-black uppercase tracking-widest text-[#ff4fa3] logo-font">Interactive Builder</span>
             <h2 className="text-3xl font-black text-[#1b1533] uppercase logo-font">Build Your Own Bundle</h2>
@@ -585,10 +565,10 @@ export default function DedicatedCategoryPage({ params }: { params: Promise<{ sl
           </div>
 
           <div className="grid gap-10 lg:grid-cols-[1.3fr_1fr] items-start">
-            
+
             {/* Left Steps Deck */}
             <div className="bg-white border border-slate-100 rounded-[32px] p-6 md:p-8 shadow-sm space-y-8 text-left">
-              
+
               {/* Step 1: Choose Mushrooms */}
               <div className="space-y-4">
                 <div className="flex items-center gap-3">
@@ -606,11 +586,10 @@ export default function DedicatedCategoryPage({ params }: { params: Promise<{ sl
                       key={opt.name}
                       type="button"
                       onClick={() => setBuildMushroom({ name: opt.name, price: opt.price })}
-                      className={`rounded-2xl border p-4 text-left cursor-pointer transition-all flex justify-between items-center ${
-                        buildMushroom.name === opt.name
+                      className={`rounded-2xl border p-4 text-left cursor-pointer transition-all flex justify-between items-center ${buildMushroom.name === opt.name
                           ? 'border-[#ff4fa3] bg-pink-50/10 shadow-sm'
                           : 'border-slate-100 hover:border-pink-300'
-                      }`}
+                        }`}
                     >
                       <div className="leading-tight">
                         <span className="block text-xs font-black uppercase text-[#1b1533] logo-font">{opt.name}</span>
@@ -638,11 +617,10 @@ export default function DedicatedCategoryPage({ params }: { params: Promise<{ sl
                       key={opt.name}
                       type="button"
                       onClick={() => setBuildEdible({ name: opt.name, price: opt.price })}
-                      className={`rounded-2xl border p-4 text-left cursor-pointer transition-all flex flex-col justify-between items-start gap-3 h-28 ${
-                        buildEdible.name === opt.name
+                      className={`rounded-2xl border p-4 text-left cursor-pointer transition-all flex flex-col justify-between items-start gap-3 h-28 ${buildEdible.name === opt.name
                           ? 'border-[#ff4fa3] bg-pink-50/10 shadow-sm'
                           : 'border-slate-100 hover:border-pink-300'
-                      }`}
+                        }`}
                     >
                       <span className="block text-xs font-black uppercase text-[#1b1533] logo-font leading-tight">{opt.name}</span>
                       <strong className="text-emerald-600 text-xs font-black logo-font mt-auto">+${opt.price}</strong>
@@ -667,11 +645,10 @@ export default function DedicatedCategoryPage({ params }: { params: Promise<{ sl
                       key={opt.name}
                       type="button"
                       onClick={() => setBuildCapsule({ name: opt.name, price: opt.price })}
-                      className={`rounded-2xl border p-4 text-left cursor-pointer transition-all flex flex-col justify-between items-start gap-3 h-28 ${
-                        buildCapsule.name === opt.name
+                      className={`rounded-2xl border p-4 text-left cursor-pointer transition-all flex flex-col justify-between items-start gap-3 h-28 ${buildCapsule.name === opt.name
                           ? 'border-[#ff4fa3] bg-pink-50/10 shadow-sm'
                           : 'border-slate-100 hover:border-pink-300'
-                      }`}
+                        }`}
                     >
                       <span className="block text-xs font-black uppercase text-[#1b1533] logo-font leading-tight">{opt.name}</span>
                       <strong className="text-emerald-600 text-xs font-black logo-font mt-auto">+${opt.price}</strong>
@@ -696,11 +673,10 @@ export default function DedicatedCategoryPage({ params }: { params: Promise<{ sl
                       key={opt.name}
                       type="button"
                       onClick={() => setBuildMicrodose({ name: opt.name, price: opt.price })}
-                      className={`rounded-2xl border p-4 text-left cursor-pointer transition-all flex flex-col justify-between items-start gap-3 h-28 ${
-                        buildMicrodose.name === opt.name
+                      className={`rounded-2xl border p-4 text-left cursor-pointer transition-all flex flex-col justify-between items-start gap-3 h-28 ${buildMicrodose.name === opt.name
                           ? 'border-[#ff4fa3] bg-pink-50/10 shadow-sm'
                           : 'border-slate-100 hover:border-pink-300'
-                      }`}
+                        }`}
                     >
                       <span className="block text-xs font-black uppercase text-[#1b1533] logo-font leading-tight">{opt.name}</span>
                       <strong className="text-emerald-600 text-xs font-black logo-font mt-auto">+${opt.price}</strong>
@@ -714,9 +690,9 @@ export default function DedicatedCategoryPage({ params }: { params: Promise<{ sl
             {/* Right Side: Sticky Order Summary */}
             <div className="bg-white border border-slate-100 rounded-[32px] p-6 md:p-8 shadow-sm space-y-6 sticky top-24 text-left">
               <h3 className="text-lg font-black text-[#1b1533] uppercase logo-font border-b border-slate-100 pb-3">Your Custom Bundle</h3>
-              
+
               <div className="space-y-3.5 divide-y divide-slate-50">
-                
+
                 {/* Selected Mushroom */}
                 <div className="flex items-center justify-between text-xs font-semibold text-slate-500 pt-3 first:pt-0">
                   <div>
@@ -792,7 +768,7 @@ export default function DedicatedCategoryPage({ params }: { params: Promise<{ sl
         {/* 5. Why Buy Bundles (6 Benefit Cards) */}
         <section className="bg-white border-t border-b border-purple-100/30 py-16 px-4 md:px-8">
           <div className="mx-auto max-w-7xl space-y-10 text-center">
-            
+
             <div className="space-y-2">
               <span className="text-[12px] font-black uppercase tracking-widest text-[#ff4fa3] logo-font leading-none">Synergy & Value</span>
               <h2 className="text-2xl md:text-3xl font-black text-[#1b1533] uppercase logo-font">Why Buy Bundles?</h2>
@@ -844,8 +820,8 @@ export default function DedicatedCategoryPage({ params }: { params: Promise<{ sl
                 { name: 'Wellness Bundle', items: 'Capsules + Daily Microdose', price: '$69.99' },
                 { name: 'Explorer Bundle', items: 'Strains + Edibles + Capsules', price: '$159.99' }
               ].map((item, idx) => (
-                <div 
-                  key={idx} 
+                <div
+                  key={idx}
                   className="flex flex-col justify-between bg-white p-5 rounded-3xl border border-slate-100 shadow-sm shrink-0 min-w-[230px] group transition-all duration-200 hover:-translate-y-1 hover:shadow-md cursor-pointer"
                   onClick={() => addToCart({
                     title: item.name,
@@ -872,7 +848,7 @@ export default function DedicatedCategoryPage({ params }: { params: Promise<{ sl
         {/* 7. Customer Reviews Section */}
         <section className="bg-white py-16 border-b border-purple-100/30 px-4">
           <div className="mx-auto max-w-7xl space-y-10 text-center">
-            
+
             <div className="space-y-2">
               <span className="text-[12px] font-black uppercase tracking-widest text-[#ff4fa3] logo-font">Reviews</span>
               <h2 className="text-2xl md:text-3xl font-black text-[#1b1533] uppercase logo-font">Verified Bundle Reviews</h2>
@@ -912,7 +888,7 @@ export default function DedicatedCategoryPage({ params }: { params: Promise<{ sl
         {/* 8. Bundle Comparison Table Section */}
         <section className="bg-white py-16 px-4 md:px-8 border-b border-purple-100/30">
           <div className="mx-auto max-w-4xl space-y-8 text-center">
-            
+
             <div className="space-y-2">
               <span className="text-[12px] font-black uppercase tracking-widest text-[#ff4fa3] logo-font">Curation Grid</span>
               <h2 className="text-2xl md:text-3xl font-black text-[#1b1533] uppercase logo-font">Compare Our Bundles</h2>
@@ -953,7 +929,7 @@ export default function DedicatedCategoryPage({ params }: { params: Promise<{ sl
         {/* 9. Accordion FAQ Section */}
         <section className="bg-white py-16 px-4 md:px-8 border-b border-purple-100/30">
           <div className="mx-auto max-w-3xl space-y-8 text-center">
-            
+
             <div className="space-y-2">
               <span className="text-[12px] font-black uppercase tracking-widest text-[#ff4fa3] logo-font">Got Questions?</span>
               <h2 className="text-2xl md:text-3xl font-black text-[#1b1533] uppercase logo-font">Bundle FAQ Section</h2>
@@ -976,13 +952,11 @@ export default function DedicatedCategoryPage({ params }: { params: Promise<{ sl
                     <strong className="text-xs md:text-sm font-black text-[#1b1533] uppercase logo-font group-hover:text-[#ff4fa3] transition-colors flex items-center gap-2.5">
                       <HelpCircle className="h-4.5 w-4.5 text-[#ff4fa3] shrink-0 stroke-[2.2]" /> {faqItem.q}
                     </strong>
-                    <ChevronDown className={`h-4.5 w-4.5 text-slate-400 group-hover:text-[#ff4fa3] transition-transform duration-300 shrink-0 stroke-[2.5] ${
-                      openFaqIdx === idx ? 'rotate-180' : ''
-                    }`} />
+                    <ChevronDown className={`h-4.5 w-4.5 text-slate-400 group-hover:text-[#ff4fa3] transition-transform duration-300 shrink-0 stroke-[2.5] ${openFaqIdx === idx ? 'rotate-180' : ''
+                      }`} />
                   </button>
-                  <div className={`transition-all duration-300 overflow-hidden ${
-                    openFaqIdx === idx ? 'max-h-[300px] opacity-100 mt-2' : 'max-h-0 opacity-0'
-                  }`}>
+                  <div className={`transition-all duration-300 overflow-hidden ${openFaqIdx === idx ? 'max-h-[300px] opacity-100 mt-2' : 'max-h-0 opacity-0'
+                    }`}>
                     <p className="text-xs font-semibold leading-relaxed text-slate-500 pl-7 bg-white/40 p-3.5 rounded-xl border border-pink-50/20 shadow-inner">
                       {faqItem.a}
                     </p>
@@ -997,7 +971,7 @@ export default function DedicatedCategoryPage({ params }: { params: Promise<{ sl
         {/* 10. Related Categories Card Section */}
         <section className="bg-[#fff8f3] py-16 px-4 md:px-8 border-b border-purple-100/30">
           <div className="mx-auto max-w-7xl space-y-8 text-center">
-            
+
             <div className="space-y-2">
               <span className="text-[12px] font-black uppercase tracking-widest text-[#ff4fa3] logo-font">Browse More</span>
               <h3 className="text-2xl md:text-3xl font-black text-[#1b1533] uppercase logo-font">Explore Other Collections</h3>
@@ -1028,7 +1002,7 @@ export default function DedicatedCategoryPage({ params }: { params: Promise<{ sl
                     <p className="text-[12px] font-semibold text-slate-400 leading-relaxed line-clamp-3">{relCat.desc}</p>
                   </div>
 
-                  <a 
+                  <a
                     href={`/category/${relCat.slug}`}
                     className="w-full inline-flex items-center justify-center rounded-2xl bg-slate-50 text-slate-800 border border-slate-200/80 py-3 text-xs font-black uppercase tracking-wider group-hover:bg-[#ff4fa3] group-hover:text-white group-hover:border-[#ff4fa3] transition-all duration-200 cursor-pointer gap-1.5 logo-font"
                   >
@@ -1087,7 +1061,7 @@ export default function DedicatedCategoryPage({ params }: { params: Promise<{ sl
   const sortedProducts = [...activeFilteredProducts].sort((a, b) => {
     const priceA = parseFloat(a[2].replace('$', ''));
     const priceB = parseFloat(b[2].replace('$', ''));
-    
+
     if (sortBy === 'price-asc') return priceA - priceB;
     if (sortBy === 'price-desc') return priceB - priceA;
     if (sortBy === 'name-asc') return a[0].localeCompare(b[0]);
@@ -1105,16 +1079,16 @@ export default function DedicatedCategoryPage({ params }: { params: Promise<{ sl
 
       {/* Hero Banner */}
       <section className="relative overflow-hidden bg-gradient-to-tr from-[#fffbf8] via-[#fffcfb] to-[#fff3ec] border-b border-purple-100/50 py-16 px-4 md:px-8">
-        
+
         {/* Soft decorative background glows */}
         <div className="absolute left-[5%] top-[10%] w-[250px] h-[250px] rounded-full bg-[#ffe8db]/20 blur-[80px] pointer-events-none" />
         <div className="absolute right-[10%] top-[20%] w-[300px] h-[300px] rounded-full bg-pink-200/10 blur-[90px] pointer-events-none animate-pulse" />
 
         <div className="mx-auto max-w-7xl relative z-10 grid gap-8 md:grid-cols-[1.4fr_1fr] items-center">
-          
+
           {/* Left Column: Content */}
           <div className="flex flex-col items-start text-left gap-4">
-            
+
             {/* Breadcrumbs */}
             <div className="flex items-center gap-1.5 text-[12px] font-black uppercase tracking-widest text-slate-400 logo-font leading-none">
               <a href="/" className="hover:text-[#ff4fa3] transition-colors">Home</a>
@@ -1129,13 +1103,13 @@ export default function DedicatedCategoryPage({ params }: { params: Promise<{ sl
               <div className="h-14 w-14 rounded-2xl bg-white shadow-sm border border-slate-100 flex items-center justify-center text-2xl animate-pulse shrink-0">
                 {category.icon}
               </div>
-              
+
               <div>
                 <span className="text-[12px] font-black uppercase tracking-widest text-[#ff4fa3] logo-font leading-none">Collection</span>
                 <h1 className="mt-1 text-3xl md:text-4xl font-black text-[#1b1533] uppercase leading-none tracking-tight logo-font">{category.title}</h1>
               </div>
             </div>
-            
+
             {/* Descriptions & Inline Expandable "Read More" SEO Link */}
             <div className="max-w-2xl mt-2 text-left">
               <p className="text-xs md:text-sm font-semibold leading-relaxed text-slate-500">
@@ -1177,7 +1151,7 @@ export default function DedicatedCategoryPage({ params }: { params: Promise<{ sl
           {/* Right Column: Floating product image card */}
           <div className="relative flex justify-center items-center h-full w-full">
             <div className="relative w-full max-w-[290px] aspect-square rounded-[32px] overflow-hidden border-4 border-white shadow-xl shadow-pink-100/50 bg-white/50 p-2 transition-transform duration-500 hover:scale-[1.03] animate-float">
-              <img 
+              <img
                 src={category.heroImage}
                 className="w-full h-full object-cover rounded-[24px]"
                 alt={category.categoryName}
@@ -1206,7 +1180,7 @@ export default function DedicatedCategoryPage({ params }: { params: Promise<{ sl
       {/* Product Catalog & Listings Area */}
       <section id="catalog-section" className="mx-auto max-w-7xl px-4 py-12 md:px-8">
         <div className="grid gap-8 lg:grid-cols-[250px_1fr] items-start">
-          
+
           {/* Left Sidebar Filter Section */}
           <aside className="bg-white border border-slate-100 rounded-3xl p-5 shadow-sm space-y-6">
             <div className="flex items-center justify-between border-b border-slate-100 pb-3">
@@ -1334,7 +1308,7 @@ export default function DedicatedCategoryPage({ params }: { params: Promise<{ sl
 
           {/* Right Product Grid Area */}
           <div className="space-y-6">
-            
+
             {/* Grid Header Controls */}
             <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between border-b border-purple-100/40 pb-6 text-xs font-bold text-slate-400">
               <div>
@@ -1380,10 +1354,10 @@ export default function DedicatedCategoryPage({ params }: { params: Promise<{ sl
       {/* Category Information Section */}
       <section className="bg-white border-t border-b border-purple-100/30 py-16 px-4 md:px-8">
         <div className="mx-auto max-w-7xl grid gap-12 md:grid-cols-2 items-center">
-          
+
           {/* Left Column: Premium Feature Image Card */}
           <div className="relative w-full max-w-[420px] aspect-video sm:aspect-square rounded-[36px] overflow-hidden border-4 border-slate-50 shadow-lg mx-auto bg-slate-50">
-            <img 
+            <img
               src={category.heroImage}
               className="w-full h-full object-cover"
               alt="Mycological Cultivation Quality"
@@ -1440,8 +1414,8 @@ export default function DedicatedCategoryPage({ params }: { params: Promise<{ sl
           {/* Horizontal scrollable flex deck */}
           <div className="flex gap-4 overflow-x-auto scrollbar-none pb-2">
             {category.popularItems.map((item, idx) => (
-              <div 
-                key={idx} 
+              <div
+                key={idx}
                 className="flex items-center gap-3 bg-white p-2.5 rounded-2xl border border-slate-100 shadow-sm shrink-0 min-w-[210px] group transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md cursor-pointer"
                 onClick={() => setSearchQuery(item.name)}
               >
@@ -1512,13 +1486,11 @@ export default function DedicatedCategoryPage({ params }: { params: Promise<{ sl
                   <strong className="text-xs md:text-sm font-black text-[#1b1533] uppercase logo-font group-hover:text-[#ff4fa3] transition-colors flex items-center gap-2.5">
                     <HelpCircle className="h-4.5 w-4.5 text-[#ff4fa3] shrink-0 stroke-[2.2]" /> {faqItem.q}
                   </strong>
-                  <ChevronDown className={`h-4.5 w-4.5 text-slate-400 group-hover:text-[#ff4fa3] transition-transform duration-300 shrink-0 stroke-[2.5] ${
-                    openFaqIdx === idx ? 'rotate-180' : ''
-                  }`} />
+                  <ChevronDown className={`h-4.5 w-4.5 text-slate-400 group-hover:text-[#ff4fa3] transition-transform duration-300 shrink-0 stroke-[2.5] ${openFaqIdx === idx ? 'rotate-180' : ''
+                    }`} />
                 </button>
-                <div className={`transition-all duration-300 overflow-hidden ${
-                  openFaqIdx === idx ? 'max-h-[300px] opacity-100 mt-2' : 'max-h-0 opacity-0'
-                }`}>
+                <div className={`transition-all duration-300 overflow-hidden ${openFaqIdx === idx ? 'max-h-[300px] opacity-100 mt-2' : 'max-h-0 opacity-0'
+                  }`}>
                   <p className="text-xs font-semibold leading-relaxed text-slate-500 pl-7 bg-white/40 p-3.5 rounded-xl border border-pink-50/20 shadow-inner">
                     {faqItem.a}
                   </p>
@@ -1562,7 +1534,7 @@ export default function DedicatedCategoryPage({ params }: { params: Promise<{ sl
                   <p className="text-[12px] font-semibold text-slate-400 leading-relaxed line-clamp-3">{relCat.desc}</p>
                 </div>
 
-                <a 
+                <a
                   href={`/category/${relCat.slug}`}
                   className="w-full inline-flex items-center justify-center rounded-2xl bg-slate-50 text-slate-800 border border-slate-200/80 py-3 text-xs font-black uppercase tracking-wider group-hover:bg-[#ff4fa3] group-hover:text-white group-hover:border-[#ff4fa3] transition-all duration-200 cursor-pointer gap-1.5 logo-font"
                 >
