@@ -16,6 +16,7 @@ export interface OrderRecord {
 }
 
 export interface FunguyzUser {
+  isDummyPassword?: boolean;
   id: string;
   email: string;
   firstName: string;

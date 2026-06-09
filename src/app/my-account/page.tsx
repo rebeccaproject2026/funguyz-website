@@ -85,7 +85,7 @@ export default function MyAccountPage() {
   // Determine initial view on mount
   useEffect(() => {
     if (isLoggedIn && currentUser) {
-      setView(currentUser.isDummyPassword ? 'change-password' : 'dashboard');
+      setView((currentUser as any)?.isDummyPassword ? 'change-password' : 'dashboard');
     } else {
       setView('login');
     }
@@ -98,9 +98,9 @@ export default function MyAccountPage() {
 
   // ── Handlers ────────────────────────────────────────────────────────────────
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    const result = login(loginEmail, loginPassword);
+    const result = await login(loginEmail, loginPassword);
     if (result.success) {
       showFlash('success', result.message);
     } else {
@@ -108,9 +108,9 @@ export default function MyAccountPage() {
     }
   };
 
-  const handleReset = (e: React.FormEvent) => {
+  const handleReset = async (e: React.FormEvent) => {
     e.preventDefault();
-    const result = resetPassword(resetEmail);
+    const result = await resetPassword(resetEmail) as any;
     if (result.success && result.newPassword) {
       setResetResult(result.newPassword);
     } else {
@@ -118,9 +118,9 @@ export default function MyAccountPage() {
     }
   };
 
-  const handleChangePassword = (e: React.FormEvent) => {
+  const handleChangePassword = async (e: React.FormEvent) => {
     e.preventDefault();
-    const result = updatePassword(newPass, confirmPass);
+    const result = await updatePassword(newPass, confirmPass);
     if (result.success) {
       showFlash('success', result.message);
       setNewPass('');
@@ -156,11 +156,10 @@ export default function MyAccountPage() {
 
   // ── Flash banner ─────────────────────────────────────────────────────────────
   const FlashBanner = () => !flash ? null : (
-    <div className={`mb-6 flex items-center gap-3 rounded-2xl border p-4 text-xs font-bold uppercase tracking-wider logo-font ${
-      flash.type === 'success'
+    <div className={`mb-6 flex items-center gap-3 rounded-2xl border p-4 text-xs font-bold uppercase tracking-wider logo-font ${flash.type === 'success'
         ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-700'
         : 'bg-red-500/10 border-red-500/20 text-red-700'
-    }`}>
+      }`}>
       {flash.type === 'success'
         ? <CheckCircle2 className="h-5 w-5 shrink-0" />
         : <AlertCircle className="h-5 w-5 shrink-0" />}
@@ -420,19 +419,18 @@ export default function MyAccountPage() {
           <aside className="bg-white border border-slate-100 rounded-3xl p-5 shadow-sm space-y-1">
             {([
               { id: 'dashboard', label: 'Dashboard', icon: User },
-              { id: 'orders',    label: 'Orders',    icon: ShoppingBag },
+              { id: 'orders', label: 'Orders', icon: ShoppingBag },
               { id: 'downloads', label: 'Downloads', icon: Download },
               { id: 'addresses', label: 'Addresses', icon: MapPin },
-              { id: 'details',   label: 'Account Details', icon: Key },
+              { id: 'details', label: 'Account Details', icon: Key },
             ] as { id: typeof activeTab; label: string; icon: React.ElementType }[]).map(tab => (
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`w-full flex items-center gap-3 px-4 py-3 text-xs font-black uppercase tracking-wider rounded-2xl transition-all duration-200 cursor-pointer text-left logo-font ${
-                  activeTab === tab.id
+                className={`w-full flex items-center gap-3 px-4 py-3 text-xs font-black uppercase tracking-wider rounded-2xl transition-all duration-200 cursor-pointer text-left logo-font ${activeTab === tab.id
                     ? 'bg-[#ff4fa3] text-white shadow-md shadow-pink-100'
                     : 'text-slate-500 hover:bg-pink-50/50 hover:text-[#ff4fa3]'
-                }`}
+                  }`}
               >
                 <tab.icon className="h-4.5 w-4.5" />
                 <span>{tab.label}</span>
@@ -518,11 +516,10 @@ export default function MyAccountPage() {
                             <td className="py-4 px-4 font-black text-[#ff4fa3]">{order.orderId}</td>
                             <td className="py-4 px-4">{order.date}</td>
                             <td className="py-4 px-4">
-                              <span className={`inline-block rounded-full px-3 py-1 text-[10px] font-black uppercase tracking-widest ${
-                                order.status === 'completed' ? 'bg-emerald-500/10 text-emerald-600' :
-                                order.status === 'cancelled' ? 'bg-red-500/10 text-red-600' :
-                                'bg-amber-500/10 text-amber-600'
-                              }`}>
+                              <span className={`inline-block rounded-full px-3 py-1 text-[10px] font-black uppercase tracking-widest ${order.status === 'delivered' ? 'bg-emerald-500/10 text-emerald-600' :
+                                  order.status === 'cancelled' ? 'bg-red-500/10 text-red-600' :
+                                    'bg-amber-500/10 text-amber-600'
+                                }`}>
                                 {order.status}
                               </span>
                             </td>
