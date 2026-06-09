@@ -27,9 +27,18 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://www.funguyz.ca'),
   title: 'FunGuyz | Mushroom Delivery Toronto & Canada',
   description: 'Fast mushroom delivery in Toronto, Mississauga, Brampton, Oakville, Barrie and the GTA. Canada-wide shipping, discreet packaging, secure checkout, and premium products.',
   keywords: 'mushroom delivery toronto, mushroom delivery gta, mushroom delivery mississauga, mushroom delivery brampton, mushroom delivery oakville, mushroom delivery barrie, mushroom shipping canada, canada wide mushroom shipping, fast mushroom delivery, same day mushroom delivery, mushroom delivery near me, premium mushroom products, discreet mushroom shipping, online mushroom store canada, mushroom shop toronto, mushroom products canada, funguyz, funguyz delivery, funguyz canada',
+  icons: {
+    icon: [
+      { url: '/images/favicon.png' },
+      new URL('/images/favicon.png', 'https://www.funguyz.ca'),
+    ],
+    shortcut: '/images/favicon.png',
+    apple: '/images/favicon.png',
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
