@@ -17,8 +17,6 @@ export function LaunchPopup() {
 
   const timerRef = useRef<NodeJS.Timeout | null>(null);
 
-  if (pathname === '/checkout/') return null;
-
   useEffect(() => {
     const subbed = localStorage.getItem('funguyz_launch_popup_submitted') === 'true';
     if (subbed) {
@@ -144,6 +142,9 @@ export function LaunchPopup() {
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
+
+  // Do not render popup on checkout pages
+  if (pathname === '/checkout' || pathname === '/checkout/') return null;
 
   // If closed but user dismissed and not yet submitted, render sticky bottom banner
   if (!isOpen && isDismissed && !submitted) {

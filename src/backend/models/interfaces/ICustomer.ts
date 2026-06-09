@@ -3,6 +3,7 @@ import { Document } from 'mongoose';
 export enum ERole {
   CUSTOMER = 'CUSTOMER',
   ADMIN = 'ADMIN',
+  VENDOR = 'VENDOR',
 }
 
 export interface ICustomer extends Document {
@@ -18,6 +19,8 @@ export interface ICustomer extends Document {
     postalCode: string;
     isDefault: boolean;
   }[];
+  resetPasswordToken?: string;
+  resetPasswordExpires?: Date;
   deleted: boolean;
   createdAt: Date;
   updatedAt: Date;

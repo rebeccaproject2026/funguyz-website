@@ -1,22 +1,23 @@
 'use client';
 
 import React, { useState } from 'react';
+import Link from 'next/link';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { useCart } from '@/context/CartContext';
 import { useAuth } from '@/context/AuthContext';
-import { 
-  Sparkles, 
-  ShoppingBag, 
-  ShieldCheck, 
-  CreditCard, 
-  Lock, 
-  ArrowRight, 
-  CheckCircle2, 
-  Truck, 
-  MapPin, 
-  User, 
-  Mail, 
+import {
+  Sparkles,
+  ShoppingBag,
+  ShieldCheck,
+  CreditCard,
+  Lock,
+  ArrowRight,
+  CheckCircle2,
+  Truck,
+  MapPin,
+  User,
+  Mail,
   Phone,
   Zap,
   Package,
@@ -33,7 +34,7 @@ import {
 
 export default function CheckoutPage() {
   const { cartItems, subtotal, clearCart, appliedCoupon, applyCoupon, removeCoupon } = useCart();
-  const { createUserFromOrder } = useAuth();
+  const { createUserFromOrder, login } = useAuth();
   const [paymentMethod, setPaymentMethod] = useState<'etransfer'>('etransfer');
   const [shippingMethod, setShippingMethod] = useState<'sameday' | 'express'>('express');
   const [formData, setFormData] = useState({
@@ -48,6 +49,7 @@ export default function CheckoutPage() {
   });
 
   const [isCompleted, setIsCompleted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [completedOrder, setCompletedOrder] = useState<any>(null);
   const [errors, setErrors] = useState<string[]>([]);
   const [accountCredentials, setAccountCredentials] = useState<{ password: string; isNewUser: boolean } | null>(null);
@@ -152,13 +154,10 @@ export default function CheckoutPage() {
     }
 
     setScheduleError('');
-    setIsScheduleModalOpen(false);
-
-
-
 
     // ── Auto-create / update account ──────────────────────────────────────
     setErrors([]);
+    setIsSubmitting(true);
     const trackingCode = `CX${Math.floor(100000000 + Math.random() * 900000000)}CA`;
     const orderRecord = {
       orderId: `#FG-${Math.floor(10000 + Math.random() * 90000)}`,
@@ -175,12 +174,7 @@ export default function CheckoutPage() {
       status: 'processing' as const,
     };
 
-    const creds = createUserFromOrder(
-      { email: email, firstName: formData.firstName, lastName: formData.lastName },
-      orderRecord
-    );
-
-    // --- Send Email via Next.js API ---
+    // --- Send Request to Next.js API (Creates DB Entries and Sends Emails) ---
     fetch(`/api/checkout`, {
       method: 'POST',
       headers: {
@@ -190,19 +184,47 @@ export default function CheckoutPage() {
         orderDetails: orderRecord,
         customerEmail: email,
         adminEmail: 'hello@funguyz.ca', // Admin email to receive notification
+        customerInfo: formData, // Pass full form data for the DB
+        couponCode: appliedCoupon?.code || null,
+        discountAmount: discountAmount || 0,
       }),
-    }).catch(err => console.error('Error sending checkout email:', err));
+    })
+      .then((res) => res.json())
+      .then(async (data) => {
+        if (data.success && data.isNewUser) {
+          // Setting the generated password for the confirmation screen
+          setAccountCredentials({
+            password: data.password || '',
+            isNewUser: true,
+          });
+          // Auto-login new user
+          if (data.password) {
+            await login(email, data.password);
+          }
+        } else if (data.success && !data.isNewUser) {
+          setAccountCredentials({
+            password: '',
+            isNewUser: false,
+          });
+        }
 
-    setAccountCredentials(creds);
+        // Trigger success state only after API completes
+        setCompletedOrder({
+          ...orderRecord,
+          formData: { ...formData, email, phone },
+        });
 
-    setCompletedOrder({
-      ...orderRecord,
-      formData: { ...formData, email, phone },
-    });
-
-    clearCart();
-    setIsCompleted(true);
-    window.scrollTo({ top: 100, behavior: 'smooth' });
+        clearCart();
+        setIsScheduleModalOpen(false);
+        setIsCompleted(true);
+        setIsSubmitting(false);
+        window.scrollTo({ top: 100, behavior: 'smooth' });
+      })
+      .catch((err) => {
+        console.error('Error sending checkout API request:', err);
+        setIsSubmitting(false);
+        setScheduleError('Failed to process order. Please try again.');
+      });
   };
 
   // Calendar Math Helpers
@@ -444,324 +466,347 @@ export default function CheckoutPage() {
           </div>
         )}
 
-        <form onSubmit={handlePlaceOrder} className="grid gap-10 lg:grid-cols-[1.3fr_1fr] items-start">
-
-          {/* Left Block: Intake Forms */}
-          <div className="bg-white border border-slate-100 rounded-[32px] p-6 md:p-8 shadow-sm space-y-8">
-
-            {/* Shipping methods (Moved to top before billing details) */}
-            <div className="space-y-4">
-              <h2 className="text-xl font-black text-[#1b1533] uppercase logo-font">Shipping Options</h2>
-              <div className="grid gap-4 sm:grid-cols-2">
-                {/* 1. Same Day Delivery */}
-                <button
-                  type="button"
-                  onClick={() => setShippingMethod('sameday')}
-                  className={`rounded-2xl border p-4 text-left cursor-pointer transition-all flex items-start gap-3 ${shippingMethod === 'sameday'
-                    ? 'border-[#ff4fa3] bg-pink-50/10 shadow-sm'
-                    : 'border-slate-200 hover:border-pink-300'
-                    }`}
-                >
-                  <MapPin className="h-5 w-5 text-[#ff4fa3] shrink-0 mt-0.5" />
-                  <div>
-                    <span className="block text-xs font-black uppercase text-[#1b1533] logo-font leading-tight">Same Day Delivery</span>
-                    <span className="block text-[12px] text-slate-400 font-semibold mt-1">Same day delivery with in 2 - 5 hours</span>
-                    <strong className="block text-emerald-600 text-xs font-black logo-font mt-2">$20.00 Flat</strong>
-                  </div>
-                </button>
-
-                {/* 2. Express Shipping */}
-                <button
-                  type="button"
-                  onClick={() => setShippingMethod('express')}
-                  className={`rounded-2xl border p-4 text-left cursor-pointer transition-all flex items-start gap-3 ${shippingMethod === 'express'
-                    ? 'border-[#ff4fa3] bg-pink-50/10 shadow-sm'
-                    : 'border-slate-200 hover:border-pink-300'
-                    }`}
-                >
-                  <Zap className="h-5 w-5 text-[#ff4fa3] shrink-0 mt-0.5" />
-                  <div>
-                    <span className="block text-xs font-black uppercase text-[#1b1533] logo-font leading-tight">Express Shipping</span>
-                    <span className="block text-[12px] text-slate-400 font-semibold mt-1">Canada Post Express 1-2 Days</span>
-                    <strong className="block text-emerald-600 text-xs font-black logo-font mt-2">
-                      $20.00 Flat
-                    </strong>
-                  </div>
-                </button>
-              </div>
+        {parsedSubtotal < 75 ? (
+          <div className="bg-white border border-slate-100 rounded-[32px] p-8 md:p-12 shadow-sm flex flex-col items-center gap-6 text-center max-w-2xl mx-auto mt-8">
+            <div className="h-16 w-16 rounded-full bg-red-500/10 flex items-center justify-center text-red-500">
+              <ShoppingBag className="h-8 w-8 stroke-[2.2]" />
             </div>
-
-            {/* Billing Address details */}
-            <div className="space-y-4">
-              <h2 className="text-xl font-black text-[#1b1533] uppercase logo-font">Billing Details</h2>
-              <div className="grid gap-4">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <label className="block text-[12px] font-black uppercase tracking-wider text-slate-400">
-                    First Name
-                    <input
-                      type="text"
-                      name="firstName"
-                      required
-                      value={formData.firstName}
-                      onChange={handleInputChange}
-                      placeholder="e.g. Naveen"
-                      className="mt-1.5 w-full rounded-xl border border-slate-200 px-3.5 py-2.5 text-xs font-semibold outline-none focus:border-[#ff4fa3] focus:ring-4 focus:ring-pink-50/50"
-                    />
-                  </label>
-                  <label className="block text-[12px] font-black uppercase tracking-wider text-slate-400">
-                    Last Name
-                    <input
-                      type="text"
-                      name="lastName"
-                      required
-                      value={formData.lastName}
-                      onChange={handleInputChange}
-                      placeholder="e.g. Kumar"
-                      className="mt-1.5 w-full rounded-xl border border-slate-200 px-3.5 py-2.5 text-xs font-semibold outline-none focus:border-[#ff4fa3] focus:ring-4 focus:ring-pink-50/50"
-                    />
-                  </label>
-                </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <label className="block text-[12px] font-black uppercase tracking-wider text-slate-400">
-                    Email Address
-                    <input
-                      type="email"
-                      name="email"
-                      required
-                      value={formData.email}
-                      onChange={handleInputChange}
-                      placeholder="e.g. hello@metaverse.ca"
-                      className="mt-1.5 w-full rounded-xl border border-slate-200 px-3.5 py-2.5 text-xs font-semibold outline-none focus:border-[#ff4fa3] focus:ring-4 focus:ring-pink-50/50"
-                    />
-                  </label>
-                  <label className="block text-[12px] font-black uppercase tracking-wider text-slate-400">
-                    Phone Number
-                    <input
-                      type="tel"
-                      name="phone"
-                      required
-                      value={formData.phone}
-                      onChange={handleInputChange}
-                      placeholder="e.g. +1 (416) 555-0199"
-                      className="mt-1.5 w-full rounded-xl border border-slate-200 px-3.5 py-2.5 text-xs font-semibold outline-none focus:border-[#ff4fa3] focus:ring-4 focus:ring-pink-50/50"
-                    />
-                  </label>
-                </div>
-
-                <label className="block text-[12px] font-black uppercase tracking-wider text-slate-400">
-                  Street Address
-                  <input
-                    type="text"
-                    name="address"
-                    required
-                    value={formData.address}
-                    onChange={handleInputChange}
-                    placeholder="House number and street name"
-                    className="mt-1.5 w-full rounded-xl border border-slate-200 px-3.5 py-2.5 text-xs font-semibold outline-none focus:border-[#ff4fa3] focus:ring-4 focus:ring-pink-50/50"
-                  />
-                </label>
-
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                  <label className="block text-[12px] font-black uppercase tracking-wider text-slate-400">
-                    City
-                    <input
-                      type="text"
-                      name="city"
-                      required
-                      value={formData.city}
-                      onChange={handleInputChange}
-                      placeholder="e.g. Toronto"
-                      className="mt-1.5 w-full rounded-xl border border-slate-200 px-3.5 py-2.5 text-xs font-semibold outline-none focus:border-[#ff4fa3] focus:ring-4 focus:ring-pink-50/50"
-                    />
-                  </label>
-                  <label className="block text-[12px] font-black uppercase tracking-wider text-slate-400">
-                    Province
-                    <select
-                      name="province"
-                      value={formData.province}
-                      onChange={handleInputChange}
-                      className="mt-1.5 w-full rounded-xl border border-slate-200 px-3.5 py-2.5 text-xs font-semibold outline-none focus:border-[#ff4fa3] focus:ring-4 focus:ring-pink-50/50 bg-white"
-                    >
-                      <option value="ON">Ontario (ON)</option>
-                      <option value="QC">Quebec (QC)</option>
-                      <option value="BC">British Columbia (BC)</option>
-                      <option value="AB">Alberta (AB)</option>
-                      <option value="MB">Manitoba (MB)</option>
-                    </select>
-                  </label>
-                  <label className="block text-[12px] font-black uppercase tracking-wider text-slate-400">
-                    Postal Code
-                    <input
-                      type="text"
-                      name="postcode"
-                      required
-                      value={formData.postcode}
-                      onChange={handleInputChange}
-                      placeholder="e.g. M5T 2G8"
-                      className="mt-1.5 w-full rounded-xl border border-slate-200 px-3.5 py-2.5 text-xs font-semibold outline-none focus:border-[#ff4fa3] focus:ring-4 focus:ring-pink-50/50"
-                    />
-                  </label>
-                </div>
-              </div>
+            <div className="space-y-2">
+              <h2 className="text-2xl font-black text-[#1b1533] uppercase logo-font">Minimum Order Requirement</h2>
+              <p className="text-sm font-semibold text-slate-500 leading-relaxed">
+                The minimum order amount is <strong className="text-slate-800">$75.00</strong>. Your current subtotal is <strong className="text-[#ff4fa3]">${parsedSubtotal.toFixed(2)}</strong>.
+              </p>
+              <p className="text-sm font-semibold text-slate-500">
+                You need to add <strong className="text-emerald-500">${(75 - parsedSubtotal).toFixed(2)}</strong> more to your cart to proceed with checkout.
+              </p>
             </div>
-
-            {/* Payment options relocated to right column for a cleaner checkout layout */}
-
+            <Link
+              href="/shop"
+              className="inline-flex items-center justify-center rounded-2xl bg-[#ff4fa3] text-white px-8 py-4 text-xs font-black uppercase tracking-wider shadow-md shadow-pink-100 transition-all duration-300 hover:bg-black hover:-translate-y-0.5 mt-4 gap-2 logo-font"
+            >
+              <ArrowRight className="h-4 w-4" /> Shop More Products
+            </Link>
           </div>
+        ) : (
+          <form onSubmit={handlePlaceOrder} className="grid gap-10 lg:grid-cols-[1.3fr_1fr] items-start">
 
-          {/* Right Block: Order review and Place order button */}
-          <div className="bg-white border border-slate-100 rounded-[32px] p-6 md:p-8 shadow-sm space-y-6">
-            <h2 className="text-xl font-black text-[#1b1533] uppercase logo-font">Order Summary</h2>
+            {/* Left Block: Intake Forms */}
+            <div className="bg-white border border-slate-100 rounded-[32px] p-6 md:p-8 shadow-sm space-y-8">
 
-            {cartItems.length > 0 ? (
-              <div className="space-y-4 divide-y divide-slate-100">
-                {cartItems.map((item) => (
-                  <div key={item.title} className="flex gap-4 pt-4 first:pt-0">
-                    <div className="h-14 w-14 rounded-xl border border-slate-100 bg-slate-50 flex items-center justify-center p-2 shrink-0">
-                      <img src={item.imageSrc} className="max-h-full max-w-full object-contain" alt="Cart item" />
-                    </div>
-                    <div className="flex-1 flex flex-col justify-between">
-                      <div>
-                        <span className="block text-xs font-black text-[#1b1533] uppercase leading-tight line-clamp-1">{item.title}</span>
-                        <span className="block text-[12px] text-slate-400 font-bold uppercase mt-0.5">{item.category}</span>
-                      </div>
-                      <div className="flex items-center justify-between text-xs font-semibold mt-1">
-                        <span className="text-slate-400">Qty: {item.quantity}</span>
-                        <strong className="text-[#ff4fa3] font-black">{item.price}</strong>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <p className="text-xs font-semibold text-slate-400 italic">No products in checkout cart.</p>
-            )}
-
-            {/* Payment Options (Interac e-Transfer Only) */}
-            <div className="border-t border-slate-100 pt-6 space-y-4 select-none">
-              <h3 className="text-xs font-black uppercase tracking-wider text-[#1b1533] logo-font">Payment Method</h3>
-              <div className="border border-pink-100/80 bg-[#fffdfd] rounded-2xl p-4.5 space-y-3 shadow-[0_4px_20px_rgba(255,79,163,0.02)]">
-                {/* Interac Brand Banner */}
-                <div className="flex items-center justify-between border-b border-pink-50 pb-2.5">
-                  <div className="flex items-center gap-2">
-                    <div className="bg-[#FFB800] text-black h-5.5 px-2 rounded-lg flex items-center justify-center font-black text-[12px] tracking-wider uppercase font-sans">
-                      INTERAC
-                    </div>
-                    <span className="text-xs font-black uppercase text-[#1b1533] logo-font leading-none">e-Transfer</span>
-                  </div>
-                  <span className="bg-emerald-50 text-emerald-700 px-2 py-0.5 rounded-md text-[10px] font-black uppercase tracking-wider font-poppins">
-                    Secured
-                  </span>
-                </div>
-
-                {/* e-Transfer flow explanations */}
-                <div className="space-y-2 text-[12px] font-semibold text-slate-500 leading-normal pl-0.5 font-poppins">
-                  <p>
-                    Once payment is sent, your order will be processed and prepared for delivery.
-                  </p>
-                  <ol className="list-decimal pl-4.5 space-y-1.5 text-slate-400">
-                    <li>Send Payment To: <strong className="text-slate-700 font-bold">funguys.rock@gmail.com</strong></li>
-                    <li>Security Question: <strong className="text-slate-700 font-bold">Which country are we from?</strong></li>
-                    <li>Security Answer: <strong className="text-slate-700 font-bold">Canada + last 4 digits of your order#</strong> (example: Canada1234)</li>
-                  </ol>
-                  <p className="text-[#ff4fa3] flex items-center justify-start gap-1">
-                    Fast • Secure • Discreet Delivery Across Canada
-                    <img src="/images/canada-flag.svg" alt="Canada Flag" className="w-4 h-3 rounded-[1px] shrink-0" />
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* Coupon / Promo Code */}
-            <div className="border-t border-slate-100 pt-6 space-y-3">
-              <h3 className="text-xs font-black uppercase tracking-wider text-[#1b1533] logo-font flex items-center gap-1.5">
-                <Tag className="h-3.5 w-3.5 text-[#ff4fa3]" /> Coupon / Promo Code
-              </h3>
-
-              {appliedCoupon ? (
-                <div className="flex items-center justify-between rounded-xl border border-emerald-200 bg-emerald-50 px-3.5 py-2.5">
-                  <div className="flex items-center gap-2">
-                    <BadgePercent className="h-4 w-4 text-emerald-600 shrink-0" />
-                    <div>
-                      <span className="block text-[11px] font-black uppercase tracking-wider text-emerald-700">{appliedCoupon.code}</span>
-                      <span className="block text-[11px] font-semibold text-emerald-600">{appliedCoupon.label} — saving ${discountAmount.toFixed(2)}</span>
-                    </div>
-                  </div>
+              {/* Shipping methods (Moved to top before billing details) */}
+              <div className="space-y-4">
+                <h2 className="text-xl font-black text-[#1b1533] uppercase logo-font">Shipping Options</h2>
+                <div className="grid gap-4 sm:grid-cols-2">
+                  {/* 1. Same Day Delivery */}
                   <button
                     type="button"
-                    onClick={handleRemoveCoupon}
-                    className="text-slate-400 hover:text-red-500 transition-colors p-1 rounded-full hover:bg-red-50 cursor-pointer"
-                    aria-label="Remove coupon"
+                    onClick={() => setShippingMethod('sameday')}
+                    className={`rounded-2xl border p-4 text-left cursor-pointer transition-all flex items-start gap-3 ${shippingMethod === 'sameday'
+                      ? 'border-[#ff4fa3] bg-pink-50/10 shadow-sm'
+                      : 'border-slate-200 hover:border-pink-300'
+                      }`}
                   >
-                    <X className="h-3.5 w-3.5" />
+                    <MapPin className="h-5 w-5 text-[#ff4fa3] shrink-0 mt-0.5" />
+                    <div>
+                      <span className="block text-xs font-black uppercase text-[#1b1533] logo-font leading-tight">Same Day Delivery</span>
+                      <span className="block text-[12px] text-slate-400 font-semibold mt-1">Same day delivery with in 2 - 5 hours</span>
+                      <strong className="block text-emerald-600 text-xs font-black logo-font mt-2">$20.00 Flat</strong>
+                    </div>
                   </button>
+
+                  {/* 2. Express Shipping */}
+                  <button
+                    type="button"
+                    onClick={() => setShippingMethod('express')}
+                    className={`rounded-2xl border p-4 text-left cursor-pointer transition-all flex items-start gap-3 ${shippingMethod === 'express'
+                      ? 'border-[#ff4fa3] bg-pink-50/10 shadow-sm'
+                      : 'border-slate-200 hover:border-pink-300'
+                      }`}
+                  >
+                    <Zap className="h-5 w-5 text-[#ff4fa3] shrink-0 mt-0.5" />
+                    <div>
+                      <span className="block text-xs font-black uppercase text-[#1b1533] logo-font leading-tight">Express Shipping</span>
+                      <span className="block text-[12px] text-slate-400 font-semibold mt-1">Canada Post Express 1-2 Days</span>
+                      <strong className="block text-emerald-600 text-xs font-black logo-font mt-2">
+                        $20.00 Flat
+                      </strong>
+                    </div>
+                  </button>
+                </div>
+              </div>
+
+              {/* Billing Address details */}
+              <div className="space-y-4">
+                <h2 className="text-xl font-black text-[#1b1533] uppercase logo-font">Billing Details</h2>
+                <div className="grid gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <label className="block text-[12px] font-black uppercase tracking-wider text-slate-400">
+                      First Name
+                      <input
+                        type="text"
+                        name="firstName"
+                        required
+                        value={formData.firstName}
+                        onChange={handleInputChange}
+                        placeholder="e.g. Naveen"
+                        className="mt-1.5 w-full rounded-xl border border-slate-200 px-3.5 py-2.5 text-xs font-semibold outline-none focus:border-[#ff4fa3] focus:ring-4 focus:ring-pink-50/50"
+                      />
+                    </label>
+                    <label className="block text-[12px] font-black uppercase tracking-wider text-slate-400">
+                      Last Name
+                      <input
+                        type="text"
+                        name="lastName"
+                        required
+                        value={formData.lastName}
+                        onChange={handleInputChange}
+                        placeholder="e.g. Kumar"
+                        className="mt-1.5 w-full rounded-xl border border-slate-200 px-3.5 py-2.5 text-xs font-semibold outline-none focus:border-[#ff4fa3] focus:ring-4 focus:ring-pink-50/50"
+                      />
+                    </label>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <label className="block text-[12px] font-black uppercase tracking-wider text-slate-400">
+                      Email Address
+                      <input
+                        type="email"
+                        name="email"
+                        required
+                        value={formData.email}
+                        onChange={handleInputChange}
+                        placeholder="e.g. hello@metaverse.ca"
+                        className="mt-1.5 w-full rounded-xl border border-slate-200 px-3.5 py-2.5 text-xs font-semibold outline-none focus:border-[#ff4fa3] focus:ring-4 focus:ring-pink-50/50"
+                      />
+                    </label>
+                    <label className="block text-[12px] font-black uppercase tracking-wider text-slate-400">
+                      Phone Number
+                      <input
+                        type="tel"
+                        name="phone"
+                        required
+                        value={formData.phone}
+                        onChange={handleInputChange}
+                        placeholder="e.g. +1 (416) 555-0199"
+                        className="mt-1.5 w-full rounded-xl border border-slate-200 px-3.5 py-2.5 text-xs font-semibold outline-none focus:border-[#ff4fa3] focus:ring-4 focus:ring-pink-50/50"
+                      />
+                    </label>
+                  </div>
+
+                  <label className="block text-[12px] font-black uppercase tracking-wider text-slate-400">
+                    Street Address
+                    <input
+                      type="text"
+                      name="address"
+                      required
+                      value={formData.address}
+                      onChange={handleInputChange}
+                      placeholder="House number and street name"
+                      className="mt-1.5 w-full rounded-xl border border-slate-200 px-3.5 py-2.5 text-xs font-semibold outline-none focus:border-[#ff4fa3] focus:ring-4 focus:ring-pink-50/50"
+                    />
+                  </label>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <label className="block text-[12px] font-black uppercase tracking-wider text-slate-400">
+                      City
+                      <input
+                        type="text"
+                        name="city"
+                        required
+                        value={formData.city}
+                        onChange={handleInputChange}
+                        placeholder="e.g. Toronto"
+                        className="mt-1.5 w-full rounded-xl border border-slate-200 px-3.5 py-2.5 text-xs font-semibold outline-none focus:border-[#ff4fa3] focus:ring-4 focus:ring-pink-50/50"
+                      />
+                    </label>
+                    <label className="block text-[12px] font-black uppercase tracking-wider text-slate-400">
+                      Province
+                      <select
+                        name="province"
+                        value={formData.province}
+                        onChange={handleInputChange}
+                        className="mt-1.5 w-full rounded-xl border border-slate-200 px-3.5 py-2.5 text-xs font-semibold outline-none focus:border-[#ff4fa3] focus:ring-4 focus:ring-pink-50/50 bg-white"
+                      >
+                        <option value="ON">Ontario (ON)</option>
+                        <option value="QC">Quebec (QC)</option>
+                        <option value="BC">British Columbia (BC)</option>
+                        <option value="AB">Alberta (AB)</option>
+                        <option value="MB">Manitoba (MB)</option>
+                      </select>
+                    </label>
+                    <label className="block text-[12px] font-black uppercase tracking-wider text-slate-400">
+                      Postal Code
+                      <input
+                        type="text"
+                        name="postcode"
+                        required
+                        value={formData.postcode}
+                        onChange={handleInputChange}
+                        placeholder="e.g. M5T 2G8"
+                        className="mt-1.5 w-full rounded-xl border border-slate-200 px-3.5 py-2.5 text-xs font-semibold outline-none focus:border-[#ff4fa3] focus:ring-4 focus:ring-pink-50/50"
+                      />
+                    </label>
+                  </div>
+                </div>
+              </div>
+
+              {/* Payment options relocated to right column for a cleaner checkout layout */}
+
+            </div>
+
+            {/* Right Block: Order review and Place order button */}
+            <div className="bg-white border border-slate-100 rounded-[32px] p-6 md:p-8 shadow-sm space-y-6">
+              <h2 className="text-xl font-black text-[#1b1533] uppercase logo-font">Order Summary</h2>
+
+              {cartItems.length > 0 ? (
+                <div className="space-y-4 divide-y divide-slate-100">
+                  {cartItems.map((item) => (
+                    <div key={item.title} className="flex gap-4 pt-4 first:pt-0">
+                      <div className="h-14 w-14 rounded-xl border border-slate-100 bg-slate-50 flex items-center justify-center p-2 shrink-0">
+                        <img src={item.imageSrc} className="max-h-full max-w-full object-contain" alt="Cart item" />
+                      </div>
+                      <div className="flex-1 flex flex-col justify-between">
+                        <div>
+                          <span className="block text-xs font-black text-[#1b1533] uppercase leading-tight line-clamp-1">{item.title}</span>
+                          <span className="block text-[12px] text-slate-400 font-bold uppercase mt-0.5">{item.category}</span>
+                        </div>
+                        <div className="flex items-center justify-between text-xs font-semibold mt-1">
+                          <span className="text-slate-400">Qty: {item.quantity}</span>
+                          <strong className="text-[#ff4fa3] font-black">{item.price}</strong>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
                 </div>
               ) : (
-                <div className="flex gap-2">
-                  <div className="relative flex-1">
-                    <Tag className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-slate-400" />
-                    <input
-                      type="text"
-                      value={couponInput}
-                      onChange={(e) => { setCouponInput(e.target.value); setCouponError(''); setCouponSuccess(''); }}
-                      onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), handleApplyCoupon())}
-                      placeholder="Enter promo code"
-                      className="w-full rounded-xl border border-slate-200 pl-9 pr-3.5 py-2.5 text-xs font-semibold outline-none focus:border-[#ff4fa3] focus:ring-4 focus:ring-pink-50/50 uppercase placeholder:normal-case placeholder:text-slate-400"
-                    />
+                <p className="text-xs font-semibold text-slate-400 italic">No products in checkout cart.</p>
+              )}
+
+              {/* Payment Options (Interac e-Transfer Only) */}
+              <div className="border-t border-slate-100 pt-6 space-y-4 select-none">
+                <h3 className="text-xs font-black uppercase tracking-wider text-[#1b1533] logo-font">Payment Method</h3>
+                <div className="border border-pink-100/80 bg-[#fffdfd] rounded-2xl p-4.5 space-y-3 shadow-[0_4px_20px_rgba(255,79,163,0.02)]">
+                  {/* Interac Brand Banner */}
+                  <div className="flex items-center justify-between border-b border-pink-50 pb-2.5">
+                    <div className="flex items-center gap-2">
+                      <div className="bg-[#FFB800] text-black h-5.5 px-2 rounded-lg flex items-center justify-center font-black text-[12px] tracking-wider uppercase font-sans">
+                        INTERAC
+                      </div>
+                      <span className="text-xs font-black uppercase text-[#1b1533] logo-font leading-none">e-Transfer</span>
+                    </div>
+                    <span className="bg-emerald-50 text-emerald-700 px-2 py-0.5 rounded-md text-[10px] font-black uppercase tracking-wider font-poppins">
+                      Secured
+                    </span>
                   </div>
-                  <button
-                    type="button"
-                    onClick={handleApplyCoupon}
-                    className="shrink-0 rounded-xl bg-[#ff4fa3] text-white px-4 py-2.5 text-[11px] font-black uppercase tracking-wider transition-all hover:bg-black hover:text-[#ff4fa3] cursor-pointer"
-                  >
-                    Apply
-                  </button>
-                </div>
-              )}
 
-              {couponError && (
-                <p className="text-[11px] font-bold text-red-500 flex items-center gap-1">⚠️ {couponError}</p>
-              )}
-              {couponSuccess && (
-                <p className="text-[11px] font-bold text-emerald-600 flex items-center gap-1">✓ {couponSuccess}</p>
-              )}
+                  {/* e-Transfer flow explanations */}
+                  <div className="space-y-2 text-[12px] font-semibold text-slate-500 leading-normal pl-0.5 font-poppins">
+                    <p>
+                      Once payment is sent, your order will be processed and prepared for delivery.
+                    </p>
+                    <ol className="list-decimal pl-4.5 space-y-1.5 text-slate-400">
+                      <li>Send Payment To: <strong className="text-slate-700 font-bold">funguys.rock@gmail.com</strong></li>
+                      <li>Security Question: <strong className="text-slate-700 font-bold">Which country are we from?</strong></li>
+                      <li>Security Answer: <strong className="text-slate-700 font-bold">Canada + last 4 digits of your order#</strong> (example: Canada1234)</li>
+                    </ol>
+                    <p className="text-[#ff4fa3] flex items-center justify-start gap-1">
+                      Fast • Secure • Discreet Delivery Across Canada
+                      <img src="/images/canada-flag.svg" alt="Canada Flag" className="w-4 h-3 rounded-[1px] shrink-0" />
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Coupon / Promo Code */}
+              <div className="border-t border-slate-100 pt-6 space-y-3">
+                <h3 className="text-xs font-black uppercase tracking-wider text-[#1b1533] logo-font flex items-center gap-1.5">
+                  <Tag className="h-3.5 w-3.5 text-[#ff4fa3]" /> Coupon / Promo Code
+                </h3>
+
+                {appliedCoupon ? (
+                  <div className="flex items-center justify-between rounded-xl border border-emerald-200 bg-emerald-50 px-3.5 py-2.5">
+                    <div className="flex items-center gap-2">
+                      <BadgePercent className="h-4 w-4 text-emerald-600 shrink-0" />
+                      <div>
+                        <span className="block text-[11px] font-black uppercase tracking-wider text-emerald-700">{appliedCoupon.code}</span>
+                        <span className="block text-[11px] font-semibold text-emerald-600">{appliedCoupon.label} — saving ${discountAmount.toFixed(2)}</span>
+                      </div>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={handleRemoveCoupon}
+                      className="text-slate-400 hover:text-red-500 transition-colors p-1 rounded-full hover:bg-red-50 cursor-pointer"
+                      aria-label="Remove coupon"
+                    >
+                      <X className="h-3.5 w-3.5" />
+                    </button>
+                  </div>
+                ) : (
+                  <div className="flex gap-2">
+                    <div className="relative flex-1">
+                      <Tag className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-slate-400" />
+                      <input
+                        type="text"
+                        value={couponInput}
+                        onChange={(e) => { setCouponInput(e.target.value); setCouponError(''); setCouponSuccess(''); }}
+                        onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), handleApplyCoupon())}
+                        placeholder="Enter promo code"
+                        className="w-full rounded-xl border border-slate-200 pl-9 pr-3.5 py-2.5 text-xs font-semibold outline-none focus:border-[#ff4fa3] focus:ring-4 focus:ring-pink-50/50 uppercase placeholder:normal-case placeholder:text-slate-400"
+                      />
+                    </div>
+                    <button
+                      type="button"
+                      onClick={handleApplyCoupon}
+                      className="shrink-0 rounded-xl bg-[#ff4fa3] text-white px-4 py-2.5 text-[11px] font-black uppercase tracking-wider transition-all hover:bg-black hover:text-[#ff4fa3] cursor-pointer"
+                    >
+                      Apply
+                    </button>
+                  </div>
+                )}
+
+                {couponError && (
+                  <p className="text-[11px] font-bold text-red-500 flex items-center gap-1">⚠️ {couponError}</p>
+                )}
+                {couponSuccess && (
+                  <p className="text-[11px] font-bold text-emerald-600 flex items-center gap-1">✓ {couponSuccess}</p>
+                )}
+              </div>
+
+              {/* Calculations summaries */}
+              <div className="border-t border-slate-100 pt-6 space-y-3.5 text-xs font-bold text-slate-400">
+                <div className="flex justify-between">
+                  <span>Subtotal</span>
+                  <strong className="text-slate-800">${parsedSubtotal.toFixed(2)}</strong>
+                </div>
+                {appliedCoupon && (
+                  <div className="flex justify-between text-emerald-600">
+                    <span>Discount ({appliedCoupon.label})</span>
+                    <strong>-${discountAmount.toFixed(2)}</strong>
+                  </div>
+                )}
+                <div className="flex justify-between">
+                  <span>{shippingMethod === 'sameday' ? 'Delivery Fee' : 'Shipping Fee'}</span>
+                  <strong className="text-slate-800">${shippingCost.toFixed(2)}</strong>
+                </div>
+                {/* Taxes removed as per client request */}
+                <div className="border-t border-slate-100 pt-4 flex justify-between text-sm">
+                  <span className="text-slate-800 uppercase logo-font">Total Amount</span>
+                  <strong className="text-[#ff4fa3] font-black logo-font text-base">${grandTotal.toFixed(2)}</strong>
+                </div>
+              </div>
+
+              {/* Place order CTA */}
+              <button
+                type="submit"
+                className="w-full inline-flex items-center justify-center rounded-2xl bg-[#ff4fa3] text-white border border-[#ff4fa3] py-4 text-xs font-black uppercase tracking-wider shadow-md shadow-pink-100 transition-all duration-300 hover:bg-black hover:text-[#ff4fa3] hover:border-black hover:-translate-y-0.5 active:translate-y-0 cursor-pointer gap-2 logo-font mt-2"
+              >
+                <ShieldCheck className="h-4.5 w-4.5" /> Place Secure Order
+              </button>
+
             </div>
 
-            {/* Calculations summaries */}
-            <div className="border-t border-slate-100 pt-6 space-y-3.5 text-xs font-bold text-slate-400">
-              <div className="flex justify-between">
-                <span>Subtotal</span>
-                <strong className="text-slate-800">${parsedSubtotal.toFixed(2)}</strong>
-              </div>
-              {appliedCoupon && (
-                <div className="flex justify-between text-emerald-600">
-                  <span>Discount ({appliedCoupon.label})</span>
-                  <strong>-${discountAmount.toFixed(2)}</strong>
-                </div>
-              )}
-              <div className="flex justify-between">
-                <span>{shippingMethod === 'sameday' ? 'Delivery Fee' : 'Shipping Fee'}</span>
-                <strong className="text-slate-800">${shippingCost.toFixed(2)}</strong>
-              </div>
-              {/* Taxes removed as per client request */}
-              <div className="border-t border-slate-100 pt-4 flex justify-between text-sm">
-                <span className="text-slate-800 uppercase logo-font">Total Amount</span>
-                <strong className="text-[#ff4fa3] font-black logo-font text-base">${grandTotal.toFixed(2)}</strong>
-              </div>
-            </div>
-
-            {/* Place order CTA */}
-            <button
-              type="submit"
-              className="w-full inline-flex items-center justify-center rounded-2xl bg-[#ff4fa3] text-white border border-[#ff4fa3] py-4 text-xs font-black uppercase tracking-wider shadow-md shadow-pink-100 transition-all duration-300 hover:bg-black hover:text-[#ff4fa3] hover:border-black hover:-translate-y-0.5 active:translate-y-0 cursor-pointer gap-2 logo-font mt-2"
-            >
-              <ShieldCheck className="h-4.5 w-4.5" /> Place Secure Order
-            </button>
-
-          </div>
-
-        </form>
+          </form>
+        )}
       </section>
 
       {/* 11. Delivery Scheduling Modal */}
@@ -964,9 +1009,20 @@ export default function CheckoutPage() {
               <button
                 type="button"
                 onClick={handleConfirmSchedule}
-                className="w-full h-11.5 inline-flex items-center justify-center rounded-2xl bg-gradient-to-r from-[#ff4fa3] via-[#a855f7] to-[#7b5cff] text-white font-black text-xs uppercase tracking-wider shadow-lg shadow-pink-500/10 hover:scale-[1.01] active:scale-95 transition-all cursor-pointer logo-font gap-2 mt-4"
+                disabled={isSubmitting}
+                className={`w-full h-11.5 inline-flex items-center justify-center rounded-2xl font-black text-xs uppercase tracking-wider shadow-lg transition-all logo-font gap-2 mt-4 ${isSubmitting
+                  ? 'bg-slate-800 text-slate-400 cursor-not-allowed'
+                  : 'bg-gradient-to-r from-[#ff4fa3] via-[#a855f7] to-[#7b5cff] text-white shadow-pink-500/10 hover:scale-[1.01] active:scale-95 cursor-pointer'
+                  }`}
               >
-                <ShieldCheck className="h-4.5 w-4.5" />
+                {isSubmitting ? (
+                  <svg className="animate-spin h-4.5 w-4.5 text-slate-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  </svg>
+                ) : (
+                  <ShieldCheck className="h-4.5 w-4.5" />
+                )}
                 <span>Confirm & Place Order</span>
               </button>
 

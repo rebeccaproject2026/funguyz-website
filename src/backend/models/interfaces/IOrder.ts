@@ -9,10 +9,17 @@ export enum EOrderStatus {
 }
 
 export interface IOrder extends Document {
+  orderNumber: string;
   customer?: mongoose.Types.ObjectId; // Optional for guest checkout
   guestEmail?: string;
+  deliveryDetails?: {
+    date: string;
+    timeSlot: string;
+  };
   orderItems: {
-    product: mongoose.Types.ObjectId;
+    product?: mongoose.Types.ObjectId;
+    title: string;
+    imageSrc?: string;
     quantity: number;
     priceAtPurchase: number;
   }[];
@@ -20,7 +27,8 @@ export interface IOrder extends Document {
   subTotal: number;
   taxAmount: number;
   shippingAmount: number;
-  couponApplied?: mongoose.Types.ObjectId;
+  discountAmount?: number;
+  couponCode?: string;
   shippingAddress: {
     street: string;
     city: string;

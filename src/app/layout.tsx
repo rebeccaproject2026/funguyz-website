@@ -41,16 +41,20 @@ export const metadata: Metadata = {
   },
 };
 
+import NextAuthProvider from '@/context/NextAuthProvider';
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`scroll-smooth ${fredoka.variable} ${outfit.variable} ${poppins.variable}`}>
       <body className="antialiased font-sans">
-        <AuthProvider>
-          <CartProvider>
-            {children}
-            <LaunchPopup />
-          </CartProvider>
-        </AuthProvider>
+        <NextAuthProvider>
+          <AuthProvider>
+            <CartProvider>
+              {children}
+              <LaunchPopup />
+            </CartProvider>
+          </AuthProvider>
+        </NextAuthProvider>
       </body>
     </html>
   );

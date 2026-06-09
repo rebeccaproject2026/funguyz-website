@@ -3,18 +3,25 @@ import { IOrder, EOrderStatus } from './interfaces/IOrder';
 
 const OrderSchema: Schema = new Schema(
   {
+    orderNumber: { type: String, required: true },
     customer: {
       type: Schema.Types.ObjectId,
       ref: 'Customer',
     },
     guestEmail: String,
+    deliveryDetails: {
+      date: String,
+      timeSlot: String,
+    },
     orderItems: [
       {
         product: {
           type: Schema.Types.ObjectId,
           ref: 'Product',
-          required: true,
+          required: false,
         },
+        title: { type: String, required: true },
+        imageSrc: { type: String },
         quantity: { type: Number, required: true },
         priceAtPurchase: { type: Number, required: true },
       },
@@ -23,10 +30,8 @@ const OrderSchema: Schema = new Schema(
     subTotal: { type: Number, required: true },
     taxAmount: { type: Number, required: true, default: 0 },
     shippingAmount: { type: Number, required: true, default: 0 },
-    couponApplied: {
-      type: Schema.Types.ObjectId,
-      ref: 'Coupon',
-    },
+    discountAmount: { type: Number, default: 0 },
+    couponCode: { type: String },
     shippingAddress: {
       street: { type: String, required: true },
       city: { type: String, required: true },
