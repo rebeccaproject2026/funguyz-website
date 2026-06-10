@@ -64,4 +64,8 @@ scratch_*
 *.tsbuildinfo
 
 # Ignore images (User will upload via FileZilla)
-/public/images/products/
+/public/images/CAPSULES/
+/public/images/microdose/
+/public/images/magicmushrooms/
+/public/images/edibles/
+/public/images/EDIBLES/
