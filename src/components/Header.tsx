@@ -651,34 +651,34 @@ export function Header() {
       )}
 
       {/* Mobile Sticky Bottom Navigation Bar */}
-      <div className="fixed bottom-0 left-0 right-0 z-[999] md:hidden bg-white/90 backdrop-blur-md border-t border-slate-150/80 shadow-[0_-4px_24px_rgba(27,21,51,0.06)] h-16 flex items-center justify-around px-2 py-1 select-none">
+      <div className="fixed bottom-0 left-0 right-0 z-[999] md:hidden bg-white/95 backdrop-blur-md border-t border-slate-200/80 shadow-[0_-4px_24px_rgba(27,21,51,0.08)] flex items-center justify-around px-1 pt-2.5 pb-[calc(env(safe-area-inset-bottom)+12px)] select-none">
         <a
           href="/shop"
-          className={`flex flex-col items-center justify-center active:scale-95 transition-all w-12 h-12 ${(pathname === '/shop' || pathname.startsWith('/shop/') || pathname.startsWith('/category/') || pathname.startsWith('/product/')) ? 'text-[#ff4fa3]' : 'text-slate-500 hover:text-[#ff4fa3]'}`}
+          className={`flex flex-col items-center justify-center active:scale-95 transition-all w-[72px] h-12 gap-1 ${(pathname === '/shop' || pathname.startsWith('/shop/') || pathname.startsWith('/category/') || pathname.startsWith('/product/')) ? 'text-[#ff4fa3]' : 'text-slate-500 hover:text-[#ff4fa3]'}`}
         >
-          <ShoppingBag className="h-5 w-5 stroke-[1.8]" />
-          <span className="text-[12px] font-bold mt-1 uppercase tracking-wider whitespace-nowrap">Shop</span>
+          <ShoppingBag className="h-5 w-5 stroke-[2]" />
+          <span className="text-[10.5px] font-black uppercase tracking-widest whitespace-nowrap leading-none">Shop</span>
         </a>
         <a
           href="/bundles"
-          className={`flex flex-col items-center justify-center active:scale-95 transition-all w-12 h-12 ${(pathname === '/bundles' || pathname.startsWith('/bundles/')) ? 'text-[#ff4fa3]' : 'text-slate-500 hover:text-[#ff4fa3]'}`}
+          className={`flex flex-col items-center justify-center active:scale-95 transition-all w-[72px] h-12 gap-1 ${(pathname === '/bundles' || pathname.startsWith('/bundles/')) ? 'text-[#ff4fa3]' : 'text-slate-500 hover:text-[#ff4fa3]'}`}
         >
-          <Gift className="h-5 w-5 stroke-[1.8]" />
-          <span className="text-[12px] font-bold mt-1 uppercase tracking-wider whitespace-nowrap">Bundles</span>
+          <Gift className="h-5 w-5 stroke-[2]" />
+          <span className="text-[10.5px] font-black uppercase tracking-widest whitespace-nowrap leading-none">Bundles</span>
         </a>
         <a
           href="/coupons"
-          className={`flex flex-col items-center justify-center active:scale-95 transition-all w-12 h-12 ${(pathname === '/coupons' || pathname.startsWith('/coupons/')) ? 'text-[#ff4fa3]' : 'text-slate-500 hover:text-[#ff4fa3]'}`}
+          className={`flex flex-col items-center justify-center active:scale-95 transition-all w-[72px] h-12 gap-1 ${(pathname === '/coupons' || pathname.startsWith('/coupons/')) ? 'text-[#ff4fa3]' : 'text-slate-500 hover:text-[#ff4fa3]'}`}
         >
-          <Ticket className="h-5 w-5 stroke-[1.8]" />
-          <span className="text-[12px] font-bold mt-1 uppercase tracking-wider whitespace-nowrap">Coupons</span>
+          <Ticket className="h-5 w-5 stroke-[2]" />
+          <span className="text-[10.5px] font-black uppercase tracking-widest whitespace-nowrap leading-none">Coupons</span>
         </a>
         <button
           onClick={() => setIsMobileCategoryOpen(true)}
-          className={`flex flex-col items-center justify-center active:scale-95 transition-all w-12 h-12 cursor-pointer focus:outline-none ${isMobileCategoryOpen ? 'text-[#ff4fa3]' : 'text-slate-500 hover:text-[#ff4fa3]'}`}
+          className={`flex flex-col items-center justify-center active:scale-95 transition-all w-[72px] h-12 gap-1 cursor-pointer focus:outline-none ${isMobileCategoryOpen ? 'text-[#ff4fa3]' : 'text-slate-500 hover:text-[#ff4fa3]'}`}
         >
-          <Grid className={`h-5 w-5 stroke-[1.8] ${isMobileCategoryOpen ? 'animate-pulse' : ''}`} />
-          <span className={`text-[12px] font-bold mt-1 uppercase tracking-wider whitespace-nowrap ${isMobileCategoryOpen ? 'animate-pulse' : ''}`}>Category</span>
+          <Grid className={`h-5 w-5 stroke-[2] ${isMobileCategoryOpen ? 'animate-pulse' : ''}`} />
+          <span className={`text-[10.5px] font-black uppercase tracking-widest whitespace-nowrap leading-none ${isMobileCategoryOpen ? 'animate-pulse' : ''}`}>Category</span>
         </button>
       </div>
 
