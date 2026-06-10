@@ -10,6 +10,9 @@ export interface ICustomer extends Document {
   firstName: string;
   lastName: string;
   email: string;
+  phone?: string;
+  cashBalance: number;
+  couponBalance: number;
   passwordHash: string;
   role: ERole;
   addresses: {
@@ -21,6 +24,8 @@ export interface ICustomer extends Document {
   }[];
   resetPasswordToken?: string;
   resetPasswordExpires?: Date;
+  tempPasswordToken?: string;
+  tempPasswordExpiresAt?: Date;
   deleted: boolean;
   createdAt: Date;
   updatedAt: Date;

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
@@ -10,7 +10,6 @@ import {
   Sparkles,
   ShoppingBag,
   ShieldCheck,
-  CreditCard,
   Lock,
   ArrowRight,
   CheckCircle2,
@@ -20,21 +19,18 @@ import {
   Mail,
   Phone,
   Zap,
-  Package,
-  DollarSign,
   ChevronLeft,
   ChevronRight,
   Calendar,
   X,
   Tag,
   BadgePercent,
-  KeyRound,
   UserPlus
 } from 'lucide-react';
 
 export default function CheckoutPage() {
   const { cartItems, subtotal, clearCart, appliedCoupon, applyCoupon, removeCoupon } = useCart();
-  const { createUserFromOrder, login } = useAuth();
+  const { createUserFromOrder, login, currentUser, isLoggedIn } = useAuth();
   const [paymentMethod, setPaymentMethod] = useState<'etransfer'>('etransfer');
   const [shippingMethod, setShippingMethod] = useState<'sameday' | 'express'>('express');
   const [formData, setFormData] = useState({
@@ -47,6 +43,21 @@ export default function CheckoutPage() {
     province: 'ON',
     postcode: ''
   });
+
+  const [appliedCashBalance, setAppliedCashBalance] = useState(0);
+  const [lookupMessage, setLookupMessage] = useState('');
+
+  // 1. Auto-fill from Session if logged in
+  useEffect(() => {
+    if (isLoggedIn && currentUser) {
+      setFormData(prev => ({
+        ...prev,
+        firstName: currentUser.firstName || prev.firstName,
+        lastName: currentUser.lastName || prev.lastName,
+        email: currentUser.email || prev.email,
+      }));
+    }
+  }, [isLoggedIn, currentUser]);
 
   const [isCompleted, setIsCompleted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -73,7 +84,9 @@ export default function CheckoutPage() {
   const shippingCost = 20.00;
   const taxes = 0.00; // No tax
   const discountAmount = appliedCoupon ? parsedSubtotal * appliedCoupon.discount : 0;
-  const grandTotal = parsedSubtotal - discountAmount + shippingCost + taxes;
+  let grandTotal = parsedSubtotal - discountAmount + shippingCost + taxes;
+  const cashApplied = Math.min(grandTotal, appliedCashBalance); // Don't apply more cash than the total
+  grandTotal = Math.max(0, grandTotal - cashApplied);
 
   const handleApplyCoupon = () => {
     const result = applyCoupon(couponInput);
@@ -96,6 +109,36 @@ export default function CheckoutPage() {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleEmailBlur = async () => {
+    if (isLoggedIn || !formData.email) return;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formData.email)) return;
+
+    try {
+      const res = await fetch(`/api/auth/lookup?email=${encodeURIComponent(formData.email)}`);
+      const data = await res.json();
+      if (data.exists && data.user) {
+        setFormData(prev => ({
+          ...prev,
+          firstName: prev.firstName || data.user.firstName,
+          lastName: prev.lastName || data.user.lastName,
+          phone: prev.phone || data.user.phone,
+          address: prev.address || (data.user.address?.street || ''),
+          city: prev.city || (data.user.address?.city || ''),
+          postcode: prev.postcode || (data.user.address?.postalCode || ''),
+        }));
+        setAppliedCashBalance(data.user.cashBalance || 0);
+        setLookupMessage(`Welcome back, ${data.user.firstName}! Your details and rewards have been loaded.`);
+        setTimeout(() => setLookupMessage(''), 5000);
+      } else {
+        setAppliedCashBalance(0);
+        setLookupMessage('');
+      }
+    } catch (err) {
+      console.error('Lookup failed', err);
+    }
   };
 
   const handlePlaceOrder = (e: React.FormEvent) => {
@@ -187,6 +230,7 @@ export default function CheckoutPage() {
         customerInfo: formData, // Pass full form data for the DB
         couponCode: appliedCoupon?.code || null,
         discountAmount: discountAmount || 0,
+        appliedCashBalance: cashApplied,
       }),
     })
       .then((res) => res.json())
@@ -537,7 +581,10 @@ export default function CheckoutPage() {
 
               {/* Billing Address details */}
               <div className="space-y-4">
-                <h2 className="text-xl font-black text-[#1b1533] uppercase logo-font">Billing Details</h2>
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+                  <h2 className="text-xl font-black text-[#1b1533] uppercase logo-font">Billing Details</h2>
+                  {lookupMessage && <span className="text-[11px] font-bold text-emerald-600 bg-emerald-50 px-3 py-1.5 rounded-full shadow-sm animate-pulse">{lookupMessage}</span>}
+                </div>
                 <div className="grid gap-4">
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <label className="block text-[12px] font-black uppercase tracking-wider text-slate-400">
@@ -575,6 +622,7 @@ export default function CheckoutPage() {
                         required
                         value={formData.email}
                         onChange={handleInputChange}
+                        onBlur={handleEmailBlur}
                         placeholder="e.g. hello@metaverse.ca"
                         className="mt-1.5 w-full rounded-xl border border-slate-200 px-3.5 py-2.5 text-xs font-semibold outline-none focus:border-[#ff4fa3] focus:ring-4 focus:ring-pink-50/50"
                       />
@@ -788,6 +836,12 @@ export default function CheckoutPage() {
                   <span>{shippingMethod === 'sameday' ? 'Delivery Fee' : 'Shipping Fee'}</span>
                   <strong className="text-slate-800">${shippingCost.toFixed(2)}</strong>
                 </div>
+                {cashApplied > 0 && (
+                  <div className="flex justify-between text-emerald-600">
+                    <span>Cash Rewards Applied</span>
+                    <strong>-${cashApplied.toFixed(2)}</strong>
+                  </div>
+                )}
                 {/* Taxes removed as per client request */}
                 <div className="border-t border-slate-100 pt-4 flex justify-between text-sm">
                   <span className="text-slate-800 uppercase logo-font">Total Amount</span>

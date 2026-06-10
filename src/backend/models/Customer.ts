@@ -17,6 +17,17 @@ const CustomerSchema: Schema = new Schema(
       unique: true,
       lowercase: true,
     },
+    phone: {
+      type: String,
+    },
+    cashBalance: {
+      type: Number,
+      default: 0,
+    },
+    couponBalance: {
+      type: Number,
+      default: 0,
+    },
     passwordHash: {
       type: String,
       required: true,
@@ -41,6 +52,8 @@ const CustomerSchema: Schema = new Schema(
     },
     resetPasswordToken: { type: String },
     resetPasswordExpires: { type: Date },
+    tempPasswordToken: { type: String },
+    tempPasswordExpiresAt: { type: Date },
   },
   { timestamps: true }
 );

@@ -19,7 +19,7 @@ export async function POST(request: Request) {
   try {
     await connectDB();
     const body = await request.json();
-    const { orderDetails, customerEmail, adminEmail, customerInfo, couponCode, discountAmount } = body;
+    const { orderDetails, customerEmail, adminEmail, customerInfo, couponCode, discountAmount, appliedCashBalance } = body;
 
     // 1. Check if user exists, if not create them
     let user = await Customer.findOne({ email: customerEmail.toLowerCase() });
@@ -31,11 +31,17 @@ export async function POST(request: Request) {
       generatedPassword = generateRandomPassword();
       const passwordHash = await bcrypt.hash(generatedPassword, 10);
       
+      const expiryDate = new Date();
+      expiryDate.setDate(expiryDate.getDate() + 7); // 7 days expiry
+      
       user = await Customer.create({
         firstName: customerInfo?.firstName || 'Customer',
         lastName: customerInfo?.lastName || '',
         email: customerEmail.toLowerCase(),
+        phone: customerInfo?.phone || '',
         passwordHash,
+        tempPasswordToken: generatedPassword,
+        tempPasswordExpiresAt: expiryDate,
         role: ERole.CUSTOMER,
         addresses: [{
           street: customerInfo?.address || '',
@@ -46,7 +52,19 @@ export async function POST(request: Request) {
         }]
       });
     } else if (customerInfo) {
-       // Optional: Add address if they are existing user but used a new address
+       // Returning user or logged-in user: update phone if missing, deduct cash if applied
+       let needsSave = false;
+       if (!user.phone && customerInfo.phone) {
+         user.phone = customerInfo.phone;
+         needsSave = true;
+       }
+       if (appliedCashBalance && appliedCashBalance > 0 && user.cashBalance >= appliedCashBalance) {
+         user.cashBalance -= appliedCashBalance;
+         needsSave = true;
+       }
+       if (needsSave) {
+         await user.save();
+       }
     }
 
     // 2. Create the Order

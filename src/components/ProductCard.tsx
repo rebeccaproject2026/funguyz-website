@@ -3,56 +3,56 @@ import { useCart } from '@/context/CartContext';
 import { getProductUrl } from '@/data/products';
 const imageMap: Record<string, string> = {
   // Magic Mushrooms
-  'Golden Teacher': '/images/prod_golden_teacher.webp',
-  'Penis Envy': '/images/prod_penis_envy.webp',
-  'Blue Meanies': '/images/prod_penis_envy.webp',
-  'Albino Penis Envy (APE)': '/images/prod_penis_envy.webp',
-  'Tidal Wave': '/images/prod_golden_teacher.webp',
-  'Jack Frost': '/images/prod_golden_teacher.webp',
-  'Jedi Mind Fuck (JMF)': '/images/prod_golden_teacher.webp',
-  'Mazatapec': '/images/prod_golden_teacher.webp',
-  'B+': '/images/prod_golden_teacher.webp',
-  'Treasure Coast': '/images/prod_golden_teacher.webp',
-  'Melmac': '/images/prod_penis_envy.webp',
-  'Enigma': '/images/prod_penis_envy.webp',
-  'Hillbilly': '/images/prod_golden_teacher.webp',
-  'Thai Pink Buffalo': '/images/prod_golden_teacher.webp',
+  'Golden Teacher': '/images/magicmushrooms/goldenteacher/goldenteacherfront.webp',
+  'Penis Envy': '/images/magicmushrooms/penisenvy/penisenvyfront.webp',
+  'Blue Meanies': '/images/magicmushrooms/bluemeanies/bluemeaniesfront.webp',
+  'Albino Penis Envy (APE)': '/images/magicmushrooms/albinopenisenvyape/albinopenisenvyapefront.webp',
+  'Tidal Wave': '/images/magicmushrooms/tidalwave/tidalwavefront.webp',
+  'Jack Frost': '/images/magicmushrooms/jackfrost/jackfrostfront.webp',
+  'Jedi Mind Fuck (JMF)': '/images/magicmushrooms/jedimindfuckjmf/jedimindfuckjmffront.webp',
+  'Mazatapec': '/images/magicmushrooms/mazatapec/mazatapecfront.webp',
+  'B+': '/images/magicmushrooms/b+/b+front.webp',
+  'Treasure Coast': '/images/magicmushrooms/treasurecoast/treasurecoastfront.webp',
+  'Melmac': '/images/magicmushrooms/melmac/melmacfront.webp',
+  'Enigma': '/images/magicmushrooms/enigma/enigmafront.webp',
+  'Hillbilly': '/images/magicmushrooms/hillbilly/hillbillyfront.webp',
+  'Thai Pink Buffalo': '/images/magicmushrooms/thaipinkbuffalo/thaipinkbuffalofront.webp',
 
   // Edibles
-  'Golden Teacher Original Chocolate (GT OG)': '/images/prod_blue_gummies.webp',
-  'Golden Teacher Concentrated Chocolate (GT CC)': '/images/prod_blue_gummies.webp',
-  'Penis Envy Original Chocolate (PE OG)': '/images/prod_blue_gummies.webp',
-  'Penis Envy Refined Concentrate Chocolate (PE RC)': '/images/prod_blue_gummies.webp',
-  'Penis Envy Concentrated Chocolate (PE CC)': '/images/prod_blue_gummies.webp',
-  'Blue Raspberry Gummies': '/images/prod_blue_gummies.webp',
-  'Watermelon Gummies': '/images/prod_blue_gummies.webp',
-  'Strawberry Gummies': '/images/prod_blue_gummies.webp',
-  'Mango Gummies': '/images/prod_blue_gummies.webp',
-  'Green Apple Gummies': '/images/prod_blue_gummies.webp',
-  'Mixed Berry Gummies': '/images/prod_blue_gummies.webp',
-  'Golden Teacher S\'Mores': '/images/prod_blue_gummies.webp',
-  'Penis Envy S\'Mores': '/images/prod_blue_gummies.webp',
-  'Cookies & Cream S\'Mores': '/images/prod_blue_gummies.webp',
+  'Golden Teacher Original Chocolate (GT OG)': '/images/edibles/chocolatebars/goldenteacheroriginalchocolategtog/goldenteacheroriginalchocolategtogfront.webp',
+  'Golden Teacher Concentrated Chocolate (GT CC)': '/images/edibles/chocolatebars/goldenteacherconcentratedchocolategtcc/goldenteacherconcentratedchocolategtccfront.webp',
+  'Penis Envy Original Chocolate (PE OG)': '/images/edibles/chocolatebars/penisenvyoriginalchocolatepeog/penisenvyoriginalchocolatepeogfront.webp',
+  'Penis Envy Refined Concentrate Chocolate (PE RC)': '/images/edibles/chocolatebars/penisenvyrefinedconcentratechocolateperc/penisenvyrefinedconcentratechocolatepercfront.webp',
+  'Penis Envy Concentrated Chocolate (PE CC)': '/images/edibles/chocolatebars/penisenvyconcentratedchocolatepecc/penisenvyconcentratedchocolatepeccfront.webp',
+  'Blue Raspberry Gummies': '/images/edibles/gummies/blueraspberrygummies/blueraspberrygummiesfront.webp',
+  'Watermelon Gummies': '/images/edibles/gummies/watermelongummies/watermelongummiesfront.webp',
+  'Strawberry Gummies': '/images/edibles/gummies/strawberrygummies/strawberrygummiesfront.webp',
+  'Mango Gummies': '/images/edibles/gummies/mangogummies/mangogummiesfront.webp',
+  'Green Apple Gummies': '/images/edibles/gummies/greenapplegummies/greenapplegummiesfront.webp',
+  'Mixed Berry Gummies': '/images/edibles/gummies/mixedberrygummies/mixedberrygummiesfront.webp',
+  'Golden Teacher S\'Mores': '/images/EDIBLES/s_mores/goldenteachers_mores/goldenteachers_moresfront.webp',
+  'Penis Envy S\'Mores': '/images/EDIBLES/s_mores/penisenvys_mores/penisenvys_moresfront.webp',
+  'Cookies & Cream S\'Mores': '/images/EDIBLES/s_mores/cookies&creams_mores/cookies&creams_moresfront.webp',
 
   // Capsules
-  'Lion\'s Mane Capsules': '/images/prod_teacher_capsules.webp',
-  'Reishi Capsules': '/images/prod_teacher_capsules.webp',
-  'Cordyceps Capsules': '/images/prod_teacher_capsules.webp',
-  'Turkey Tail Capsules': '/images/prod_teacher_capsules.webp',
-  'Chaga Capsules': '/images/prod_teacher_capsules.webp',
-  'Golden Teacher Extract': '/images/prod_teacher_capsules.webp',
-  'Penis Envy Extract': '/images/prod_teacher_capsules.webp',
-  'Lion\'s Mane Tincture': '/images/prod_teacher_capsules.webp',
-  'Reishi Tincture': '/images/prod_teacher_capsules.webp',
-  'Cordyceps Tincture': '/images/prod_teacher_capsules.webp',
+  'Lion\'s Mane Capsules': '/images/CAPSULES/functionalmushroomcapsules/lion_smanecapsules/lion_smanecapsulesfront.webp',
+  'Reishi Capsules': '/images/CAPSULES/functionalmushroomcapsules/reishicapsules/reishicapsulesfront.webp',
+  'Cordyceps Capsules': '/images/CAPSULES/functionalmushroomcapsules/cordycepscapsules/cordycepscapsulesfront.webp',
+  'Turkey Tail Capsules': '/images/CAPSULES/functionalmushroomcapsules/turkeytailcapsules/turkeytailcapsulesfront.webp',
+  'Chaga Capsules': '/images/CAPSULES/functionalmushroomcapsules/chagacapsules/chagacapsulesfront.webp',
+  'Golden Teacher Extract': '/images/CAPSULES/extractstinctures/goldenteacherextract/goldenteacherextractfront.webp',
+  'Penis Envy Extract': '/images/CAPSULES/extractstinctures/penisenvyextract/penisenvyextractfront.webp',
+  'Lion\'s Mane Tincture': '/images/CAPSULES/extractstinctures/lion_smanetincture/lion_smanetincturefront.webp',
+  'Reishi Tincture': '/images/CAPSULES/extractstinctures/reishitincture/reishitincturefront.webp',
+  'Cordyceps Tincture': '/images/CAPSULES/extractstinctures/cordycepstincture/cordycepstincturefront.webp',
 
   // Microdose
-  'Golden Teacher Microdose': '/images/prod_daily_blend.webp',
-  'Penis Envy Microdose': '/images/prod_daily_blend.webp',
-  'Stamets Stack Microdose': '/images/prod_daily_blend.webp',
-  'Creativity Microdose Blend': '/images/prod_daily_blend.webp',
-  'Productivity Microdose Blend': '/images/prod_daily_blend.webp',
-  'Wellness Microdose Blend': '/images/prod_daily_blend.webp'
+  'Golden Teacher Microdose': '/images/microdose/goldenteachermicrodose/goldenteachermicrodosefront.webp',
+  'Penis Envy Microdose': '/images/microdose/penisenvymicrodose/penisenvymicrodosefront.webp',
+  'Stamets Stack Microdose': '/images/microdose/stametsstackmicrodose/stametsstackmicrodosefront.webp',
+  'Creativity Microdose Blend': '/images/microdose/creativitymicrodoseblend/creativitymicrodoseblendfront.webp',
+  'Productivity Microdose Blend': '/images/microdose/productivitymicrodoseblend/productivitymicrodoseblendfront.webp',
+  'Wellness Microdose Blend': '/images/microdose/wellnessmicrodoseblend/wellnessmicrodoseblendfront.webp'
 };
 
 const badgeColors: Record<string, string> = {
@@ -213,9 +213,15 @@ export function ProductCard({ p, i }: { p: string[]; i: number }) {
       </button>
 
       {/* Inner Image Container with Pure White Background (Clickable Link!) */}
+      {/* --- OLD CODE BACKUP ---
       <a
         href={getProductUrl(title, category)}
         className="relative aspect-square w-full overflow-hidden bg-white flex items-center justify-center rounded-2xl sm:rounded-3xl border border-slate-100/50 cursor-pointer block"
+      >
+      */}
+      <a
+        href={getProductUrl(title, category)}
+        className="relative aspect-[4/5] w-full overflow-hidden bg-white flex items-center justify-center rounded-2xl sm:rounded-3xl border border-slate-100/50 cursor-pointer block"
       >
         {badge ? (
           <span className={`absolute left-2 top-2 sm:left-3 sm:top-3 rounded-full border px-2 py-0.5 sm:px-2.5 sm:py-0.5 text-[10px] sm:text-[10px] font-bold uppercase tracking-widest shadow-sm backdrop-blur-md z-10 ${badgeColors[badge.toLowerCase()] || 'text-slate-700 bg-slate-50 border-slate-100'
@@ -223,10 +229,18 @@ export function ProductCard({ p, i }: { p: string[]; i: number }) {
             {badge}
           </span>
         ) : null}
+        {/* --- OLD CODE BACKUP ---
         <img
           src={imageSrc}
           alt={title}
-          className="w-full h-full object-contain pointer-events-none transition-all duration-500 group-hover:scale-106 group-hover:-translate-y-1 rounded-2xl sm:rounded-3xl"
+          className="w-full h-full object-contain pointer-events-none transition-all duration-500 group-hover:scale-105 group-hover:-translate-y-1 rounded-2xl sm:rounded-3xl"
+          loading="lazy"
+        />
+        */}
+        <img
+          src={imageSrc}
+          alt={title}
+          className="w-full h-full object-cover pointer-events-none transition-all duration-500 group-hover:scale-105 group-hover:-translate-y-1 rounded-2xl sm:rounded-3xl"
           loading="lazy"
         />
       </a>

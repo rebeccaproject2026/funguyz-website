@@ -46,6 +46,13 @@ export const authOptions: NextAuthOptions = {
       if (user) {
         token.id = user.id;
         token.role = user.role;
+      } else if (token.id) {
+        // Subsequent checks: ensure user hasn't been deleted
+        await connectDB();
+        const existingUser = await Customer.findOne({ _id: token.id, deleted: false });
+        if (!existingUser) {
+          return {} as any; // Invalidate token if user is deleted
+        }
       }
       
       // Handle manual session updates
@@ -56,9 +63,12 @@ export const authOptions: NextAuthOptions = {
       return token;
     },
     async session({ session, token }) {
-      if (token) {
+      if (token && token.id) {
         session.user.id = token.id as string;
         session.user.role = token.role as string;
+      } else {
+        // Clear session if token was invalidated
+        (session as any).user = null;
       }
       return session;
     },
