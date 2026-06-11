@@ -1,4 +1,4 @@
-import { Document } from 'mongoose';
+import mongoose, { Document } from 'mongoose';
 
 export enum ERole {
   CUSTOMER = 'CUSTOMER',
@@ -22,11 +22,13 @@ export interface ICustomer extends Document {
     postalCode: string;
     isDefault: boolean;
   }[];
+  wishlist?: mongoose.Types.ObjectId[];
   resetPasswordToken?: string;
   resetPasswordExpires?: Date;
   tempPasswordToken?: string;
   tempPasswordExpiresAt?: Date;
   deleted: boolean;
+  isDummyPassword?: boolean;
   createdAt: Date;
   updatedAt: Date;
 }

@@ -1,7 +1,10 @@
 'use client';
+import Link from 'next/link';
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { ShoppingBag, Heart, X, Trash2, Plus, Minus, ArrowRight, Check, ShoppingCart } from 'lucide-react';
+import { useAuth } from './AuthContext';
+import { imageMap, getFallbackImage } from '@/data/imageMap';
 
 interface CartItem {
   id: string;
@@ -13,11 +16,12 @@ interface CartItem {
 }
 
 interface WishlistItem {
-  id: string;
+  id: string; // The database _id
   title: string;
   category: string;
   price: string;
   imageSrc: string;
+  slug?: string;
 }
 
 interface ToastState {
@@ -47,7 +51,7 @@ interface CartContextType {
   setIsCartOpen: (open: boolean) => void;
   isWishlistOpen: boolean;
   setIsWishlistOpen: (open: boolean) => void;
-  toggleWishlist: (product: { title: string; category: string; price: string; imageSrc: string }) => void;
+  toggleWishlist: (product: WishlistItem) => void;
   removeFromWishlist: (id: string) => void;
   isWishlisted: (id: string) => boolean;
   totalQuantity: number;
@@ -82,6 +86,105 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     productPrice: '',
     type: 'cart',
   });
+  const { isLoggedIn, currentUser } = useAuth();
+
+  // Local Storage & DB Persistence for Wishlist
+  useEffect(() => {
+    const hydrateWishlist = async () => {
+      let idsToHydrate: string[] = [];
+
+      if (isLoggedIn && currentUser) {
+        // Fetch from backend
+        try {
+          const res = await fetch('/api/wishlist');
+          if (res.ok) {
+            const data = await res.json();
+            idsToHydrate = (data.wishlist || []).map((item: any) => typeof item === 'object' ? item._id : item);
+            
+            // Merge logic: check if local storage has items not in DB
+            const storedWish = localStorage.getItem('funguyz_wishlist');
+            if (storedWish) {
+              const localIds = JSON.parse(storedWish) as string[];
+              if (localIds.length > 0) {
+                // Merge
+                await fetch('/api/wishlist', {
+                  method: 'PUT',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({ productIds: localIds })
+                });
+                localStorage.removeItem('funguyz_wishlist'); // clear after merge
+                // Re-fetch after merge
+                const newRes = await fetch('/api/wishlist');
+                const newData = await newRes.json();
+                idsToHydrate = (newData.wishlist || []).map((item: any) => typeof item === 'object' ? item._id : item);
+              }
+            }
+          }
+        } catch (e) {
+          console.error('Failed to fetch wishlist', e);
+        }
+      } else {
+        // Not logged in, read from local storage
+        if (typeof window !== 'undefined') {
+          const storedWish = localStorage.getItem('funguyz_wishlist');
+          if (storedWish) {
+            try { 
+              idsToHydrate = JSON.parse(storedWish) as string[];
+            } catch (e) { console.error(e); }
+          }
+        }
+      }
+
+      // Read from global product cache or API to hydrate full objects
+      const cachedString = sessionStorage.getItem('globalRelatedProducts');
+      if (cachedString) {
+         const allProducts = JSON.parse(cachedString);
+         const hydratedItems = idsToHydrate.map(id => {
+           const found = allProducts.find((p: any) => p._id === id || p.title === id || p.name === id);
+           const title = found ? (found.title || found.name) : id;
+           const categoryName = found ? (found.category?.name || 'Category') : 'Magic Mushrooms';
+           const imageSrc = imageMap[title] || getFallbackImage(categoryName);
+           
+           if (found) {
+             return {
+               id: found._id || id, // Prefer true _id if found, fallback to stored id
+               title: title,
+               category: categoryName,
+               price: typeof found.price === 'number' ? `$${found.price.toFixed(2)}` : found.price,
+               imageSrc: imageSrc,
+               slug: found.slug
+             };
+           }
+           // If not found in cache, we can't fully hydrate, but we should NOT drop it!
+           // Let's return a dummy object just so isWishlisted still works.
+           return {
+             id: id,
+             title: title,
+             category: categoryName,
+             price: '$0.00',
+             imageSrc: imageSrc
+           };
+         }) as WishlistItem[];
+         setWishlistItems(hydratedItems);
+      } else {
+         // If global cache isn't ready yet, at least hydrate the IDs so isWishlisted works!
+         // We can still try to use the imageMap if the id happens to be the title!
+         const basicItems = idsToHydrate.map(id => {
+             const imageSrc = imageMap[id] || getFallbackImage('Magic Mushrooms');
+             return {
+               id: id,
+               title: id,
+               category: 'Magic Mushrooms', // We don't know the real category
+               price: '$0.00',
+               imageSrc: imageSrc
+             };
+         });
+         setWishlistItems(basicItems);
+      }
+    };
+
+    hydrateWishlist();
+  }, [isLoggedIn, currentUser]);
 
   // Local Storage Persistence
   useEffect(() => {
@@ -89,10 +192,6 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       const storedCart = localStorage.getItem('funguyz_cart');
       if (storedCart) {
         try { setCartItems(JSON.parse(storedCart)); } catch (e) { console.error(e); }
-      }
-      const storedWish = localStorage.getItem('funguyz_wishlist');
-      if (storedWish) {
-        try { setWishlistItems(JSON.parse(storedWish)); } catch (e) { console.error(e); }
       }
       const storedCoupon = localStorage.getItem('funguyz_coupon');
       if (storedCoupon) {
@@ -110,8 +209,9 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
   const saveWishlist = (items: WishlistItem[]) => {
     setWishlistItems(items);
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('funguyz_wishlist', JSON.stringify(items));
+    if (!isLoggedIn && typeof window !== 'undefined') {
+      const ids = items.map(i => i.id);
+      localStorage.setItem('funguyz_wishlist', JSON.stringify(ids));
     }
   };
 
@@ -203,12 +303,34 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
+  const getTrueId = (idOrTitle: string) => {
+    if (/^[0-9a-fA-F]{24}$/.test(idOrTitle)) return idOrTitle;
+    if (typeof window !== 'undefined') {
+       const cachedString = sessionStorage.getItem('globalRelatedProducts');
+       if (cachedString) {
+          try {
+             const allProducts = JSON.parse(cachedString);
+             const found = allProducts.find((p: any) => p.title === idOrTitle || p.name === idOrTitle);
+             if (found) return found._id;
+          } catch(e) {}
+       }
+    }
+    return idOrTitle;
+  };
+
   // Toggle Wishlist handler
-  const toggleWishlist = (product: { title: string; category: string; price: string; imageSrc: string }) => {
-    const isPresent = wishlistItems.some(item => item.id === product.title);
+  const toggleWishlist = async (product: WishlistItem) => {
+    const trueId = getTrueId(product.id);
+    product.id = trueId; // overwrite with true id
+    
+    const isPresent = wishlistItems.some(item => item.id === trueId || item.title === product.title);
+    let newItems: WishlistItem[];
     if (isPresent) {
-      const newItems = wishlistItems.filter(item => item.id !== product.title);
+      newItems = wishlistItems.filter(item => item.id !== trueId && item.title !== product.title);
       saveWishlist(newItems);
+      if (isLoggedIn && /^[0-9a-fA-F]{24}$/.test(trueId)) {
+         fetch(`/api/wishlist?productId=${trueId}`, { method: 'DELETE' }).catch(console.error);
+      }
       setToast({
         visible: true,
         productTitle: product.title,
@@ -217,17 +339,15 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         type: 'remove_wishlist',
       });
     } else {
-      const newItems = [
-        ...wishlistItems,
-        {
-          id: product.title,
-          title: product.title,
-          category: product.category,
-          price: product.price,
-          imageSrc: product.imageSrc,
-        },
-      ];
+      newItems = [...wishlistItems, product];
       saveWishlist(newItems);
+      if (isLoggedIn && /^[0-9a-fA-F]{24}$/.test(trueId)) {
+         fetch('/api/wishlist', {
+           method: 'POST',
+           headers: { 'Content-Type': 'application/json' },
+           body: JSON.stringify({ productId: trueId })
+         }).catch(console.error);
+      }
       setToast({
         visible: true,
         productTitle: product.title,
@@ -239,12 +359,17 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   };
 
   const removeFromWishlist = (id: string) => {
-    const newItems = wishlistItems.filter(item => item.id !== id);
+    const trueId = getTrueId(id);
+    const newItems = wishlistItems.filter(item => item.id !== trueId && item.title !== id);
     saveWishlist(newItems);
+    if (isLoggedIn && /^[0-9a-fA-F]{24}$/.test(trueId)) {
+       fetch(`/api/wishlist?productId=${trueId}`, { method: 'DELETE' }).catch(console.error);
+    }
   };
 
   const isWishlisted = (id: string) => {
-    return wishlistItems.some(item => item.id === id);
+    const trueId = getTrueId(id);
+    return wishlistItems.some(item => item.id === trueId || item.title === id);
   };
 
   // Toast Auto-Hide after 5 seconds
@@ -408,20 +533,20 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
                 {/* Checkout CTA Links */}
                 <div className="flex flex-col gap-3">
-                  <a 
+                  <Link 
                     href="/checkout"
                     onClick={() => setIsCartOpen(false)}
                     className="w-full inline-flex items-center justify-center rounded-2xl bg-[#ff4fa3] text-white border border-[#ff4fa3] py-4 text-xs font-black uppercase tracking-wider shadow-md shadow-pink-100 transition-all duration-300 hover:bg-black hover:text-[#ff4fa3] hover:border-black hover:-translate-y-0.5 active:translate-y-0 cursor-pointer logo-font"
                   >
                     Proceed to Checkout <ArrowRight className="h-3.5 w-3.5 ml-1.5" />
-                  </a>
-                  <a 
+                  </Link>
+                  <Link 
                     href="/cart"
                     onClick={() => setIsCartOpen(false)}
                     className="w-full inline-flex items-center justify-center rounded-2xl bg-white text-slate-700 border border-slate-200 py-3.5 text-xs font-black uppercase tracking-wider transition-all duration-300 hover:bg-slate-50 hover:text-[#1b1533] hover:border-slate-300 cursor-pointer logo-font"
                   >
                     View Shopping Cart
-                  </a>
+                  </Link>
                 </div>
               </div>
             )}
@@ -465,8 +590,8 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
                   <div key={item.id} className="group/cart bg-white p-4 rounded-3xl border border-slate-100/80 shadow-[0_4px_20px_rgba(27,21,51,0.01)] flex gap-4 items-center relative hover:shadow-[0_10px_25px_rgba(123,92,255,0.03)] transition-all duration-300">
                     
                     {/* Item Image Container */}
-                    <div className="h-20 w-20 rounded-2xl bg-white border border-slate-100 flex items-center justify-center p-0 overflow-hidden shrink-0 relative">
-                      <img src={item.imageSrc} alt={item.title} className="h-full w-full object-contain" />
+                    <div className="h-20 w-16 rounded-xl bg-slate-100/50 border border-slate-100 flex items-center justify-center p-0 overflow-hidden shrink-0 relative">
+                      <img src={item.imageSrc} alt={item.title} className="h-full w-full object-cover" />
                     </div>
 
                     {/* Item Details */}

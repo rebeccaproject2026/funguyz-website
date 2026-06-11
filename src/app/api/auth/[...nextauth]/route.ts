@@ -36,6 +36,7 @@ export const authOptions: NextAuthOptions = {
           email: user.email,
           name: `${user.firstName} ${user.lastName}`,
           role: user.role,
+          isDummyPassword: user.isDummyPassword || false,
         };
       },
     }),
@@ -46,6 +47,7 @@ export const authOptions: NextAuthOptions = {
       if (user) {
         token.id = user.id;
         token.role = user.role;
+        token.isDummyPassword = (user as any).isDummyPassword;
       } else if (token.id) {
         // Subsequent checks: ensure user hasn't been deleted
         await connectDB();
@@ -57,7 +59,8 @@ export const authOptions: NextAuthOptions = {
       
       // Handle manual session updates
       if (trigger === 'update' && session) {
-        token.role = session.role;
+        if (session.role) token.role = session.role;
+        if (session.isDummyPassword !== undefined) token.isDummyPassword = session.isDummyPassword;
       }
       
       return token;
@@ -66,6 +69,7 @@ export const authOptions: NextAuthOptions = {
       if (token && token.id) {
         session.user.id = token.id as string;
         session.user.role = token.role as string;
+        (session.user as any).isDummyPassword = token.isDummyPassword;
       } else {
         // Clear session if token was invalidated
         (session as any).user = null;

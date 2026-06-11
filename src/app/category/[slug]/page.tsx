@@ -245,6 +245,34 @@ export default function DedicatedCategoryPage({ params }: { params: Promise<{ sl
   const [selectedPriceRange, setSelectedPriceRange] = useState<string>('all');
   const [inStockOnly, setInStockOnly] = useState<boolean>(true);
 
+  const [dbProducts, setDbProducts] = useState<any[]>([]);
+
+  React.useEffect(() => {
+    async function fetchProducts() {
+      const cachedGlobalString = sessionStorage.getItem('globalRelatedProducts');
+      const cachedGlobalProducts = cachedGlobalString ? JSON.parse(cachedGlobalString) : [];
+
+      if (cachedGlobalProducts && cachedGlobalProducts.length > 0) {
+        setDbProducts(cachedGlobalProducts);
+        return;
+      }
+
+      try {
+        const res = await fetch('/api/products');
+        const data = await res.json();
+        if (data.success) {
+          setDbProducts(data.products);
+          if (typeof window !== 'undefined') {
+            sessionStorage.setItem('globalRelatedProducts', JSON.stringify(data.products));
+          }
+        }
+      } catch (err) {
+        console.error('Failed to fetch global products', err);
+      }
+    }
+    fetchProducts();
+  }, []);
+
   // FAQ accordion open states (mapped by index)
   const [openFaqIdx, setOpenFaqIdx] = useState<number | null>(null);
 
@@ -1024,14 +1052,15 @@ export default function DedicatedCategoryPage({ params }: { params: Promise<{ sl
   // RENDER STANDARD CATEGORY PAGES
   // ==========================================
   // Filter products by category
-  const filteredProducts = productsCatalog[category.categoryName] || [];
+  const baseFilteredProducts = dbProducts.filter((p: any) => p.category?.name === category.categoryName || p.category?.name?.includes(category.categoryName.replace('Magic ', '')));
 
   // Filter products interactively
-  const activeFilteredProducts = filteredProducts.filter((product) => {
-    const title = product[0].toLowerCase();
-    const tag = product[3].toLowerCase();
-    const priceStr = product[2];
-    const priceNum = parseFloat(priceStr.replace('$', ''));
+  const activeFilteredProducts = baseFilteredProducts.filter((product) => {
+    const isDynamic = !Array.isArray(product);
+    const title = isDynamic ? (product.name || '').toLowerCase() : product[0].toLowerCase();
+    const tag = isDynamic ? (product.tags?.[0] || 'Premium').toLowerCase() : product[3].toLowerCase();
+    const priceStr = isDynamic ? `$${product.price || 0}` : product[2];
+    const priceNum = isDynamic ? (product.price || 0) : parseFloat(priceStr.replace('$', ''));
 
     // 1. Text Search Filter
     if (searchQuery && !title.includes(searchQuery.toLowerCase())) {
@@ -1059,8 +1088,11 @@ export default function DedicatedCategoryPage({ params }: { params: Promise<{ sl
 
   // Sort logic
   const sortedProducts = [...activeFilteredProducts].sort((a, b) => {
-    const priceA = parseFloat(a[2].replace('$', ''));
-    const priceB = parseFloat(b[2].replace('$', ''));
+    const isADyn = !Array.isArray(a);
+    const isBDyn = !Array.isArray(b);
+    
+    const priceA = isADyn ? (a.price || 0) : parseFloat(a[2].replace('$', ''));
+    const priceB = isBDyn ? (b.price || 0) : parseFloat(b[2].replace('$', ''));
 
     if (sortBy === 'price-asc') return priceA - priceB;
     if (sortBy === 'price-desc') return priceB - priceA;
@@ -1335,7 +1367,7 @@ export default function DedicatedCategoryPage({ params }: { params: Promise<{ sl
             {sortedProducts.length > 0 ? (
               <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
                 {sortedProducts.map((p, i) => (
-                  <ProductCard key={p[0]} p={p} i={i} />
+                  <ProductCard key={p._id || p[0]} p={p} i={i} />
                 ))}
               </div>
             ) : (

@@ -4,6 +4,8 @@ import React, { useState } from 'react';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { ProductCard } from '@/components/ProductCard';
+import { MushroomLoader } from '@/components/MushroomLoader';
+
 import { products, getProductSlug, getCategorySlug, getProductSeoMetadata, getProductSections, mushroomPricingTable } from '@/data/products';
 import { useCart } from '@/context/CartContext';
 import {
@@ -29,60 +31,7 @@ import {
   HelpCircle,
   MessageSquare
 } from 'lucide-react';
-
-const imageMap: Record<string, string> = {
-  // Magic Mushrooms
-  'Golden Teacher': '/images/magicmushrooms/goldenteacher/goldenteacherfront.webp',
-  'Penis Envy': '/images/magicmushrooms/penisenvy/penisenvyfront.webp',
-  'Blue Meanies': '/images/magicmushrooms/bluemeanies/bluemeaniesfront.webp',
-  'Albino Penis Envy (APE)': '/images/magicmushrooms/albinopenisenvyape/albinopenisenvyapefront.webp',
-  'Tidal Wave': '/images/magicmushrooms/tidalwave/tidalwavefront.webp',
-  'Jack Frost': '/images/magicmushrooms/jackfrost/jackfrostfront.webp',
-  'Jedi Mind Fuck (JMF)': '/images/magicmushrooms/jedimindfuckjmf/jedimindfuckjmffront.webp',
-  'Mazatapec': '/images/magicmushrooms/mazatapec/mazatapecfront.webp',
-  'B+': '/images/magicmushrooms/b+/b+front.webp',
-  'Treasure Coast': '/images/magicmushrooms/treasurecoast/treasurecoastfront.webp',
-  'Melmac': '/images/magicmushrooms/melmac/melmacfront.webp',
-  'Enigma': '/images/magicmushrooms/enigma/enigmafront.webp',
-  'Hillbilly': '/images/magicmushrooms/hillbilly/hillbillyfront.webp',
-  'Thai Pink Buffalo': '/images/magicmushrooms/thaipinkbuffalo/thaipinkbuffalofront.webp',
-
-  // Edibles
-  'Golden Teacher Original Chocolate (GT OG)': '/images/edibles/chocolatebars/goldenteacheroriginalchocolategtog/goldenteacheroriginalchocolategtogfront.webp',
-  'Golden Teacher Concentrated Chocolate (GT CC)': '/images/edibles/chocolatebars/goldenteacherconcentratedchocolategtcc/goldenteacherconcentratedchocolategtccfront.webp',
-  'Penis Envy Original Chocolate (PE OG)': '/images/edibles/chocolatebars/penisenvyoriginalchocolatepeog/penisenvyoriginalchocolatepeogfront.webp',
-  'Penis Envy Refined Concentrate Chocolate (PE RC)': '/images/edibles/chocolatebars/penisenvyrefinedconcentratechocolateperc/penisenvyrefinedconcentratechocolatepercfront.webp',
-  'Penis Envy Concentrated Chocolate (PE CC)': '/images/edibles/chocolatebars/penisenvyconcentratedchocolatepecc/penisenvyconcentratedchocolatepeccfront.webp',
-  'Blue Raspberry Gummies': '/images/edibles/gummies/blueraspberrygummies/blueraspberrygummiesfront.webp',
-  'Watermelon Gummies': '/images/edibles/gummies/watermelongummies/watermelongummiesfront.webp',
-  'Strawberry Gummies': '/images/edibles/gummies/strawberrygummies/strawberrygummiesfront.webp',
-  'Mango Gummies': '/images/edibles/gummies/mangogummies/mangogummiesfront.webp',
-  'Green Apple Gummies': '/images/edibles/gummies/greenapplegummies/greenapplegummiesfront.webp',
-  'Mixed Berry Gummies': '/images/edibles/gummies/mixedberrygummies/mixedberrygummiesfront.webp',
-  'Golden Teacher S\'Mores': '/images/EDIBLES/s_mores/goldenteachers_mores/goldenteachers_moresfront.webp',
-  'Penis Envy S\'Mores': '/images/EDIBLES/s_mores/penisenvys_mores/penisenvys_moresfront.webp',
-  'Cookies & Cream S\'Mores': '/images/EDIBLES/s_mores/cookies&creams_mores/cookies&creams_moresfront.webp',
-
-  // Capsules
-  'Lion\'s Mane Capsules': '/images/CAPSULES/functionalmushroomcapsules/lion_smanecapsules/lion_smanecapsulesfront.webp',
-  'Reishi Capsules': '/images/CAPSULES/functionalmushroomcapsules/reishicapsules/reishicapsulesfront.webp',
-  'Cordyceps Capsules': '/images/CAPSULES/functionalmushroomcapsules/cordycepscapsules/cordycepscapsulesfront.webp',
-  'Turkey Tail Capsules': '/images/CAPSULES/functionalmushroomcapsules/turkeytailcapsules/turkeytailcapsulesfront.webp',
-  'Chaga Capsules': '/images/CAPSULES/functionalmushroomcapsules/chagacapsules/chagacapsulesfront.webp',
-  'Golden Teacher Extract': '/images/CAPSULES/extractstinctures/goldenteacherextract/goldenteacherextractfront.webp',
-  'Penis Envy Extract': '/images/CAPSULES/extractstinctures/penisenvyextract/penisenvyextractfront.webp',
-  'Lion\'s Mane Tincture': '/images/CAPSULES/extractstinctures/lion_smanetincture/lion_smanetincturefront.webp',
-  'Reishi Tincture': '/images/CAPSULES/extractstinctures/reishitincture/reishitincturefront.webp',
-  'Cordyceps Tincture': '/images/CAPSULES/extractstinctures/cordycepstincture/cordycepstincturefront.webp',
-
-  // Microdose
-  'Golden Teacher Microdose': '/images/microdose/goldenteachermicrodose/goldenteachermicrodosefront.webp',
-  'Penis Envy Microdose': '/images/microdose/penisenvymicrodose/penisenvymicrodosefront.webp',
-  'Stamets Stack Microdose': '/images/microdose/stametsstackmicrodose/stametsstackmicrodosefront.webp',
-  'Creativity Microdose Blend': '/images/microdose/creativitymicrodoseblend/creativitymicrodoseblendfront.webp',
-  'Productivity Microdose Blend': '/images/microdose/productivitymicrodoseblend/productivitymicrodoseblendfront.webp',
-  'Wellness Microdose Blend': '/images/microdose/wellnessmicrodoseblend/wellnessmicrodoseblendfront.webp'
-};
+import { imageMap } from '@/data/imageMap';
 
 function getGalleryImagesList(title: string, category: string, mainImg: string): string[] {
   const backImg = mainImg.replace('front.webp', 'back.webp');
@@ -113,26 +62,156 @@ export default function CategoryProductPage({ params }: { params: Promise<{ cate
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const [newReviewRating, setNewReviewRating] = useState<number>(5);
   const [newReviewText, setNewReviewText] = useState<string>('');
-  const [reviewsList, setReviewsList] = useState<any[]>([
-    ['Sarah M.', 'Outstanding customer service and extremely discreet packaging. The Golden Teacher provided an incredibly smooth, visual, and introspective mindset journey. Delivered in 2 days to Vancouver!', 5],
-    ['David K.', 'Excellent gummies! The watermelon flavor is completely organic and has zero heavy body load. Ideal microdosing stack for creative coding and design focus!', 5]
-  ]);
 
-  // Match product by both categorySlug AND productSlug for precision routing
-  let matched = products.find(p =>
-    getCategorySlug(p[1]) === categorySlug && getProductSlug(p[0]) === productSlug
-  );
-  // Fallback: match only by productSlug across all categories
-  if (!matched) {
-    matched = products.find(p => getProductSlug(p[0]) === productSlug);
-  }
-  // Final fallback
-  if (!matched) {
-    matched = products[0];
+  const [dbProduct, setDbProduct] = useState<any>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [reviewsList, setReviewsList] = useState<any[]>([]);
+  const [relatedProducts, setRelatedProducts] = useState<any[]>([]);
+  const [selectedGalleryImage, setSelectedGalleryImage] = useState<string | null>(null);
+  const [prevSlug, setPrevSlug] = useState(productSlug);
+
+  React.useEffect(() => {
+    async function fetchProduct() {
+      // 1. Check if we already loaded it from sessionStorage
+      const cachedString = sessionStorage.getItem(`product_${productSlug}`);
+      const cachedData = cachedString ? JSON.parse(cachedString) : null;
+
+      if (cachedData) {
+        setDbProduct(cachedData.product);
+        setReviewsList(cachedData.reviewsList);
+        setRelatedProducts(cachedData.relatedProducts);
+        setIsLoading(false);
+        return;
+      }
+
+      setIsLoading(true);
+      try {
+        const res = await fetch(`/api/products/${productSlug}`);
+        const data = await res.json();
+        if (data.success && data.product) {
+          setDbProduct(data.product);
+
+          let currentReviews = [];
+          if (data.product.reviewsList && data.product.reviewsList.length > 0) {
+            currentReviews = data.product.reviewsList.map((r: any) => [r.name, r.text, r.rating]);
+            setReviewsList(currentReviews);
+          } else {
+            // Default static reviews if none in DB
+            currentReviews = [
+              ['Sarah M.', 'Outstanding customer service and extremely discreet packaging. The Golden Teacher provided an incredibly smooth, visual, and introspective mindset journey. Delivered in 2 days to Vancouver!', 5],
+              ['David K.', 'Excellent gummies! The watermelon flavor is completely organic and has zero heavy body load. Ideal microdosing stack for creative coding and design focus!', 5]
+            ];
+            setReviewsList(currentReviews);
+          }
+
+          let currentRelated: any[] = [];
+          
+          // Show the product immediately! Do not wait for related products.
+          setIsLoading(false);
+
+          let globalRelatedProductsCache: any[] | null = null;
+          if (typeof window !== 'undefined') {
+            const relStr = sessionStorage.getItem('globalRelatedProducts');
+            if (relStr) globalRelatedProductsCache = JSON.parse(relStr);
+          }
+
+          // Fetch related products dynamically in the background without blocking
+          if (globalRelatedProductsCache) {
+            const sameCat = (globalRelatedProductsCache || []).filter((p: any) => p.category?.name === data.product.category?.name && p.slug !== productSlug);
+            currentRelated = sameCat.length >= 4 ? sameCat.slice(0, 4) : (globalRelatedProductsCache || []).filter((p: any) => p.slug !== productSlug).slice(0, 4);
+            setRelatedProducts(currentRelated);
+            
+            // Save all results to cache instantly since we have everything
+            if (typeof window !== 'undefined') {
+              sessionStorage.setItem(`product_${productSlug}`, JSON.stringify({
+                product: data.product,
+                reviewsList: currentReviews,
+                relatedProducts: currentRelated
+              }));
+            }
+          } else {
+            // Fetch silently in the background
+            fetch('/api/products').then(res => res.json()).then(relatedData => {
+              if (relatedData.success && relatedData.products) {
+                globalRelatedProductsCache = relatedData.products;
+                
+                if (typeof window !== 'undefined') {
+                  sessionStorage.setItem('globalRelatedProducts', JSON.stringify(relatedData.products));
+                }
+
+                const sameCat = (globalRelatedProductsCache || []).filter((p: any) => p.category?.name === data.product.category?.name && p.slug !== productSlug);
+                currentRelated = sameCat.length >= 4 ? sameCat.slice(0, 4) : (globalRelatedProductsCache || []).filter((p: any) => p.slug !== productSlug).slice(0, 4);
+                setRelatedProducts(currentRelated);
+                
+                // Save to cache after the background fetch finishes
+                if (typeof window !== 'undefined') {
+                  sessionStorage.setItem(`product_${productSlug}`, JSON.stringify({
+                    product: data.product,
+                    reviewsList: currentReviews,
+                    relatedProducts: currentRelated
+                  }));
+                }
+              }
+            }).catch(err => console.error('Failed to fetch related products:', err));
+          }
+        } else {
+          setIsLoading(false);
+        }
+      } catch (err) {
+        console.error('Failed to fetch dynamic product:', err);
+        setIsLoading(false);
+      }
+    }
+    fetchProduct();
+  }, [productSlug]);
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-[#fff8f3] flex flex-col items-center justify-center gap-4">
+        <MushroomLoader />
+      </div>
+    );
   }
 
-  const seoData = getProductSeoMetadata(matched[0], matched[1]);
-  const sectionsData = getProductSections(matched[0], matched[1], seoData.description);
+  // Fallback to static matching only if DB fetch fails
+  let isDynamic = !!dbProduct;
+  let matched = dbProduct;
+  if (!matched) {
+    matched = products.find(p => getCategorySlug(p[1]) === categorySlug && getProductSlug(p[0]) === productSlug);
+    if (!matched) matched = products.find(p => getProductSlug(p[0]) === productSlug);
+    if (!matched) matched = products[0];
+  }
+
+  // Extract dynamic details
+  const categoryName = isDynamic ? (matched.category?.name || 'Magic Mushrooms') : matched[1];
+  const staticNameKey = isDynamic ? matched.name : matched[0];
+
+  // As requested: keep meta (which includes h1 title) static exactly as it was
+  const title = getProductSeoMetadata(staticNameKey, categoryName).h1;
+
+  const priceNum = isDynamic ? matched.price : parseFloat(matched[2].replace('$', ''));
+  const originalPriceNum = isDynamic ? Math.round(matched.price * 1.25) : Math.round(priceNum * 1.25);
+
+  // Use static image map as requested ("images and meta keep as it is")
+  const mainImg = imageMap[isDynamic ? matched.name : matched[0]] || getFallbackImage(categoryName);
+  const galleryImages = getGalleryImagesList(isDynamic ? matched.name : matched[0], categoryName, mainImg);
+
+  const productData = {
+    id: isDynamic ? matched._id : matched[0],
+    title,
+    category: categoryName,
+    price: `$${priceNum.toFixed(2)}`,
+    originalPrice: `$${originalPriceNum.toFixed(2)}`,
+    imageSrc: mainImg,
+    reviews: isDynamic ? `${matched.reviewStats?.count || 48} reviews` : (matched[6] || '48 reviews'),
+    rating: isDynamic ? (matched.reviewStats?.averageRating || 5) : (matched[7] || 5),
+    pricingMap: isDynamic ? (matched.pricing?.reduce((acc: any, p: any) => ({ ...acc, [p.weight]: p.price }), {}) || { '3.5g': priceNum }) : (mushroomPricingTable[matched[0]] || { '3.5g': priceNum }),
+    desc: isDynamic ? matched.description : getProductSeoMetadata(matched[0], matched[1]).description,
+    compounds: isDynamic && matched.compounds ? matched.compounds : getCompoundsForCategory(categoryName),
+    slug: isDynamic ? matched.slug : getProductSlug(matched[0])
+  };
+
+  const sectionsData: any = isDynamic && matched.productSections ? matched.productSections : getProductSections(productData.title, productData.category, productData.desc);
 
   const sectionsList = [
     { id: 'overview', label: 'Overview', icon: BookOpen },
@@ -145,32 +224,8 @@ export default function CategoryProductPage({ params }: { params: Promise<{ cate
     { id: 'reviews', label: `Reviews (${reviewsList.length})`, icon: MessageSquare }
   ];
 
-  const basePriceNum = parseFloat(matched[2].replace('$', ''));
-  const pricingMap: Record<string, number> = mushroomPricingTable[matched[0]] || {
-    '3.5g': basePriceNum
-  };
-
-  const mainImg = imageMap[matched[0]] || getFallbackImage(matched[1]);
-  const galleryImages = getGalleryImagesList(matched[0], matched[1], mainImg);
-
-  const productData = {
-    title: seoData.h1,
-    category: matched[1],
-    price: matched[2],
-    originalPrice: matched[4],
-    imageSrc: mainImg,
-    reviews: matched[6] || '48 reviews',
-    rating: matched[7] || 5,
-    pricingMap,
-    desc: seoData.description,
-    compounds: getCompoundsForCategory(matched[1]),
-    slug: getProductSlug(matched[0])
-  };
-
-  const [selectedGalleryImage, setSelectedGalleryImage] = useState<string | null>(null);
   const activeImage = selectedGalleryImage || mainImg;
 
-  const [prevSlug, setPrevSlug] = useState(productSlug);
   if (productSlug !== prevSlug) {
     setPrevSlug(productSlug);
     setSelectedGalleryImage(null);
@@ -192,7 +247,7 @@ export default function CategoryProductPage({ params }: { params: Promise<{ cate
     }
   };
 
-  const wishlisted = isWishlisted(productData.title);
+  const wishlisted = isWishlisted(productData.id);
   const calculatedPrice = productData.pricingMap[selectedWeight] || parseFloat(productData.price.replace('$', ''));
   const calculatedOriginalPrice = Math.round(calculatedPrice * 1.25);
 
@@ -216,7 +271,7 @@ export default function CategoryProductPage({ params }: { params: Promise<{ cate
           <ChevronRight className="h-3 w-3" />
           <a href="/shop" className="hover:text-[#ff4fa3]">Shop</a>
           <ChevronRight className="h-3 w-3" />
-          <a href={`/category/${getCategorySlug(matched[1])}`} className="hover:text-[#ff4fa3]">{matched[1]}</a>
+          <a href={`/category/${getCategorySlug(productData.category)}`} className="hover:text-[#ff4fa3]">{productData.category}</a>
           <ChevronRight className="h-3 w-3" />
           <span className="text-slate-600">{productData.title}</span>
         </div>
@@ -322,8 +377,8 @@ export default function CategoryProductPage({ params }: { params: Promise<{ cate
                       key={s}
                       onClick={() => setSelectedWeight(s)}
                       className={`rounded-2xl py-3 text-xs font-black uppercase tracking-wider logo-font transition-all duration-200 cursor-pointer border text-center ${selectedWeight === s
-                          ? 'bg-[#ff4fa3] border-[#ff4fa3] text-white shadow-md shadow-pink-100'
-                          : 'bg-white border-slate-200 text-[#1b1533] shadow-sm hover:border-[#ff4fa3] hover:text-[#ff4fa3]'
+                        ? 'bg-[#ff4fa3] border-[#ff4fa3] text-white shadow-md shadow-pink-100'
+                        : 'bg-white border-slate-200 text-[#1b1533] shadow-sm hover:border-[#ff4fa3] hover:text-[#ff4fa3]'
                         }`}
                     >
                       {s}
@@ -352,7 +407,7 @@ export default function CategoryProductPage({ params }: { params: Promise<{ cate
                 </div>
 
                 <button
-                  onClick={() => toggleWishlist({ title: productData.title, category: productData.category, price: productData.price, imageSrc: productData.imageSrc })}
+                  onClick={() => toggleWishlist({ id: productData.id, slug: productData.slug, title: productData.title, category: productData.category, price: productData.price, imageSrc: productData.imageSrc })}
                   className={`grid sm:hidden h-12 w-12 place-items-center rounded-2xl border transition-all cursor-pointer shrink-0 ${wishlisted ? 'bg-pink-50 border-pink-100 text-[#ff4fa3]' : 'bg-white border-slate-200 text-slate-400 hover:border-pink-300 hover:text-[#ff4fa3] shadow-sm'
                     }`}
                 >
@@ -368,7 +423,7 @@ export default function CategoryProductPage({ params }: { params: Promise<{ cate
               </button>
 
               <button
-                onClick={() => toggleWishlist({ title: productData.title, category: productData.category, price: productData.price, imageSrc: productData.imageSrc })}
+                onClick={() => toggleWishlist({ id: productData.id, slug: productData.slug, title: productData.title, category: productData.category, price: productData.price, imageSrc: productData.imageSrc })}
                 className={`hidden sm:grid h-12 w-12 place-items-center rounded-2xl border transition-all cursor-pointer shrink-0 ${wishlisted ? 'bg-pink-50 border-pink-100 text-[#ff4fa3]' : 'bg-white border-slate-200 text-slate-400 hover:border-pink-300 hover:text-[#ff4fa3] shadow-sm'
                   }`}
               >
@@ -408,8 +463,8 @@ export default function CategoryProductPage({ params }: { params: Promise<{ cate
                     document.getElementById(`sec-${sec.id}`)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
                   }}
                   className={`flex items-center gap-3.5 px-4.5 py-3.5 text-xs font-black uppercase tracking-widest rounded-2xl cursor-pointer transition-all duration-200 whitespace-nowrap lg:w-full text-left leading-none ${activeSection === sec.id
-                      ? 'bg-[#ff4fa3] text-white shadow-md shadow-pink-100'
-                      : 'text-slate-500 hover:text-[#ff4fa3] hover:bg-slate-50'
+                    ? 'bg-[#ff4fa3] text-white shadow-md shadow-pink-100'
+                    : 'text-slate-500 hover:text-[#ff4fa3] hover:bg-slate-50'
                     }`}
                 >
                   <IconComponent className="h-4.5 w-4.5 shrink-0 stroke-[2.2]" />
@@ -431,7 +486,7 @@ export default function CategoryProductPage({ params }: { params: Promise<{ cate
               </div>
               <p className="text-xs md:text-sm font-semibold leading-relaxed text-slate-500">{sectionsData.overview.content}</p>
               <div className="grid gap-3 sm:grid-cols-3">
-                {sectionsData.overview.highlights.map((hl, index) => (
+                {sectionsData.overview.highlights.map((hl: any, index: any) => (
                   <div key={index} className="bg-[#fff8f3] border border-pink-100/10 rounded-2xl p-4 flex items-center gap-3">
                     <Check className="h-5 w-5 text-[#ff4fa3] shrink-0 stroke-[2.5]" />
                     <span className="text-[12px] font-black uppercase text-[#1b1533] logo-font">{hl}</span>
@@ -473,7 +528,7 @@ export default function CategoryProductPage({ params }: { params: Promise<{ cate
               </div>
               <p className="text-xs md:text-sm font-semibold leading-relaxed text-slate-500">{sectionsData.appearance.content}</p>
               <div className="space-y-2.5">
-                {sectionsData.appearance.details.map((detail, index) => (
+                {sectionsData.appearance.details.map((detail: any, index: any) => (
                   <div key={index} className="flex items-start gap-3">
                     <span className="h-5 w-5 rounded-full bg-pink-50 text-[#ff4fa3] flex items-center justify-center text-[10px] font-black shrink-0">✓</span>
                     <span className="text-xs md:text-sm font-semibold text-slate-500 leading-normal">{detail}</span>
@@ -523,7 +578,7 @@ export default function CategoryProductPage({ params }: { params: Promise<{ cate
                 <h3 className="text-lg font-black text-[#1b1533] uppercase logo-font">{sectionsData.whyChooseUs.title}</h3>
               </div>
               <div className="grid gap-5 sm:grid-cols-2">
-                {sectionsData.whyChooseUs.points.map((point, index) => (
+                {sectionsData.whyChooseUs.points?.map((point: any, index: any) => (
                   <div key={index} className="flex items-start gap-3.5 p-4.5 rounded-2xl bg-slate-50/50 border border-slate-100/50">
                     <span className="h-6 w-6 rounded-lg bg-pink-50 text-[#ff4fa3] flex items-center justify-center text-xs font-black shrink-0">✓</span>
                     <div className="leading-tight">
@@ -545,7 +600,7 @@ export default function CategoryProductPage({ params }: { params: Promise<{ cate
               </div>
               <div className="border border-slate-100 rounded-2xl overflow-hidden shadow-inner bg-slate-50/10">
                 <div className="divide-y divide-slate-100">
-                  {sectionsData.strainInfo.specs.map((spec, index) => (
+                  {sectionsData.strainInfo.specs.map((spec: any, index: any) => (
                     <div key={index} className="grid grid-cols-[1.5fr_2fr] p-3 text-xs md:text-sm">
                       <span className="font-black text-[#1b1533] uppercase logo-font shrink-0">{spec.label}</span>
                       <span className="text-slate-500 font-semibold text-right sm:text-left">{spec.value}</span>
@@ -564,7 +619,7 @@ export default function CategoryProductPage({ params }: { params: Promise<{ cate
                 <h3 className="text-lg font-black text-[#1b1533] uppercase logo-font">{sectionsData.faq.title}</h3>
               </div>
               <div className="space-y-4">
-                {sectionsData.faq.items.map((item, index) => {
+                {sectionsData.faq.items.map((item: any, index: any) => {
                   const isOpen = openFaqTab === index;
                   return (
                     <div key={index} className="border border-slate-100 rounded-2xl bg-white overflow-hidden shadow-sm">
@@ -685,8 +740,8 @@ export default function CategoryProductPage({ params }: { params: Promise<{ cate
       <section className="mx-auto max-w-7xl px-4 py-16 border-t border-purple-100/50 md:px-8">
         <h2 className="text-3xl font-black text-[#1b1533] uppercase logo-font">Related Formulations</h2>
         <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {products.slice(0, 4).map((p, i) => (
-            <ProductCard key={p[0]} p={p} i={i} />
+          {(relatedProducts.length > 0 ? relatedProducts : products.slice(0, 4)).slice(0, 4).map((p: any, i: number) => (
+            <ProductCard key={p._id || p[0]} p={p} i={i} />
           ))}
         </div>
       </section>

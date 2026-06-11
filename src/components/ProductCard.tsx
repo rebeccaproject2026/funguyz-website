@@ -1,59 +1,7 @@
 import { ShoppingCart, Star, Heart } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
 import { getProductUrl } from '@/data/products';
-const imageMap: Record<string, string> = {
-  // Magic Mushrooms
-  'Golden Teacher': '/images/magicmushrooms/goldenteacher/goldenteacherfront.webp',
-  'Penis Envy': '/images/magicmushrooms/penisenvy/penisenvyfront.webp',
-  'Blue Meanies': '/images/magicmushrooms/bluemeanies/bluemeaniesfront.webp',
-  'Albino Penis Envy (APE)': '/images/magicmushrooms/albinopenisenvyape/albinopenisenvyapefront.webp',
-  'Tidal Wave': '/images/magicmushrooms/tidalwave/tidalwavefront.webp',
-  'Jack Frost': '/images/magicmushrooms/jackfrost/jackfrostfront.webp',
-  'Jedi Mind Fuck (JMF)': '/images/magicmushrooms/jedimindfuckjmf/jedimindfuckjmffront.webp',
-  'Mazatapec': '/images/magicmushrooms/mazatapec/mazatapecfront.webp',
-  'B+': '/images/magicmushrooms/b+/b+front.webp',
-  'Treasure Coast': '/images/magicmushrooms/treasurecoast/treasurecoastfront.webp',
-  'Melmac': '/images/magicmushrooms/melmac/melmacfront.webp',
-  'Enigma': '/images/magicmushrooms/enigma/enigmafront.webp',
-  'Hillbilly': '/images/magicmushrooms/hillbilly/hillbillyfront.webp',
-  'Thai Pink Buffalo': '/images/magicmushrooms/thaipinkbuffalo/thaipinkbuffalofront.webp',
-
-  // Edibles
-  'Golden Teacher Original Chocolate (GT OG)': '/images/edibles/chocolatebars/goldenteacheroriginalchocolategtog/goldenteacheroriginalchocolategtogfront.webp',
-  'Golden Teacher Concentrated Chocolate (GT CC)': '/images/edibles/chocolatebars/goldenteacherconcentratedchocolategtcc/goldenteacherconcentratedchocolategtccfront.webp',
-  'Penis Envy Original Chocolate (PE OG)': '/images/edibles/chocolatebars/penisenvyoriginalchocolatepeog/penisenvyoriginalchocolatepeogfront.webp',
-  'Penis Envy Refined Concentrate Chocolate (PE RC)': '/images/edibles/chocolatebars/penisenvyrefinedconcentratechocolateperc/penisenvyrefinedconcentratechocolatepercfront.webp',
-  'Penis Envy Concentrated Chocolate (PE CC)': '/images/edibles/chocolatebars/penisenvyconcentratedchocolatepecc/penisenvyconcentratedchocolatepeccfront.webp',
-  'Blue Raspberry Gummies': '/images/edibles/gummies/blueraspberrygummies/blueraspberrygummiesfront.webp',
-  'Watermelon Gummies': '/images/edibles/gummies/watermelongummies/watermelongummiesfront.webp',
-  'Strawberry Gummies': '/images/edibles/gummies/strawberrygummies/strawberrygummiesfront.webp',
-  'Mango Gummies': '/images/edibles/gummies/mangogummies/mangogummiesfront.webp',
-  'Green Apple Gummies': '/images/edibles/gummies/greenapplegummies/greenapplegummiesfront.webp',
-  'Mixed Berry Gummies': '/images/edibles/gummies/mixedberrygummies/mixedberrygummiesfront.webp',
-  'Golden Teacher S\'Mores': '/images/EDIBLES/s_mores/goldenteachers_mores/goldenteachers_moresfront.webp',
-  'Penis Envy S\'Mores': '/images/EDIBLES/s_mores/penisenvys_mores/penisenvys_moresfront.webp',
-  'Cookies & Cream S\'Mores': '/images/EDIBLES/s_mores/cookies&creams_mores/cookies&creams_moresfront.webp',
-
-  // Capsules
-  'Lion\'s Mane Capsules': '/images/CAPSULES/functionalmushroomcapsules/lion_smanecapsules/lion_smanecapsulesfront.webp',
-  'Reishi Capsules': '/images/CAPSULES/functionalmushroomcapsules/reishicapsules/reishicapsulesfront.webp',
-  'Cordyceps Capsules': '/images/CAPSULES/functionalmushroomcapsules/cordycepscapsules/cordycepscapsulesfront.webp',
-  'Turkey Tail Capsules': '/images/CAPSULES/functionalmushroomcapsules/turkeytailcapsules/turkeytailcapsulesfront.webp',
-  'Chaga Capsules': '/images/CAPSULES/functionalmushroomcapsules/chagacapsules/chagacapsulesfront.webp',
-  'Golden Teacher Extract': '/images/CAPSULES/extractstinctures/goldenteacherextract/goldenteacherextractfront.webp',
-  'Penis Envy Extract': '/images/CAPSULES/extractstinctures/penisenvyextract/penisenvyextractfront.webp',
-  'Lion\'s Mane Tincture': '/images/CAPSULES/extractstinctures/lion_smanetincture/lion_smanetincturefront.webp',
-  'Reishi Tincture': '/images/CAPSULES/extractstinctures/reishitincture/reishitincturefront.webp',
-  'Cordyceps Tincture': '/images/CAPSULES/extractstinctures/cordycepstincture/cordycepstincturefront.webp',
-
-  // Microdose
-  'Golden Teacher Microdose': '/images/microdose/goldenteachermicrodose/goldenteachermicrodosefront.webp',
-  'Penis Envy Microdose': '/images/microdose/penisenvymicrodose/penisenvymicrodosefront.webp',
-  'Stamets Stack Microdose': '/images/microdose/stametsstackmicrodose/stametsstackmicrodosefront.webp',
-  'Creativity Microdose Blend': '/images/microdose/creativitymicrodoseblend/creativitymicrodoseblendfront.webp',
-  'Productivity Microdose Blend': '/images/microdose/productivitymicrodoseblend/productivitymicrodoseblendfront.webp',
-  'Wellness Microdose Blend': '/images/microdose/wellnessmicrodoseblend/wellnessmicrodoseblendfront.webp'
-};
+import { imageMap, getFallbackImage } from '@/data/imageMap';
 
 const badgeColors: Record<string, string> = {
   'top rated': 'text-emerald-700 bg-emerald-50/80 border-emerald-100/40',
@@ -66,15 +14,22 @@ const badgeColors: Record<string, string> = {
   'focus': 'text-violet-700 bg-violet-50/80 border-violet-100/40',
 };
 
-export function ProductCard({ p, i }: { p: string[]; i: number }) {
-  const title = p[0];
-  const category = p[1];
-  const price = p[2];
-  const badge = p[3];
+export function ProductCard({ p, i = 0 }: { p: any; i?: number }) {
+  // Extract dynamic details (handles both legacy array and DB API object)
+  const title = Array.isArray(p) ? p[0] : p.name;
+  const category = Array.isArray(p) ? p[1] : (p.category?.name || 'Magic Mushrooms');
+  
+  const priceNum = Array.isArray(p) ? parseFloat(p[2].replace('$', '')) : (p.price || (Array.isArray(p.pricing) && p.pricing.length > 0 ? p.pricing[0].price : 0));
+  const price = `$${priceNum.toFixed(2)}`;
+  
+  const badge = Array.isArray(p) ? (p[3] || '') : (p.tags?.[0] || '');
+  const id = Array.isArray(p) ? title : (p._id || title);
+  const slug = Array.isArray(p) ? '' : p.slug;
 
+  // DO NOT TOUCH IMAGES CODE - Strictly mapped from static `imageMap`
   const imageSrc = imageMap[title] || getFallbackImage(category);
   const { addToCart, toggleWishlist, isWishlisted } = useCart();
-  const wishlisted = isWishlisted(title);
+  const wishlisted = isWishlisted(id);
 
   // Hardcode exact review numbers matching the reference
   const reviewCounts: Record<string, number> = {
@@ -87,8 +42,7 @@ export function ProductCard({ p, i }: { p: string[]; i: number }) {
   const reviews = reviewCounts[title] || (120 - i * 12);
 
   // Dynamically calculate natural-looking previous prices ending in .99
-  const numPrice = parseFloat(price.replace('$', ''));
-  const originalPrice = '$' + (Math.round(numPrice * 1.25) - 0.01).toFixed(2);
+  const originalPrice = '$' + (Math.round(priceNum * 1.25) - 0.01).toFixed(2);
 
   // Dynamic potency indicator mapping matching premium severity scale
   const getPotencyData = (title: string, category: string, idx: number) => {
@@ -199,7 +153,7 @@ export function ProductCard({ p, i }: { p: string[]; i: number }) {
       <button
         onClick={(e) => {
           e.stopPropagation();
-          toggleWishlist({ title, category, price, imageSrc });
+          toggleWishlist({ id, title, category, price, imageSrc, slug });
         }}
         className="absolute right-3 top-3 sm:right-6 sm:top-6 z-20 h-7.5 w-7.5 rounded-full bg-white/85 border border-slate-100 backdrop-blur-md flex items-center justify-center text-slate-400 hover:text-[#ff4fa3] hover:scale-105 active:scale-95 transition-all duration-300 shadow-sm cursor-pointer group/wish"
       >
@@ -336,13 +290,6 @@ export function ProductCard({ p, i }: { p: string[]; i: number }) {
       </div>
     </div>
   );
-}
-
-function getFallbackImage(category: string): string {
-  if (category === 'Edibles') return '/images/cat_edibles.webp';
-  if (category === 'Capsules') return '/images/cat_capsules.webp';
-  if (category === 'Microdose') return '/images/cat_microdose.webp';
-  return '/images/cat_mushrooms.webp';
 }
 
 export function ProductVisual({ kind, index = 0 }: { kind: string; index?: number }) {

@@ -46,7 +46,17 @@ const CustomerSchema: Schema = new Schema(
         isDefault: { type: Boolean, default: false },
       },
     ],
+    wishlist: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'Product',
+      },
+    ],
     deleted: {
+      type: Boolean,
+      default: false,
+    },
+    isDummyPassword: {
       type: Boolean,
       default: false,
     },
@@ -55,9 +65,13 @@ const CustomerSchema: Schema = new Schema(
     tempPasswordToken: { type: String },
     tempPasswordExpiresAt: { type: Date },
   },
-  { timestamps: true }
+  { timestamps: true, strictPopulate: false }
 );
 
-const Customer: Model<ICustomer> = mongoose.models.Customer || mongoose.model<ICustomer>('Customer', CustomerSchema);
+if (mongoose.models.Customer) {
+  delete mongoose.models.Customer;
+}
+
+const Customer: Model<ICustomer> = mongoose.model<ICustomer>('Customer', CustomerSchema);
 
 export default Customer;

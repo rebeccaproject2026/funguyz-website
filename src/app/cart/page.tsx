@@ -1,4 +1,5 @@
 'use client';
+import Link from 'next/link';
 
 import React, { useState } from 'react';
 import { Header } from '@/components/Header';
@@ -36,6 +37,36 @@ export default function CartPage() {
   const [couponCode, setCouponCode] = useState('');
   const [couponError, setCouponError] = useState('');
   const [couponSuccess, setCouponSuccess] = useState('');
+
+  const [dbProducts, setDbProducts] = useState<any[]>([]);
+
+  React.useEffect(() => {
+    async function fetchProducts() {
+      const cachedGlobalString = sessionStorage.getItem('globalRelatedProducts');
+      const cachedGlobalProducts = cachedGlobalString ? JSON.parse(cachedGlobalString) : [];
+
+      if (cachedGlobalProducts && cachedGlobalProducts.length > 0) {
+        setDbProducts(cachedGlobalProducts);
+        return;
+      }
+
+      try {
+        const res = await fetch('/api/products');
+        const data = await res.json();
+        if (data.success) {
+          setDbProducts(data.products);
+          if (typeof window !== 'undefined') {
+            sessionStorage.setItem('globalRelatedProducts', JSON.stringify(data.products));
+          }
+        }
+      } catch (err) {
+        console.error('Failed to fetch global products', err);
+      }
+    }
+    fetchProducts();
+  }, []);
+
+  const baseProducts = dbProducts;
 
   // Coupon handling logic
   const handleApplyCoupon = (e: React.FormEvent) => {
@@ -320,12 +351,12 @@ export default function CartPage() {
                 </div>
 
                 {/* Checkout CTA */}
-                <a
+                <Link
                   href="/checkout"
                   className="w-full inline-flex items-center justify-center rounded-2xl bg-[#ff4fa3] text-white border border-[#ff4fa3] py-4 text-xs font-black uppercase tracking-wider shadow-md shadow-pink-100 transition-all duration-300 hover:bg-black hover:text-[#ff4fa3] hover:border-black hover:-translate-y-0.5 active:translate-y-0 cursor-pointer gap-2 logo-font text-center"
                 >
                   <ShieldCheck className="h-4.5 w-4.5" /> Proceed to Checkout
-                </a>
+                </Link>
 
                 {/* Assurance Badges */}
                 <div className="flex items-center justify-center gap-2 text-[12px] text-slate-400 font-bold uppercase tracking-wider select-none font-poppins pt-2">
@@ -370,8 +401,8 @@ export default function CartPage() {
               </div>
 
               <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-                {products.slice(0, 4).map((p, i) => (
-                  <ProductCard key={p[0]} p={p} i={i} />
+                {baseProducts.slice(0, 4).map((p, i) => (
+                  <ProductCard key={p._id || p[0]} p={p} i={i} />
                 ))}
               </div>
             </div>

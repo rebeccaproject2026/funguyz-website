@@ -3,22 +3,23 @@
 import React, { useState } from 'react';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
+import { MushroomLoader } from '@/components/MushroomLoader';
 import { ProductCard } from '@/components/ProductCard';
 import { products, getProductSlug, getProductSeoMetadata, getProductSections, mushroomPricingTable } from '@/data/products';
 import { useCart } from '@/context/CartContext';
-import { 
+import {
   Sparkles,
   ShoppingBag,
-  Star, 
-  ShieldCheck, 
-  Truck, 
-  Heart, 
-  Share2, 
-  Check, 
-  ChevronRight, 
+  Star,
+  ShieldCheck,
+  Truck,
+  Heart,
+  Share2,
+  Check,
+  ChevronRight,
   ChevronLeft,
-  Minus, 
-  Plus, 
+  Minus,
+  Plus,
   AlertCircle,
   Lock,
   ArrowRight,
@@ -30,64 +31,11 @@ import {
   HelpCircle,
   MessageSquare
 } from 'lucide-react';
-
-const imageMap: Record<string, string> = {
-  // Magic Mushrooms
-  'Golden Teacher': '/images/magicmushrooms/goldenteacher/goldenteacherfront.webp',
-  'Penis Envy': '/images/magicmushrooms/penisenvy/penisenvyfront.webp',
-  'Blue Meanies': '/images/magicmushrooms/bluemeanies/bluemeaniesfront.webp',
-  'Albino Penis Envy (APE)': '/images/magicmushrooms/albinopenisenvyape/albinopenisenvyapefront.webp',
-  'Tidal Wave': '/images/magicmushrooms/tidalwave/tidalwavefront.webp',
-  'Jack Frost': '/images/magicmushrooms/jackfrost/jackfrostfront.webp',
-  'Jedi Mind Fuck (JMF)': '/images/magicmushrooms/jedimindfuckjmf/jedimindfuckjmffront.webp',
-  'Mazatapec': '/images/magicmushrooms/mazatapec/mazatapecfront.webp',
-  'B+': '/images/magicmushrooms/b+/b+front.webp',
-  'Treasure Coast': '/images/magicmushrooms/treasurecoast/treasurecoastfront.webp',
-  'Melmac': '/images/magicmushrooms/melmac/melmacfront.webp',
-  'Enigma': '/images/magicmushrooms/enigma/enigmafront.webp',
-  'Hillbilly': '/images/magicmushrooms/hillbilly/hillbillyfront.webp',
-  'Thai Pink Buffalo': '/images/magicmushrooms/thaipinkbuffalo/thaipinkbuffalofront.webp',
-
-  // Edibles
-  'Golden Teacher Original Chocolate (GT OG)': '/images/edibles/chocolatebars/goldenteacheroriginalchocolategtog/goldenteacheroriginalchocolategtogfront.webp',
-  'Golden Teacher Concentrated Chocolate (GT CC)': '/images/edibles/chocolatebars/goldenteacherconcentratedchocolategtcc/goldenteacherconcentratedchocolategtccfront.webp',
-  'Penis Envy Original Chocolate (PE OG)': '/images/edibles/chocolatebars/penisenvyoriginalchocolatepeog/penisenvyoriginalchocolatepeogfront.webp',
-  'Penis Envy Refined Concentrate Chocolate (PE RC)': '/images/edibles/chocolatebars/penisenvyrefinedconcentratechocolateperc/penisenvyrefinedconcentratechocolatepercfront.webp',
-  'Penis Envy Concentrated Chocolate (PE CC)': '/images/edibles/chocolatebars/penisenvyconcentratedchocolatepecc/penisenvyconcentratedchocolatepeccfront.webp',
-  'Blue Raspberry Gummies': '/images/edibles/gummies/blueraspberrygummies/blueraspberrygummiesfront.webp',
-  'Watermelon Gummies': '/images/edibles/gummies/watermelongummies/watermelongummiesfront.webp',
-  'Strawberry Gummies': '/images/edibles/gummies/strawberrygummies/strawberrygummiesfront.webp',
-  'Mango Gummies': '/images/edibles/gummies/mangogummies/mangogummiesfront.webp',
-  'Green Apple Gummies': '/images/edibles/gummies/greenapplegummies/greenapplegummiesfront.webp',
-  'Mixed Berry Gummies': '/images/edibles/gummies/mixedberrygummies/mixedberrygummiesfront.webp',
-  'Golden Teacher S\'Mores': '/images/EDIBLES/s_mores/goldenteachers_mores/goldenteachers_moresfront.webp',
-  'Penis Envy S\'Mores': '/images/EDIBLES/s_mores/penisenvys_mores/penisenvys_moresfront.webp',
-  'Cookies & Cream S\'Mores': '/images/EDIBLES/s_mores/cookies&creams_mores/cookies&creams_moresfront.webp',
-
-  // Capsules
-  'Lion\'s Mane Capsules': '/images/CAPSULES/functionalmushroomcapsules/lion_smanecapsules/lion_smanecapsulesfront.webp',
-  'Reishi Capsules': '/images/CAPSULES/functionalmushroomcapsules/reishicapsules/reishicapsulesfront.webp',
-  'Cordyceps Capsules': '/images/CAPSULES/functionalmushroomcapsules/cordycepscapsules/cordycepscapsulesfront.webp',
-  'Turkey Tail Capsules': '/images/CAPSULES/functionalmushroomcapsules/turkeytailcapsules/turkeytailcapsulesfront.webp',
-  'Chaga Capsules': '/images/CAPSULES/functionalmushroomcapsules/chagacapsules/chagacapsulesfront.webp',
-  'Golden Teacher Extract': '/images/CAPSULES/extractstinctures/goldenteacherextract/goldenteacherextractfront.webp',
-  'Penis Envy Extract': '/images/CAPSULES/extractstinctures/penisenvyextract/penisenvyextractfront.webp',
-  'Lion\'s Mane Tincture': '/images/CAPSULES/extractstinctures/lion_smanetincture/lion_smanetincturefront.webp',
-  'Reishi Tincture': '/images/CAPSULES/extractstinctures/reishitincture/reishitincturefront.webp',
-  'Cordyceps Tincture': '/images/CAPSULES/extractstinctures/cordycepstincture/cordycepstincturefront.webp',
-
-  // Microdose
-  'Golden Teacher Microdose': '/images/microdose/goldenteachermicrodose/goldenteachermicrodosefront.webp',
-  'Penis Envy Microdose': '/images/microdose/penisenvymicrodose/penisenvymicrodosefront.webp',
-  'Stamets Stack Microdose': '/images/microdose/stametsstackmicrodose/stametsstackmicrodosefront.webp',
-  'Creativity Microdose Blend': '/images/microdose/creativitymicrodoseblend/creativitymicrodoseblendfront.webp',
-  'Productivity Microdose Blend': '/images/microdose/productivitymicrodoseblend/productivitymicrodoseblendfront.webp',
-  'Wellness Microdose Blend': '/images/microdose/wellnessmicrodoseblend/wellnessmicrodoseblendfront.webp'
-};
+import { imageMap } from '@/data/imageMap';
 
 function getGalleryImagesList(title: string, category: string, mainImg: string): string[] {
   const backImg = mainImg.replace('front.webp', 'back.webp');
-  
+
   if (category === 'Edibles') {
     return [
       mainImg,
@@ -123,29 +71,58 @@ function getGalleryImagesList(title: string, category: string, mainImg: string):
 }
 
 export default function ProductDetailsPage({ params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = React.use(params);
+  const unwrappedParams = React.use(params as any) as { slug: string };
+  const { slug } = unwrappedParams;
   const { addToCart, toggleWishlist, isWishlisted } = useCart();
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+  const [newReviewRating, setNewReviewRating] = useState<number>(5);
+
+  const [newReviewText, setNewReviewText] = useState<string>('');
   const [selectedWeight, setSelectedWeight] = useState<string>('3.5g');
   const [quantity, setQuantity] = useState<number>(1);
   const [activeSection, setActiveSection] = useState<string>('overview');
   const [openFaqTab, setOpenFaqTab] = useState<number | null>(null);
-  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
-  const [newReviewRating, setNewReviewRating] = useState<number>(5);
-  const [newReviewText, setNewReviewText] = useState<string>('');
-  const [reviewsList, setReviewsList] = useState<any[]>([
-    ['Sarah M.', 'Outstanding customer service and extremely discreet packaging. The Golden Teacher provided an incredibly smooth, visual, and introspective mindset journey. Delivered in 2 days to Vancouver!', 5],
-    ['David K.', 'Excellent gummies! The watermelon flavor is completely organic and has zero heavy body load. Ideal microdosing stack for creative coding and design focus!', 5]
-  ]);
+  
+  const [dbProduct, setDbProduct] = useState<any>(null);
+  const [localReviews, setLocalReviews] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  // Parse dynamic slug and match product from our central products data
-  let matched = products.find(p => getProductSlug(p[0]) === slug);
-  if (!matched) {
-    matched = products[0]; // Fallback to Golden Teacher
-  }
+  React.useEffect(() => {
+    async function fetchProduct() {
+      try {
+        const res = await fetch(`/api/products/${slug}`);
+        const data = await res.json();
+        if (data.success && data.product) {
+          setDbProduct(data.product);
+        }
+      } catch (err) {
+        console.error('Failed to fetch product from DB', err);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchProduct();
+  }, [slug]);
 
-  // Retrieve SEO metadata
-  const seoData = getProductSeoMetadata(matched[0], matched[1]);
-  const sectionsData = getProductSections(matched[0], matched[1], seoData.description);
+  if (loading) {
+    return (
+      <main className="bg-[#fff8f3] text-[#1b1533] min-h-screen flex flex-col">
+        <Header />
+        <div className="flex-1 flex items-center justify-center py-32">
+          <MushroomLoader />
+        </div>
+        <Footer />
+      </main>
+    );
+  }  // Parse dynamic slug and match product from our central products data
+  let matched = products.find(p => getProductSlug(p[0]) === slug) || products[0];
+
+  // Merge DB data with Fallbacks
+  const productTitle = dbProduct ? dbProduct.name : matched[0];
+  const productCategory = dbProduct ? (dbProduct.category?.name || 'Magic Mushrooms') : matched[1];
+
+  const seoData = dbProduct ? { h1: dbProduct.seoMetadata?.h1 || productTitle, description: dbProduct.description } : getProductSeoMetadata(matched[0], matched[1]);
+  const sectionsData = dbProduct?.productSections || getProductSections(matched[0], matched[1], seoData.description);
 
   const sectionsList = [
     { id: 'overview', label: 'Overview', icon: BookOpen },
@@ -155,35 +132,46 @@ export default function ProductDetailsPage({ params }: { params: Promise<{ slug:
     { id: 'why-choose-us', label: 'Why Choose It', icon: ThumbsUp },
     { id: 'strain-info', label: 'Strain Information', icon: Activity },
     { id: 'faq', label: 'FAQ', icon: HelpCircle },
-    { id: 'reviews', label: `Reviews (${reviewsList.length})`, icon: MessageSquare }
+    { id: 'reviews', label: `Reviews (${dbProduct?.reviewsList?.length || 2})`, icon: MessageSquare }
   ];
 
+  let pricingMap: Record<string, number> = {};
+  if (Array.isArray(dbProduct?.pricing)) {
+    dbProduct.pricing.forEach((p: any) => {
+      if (p.weight && p.price) {
+        pricingMap[p.weight] = p.price;
+      }
+    });
+  } else {
+    pricingMap = mushroomPricingTable[matched[0]] || {
+      '3.5g': parseFloat(matched[2].replace('$', ''))
+    };
+  }
 
-
-  // Curate high-end WooCommerce specifications based on product data matches
-  const basePriceNum = parseFloat(matched[2].replace('$', ''));
-  
-  // Custom weights pricing map using exact docx pricing table for magic mushrooms
-  const pricingMap: Record<string, number> = mushroomPricingTable[matched[0]] || {
-    '3.5g': basePriceNum
-  };
-
+  // STRICTLY DO NOT TOUCH IMAGES CODE - purely static!
   const mainImg = imageMap[matched[0]] || getFallbackImage(matched[1]);
   const galleryImages = getGalleryImagesList(matched[0], matched[1], mainImg);
 
+  const priceNum = dbProduct ? dbProduct.price : parseFloat(matched[2].replace('$', ''));
+
   const productData = {
-    title: seoData.h1,
-    category: matched[1],
-    price: matched[2],
-    originalPrice: matched[4],
+    id: dbProduct ? dbProduct._id : matched[0],
+    title: productTitle,
+    category: productCategory,
+    price: `$${priceNum.toFixed(2)}`,
+    originalPrice: `$${(Math.round(priceNum * 1.25) - 0.01).toFixed(2)}`,
     imageSrc: mainImg,
-    reviews: matched[6] || '48 reviews',
-    rating: matched[7] || 5,
+    reviews: dbProduct?.reviewStats?.count || 120,
+    rating: dbProduct?.reviewStats?.averageRating || 5,
     pricingMap,
     desc: seoData.description,
-    compounds: getCompoundsForCategory(matched[1]),
-    slug: getProductSlug(matched[0])
+    compounds: dbProduct?.compounds || getCompoundsForCategory(matched[1]),
+    slug: slug
   };
+
+  // Use DB reviews if available
+  const dbReviews = dbProduct?.reviewsList ? dbProduct.reviewsList.map((r: any) => [r.name, r.text, r.rating]) : [];
+  const displayReviews = [...dbReviews, ...localReviews];
 
   const [selectedGalleryImage, setSelectedGalleryImage] = useState<string | null>(null);
   const activeImage = selectedGalleryImage || mainImg;
@@ -211,7 +199,7 @@ export default function ProductDetailsPage({ params }: { params: Promise<{ slug:
     }
   };
 
-  const wishlisted = isWishlisted(productData.title);
+  const wishlisted = isWishlisted(productData.id);
 
   // Multiplier price for dynamic size selection
   const calculatedPrice = productData.pricingMap[selectedWeight] || parseFloat(productData.price.replace('$', ''));
@@ -245,11 +233,11 @@ export default function ProductDetailsPage({ params }: { params: Promise<{ slug:
 
       {/* Main Single Product Layout */}
       <section className="mx-auto max-w-7xl px-4 py-12 md:px-8">
-        
+
         {/* Success message handled dynamically by the WooCommerce sliding toast */}
 
         <div className="grid gap-12 lg:grid-cols-2 items-start">
-          
+
           {/* Left Block: Gallery and Product Image */}
           <div className="space-y-6">
             <div className="relative aspect-square w-full rounded-[24px] sm:rounded-[40px] bg-white border border-slate-100 shadow-sm overflow-hidden flex items-center justify-center group">
@@ -283,15 +271,14 @@ export default function ProductDetailsPage({ params }: { params: Promise<{ slug:
               )}
             </div>
 
-            {/* Micro Gallery Thumbnails */}
+            {/* Thumbnails */}
             <div className="grid grid-cols-4 gap-4">
-              {galleryImages.map((img, idx) => (
+              {galleryImages.map((img: string, idx: number) => (
                 <button
                   key={idx}
                   onClick={() => setSelectedGalleryImage(img)}
-                  className={`aspect-square rounded-2xl border bg-white overflow-hidden flex items-center justify-center hover:border-[#ff4fa3] transition-all cursor-pointer ${
-                    activeImage === img ? 'border-[#ff4fa3] ring-2 ring-pink-50' : 'border-slate-100'
-                  }`}
+                  className={`aspect-square rounded-2xl border bg-white overflow-hidden flex items-center justify-center hover:border-[#ff4fa3] transition-all cursor-pointer ${activeImage === img ? 'border-[#ff4fa3] ring-2 ring-pink-50' : 'border-slate-100'
+                    }`}
                 >
                   <img src={img} className="h-full w-full object-cover" alt="Thumbnail" loading="lazy" />
                 </button>
@@ -303,7 +290,7 @@ export default function ProductDetailsPage({ params }: { params: Promise<{ slug:
           <div className="flex flex-col">
             <span className="text-[12px] font-black uppercase tracking-widest text-[#ff4fa3] logo-font leading-none">{productData.category}</span>
             <h1 className="mt-3.5 text-2xl sm:text-4xl md:text-5xl font-black text-[#1b1533] uppercase leading-none tracking-tight logo-font">{productData.title}</h1>
-            
+
             {/* Rating Stars row */}
             <div className="flex items-center gap-2 mt-4 text-xs font-semibold leading-none text-amber-500">
               <div className="flex gap-0.5">
@@ -326,19 +313,18 @@ export default function ProductDetailsPage({ params }: { params: Promise<{ slug:
             </p>
 
             {/* Weight Selectors (WooCommerce Style Weight Pills) */}
-            {productData.category === 'Magic Mushrooms' && (
+            {Object.keys(productData.pricingMap).length > 0 && (
               <div className="mt-6 space-y-3">
                 <span className="block text-[12px] font-black uppercase tracking-wider text-slate-400">Select Dosage / Weight:</span>
-                <div className="grid grid-cols-4 gap-2 w-full sm:w-auto">
-                  {['3.5g', '7g', '14g', '28g'].map((s) => (
+                <div className="flex flex-wrap gap-2 w-full sm:w-auto">
+                  {Object.keys(productData.pricingMap).map((s) => (
                     <button
                       key={s}
                       onClick={() => setSelectedWeight(s)}
-                      className={`rounded-2xl py-3 text-xs font-black uppercase tracking-wider logo-font transition-all duration-200 cursor-pointer border text-center ${
-                        selectedWeight === s
-                          ? 'bg-[#ff4fa3] border-[#ff4fa3] text-white shadow-md shadow-pink-100'
-                          : 'bg-white border-slate-200 text-[#1b1533] shadow-sm hover:border-[#ff4fa3] hover:text-[#ff4fa3]'
-                      }`}
+                      className={`rounded-2xl py-3 px-6 min-w-[80px] text-xs font-black uppercase tracking-wider logo-font transition-all duration-200 cursor-pointer border text-center ${selectedWeight === s
+                        ? 'bg-[#ff4fa3] border-[#ff4fa3] text-white shadow-md shadow-pink-100'
+                        : 'bg-white border-slate-200 text-[#1b1533] shadow-sm hover:border-[#ff4fa3] hover:text-[#ff4fa3]'
+                        }`}
                     >
                       {s}
                     </button>
@@ -372,17 +358,18 @@ export default function ProductDetailsPage({ params }: { params: Promise<{ slug:
                 <button
                   onClick={() => {
                     toggleWishlist({
+                      id: productData.id,
+                      slug: productData.slug,
                       title: productData.title,
                       category: productData.category,
                       price: productData.price,
                       imageSrc: productData.imageSrc
                     });
                   }}
-                  className={`grid sm:hidden h-12 w-12 place-items-center rounded-2xl border transition-all cursor-pointer shrink-0 ${
-                    wishlisted 
-                      ? 'bg-pink-50 border-pink-100 text-[#ff4fa3]' 
-                      : 'bg-white border-slate-200 text-slate-400 hover:border-pink-300 hover:text-[#ff4fa3] shadow-sm'
-                  }`}
+                  className={`grid sm:hidden h-12 w-12 place-items-center rounded-2xl border transition-all cursor-pointer shrink-0 ${wishlisted
+                    ? 'bg-pink-50 border-pink-100 text-[#ff4fa3]'
+                    : 'bg-white border-slate-200 text-slate-400 hover:border-pink-300 hover:text-[#ff4fa3] shadow-sm'
+                    }`}
                 >
                   <Heart className={`h-5 w-5 ${wishlisted ? 'fill-[#ff4fa3] text-[#ff4fa3]' : ''}`} />
                 </button>
@@ -400,17 +387,18 @@ export default function ProductDetailsPage({ params }: { params: Promise<{ slug:
               <button
                 onClick={() => {
                   toggleWishlist({
+                    id: productData.id,
+                    slug: productData.slug,
                     title: productData.title,
                     category: productData.category,
                     price: productData.price,
                     imageSrc: productData.imageSrc
                   });
                 }}
-                className={`hidden sm:grid h-12 w-12 place-items-center rounded-2xl border transition-all cursor-pointer shrink-0 ${
-                  wishlisted 
-                    ? 'bg-pink-50 border-pink-100 text-[#ff4fa3]' 
-                    : 'bg-white border-slate-200 text-slate-400 hover:border-pink-300 hover:text-[#ff4fa3] shadow-sm'
-                }`}
+                className={`hidden sm:grid h-12 w-12 place-items-center rounded-2xl border transition-all cursor-pointer shrink-0 ${wishlisted
+                  ? 'bg-pink-50 border-pink-100 text-[#ff4fa3]'
+                  : 'bg-white border-slate-200 text-slate-400 hover:border-pink-300 hover:text-[#ff4fa3] shadow-sm'
+                  }`}
               >
                 <Heart className={`h-5 w-5 ${wishlisted ? 'fill-[#ff4fa3] text-[#ff4fa3]' : ''}`} />
               </button>
@@ -437,7 +425,7 @@ export default function ProductDetailsPage({ params }: { params: Promise<{ slug:
 
         {/* Sticky Sidebar Profile Layout */}
         <div className="mt-16 grid gap-8 lg:grid-cols-[280px_1fr] items-start">
-          
+
           {/* Left Column: Sticky Navigation */}
           <aside className="lg:sticky lg:top-24 space-y-2 bg-white border border-slate-100 rounded-[28px] p-5 shadow-sm overflow-x-auto lg:overflow-x-visible scrollbar-none flex lg:flex-col gap-2 lg:gap-0 flex-nowrap z-20">
             <span className="hidden lg:block text-[11px] font-black uppercase tracking-widest text-slate-400 mb-3 px-3 leading-none logo-font">Product Profile</span>
@@ -450,11 +438,10 @@ export default function ProductDetailsPage({ params }: { params: Promise<{ slug:
                     setActiveSection(sec.id);
                     document.getElementById(`sec-${sec.id}`)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
                   }}
-                  className={`flex items-center gap-3.5 px-4.5 py-3.5 text-xs font-black uppercase tracking-widest rounded-2xl cursor-pointer transition-all duration-200 whitespace-nowrap lg:w-full text-left leading-none ${
-                    activeSection === sec.id
-                      ? 'bg-[#ff4fa3] text-white shadow-md shadow-pink-100'
-                      : 'text-slate-500 hover:text-[#ff4fa3] hover:bg-slate-50'
-                  }`}
+                  className={`flex items-center gap-3.5 px-4.5 py-3.5 text-xs font-black uppercase tracking-widest rounded-2xl cursor-pointer transition-all duration-200 whitespace-nowrap lg:w-full text-left leading-none ${activeSection === sec.id
+                    ? 'bg-[#ff4fa3] text-white shadow-md shadow-pink-100'
+                    : 'text-slate-500 hover:text-[#ff4fa3] hover:bg-slate-50'
+                    }`}
                 >
                   <IconComponent className="h-4.5 w-4.5 shrink-0 stroke-[2.2]" />
                   <span className="logo-font">{sec.label}</span>
@@ -465,7 +452,7 @@ export default function ProductDetailsPage({ params }: { params: Promise<{ slug:
 
           {/* Right Column: Content Sections */}
           <div className="space-y-12">
-            
+
             {/* 1. Overview Section */}
             <section id="sec-overview" className="bg-white border border-slate-100 rounded-[32px] p-6 md:p-8 shadow-sm space-y-6 scroll-mt-28">
               <div className="flex items-center gap-3 border-b border-slate-100 pb-4">
@@ -475,9 +462,9 @@ export default function ProductDetailsPage({ params }: { params: Promise<{ slug:
                 <h3 className="text-lg font-black text-[#1b1533] uppercase logo-font">{sectionsData.overview.title}</h3>
               </div>
               <p className="text-xs md:text-sm font-semibold leading-relaxed text-slate-500">{sectionsData.overview.content}</p>
-              
+
               <div className="grid gap-3 sm:grid-cols-3">
-                {sectionsData.overview.highlights.map((hl, index) => (
+                {sectionsData.overview.highlights.map((hl: string, index: number) => (
                   <div key={index} className="bg-[#fff8f3] border border-pink-100/10 rounded-2xl p-4 flex items-center gap-3">
                     <Check className="h-5 w-5 text-[#ff4fa3] shrink-0 stroke-[2.5]" />
                     <span className="text-[12px] font-black uppercase text-[#1b1533] logo-font">{hl}</span>
@@ -533,7 +520,7 @@ export default function ProductDetailsPage({ params }: { params: Promise<{ slug:
               </div>
               <p className="text-xs md:text-sm font-semibold leading-relaxed text-slate-500">{sectionsData.appearance.content}</p>
               <div className="space-y-2.5">
-                {sectionsData.appearance.details.map((detail, index) => (
+                {sectionsData.appearance.details.map((detail: string, index: number) => (
                   <div key={index} className="flex items-start gap-3">
                     <span className="h-5 w-5 rounded-full bg-pink-50 text-[#ff4fa3] flex items-center justify-center text-[10px] font-black shrink-0">✓</span>
                     <span className="text-xs md:text-sm font-semibold text-slate-500 leading-normal">{detail}</span>
@@ -583,7 +570,7 @@ export default function ProductDetailsPage({ params }: { params: Promise<{ slug:
                 <h3 className="text-lg font-black text-[#1b1533] uppercase logo-font">{sectionsData.whyChooseUs.title}</h3>
               </div>
               <div className="grid gap-5 sm:grid-cols-2">
-                {sectionsData.whyChooseUs.points.map((point, index) => (
+                {sectionsData.whyChooseUs.points.map((point: any, index: number) => (
                   <div key={index} className="flex items-start gap-3.5 p-4.5 rounded-2xl bg-slate-50/50 border border-slate-100/50">
                     <span className="h-6 w-6 rounded-lg bg-pink-50 text-[#ff4fa3] flex items-center justify-center text-xs font-black shrink-0">✓</span>
                     <div className="leading-tight">
@@ -603,10 +590,10 @@ export default function ProductDetailsPage({ params }: { params: Promise<{ slug:
                 </div>
                 <h3 className="text-lg font-black text-[#1b1533] uppercase logo-font">{sectionsData.strainInfo.title}</h3>
               </div>
-              
+
               <div className="border border-slate-100 rounded-2xl overflow-hidden shadow-inner bg-slate-50/10">
                 <div className="divide-y divide-slate-100">
-                  {sectionsData.strainInfo.specs.map((spec, index) => (
+                  {sectionsData.strainInfo.specs.map((spec: any, index: number) => (
                     <div key={index} className="grid grid-cols-[1.5fr_2fr] p-3 text-xs md:text-sm">
                       <span className="font-black text-[#1b1533] uppercase logo-font shrink-0">{spec.label}</span>
                       <span className="text-slate-500 font-semibold text-right sm:text-left">{spec.value}</span>
@@ -626,7 +613,7 @@ export default function ProductDetailsPage({ params }: { params: Promise<{ slug:
               </div>
 
               <div className="space-y-4">
-                {sectionsData.faq.items.map((item, index) => {
+                {sectionsData.faq.items.map((item: any, index: number) => {
                   const isOpen = openFaqTab === index;
                   return (
                     <div key={index} className="border border-slate-100 rounded-2xl bg-white overflow-hidden shadow-sm">
@@ -656,11 +643,11 @@ export default function ProductDetailsPage({ params }: { params: Promise<{ slug:
                 <div className="h-10 w-10 rounded-xl bg-pink-50 flex items-center justify-center text-[#ff4fa3]">
                   <MessageSquare className="h-5 w-5 stroke-[2.2]" />
                 </div>
-                <h3 className="text-lg font-black text-[#1b1533] uppercase logo-font">Reviews ({reviewsList.length})</h3>
+                <h3 className="text-lg font-black text-[#1b1533] uppercase logo-font">Reviews ({displayReviews.length})</h3>
               </div>
 
               <div className="space-y-6">
-                {reviewsList.map(([name, text, rating], i) => (
+                {displayReviews.map(([name, text, rating]: any, i: number) => (
                   <div key={i} className="border-b border-slate-100 pb-5 last:border-b-0">
                     <div className="flex items-center gap-3">
                       <span className="grid h-10 w-10 place-items-center rounded-full bg-pink-100 text-pink-600 font-extrabold text-sm uppercase leading-none">
@@ -693,7 +680,7 @@ export default function ProductDetailsPage({ params }: { params: Promise<{ slug:
                     <h4 className="text-xs font-black text-[#1b1533] uppercase logo-font leading-none">Write a Customer Review</h4>
                     <p className="text-[12px] text-slate-400 mt-2 font-semibold leading-normal max-w-[280px]">You must be logged in to write a review on this product.</p>
                   </div>
-                  <button 
+                  <button
                     onClick={() => setIsLoggedIn(true)}
                     className="rounded-2xl bg-[#ff4fa3] text-white border border-[#ff4fa3] px-6 py-2.5 text-[12px] font-black uppercase tracking-widest shadow-md shadow-pink-100 transition-all duration-300 hover:bg-black hover:text-[#ff4fa3] hover:border-black hover:-translate-y-0.5 active:translate-y-0 cursor-pointer logo-font flex items-center gap-1.5"
                   >
@@ -703,7 +690,7 @@ export default function ProductDetailsPage({ params }: { params: Promise<{ slug:
               ) : (
                 <div className="bg-slate-50/50 border border-slate-100 rounded-3xl p-6 max-w-xl space-y-4 animate-scale-up">
                   <h4 className="text-xs font-black text-[#1b1533] uppercase logo-font leading-none">Write a Customer Review</h4>
-                  
+
                   <div className="space-y-1.5">
                     <span className="block text-[12px] font-black uppercase tracking-wider text-slate-400">Select Rating:</span>
                     <div className="flex gap-1.5">
@@ -714,10 +701,9 @@ export default function ProductDetailsPage({ params }: { params: Promise<{ slug:
                           onClick={() => setNewReviewRating(star)}
                           className="hover:scale-110 transition-transform duration-100 focus:outline-none cursor-pointer"
                         >
-                          <Star 
-                            className={`h-4.5 w-4.5 stroke-none ${
-                              star <= newReviewRating ? 'fill-amber-400' : 'fill-slate-200'
-                            }`} 
+                          <Star
+                            className={`h-4.5 w-4.5 stroke-none ${star <= newReviewRating ? 'fill-amber-400' : 'fill-slate-200'
+                              }`}
                           />
                         </button>
                       ))}
@@ -736,14 +722,8 @@ export default function ProductDetailsPage({ params }: { params: Promise<{ slug:
 
                   <button
                     onClick={() => {
-                      if (!newReviewText.trim()) {
-                        alert("Please write some text for your review!");
-                        return;
-                      }
-                      setReviewsList([
-                        ...reviewsList,
-                        ['Naveen Kumar', newReviewText.trim(), newReviewRating]
-                      ]);
+                      if (!newReviewText.trim()) return;
+                      setLocalReviews([...localReviews, ['Valued Customer', newReviewText.trim(), newReviewRating]]);
                       setNewReviewText('');
                     }}
                     className="inline-flex items-center justify-center rounded-2xl bg-[#ff4fa3] text-white border border-[#ff4fa3] px-6 py-2.5 text-[12px] font-black uppercase tracking-wider shadow-md shadow-pink-100 hover:bg-black hover:text-[#ff4fa3] hover:border-black hover:-translate-y-0.5 active:translate-y-0 cursor-pointer logo-font"

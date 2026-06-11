@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
+import { MushroomLoader } from '@/components/MushroomLoader';
 import { useAuth } from '@/context/AuthContext';
 import {
   User,
@@ -59,12 +60,12 @@ function PasswordInput({ value, onChange, placeholder = '•••••••�
 }
 
 // ─── Views ───────────────────────────────────────────────────────────────────
-type View = 'login' | 'reset' | 'change-password' | 'dashboard';
+type View = 'loading' | 'login' | 'reset' | 'change-password' | 'dashboard';
 
 export default function MyAccountPage() {
-  const { currentUser, isLoggedIn, login, logout, updatePassword, resetPassword } = useAuth();
+  const { currentUser, isLoggedIn, status, login, logout, updatePassword, resetPassword } = useAuth();
 
-  const [view, setView] = useState<View>('login');
+  const [view, setView] = useState<View>('loading');
   const [flash, setFlash] = useState<{ type: 'success' | 'error'; msg: string } | null>(null);
 
   // Login form
@@ -79,17 +80,26 @@ export default function MyAccountPage() {
   const [newPass, setNewPass] = useState('');
   const [confirmPass, setConfirmPass] = useState('');
 
+  // Loading states for API calls
+  const [isLoggingIn, setIsLoggingIn] = useState(false);
+  const [isResetting, setIsResetting] = useState(false);
+  const [isChangingPass, setIsChangingPass] = useState(false);
+
   // Dashboard tab
   const [activeTab, setActiveTab] = useState<'dashboard' | 'orders' | 'downloads' | 'addresses' | 'details'>('dashboard');
 
   // Determine initial view on mount
   useEffect(() => {
+    if (status === 'loading') {
+      setView('loading');
+      return;
+    }
     if (isLoggedIn && currentUser) {
       setView((currentUser as any)?.isDummyPassword ? 'change-password' : 'dashboard');
     } else {
       setView('login');
     }
-  }, [isLoggedIn, currentUser]);
+  }, [isLoggedIn, currentUser, status]);
 
   const showFlash = (type: 'success' | 'error', msg: string) => {
     setFlash({ type, msg });
@@ -100,7 +110,9 @@ export default function MyAccountPage() {
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsLoggingIn(true);
     const result = await login(loginEmail, loginPassword);
+    setIsLoggingIn(false);
     if (result.success) {
       showFlash('success', result.message);
     } else {
@@ -110,17 +122,20 @@ export default function MyAccountPage() {
 
   const handleReset = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsResetting(true);
     const result = await resetPassword(resetEmail) as any;
+    setIsResetting(false);
     if (result.success && result.newPassword) {
       setResetResult(result.newPassword);
     } else {
-      showFlash('error', result.message);
+      showFlash('error', result.message || 'Something went wrong');
     }
   };
-
   const handleChangePassword = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsChangingPass(true);
     const result = await updatePassword(newPass, confirmPass);
+    setIsChangingPass(false);
     if (result.success) {
       showFlash('success', result.message);
       setNewPass('');
@@ -157,8 +172,8 @@ export default function MyAccountPage() {
   // ── Flash banner ─────────────────────────────────────────────────────────────
   const FlashBanner = () => !flash ? null : (
     <div className={`mb-6 flex items-center gap-3 rounded-2xl border p-4 text-xs font-bold uppercase tracking-wider logo-font ${flash.type === 'success'
-        ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-700'
-        : 'bg-red-500/10 border-red-500/20 text-red-700'
+      ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-700'
+      : 'bg-red-500/10 border-red-500/20 text-red-700'
       }`}>
       {flash.type === 'success'
         ? <CheckCircle2 className="h-5 w-5 shrink-0" />
@@ -166,6 +181,21 @@ export default function MyAccountPage() {
       <span>{flash.msg}</span>
     </div>
   );
+
+  // ════════════════════════════════════════════════════════════════════════════
+  // VIEW: LOADING
+  // ════════════════════════════════════════════════════════════════════════════
+  if (view === 'loading') {
+    return (
+      <main className="bg-[#fff8f3] text-[#1b1533] min-h-screen selection:bg-[#ff4fa3] selection:text-white antialiased flex flex-col">
+        <Header />
+        <div className="flex-1 flex items-center justify-center py-20">
+          <MushroomLoader />
+        </div>
+        <Footer />
+      </main>
+    );
+  }
 
   // ════════════════════════════════════════════════════════════════════════════
   // VIEW: LOGIN
@@ -223,9 +253,22 @@ export default function MyAccountPage() {
 
               <button
                 type="submit"
-                className="w-full inline-flex items-center justify-center rounded-2xl bg-[#ff4fa3] text-white border border-[#ff4fa3] py-4 text-xs font-black uppercase tracking-wider shadow-md shadow-pink-100 transition-all duration-300 hover:bg-black hover:text-[#ff4fa3] hover:border-black hover:-translate-y-0.5 active:translate-y-0 cursor-pointer gap-2 logo-font"
+                disabled={isLoggingIn}
+                className="w-full inline-flex items-center justify-center rounded-2xl bg-[#ff4fa3] text-white border border-[#ff4fa3] py-4 text-xs font-black uppercase tracking-wider shadow-md shadow-pink-100 transition-all duration-300 hover:bg-black hover:text-[#ff4fa3] hover:border-black hover:-translate-y-0.5 active:translate-y-0 cursor-pointer gap-2 logo-font disabled:opacity-70 disabled:pointer-events-none"
               >
-                <ShieldCheck className="h-4.5 w-4.5" /> Sign In to My Account
+                {isLoggingIn ? (
+                  <>
+                    <svg className="animate-spin h-4.5 w-4.5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+                    </svg>
+                    Signing In...
+                  </>
+                ) : (
+                  <>
+                    <ShieldCheck className="h-4.5 w-4.5" /> Sign In to My Account
+                  </>
+                )}
               </button>
             </form>
 
@@ -280,9 +323,22 @@ export default function MyAccountPage() {
                 </label>
                 <button
                   type="submit"
-                  className="w-full inline-flex items-center justify-center rounded-2xl bg-[#1b1533] text-white py-4 text-xs font-black uppercase tracking-wider hover:bg-[#ff4fa3] transition-all duration-300 cursor-pointer gap-2 logo-font"
+                  disabled={isResetting}
+                  className="w-full inline-flex items-center justify-center rounded-2xl bg-[#1b1533] text-white py-4 text-xs font-black uppercase tracking-wider hover:bg-[#ff4fa3] transition-all duration-300 cursor-pointer gap-2 logo-font disabled:opacity-70 disabled:pointer-events-none"
                 >
-                  <RefreshCcw className="h-4 w-4" /> Reset My Password
+                  {isResetting ? (
+                    <>
+                      <svg className="animate-spin h-4.5 w-4.5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+                      </svg>
+                      Resetting Password...
+                    </>
+                  ) : (
+                    <>
+                      <RefreshCcw className="h-4 w-4" /> Reset My Password
+                    </>
+                  )}
                 </button>
               </form>
             ) : (
@@ -368,9 +424,22 @@ export default function MyAccountPage() {
 
               <button
                 type="submit"
-                className="w-full inline-flex items-center justify-center rounded-2xl bg-[#ff4fa3] text-white border border-[#ff4fa3] py-4 text-xs font-black uppercase tracking-wider shadow-md shadow-pink-100 transition-all duration-300 hover:bg-black hover:text-[#ff4fa3] hover:border-black hover:-translate-y-0.5 active:translate-y-0 cursor-pointer gap-2 logo-font"
+                disabled={isChangingPass}
+                className="w-full inline-flex items-center justify-center rounded-2xl bg-[#ff4fa3] text-white border border-[#ff4fa3] py-4 text-xs font-black uppercase tracking-wider shadow-md shadow-pink-100 transition-all duration-300 hover:bg-black hover:text-[#ff4fa3] hover:border-black hover:-translate-y-0.5 active:translate-y-0 cursor-pointer gap-2 logo-font disabled:opacity-70 disabled:pointer-events-none"
               >
-                <ShieldCheck className="h-4.5 w-4.5" /> Save New Password & Continue
+                {isChangingPass ? (
+                  <>
+                    <svg className="animate-spin h-4.5 w-4.5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+                    </svg>
+                    Saving Password...
+                  </>
+                ) : (
+                  <>
+                    <ShieldCheck className="h-4.5 w-4.5" /> Save New Password & Continue
+                  </>
+                )}
               </button>
             </form>
 
@@ -428,8 +497,8 @@ export default function MyAccountPage() {
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
                 className={`w-full flex items-center gap-3 px-4 py-3 text-xs font-black uppercase tracking-wider rounded-2xl transition-all duration-200 cursor-pointer text-left logo-font ${activeTab === tab.id
-                    ? 'bg-[#ff4fa3] text-white shadow-md shadow-pink-100'
-                    : 'text-slate-500 hover:bg-pink-50/50 hover:text-[#ff4fa3]'
+                  ? 'bg-[#ff4fa3] text-white shadow-md shadow-pink-100'
+                  : 'text-slate-500 hover:bg-pink-50/50 hover:text-[#ff4fa3]'
                   }`}
               >
                 <tab.icon className="h-4.5 w-4.5" />
@@ -517,8 +586,8 @@ export default function MyAccountPage() {
                             <td className="py-4 px-4">{order.date}</td>
                             <td className="py-4 px-4">
                               <span className={`inline-block rounded-full px-3 py-1 text-[10px] font-black uppercase tracking-widest ${order.status === 'delivered' ? 'bg-emerald-500/10 text-emerald-600' :
-                                  order.status === 'cancelled' ? 'bg-red-500/10 text-red-600' :
-                                    'bg-amber-500/10 text-amber-600'
+                                order.status === 'cancelled' ? 'bg-red-500/10 text-red-600' :
+                                  'bg-amber-500/10 text-amber-600'
                                 }`}>
                                 {order.status}
                               </span>
@@ -655,10 +724,21 @@ export default function MyAccountPage() {
                   {(newPass || confirmPass) && (
                     <button
                       type="button"
+                      disabled={isChangingPass}
                       onClick={handleChangePassword}
-                      className="rounded-xl bg-violet-600 text-white px-6 py-2.5 text-[12px] font-black uppercase tracking-wider hover:bg-violet-800 transition-all cursor-pointer logo-font"
+                      className="inline-flex justify-center items-center gap-2 rounded-xl bg-violet-600 text-white px-6 py-2.5 text-[12px] font-black uppercase tracking-wider hover:bg-violet-800 transition-all cursor-pointer logo-font disabled:opacity-70 disabled:pointer-events-none"
                     >
-                      Update Password
+                      {isChangingPass ? (
+                        <>
+                          <svg className="animate-spin h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+                          </svg>
+                          Updating...
+                        </>
+                      ) : (
+                        'Update Password'
+                      )}
                     </button>
                   )}
                 </div>

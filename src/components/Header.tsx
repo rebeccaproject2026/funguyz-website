@@ -125,12 +125,19 @@ const MARQUEE_ITEMS = [
   { text: "Canada's New Delivery Experience Is Now Live", icon: Flame, category: 'promo' as const }
 ];
 
-const navItems = [
+const fallbackNavItems: any[] = [
   { label: 'Magic Mushrooms', hasDropdown: true, icon: MushroomWithStarsIcon },
   { label: 'Edibles', hasDropdown: true, icon: Cookie },
   { label: 'Capsules', hasDropdown: true, icon: Pill },
   { label: 'Microdose', hasDropdown: true, icon: Gauge },
 ];
+
+const categoryIconMap: Record<string, any> = {
+  'Magic Mushrooms': MushroomWithStarsIcon,
+  'Edibles': Cookie,
+  'Capsules': Pill,
+  'Microdose': Gauge,
+};
 
 
 function getDropdownGridCols(label: string): string {
@@ -277,10 +284,35 @@ export function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isMobileCategoryOpen, setIsMobileCategoryOpen] = useState(false);
   const [expandedMobileCategories, setExpandedMobileCategories] = useState<Record<string, boolean>>({});
-  const [mobileSearchQuery, setMobileSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState('');
 
   const [isInfoOpen, setIsInfoOpen] = useState(false);
   const [selectedAnnouncement, setSelectedAnnouncement] = useState<string | null>(null);
+
+  const [dbCategories, setDbCategories] = useState<any[]>([]);
+
+  React.useEffect(() => {
+    async function fetchCategories() {
+      try {
+        const res = await fetch('/api/categories');
+        const data = await res.json();
+        if (data.success) {
+          setDbCategories(data.categories);
+        }
+      } catch (err) {
+        console.error('Failed to fetch categories', err);
+      }
+    }
+    fetchCategories();
+  }, []);
+
+  const navItems = dbCategories.length > 0 ? dbCategories.map(cat => ({
+    label: cat.name,
+    hasDropdown: cat.subcategories && cat.subcategories.length > 0,
+    icon: categoryIconMap[cat.name] || Sparkles,
+    slug: cat.slug,
+    subs: cat.subcategories || [],
+  })) : fallbackNavItems;
 
   const toggleMobileCategory = (label: string) => {
     setExpandedMobileCategories(prev => ({
@@ -289,10 +321,10 @@ export function Header() {
     }));
   };
 
-  const handleMobileSearchSubmit = (e: React.FormEvent) => {
+  const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (mobileSearchQuery.trim()) {
-      window.location.href = `/shop?subcategory=${encodeURIComponent(mobileSearchQuery.trim())}`;
+    if (searchQuery.trim()) {
+      window.location.href = `/shop?subcategory=${encodeURIComponent(searchQuery.trim())}`;
     }
   };
 
@@ -301,7 +333,7 @@ export function Header() {
       const IconComponent = item.icon;
       return (
         <React.Fragment key={idx}>
-          <div 
+          <div
             className="inline-flex items-center gap-1.5 text-white shrink-0 font-light cursor-pointer hover:underline hover:text-[#ff4fa3] transition-colors"
             onClick={() => {
               setSelectedAnnouncement(item.text);
@@ -402,7 +434,7 @@ export function Header() {
 
               <nav className="hidden items-center gap-6 text-[12.5px] font-black text-[#1b1533] md:flex relative">
                 {navItems.map((item) => {
-                  const categorySlug = item.label.toLowerCase().replace(/\s+/g, '-');
+                  const categorySlug = item.slug || item.label.toLowerCase().replace(/\s+/g, '-');
                   const linkUrl = `/category/${categorySlug}`;
                   return (
                     <div key={item.label} className="relative group py-3">
@@ -443,7 +475,7 @@ export function Header() {
                               </div>
                             ))
                           ) : (
-                            getSubcategories(item.label).map((sub, sIdx) => {
+                            (item.subs || getSubcategories(item.label)).map((sub: string, sIdx: number) => {
                               const SubIcon = getSubcategoryIcon(sub, item.label);
                               return (
                                 <a
@@ -539,11 +571,11 @@ export function Header() {
             {/* Drawer Body (Scrollable items) */}
             <div className="flex-1 overflow-y-auto p-5 flex flex-col gap-5 scrollbar-none">
               {/* Mobile Search */}
-              <form onSubmit={handleMobileSearchSubmit} className="flex items-center gap-2 bg-white border border-slate-200 rounded-full px-4 py-2 focus-within:border-[#ff4fa3] focus-within:ring-2 focus-within:ring-pink-50 transition-all shadow-sm">
+              <form onSubmit={handleSearchSubmit} className="flex items-center gap-2 bg-white border border-slate-200 rounded-full px-4 py-2 focus-within:border-[#ff4fa3] focus-within:ring-2 focus-within:ring-pink-50 transition-all shadow-sm">
                 <input
                   type="text"
-                  value={mobileSearchQuery}
-                  onChange={(e) => setMobileSearchQuery(e.target.value)}
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
                   className="min-w-0 flex-1 bg-transparent text-xs font-semibold text-[#1b1533] outline-none placeholder:text-slate-400"
                   placeholder="Search catalog..."
                 />
@@ -556,9 +588,9 @@ export function Header() {
               <div className="flex flex-col gap-1">
                 <span className="text-[12px] font-black uppercase tracking-widest text-slate-400 mb-2 pl-2">Categories</span>
                 {navItems.map((item) => {
-                  const categorySlug = item.label.toLowerCase().replace(/\s+/g, '-');
+                  const categorySlug = item.slug || item.label.toLowerCase().replace(/\s+/g, '-');
                   const isExpanded = !!expandedMobileCategories[item.label];
-                  const subcategories = getSubcategories(item.label);
+                  const subcategories = item.subs || getSubcategories(item.label);
 
                   return (
                     <div key={item.label} className="flex flex-col">
@@ -598,7 +630,7 @@ export function Header() {
                               </div>
                             ))
                           ) : (
-                            subcategories.map((sub, sIdx) => {
+                            subcategories.map((sub: string, sIdx: number) => {
                               const SubIcon = getSubcategoryIcon(sub, item.label);
                               const subcategorySlug = getProductUrl(sub, item.label);
                               return (
@@ -718,9 +750,9 @@ export function Header() {
             <div className="flex-1 overflow-y-auto p-5 space-y-4 scrollbar-none pb-24">
               <div className="grid grid-cols-2 gap-3.5">
                 {navItems.map((item, idx) => {
-                  const categorySlug = item.label.toLowerCase().replace(/\s+/g, '-');
+                  const categorySlug = item.slug || item.label.toLowerCase().replace(/\s+/g, '-');
                   const linkUrl = `/category/${categorySlug}`;
-                  const subcategories = getSubcategories(item.label);
+                  const subcategories = item.subs || getSubcategories(item.label);
 
                   // Specific styles for cards
                   let bgGradient = "from-[#f3efff] to-white border-purple-100";
@@ -766,7 +798,7 @@ export function Header() {
                         {/* Subcategory short links (show top 3) */}
                         {subcategories.length > 0 && (
                           <div className="flex flex-wrap gap-1 mt-2.5">
-                            {subcategories.slice(0, 3).map((sub, sIdx) => {
+                            {subcategories.slice(0, 3).map((sub: string, sIdx: number) => {
                               const productUrl = getProductUrl(sub, item.label);
                               return (
                                 <a
@@ -842,16 +874,19 @@ export function Header() {
             </div>
 
             {/* Search Input Box */}
-            <div className="flex items-center gap-3 bg-white border border-purple-200 rounded-full px-5 py-3 focus-within:border-[#ff4fa3] focus-within:ring-4 focus-within:ring-pink-50 transition-all shadow-sm">
+            <form onSubmit={handleSearchSubmit} className="flex items-center gap-3 bg-white border border-purple-200 rounded-full px-5 py-3 focus-within:border-[#ff4fa3] focus-within:ring-4 focus-within:ring-pink-50 transition-all shadow-sm">
               <input
                 autoFocus
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
                 className="min-w-0 flex-1 bg-transparent text-sm font-semibold text-[#1b1533] outline-none placeholder:text-slate-400"
                 placeholder="Type your search here..."
               />
-              <button className="rounded-full p-1 text-[#ff4fa3] hover:scale-110 transition-transform">
+              <button type="submit" className="rounded-full p-1 text-[#ff4fa3] hover:scale-110 transition-transform">
                 <Search className="h-5 w-5 stroke-[2.5]" />
               </button>
-            </div>
+            </form>
           </div>
         </div>
       )}

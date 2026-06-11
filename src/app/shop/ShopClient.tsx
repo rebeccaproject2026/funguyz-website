@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { ProductCard } from '@/components/ProductCard';
-import { products, getSubcategories } from '@/data/products';
+import { products } from '@/data/products';
 import { Sparkles, SlidersHorizontal, ArrowUpDown, X } from 'lucide-react';
 
 export default function ShopClient() {
@@ -40,22 +40,71 @@ export default function ShopClient() {
     }
   }, []);
 
+  const [dbProducts, setDbProducts] = useState<any[]>([]);
+  const [dbCategories, setDbCategories] = useState<any[]>([]);
+  const [isLoadingCategories, setIsLoadingCategories] = useState(true);
+
+  useEffect(() => {
+    async function fetchProducts() {
+      const cachedGlobalString = sessionStorage.getItem('globalRelatedProducts');
+      const cachedGlobalProducts = cachedGlobalString ? JSON.parse(cachedGlobalString) : [];
+
+      if (cachedGlobalProducts && cachedGlobalProducts.length > 0) {
+        setDbProducts(cachedGlobalProducts);
+        return;
+      }
+
+      try {
+        const res = await fetch('/api/products');
+        const data = await res.json();
+        if (data.success) {
+          setDbProducts(data.products);
+          if (typeof window !== 'undefined') {
+            sessionStorage.setItem('globalRelatedProducts', JSON.stringify(data.products));
+          }
+        }
+      } catch (err) {
+        console.error('Failed to fetch global products', err);
+      }
+    }
+    async function fetchCategories() {
+      try {
+        const res = await fetch('/api/categories');
+        const data = await res.json();
+        if (data.success) {
+          setDbCategories(data.categories);
+        }
+      } catch (err) {
+        console.error('Failed to fetch categories', err);
+      } finally {
+        setIsLoadingCategories(false);
+      }
+    }
+    fetchProducts();
+    fetchCategories();
+  }, []);
+
+  const baseProducts = dbProducts;
+
   // Filter Logic
-  const filteredProducts = products.filter(p => {
+  const filteredProducts = baseProducts.filter(p => {
     // Category match
     let matchCat = true;
     if (selectedCategory !== 'All') {
       if (selectedCategory === 'Best Sellers') {
-        matchCat = p[3]?.toLowerCase() === 'best seller';
+        const badge = p.tags?.[0] || (Array.isArray(p) ? p[3] : '');
+        matchCat = badge?.toLowerCase() === 'best seller';
       } else {
-        matchCat = p[1] === selectedCategory;
+        const cat = p.category?.name || (Array.isArray(p) ? p[1] : 'Magic Mushrooms');
+        matchCat = cat === selectedCategory;
       }
     }
 
     // Subcategory match
     let matchSub = true;
     if (subcategoryFilter) {
-      matchSub = p[0].toLowerCase().includes(subcategoryFilter.toLowerCase());
+      const name = p.name || (Array.isArray(p) ? p[0] : '');
+      matchSub = name.toLowerCase().includes(subcategoryFilter.toLowerCase());
     }
 
     return matchCat && matchSub;
@@ -63,16 +112,24 @@ export default function ShopClient() {
 
   // Sort Logic
   const sortedProducts = [...filteredProducts].sort((a, b) => {
-    const priceA = parseFloat(a[2].replace('$', ''));
-    const priceB = parseFloat(b[2].replace('$', ''));
+    const getPrice = (prod: any) => {
+      if (prod.price) return prod.price;
+      if (Array.isArray(prod.pricing) && prod.pricing.length > 0) return prod.pricing[0].price;
+      if (Array.isArray(prod)) return parseFloat(prod[2].replace('$', ''));
+      return 0;
+    };
+    const getName = (prod: any) => prod.name || (Array.isArray(prod) ? prod[0] : '');
+
+    const priceA = getPrice(a);
+    const priceB = getPrice(b);
     
     if (sortBy === 'price-asc') return priceA - priceB;
     if (sortBy === 'price-desc') return priceB - priceA;
-    if (sortBy === 'name-asc') return a[0].localeCompare(b[0]);
+    if (sortBy === 'name-asc') return getName(a).localeCompare(getName(b));
     return 0; // default
   });
 
-  const categoryTabs = ['All', 'Best Sellers', 'Magic Mushrooms', 'Edibles', 'Capsules', 'Microdose'];
+  const categoryTabs = ['All', 'Best Sellers', ...dbCategories.map(c => c.name)];
 
   return (
     <main className="bg-[#fff8f3] text-[#1b1533] min-h-screen selection:bg-[#ff4fa3] selection:text-white antialiased">
@@ -215,11 +272,11 @@ export default function ShopClient() {
                   
                   {selectedCategory === 'All' || selectedCategory === 'Best Sellers' ? (
                     <div className="space-y-4">
-                      {['Magic Mushrooms', 'Edibles', 'Capsules', 'Microdose'].map(cat => (
-                        <div key={cat} className="flex flex-col gap-2 text-left">
-                          <span className="text-[12px] font-black uppercase tracking-wider text-slate-400">{cat}</span>
+                      {dbCategories.map(cat => (
+                        <div key={cat.name} className="flex flex-col gap-2 text-left">
+                          <span className="text-[12px] font-black uppercase tracking-wider text-slate-400">{cat.name}</span>
                           <div className="flex flex-wrap gap-1.5">
-                            {getSubcategories(cat).map(sub => {
+                            {cat.subcategories.map((sub: string) => {
                               const isActive = subcategoryFilter.toLowerCase() === sub.toLowerCase();
                               return (
                                 <button
@@ -233,7 +290,7 @@ export default function ShopClient() {
                                     } else {
                                       setSubcategoryFilter(sub);
                                       if (typeof window !== 'undefined') {
-                                        const categorySlug = cat.toLowerCase().replace(/\s+/g, '-');
+                                        const categorySlug = cat.slug;
                                         const subcategorySlug = sub.toLowerCase().replace(/\s+/g, '-');
                                         window.history.pushState({}, '', `/shop?category=${categorySlug}&subcategory=${subcategorySlug}`);
                                       }
@@ -257,7 +314,7 @@ export default function ShopClient() {
                     <div className="flex flex-col gap-2 text-left">
                       <span className="text-[12px] font-black uppercase tracking-wider text-slate-400">{selectedCategory} Formulations</span>
                       <div className="flex flex-wrap gap-1.5">
-                        {getSubcategories(selectedCategory).map(sub => {
+                        {dbCategories.find(c => c.name === selectedCategory)?.subcategories.map((sub: string) => {
                           const isActive = subcategoryFilter.toLowerCase() === sub.toLowerCase();
                           return (
                             <button
@@ -271,9 +328,9 @@ export default function ShopClient() {
                                 } else {
                                   setSubcategoryFilter(sub);
                                   if (typeof window !== 'undefined') {
-                                    const categorySlug = selectedCategory.toLowerCase().replace(/\s+/g, '-');
+                                    const catSlug = dbCategories.find(c => c.name === selectedCategory)?.slug;
                                     const subcategorySlug = sub.toLowerCase().replace(/\s+/g, '-');
-                                    window.history.pushState({}, '', `/shop?category=${categorySlug}&subcategory=${subcategorySlug}`);
+                                    window.history.pushState({}, '', `/shop?category=${catSlug}&subcategory=${subcategorySlug}`);
                                   }
                                 }
                               }}
@@ -350,7 +407,7 @@ export default function ShopClient() {
         {sortedProducts.length > 0 ? (
           <div className="mt-8 grid gap-3 sm:gap-6 grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
             {sortedProducts.map((p, i) => (
-              <ProductCard key={p[0]} p={p} i={i} />
+              <ProductCard key={p._id || p[0]} p={p} i={i} />
             ))}
           </div>
         ) : (

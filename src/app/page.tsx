@@ -32,19 +32,19 @@ import { Header } from '@/components/Header';
 import { ProductCard } from '@/components/ProductCard';
 import { categories, products, getCategorySlug } from '@/data/products';
 
-const categoryKinds = ['Magic Mushrooms', 'Edibles', 'Capsules', 'Microdose'];
-const categoryImages = [
-  '/images/cat_mushrooms.webp',
-  '/images/cat_edibles.webp',
-  '/images/cat_capsules.webp',
-  '/images/cat_microdose.webp',
-];
-const categoryGradients = [
-  'from-[#f3efff] to-white border-[#eadff8]',
-  'from-[#fff0f6] to-white border-[#ffe3e3]',
-  'from-[#eef9ff] to-white border-[#e0f2fe]',
-  'from-[#f0fdf4] to-white border-[#dcfce7]',
-];
+const categoryImages: Record<string, string> = {
+  'Magic Mushrooms': '/images/cat_mushrooms.webp',
+  'Edibles': '/images/cat_edibles.webp',
+  'Capsules': '/images/cat_capsules.webp',
+  'Microdose': '/images/cat_microdose.webp',
+};
+
+const categoryGradients: Record<string, string> = {
+  'Magic Mushrooms': 'from-[#f3efff] to-white border-[#eadff8]',
+  'Edibles': 'from-[#fff0f6] to-white border-[#ffe3e3]',
+  'Capsules': 'from-[#eef9ff] to-white border-[#e0f2fe]',
+  'Microdose': 'from-[#f0fdf4] to-white border-[#dcfce7]',
+};
 
 const benefitCards = [
   ['Enhances Mood', 'Promotes happiness, positivity and mental clarity', Smile],
@@ -151,6 +151,50 @@ export default function Home() {
   const [swiperInstance, setSwiperInstance] = useState<any>(null);
   const [bestSellersSwiper, setBestSellersSwiper] = useState<any>(null);
   const bestSellersRef = useRef<HTMLDivElement>(null);
+
+  const [dbProducts, setDbProducts] = useState<any[]>([]);
+  const [dbCategories, setDbCategories] = useState<any[]>([]);
+
+  React.useEffect(() => {
+    async function fetchProducts() {
+      const cachedGlobalString = sessionStorage.getItem('globalRelatedProducts');
+      const cachedGlobalProducts = cachedGlobalString ? JSON.parse(cachedGlobalString) : [];
+
+      if (cachedGlobalProducts && cachedGlobalProducts.length > 0) {
+        setDbProducts(cachedGlobalProducts);
+        return;
+      }
+
+      try {
+        const res = await fetch('/api/products');
+        const data = await res.json();
+        if (data.success) {
+          setDbProducts(data.products);
+          if (typeof window !== 'undefined') {
+            sessionStorage.setItem('globalRelatedProducts', JSON.stringify(data.products));
+          }
+        }
+      } catch (err) {
+        console.error('Failed to fetch global products', err);
+      }
+    }
+    async function fetchCategories() {
+      try {
+        const res = await fetch('/api/categories');
+        const data = await res.json();
+        if (data.success) {
+          setDbCategories(data.categories);
+        }
+      } catch (err) {
+        console.error('Failed to fetch categories', err);
+      }
+    }
+    fetchProducts();
+    fetchCategories();
+  }, []);
+
+  // Use DB products for rendering
+  const displayProducts = dbProducts;
 
 
   const reviews = [
@@ -334,36 +378,45 @@ export default function Home() {
           <div className="h-1 w-12 rounded bg-[#ff4fa3] mt-1.5" />
         </div>
 
-        <div className="mt-4 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {categories.map((category, i) => (
-            <a
-              key={category.name}
-              href={`/category/${getCategorySlug(category.name)}`}
-              className="relative aspect-[4/5] w-full overflow-hidden rounded-3xl shadow-[0_12px_36px_rgba(27,21,51,0.04)] hover:shadow-[0_24px_50px_rgba(27,21,51,0.15)] hover:-translate-y-1.5 transition-all duration-500 group cursor-pointer block"
-            >
-              {/* Cover Image */}
-              <img
-                src={categoryImages[i]}
-                alt={category.name}
-                className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-108"
-                loading="lazy"
-              />
+        <div className="mt-4 grid gap-4 sm:gap-6 grid-cols-2 md:grid-cols-4 lg:grid-cols-4">
+          {(dbCategories.length > 0 ? dbCategories : categories).slice(0, 4).map((kind, idx) => {
+            const name = kind.name;
+            const desc = kind.description || kind.desc;
+            const slug = kind.slug || name.toLowerCase().replace(/\s+/g, '-');
+            const linkUrl = `/category/${slug}`;
+            const image = categoryImages[name] || '/images/cat_mushrooms.webp';
+            const gradient = categoryGradients[name] || 'from-slate-50 to-white border-slate-100';
 
-              {/* Rich Bottom-Heavy Gradient Overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-transparent group-hover:from-black/90 transition-all duration-300" />
+            return (
+              <a
+                key={idx}
+                href={linkUrl}
+                className="group relative aspect-[4/5] w-full overflow-hidden rounded-[24px] sm:rounded-[32px] shadow-[0_12px_36px_rgba(27,21,51,0.04)] hover:shadow-[0_24px_50px_rgba(27,21,51,0.15)] hover:-translate-y-1.5 transition-all duration-500 cursor-pointer block"
+              >
+                {/* Cover Image */}
+                <img
+                  src={image}
+                  alt={name}
+                  className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  loading="lazy"
+                />
 
-              {/* Overlay Content aligned at the bottom */}
-              <div className="absolute bottom-0 inset-x-0 p-5 flex flex-col items-center text-center gap-2 z-10 w-full">
-                <h3 className="text-xl font-bold tracking-wider text-white logo-font uppercase">{category.name}</h3>
-                <p className="mx-auto max-w-[210px] text-[12px] font-medium leading-relaxed text-slate-200/90">
-                  {category.desc}
-                </p>
-                <div className="mt-2.5 inline-flex items-center gap-1.5 self-center rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 px-5 py-2 text-[12px] font-bold uppercase tracking-widest text-white shadow-sm transition-all duration-300 hover:bg-white hover:text-[#1b1533] hover:border-white hover:-translate-y-0.5 active:translate-y-0 cursor-pointer logo-font">
-                  Shop Now <ArrowRight className="h-3 w-3 stroke-[2.5]" />
+                {/* Rich Bottom-Heavy Gradient Overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-[#1b1533]/90 via-[#1b1533]/40 to-transparent group-hover:from-[#1b1533]/95 transition-all duration-300" />
+
+                {/* Overlay Content aligned at the bottom */}
+                <div className="absolute bottom-0 inset-x-0 p-4 sm:p-5 flex flex-col items-center text-center gap-1.5 sm:gap-2 z-10 w-full">
+                  <h3 className="text-lg sm:text-xl font-bold tracking-wider text-white logo-font uppercase">{name}</h3>
+                  <p className="mx-auto max-w-[210px] text-[10px] sm:text-[12px] font-medium leading-relaxed text-slate-200/90 hidden sm:block">
+                    {desc}
+                  </p>
+                  <div className="mt-2 inline-flex items-center gap-1 sm:gap-1.5 self-center rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 px-4 py-1.5 sm:px-5 sm:py-2 text-[10px] sm:text-[12px] font-bold uppercase tracking-widest text-white shadow-sm transition-all duration-300 hover:bg-[#ff4fa3] hover:border-[#ff4fa3] hover:text-white hover:-translate-y-0.5 active:translate-y-0 cursor-pointer logo-font">
+                    Shop Now <ArrowRight className="h-2.5 w-2.5 sm:h-3 sm:w-3 stroke-[2.5]" />
+                  </div>
                 </div>
-              </div>
-            </a>
-          ))}
+              </a>
+            );
+          })}
         </div>
       </section>
 
@@ -423,8 +476,8 @@ export default function Home() {
           }}
           className="mt-8 w-full"
         >
-          {products.map((p, i) => (
-            <SwiperSlide key={p[0]} className="!h-auto pb-4">
+          {displayProducts.map((p, i) => (
+            <SwiperSlide key={p._id || p[0]} className="!h-auto pb-4">
               <ProductCard p={p} i={i} />
             </SwiperSlide>
           ))}
@@ -468,8 +521,8 @@ export default function Home() {
           </div>
 
           <div className="grid gap-6 grid-cols-2 lg:grid-cols-4">
-            {products.slice(0, 8).map((p, i) => (
-              <div key={p[0]} className="w-full">
+            {displayProducts.slice(0, 8).map((p, i) => (
+              <div key={p._id || p[0]} className="w-full">
                 <ProductCard p={p} i={i} />
               </div>
             ))}

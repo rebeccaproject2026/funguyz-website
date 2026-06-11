@@ -52,6 +52,38 @@ const ProductSchema: Schema = new Schema(
       overview: { title: String, content: String, highlights: [String] },
       appearance: { title: String, content: String, details: [String] },
       genetics: { title: String, content: String, origin: String },
+      popularity: { title: String, content: String, rank: String },
+      whyChooseUs: { title: String, points: [{ title: String, desc: String }] },
+      strainInfo: { title: String, specs: [{ label: String, value: String }] },
+      faq: { title: String, items: [{ q: String, a: String }] },
+    },
+    pricing: [
+      {
+        weight: String,
+        price: Number,
+      }
+    ],
+    reviewsList: [
+      {
+        name: String,
+        text: String,
+        rating: Number,
+      }
+    ],
+    reviewStats: {
+      count: { type: Number, default: 0 },
+      averageRating: { type: Number, default: 5 },
+    },
+    potency: {
+      tier: String,
+      percent: Number,
+      pctRange: String,
+      color: String,
+    },
+    compounds: {
+      thc: String,
+      cbd: String,
+      cbn: String,
     },
     deleted: {
       type: Boolean,

@@ -33,7 +33,7 @@ interface AuthContextType {
   login: (email: string, password: string) => Promise<{ success: boolean; message: string }>;
   logout: () => void;
   updatePassword: (newPassword: string, confirmPassword: string) => Promise<{ success: boolean; message: string }>;
-  resetPassword: (email: string) => Promise<{ success: boolean; message: string }>;
+  resetPassword: (email: string) => Promise<{ success: boolean; message: string; newPassword?: string }>;
   createUserFromOrder: (
     userData: { email: string; firstName: string; lastName: string },
     order: OrderRecord
@@ -43,7 +43,7 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const { data: session, status } = useSession();
+  const { data: session, status, update } = useSession();
   const [currentUser, setCurrentUser] = useState<FunguyzUser | null>(null);
 
   // Sync session with context state
@@ -57,6 +57,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         lastName: session.user.name?.split(' ')[1] || '',
         displayName: session.user.name || '',
         role: session.user.role || 'CUSTOMER',
+        isDummyPassword: (session.user as any).isDummyPassword || false,
         orders: [], // You would fetch orders from /api/user/orders
       });
     } else {
@@ -92,6 +93,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         body: JSON.stringify({ newPassword }),
       });
       const data = await res.json();
+      if (data.success) {
+        await update({ isDummyPassword: false });
+        setCurrentUser(prev => prev ? { ...prev, isDummyPassword: false } : null);
+      }
       return { success: data.success, message: data.message };
     } catch (err) {
       return { success: false, message: 'Failed to update password.' };
@@ -106,7 +111,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         body: JSON.stringify({ email }),
       });
       const data = await res.json();
-      return { success: data.success, message: data.message };
+      return { success: data.success, message: data.message, newPassword: data.newPassword };
     } catch (err) {
       return { success: false, message: 'Failed to request password reset.' };
     }
