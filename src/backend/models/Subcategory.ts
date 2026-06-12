@@ -12,6 +12,10 @@ const SubcategorySchema: Schema = new Schema(
       ref: 'Category',
       required: true,
     },
+    groupName: {
+      type: String,
+      required: false,
+    },
   },
   { timestamps: true }
 );

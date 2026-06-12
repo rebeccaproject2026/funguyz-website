@@ -2,6 +2,8 @@
 import Link from 'next/link';
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import useSWR from 'swr';
+import { fetcher } from '@/lib/fetcher';
 import { ShoppingBag, Heart, X, Trash2, Plus, Minus, ArrowRight, Check, ShoppingCart } from 'lucide-react';
 import { useAuth } from './AuthContext';
 import { imageMap, getFallbackImage } from '@/data/imageMap';
@@ -68,9 +70,9 @@ const CartContext = createContext<CartContextType | undefined>(undefined);
 
 // Valid coupon codes — single source of truth (must match /coupons page)
 const VALID_COUPONS: Record<string, { discount: number; label: string; type: 'percent' | 'shipping'; minOrder?: number }> = {
-  'LAUNCH20':    { discount: 0.20, label: '20% Off',       type: 'percent'  },
-  'BULK25':      { discount: 0.25, label: '25% Off',       type: 'percent',  minOrder: 500  },
-  'FREESHIP200': { discount: 0,    label: 'Free Delivery & Free Shipping',  type: 'shipping', minOrder: 200  },
+  'LAUNCH20': { discount: 0.20, label: '20% Off', type: 'percent' },
+  'BULK25': { discount: 0.25, label: '25% Off', type: 'percent', minOrder: 500 },
+  'FREESHIP200': { discount: 0, label: 'Free Delivery & Free Shipping', type: 'shipping', minOrder: 200 },
 };
 
 export function CartProvider({ children }: { children: React.ReactNode }) {
@@ -87,6 +89,8 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     type: 'cart',
   });
   const { isLoggedIn, currentUser } = useAuth();
+  const { data: prodData } = useSWR('/api/products', fetcher);
+  const globalProducts = React.useMemo(() => prodData?.success ? prodData.products : [], [prodData]);
 
   // Local Storage & DB Persistence for Wishlist
   useEffect(() => {
@@ -100,7 +104,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
           if (res.ok) {
             const data = await res.json();
             idsToHydrate = (data.wishlist || []).map((item: any) => typeof item === 'object' ? item._id : item);
-            
+
             // Merge logic: check if local storage has items not in DB
             const storedWish = localStorage.getItem('funguyz_wishlist');
             if (storedWish) {
@@ -128,7 +132,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         if (typeof window !== 'undefined') {
           const storedWish = localStorage.getItem('funguyz_wishlist');
           if (storedWish) {
-            try { 
+            try {
               idsToHydrate = JSON.parse(storedWish) as string[];
             } catch (e) { console.error(e); }
           }
@@ -136,55 +140,54 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       }
 
       // Read from global product cache or API to hydrate full objects
-      const cachedString = sessionStorage.getItem('globalRelatedProducts');
-      if (cachedString) {
-         const allProducts = JSON.parse(cachedString);
-         const hydratedItems = idsToHydrate.map(id => {
-           const found = allProducts.find((p: any) => p._id === id || p.title === id || p.name === id);
-           const title = found ? (found.title || found.name) : id;
-           const categoryName = found ? (found.category?.name || 'Category') : 'Magic Mushrooms';
-           const imageSrc = imageMap[title] || getFallbackImage(categoryName);
-           
-           if (found) {
-             return {
-               id: found._id || id, // Prefer true _id if found, fallback to stored id
-               title: title,
-               category: categoryName,
-               price: typeof found.price === 'number' ? `$${found.price.toFixed(2)}` : found.price,
-               imageSrc: imageSrc,
-               slug: found.slug
-             };
-           }
-           // If not found in cache, we can't fully hydrate, but we should NOT drop it!
-           // Let's return a dummy object just so isWishlisted still works.
-           return {
-             id: id,
-             title: title,
-             category: categoryName,
-             price: '$0.00',
-             imageSrc: imageSrc
-           };
-         }) as WishlistItem[];
-         setWishlistItems(hydratedItems);
+      if (globalProducts && globalProducts.length > 0) {
+        const allProducts = globalProducts;
+        const hydratedItems = idsToHydrate.map(id => {
+          const found = allProducts.find((p: any) => p._id === id || p.title === id || p.name === id);
+          const title = found ? (found.title || found.name) : id;
+          const categoryName = found ? (found.category?.name || 'Category') : 'Magic Mushrooms';
+          const imageSrc = imageMap[title] || getFallbackImage(categoryName);
+
+          if (found) {
+            return {
+              id: found._id || id, // Prefer true _id if found, fallback to stored id
+              title: title,
+              category: categoryName,
+              price: typeof found.price === 'number' ? `$${found.price.toFixed(2)}` : found.price,
+              imageSrc: imageSrc,
+              slug: found.slug
+            };
+          }
+          // If not found in cache, we can't fully hydrate, but we should NOT drop it!
+          // Let's return a dummy object just so isWishlisted still works.
+          return {
+            id: id,
+            title: title,
+            category: categoryName,
+            price: '$0.00',
+            imageSrc: imageSrc
+          };
+        }) as WishlistItem[];
+        setWishlistItems(hydratedItems);
       } else {
-         // If global cache isn't ready yet, at least hydrate the IDs so isWishlisted works!
-         // We can still try to use the imageMap if the id happens to be the title!
-         const basicItems = idsToHydrate.map(id => {
-             const imageSrc = imageMap[id] || getFallbackImage('Magic Mushrooms');
-             return {
-               id: id,
-               title: id,
-               category: 'Magic Mushrooms', // We don't know the real category
-               price: '$0.00',
-               imageSrc: imageSrc
-             };
-         });
-         setWishlistItems(basicItems);
+        // If global cache isn't ready yet, at least hydrate the IDs so isWishlisted works!
+        // We can still try to use the imageMap if the id happens to be the title!
+        const basicItems = idsToHydrate.map(id => {
+          const imageSrc = imageMap[id] || getFallbackImage('Magic Mushrooms');
+          return {
+            id: id,
+            title: id,
+            category: 'Magic Mushrooms', // We don't know the real category
+            price: '$0.00',
+            imageSrc: imageSrc
+          };
+        });
+        setWishlistItems(basicItems);
       }
     };
 
     hydrateWishlist();
-  }, [isLoggedIn, currentUser]);
+  }, [isLoggedIn, currentUser, globalProducts]);
 
   // Local Storage Persistence
   useEffect(() => {
@@ -218,7 +221,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const addToCart = (product: { title: string; category: string; price: string; imageSrc: string }, qty: number = 1) => {
     const existing = cartItems.find(item => item.id === product.title);
     let newItems: CartItem[] = [];
-    
+
     if (existing) {
       newItems = cartItems.map(item =>
         item.id === product.title ? { ...item, quantity: item.quantity + qty } : item
@@ -264,7 +267,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         return item;
       })
       .filter((item): item is CartItem => item !== null);
-    
+
     saveCart(newItems);
   };
 
@@ -305,15 +308,9 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
   const getTrueId = (idOrTitle: string) => {
     if (/^[0-9a-fA-F]{24}$/.test(idOrTitle)) return idOrTitle;
-    if (typeof window !== 'undefined') {
-       const cachedString = sessionStorage.getItem('globalRelatedProducts');
-       if (cachedString) {
-          try {
-             const allProducts = JSON.parse(cachedString);
-             const found = allProducts.find((p: any) => p.title === idOrTitle || p.name === idOrTitle);
-             if (found) return found._id;
-          } catch(e) {}
-       }
+    if (globalProducts && globalProducts.length > 0) {
+      const found = globalProducts.find((p: any) => p.title === idOrTitle || p.name === idOrTitle);
+      if (found) return found._id;
     }
     return idOrTitle;
   };
@@ -322,14 +319,14 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const toggleWishlist = async (product: WishlistItem) => {
     const trueId = getTrueId(product.id);
     product.id = trueId; // overwrite with true id
-    
+
     const isPresent = wishlistItems.some(item => item.id === trueId || item.title === product.title);
     let newItems: WishlistItem[];
     if (isPresent) {
       newItems = wishlistItems.filter(item => item.id !== trueId && item.title !== product.title);
       saveWishlist(newItems);
       if (isLoggedIn && /^[0-9a-fA-F]{24}$/.test(trueId)) {
-         fetch(`/api/wishlist?productId=${trueId}`, { method: 'DELETE' }).catch(console.error);
+        fetch(`/api/wishlist?productId=${trueId}`, { method: 'DELETE' }).catch(console.error);
       }
       setToast({
         visible: true,
@@ -342,11 +339,11 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       newItems = [...wishlistItems, product];
       saveWishlist(newItems);
       if (isLoggedIn && /^[0-9a-fA-F]{24}$/.test(trueId)) {
-         fetch('/api/wishlist', {
-           method: 'POST',
-           headers: { 'Content-Type': 'application/json' },
-           body: JSON.stringify({ productId: trueId })
-         }).catch(console.error);
+        fetch('/api/wishlist', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ productId: trueId })
+        }).catch(console.error);
       }
       setToast({
         visible: true,
@@ -363,7 +360,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     const newItems = wishlistItems.filter(item => item.id !== trueId && item.title !== id);
     saveWishlist(newItems);
     if (isLoggedIn && /^[0-9a-fA-F]{24}$/.test(trueId)) {
-       fetch(`/api/wishlist?productId=${trueId}`, { method: 'DELETE' }).catch(console.error);
+      fetch(`/api/wishlist?productId=${trueId}`, { method: 'DELETE' }).catch(console.error);
     }
   };
 
@@ -384,7 +381,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
   const totalQuantity = cartItems.reduce((acc, item) => acc + item.quantity, 0);
   const totalWishlistQuantity = wishlistItems.length;
-  
+
   const subtotal = cartItems.reduce((acc, item) => {
     const numericPrice = parseFloat(item.price.replace('$', ''));
     return acc + numericPrice * item.quantity;
@@ -419,11 +416,11 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
       {/* 1. WooCommerce-style slide-out Cart Sidebar Drawer */}
       {isCartOpen && (
-        <div 
+        <div
           className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[9999] transition-opacity duration-300 animate-fade-in"
           onClick={() => setIsCartOpen(false)}
         >
-          <div 
+          <div
             className="fixed inset-y-0 right-0 w-full max-w-[440px] bg-[#fff8f3] shadow-2xl flex flex-col justify-between transition-transform duration-500 ease-out z-[10000] translate-x-0 animate-slide-in-right border-l border-pink-100/50"
             onClick={(e) => e.stopPropagation()}
           >
@@ -438,7 +435,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
                   <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">({totalQuantity} Items added)</p>
                 </div>
               </div>
-              <button 
+              <button
                 onClick={() => setIsCartOpen(false)}
                 className="grid h-8 w-8 place-items-center rounded-xl bg-slate-50 text-slate-400 hover:bg-[#ff4fa3] hover:text-white hover:scale-105 transition-all duration-300 cursor-pointer"
               >
@@ -451,7 +448,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
               {cartItems.length > 0 ? (
                 cartItems.map((item) => (
                   <div key={item.id} className="group/cart bg-white p-4 rounded-3xl border border-slate-100/80 shadow-[0_4px_20px_rgba(27,21,51,0.01)] flex gap-4 items-center relative hover:shadow-[0_10px_25px_rgba(123,92,255,0.03)] transition-all duration-300">
-                    
+
                     {/* Item Image Container */}
                     <div className="h-20 w-20 rounded-2xl bg-white border border-slate-100 flex items-center justify-center p-0 overflow-hidden shrink-0 relative">
                       <img src={item.imageSrc} alt={item.title} className="h-full w-full object-contain" />
@@ -466,14 +463,14 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
                       {/* Quantity Controls */}
                       <div className="flex items-center gap-2 mt-1.5">
                         <div className="flex items-center bg-slate-50 border border-slate-100 rounded-xl px-1 py-0.5">
-                          <button 
+                          <button
                             onClick={() => updateQuantity(item.id, -1)}
                             className="p-1 rounded-lg text-slate-400 hover:bg-white hover:text-[#1b1533] transition-all cursor-pointer"
                           >
                             <Minus className="h-3 w-3" />
                           </button>
                           <span className="text-xs font-black text-[#1b1533] px-2.5 min-w-[20px] text-center">{item.quantity}</span>
-                          <button 
+                          <button
                             onClick={() => updateQuantity(item.id, 1)}
                             className="p-1 rounded-lg text-slate-400 hover:bg-white hover:text-[#ff4fa3] transition-all cursor-pointer"
                           >
@@ -484,7 +481,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
                     </div>
 
                     {/* Delete Icon Button */}
-                    <button 
+                    <button
                       onClick={() => removeFromCart(item.id)}
                       className="absolute right-4 top-4 p-1.5 rounded-xl bg-slate-50 text-slate-400 hover:bg-[#ff4fa3]/10 hover:text-[#ff4fa3] transition-all duration-200 cursor-pointer"
                     >
@@ -501,7 +498,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
                     <h4 className="text-[15px] font-bold text-[#1b1533] logo-font">Your cart is empty</h4>
                     <p className="text-xs text-slate-400 max-w-[240px] mt-1">Add premium organic formulations from our catalog to get started.</p>
                   </div>
-                  <button 
+                  <button
                     onClick={() => {
                       setIsCartOpen(false);
                       if (typeof window !== 'undefined') {
@@ -533,14 +530,14 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
                 {/* Checkout CTA Links */}
                 <div className="flex flex-col gap-3">
-                  <Link 
+                  <Link
                     href="/checkout"
                     onClick={() => setIsCartOpen(false)}
                     className="w-full inline-flex items-center justify-center rounded-2xl bg-[#ff4fa3] text-white border border-[#ff4fa3] py-4 text-xs font-black uppercase tracking-wider shadow-md shadow-pink-100 transition-all duration-300 hover:bg-black hover:text-[#ff4fa3] hover:border-black hover:-translate-y-0.5 active:translate-y-0 cursor-pointer logo-font"
                   >
                     Proceed to Checkout <ArrowRight className="h-3.5 w-3.5 ml-1.5" />
                   </Link>
-                  <Link 
+                  <Link
                     href="/cart"
                     onClick={() => setIsCartOpen(false)}
                     className="w-full inline-flex items-center justify-center rounded-2xl bg-white text-slate-700 border border-slate-200 py-3.5 text-xs font-black uppercase tracking-wider transition-all duration-300 hover:bg-slate-50 hover:text-[#1b1533] hover:border-slate-300 cursor-pointer logo-font"
@@ -556,11 +553,11 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
       {/* 2. WooCommerce-style slide-out Wishlist Sidebar Drawer */}
       {isWishlistOpen && (
-        <div 
+        <div
           className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[9999] transition-opacity duration-300 animate-fade-in"
           onClick={() => setIsWishlistOpen(false)}
         >
-          <div 
+          <div
             className="fixed inset-y-0 right-0 w-full max-w-[440px] bg-[#fff8f3] shadow-2xl flex flex-col justify-between transition-transform duration-500 ease-out z-[10000] translate-x-0 animate-slide-in-right border-l border-pink-100/50"
             onClick={(e) => e.stopPropagation()}
           >
@@ -575,7 +572,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
                   <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">({totalWishlistQuantity} Items saved)</p>
                 </div>
               </div>
-              <button 
+              <button
                 onClick={() => setIsWishlistOpen(false)}
                 className="grid h-8 w-8 place-items-center rounded-xl bg-slate-50 text-slate-400 hover:bg-[#ff4fa3] hover:text-white hover:scale-105 transition-all duration-300 cursor-pointer"
               >
@@ -588,7 +585,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
               {wishlistItems.length > 0 ? (
                 wishlistItems.map((item) => (
                   <div key={item.id} className="group/cart bg-white p-4 rounded-3xl border border-slate-100/80 shadow-[0_4px_20px_rgba(27,21,51,0.01)] flex gap-4 items-center relative hover:shadow-[0_10px_25px_rgba(123,92,255,0.03)] transition-all duration-300">
-                    
+
                     {/* Item Image Container */}
                     <div className="h-20 w-16 rounded-xl bg-slate-100/50 border border-slate-100 flex items-center justify-center p-0 overflow-hidden shrink-0 relative">
                       <img src={item.imageSrc} alt={item.title} className="h-full w-full object-cover" />
@@ -601,7 +598,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
                       <span className="text-xs font-black text-[#1b1533]/90">{item.price}</span>
 
                       {/* Direct Add to Cart Action */}
-                      <button 
+                      <button
                         onClick={() => {
                           addToCart({ title: item.title, category: item.category, price: item.price, imageSrc: item.imageSrc });
                           removeFromWishlist(item.id);
@@ -615,7 +612,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
                     </div>
 
                     {/* Delete Icon Button */}
-                    <button 
+                    <button
                       onClick={() => removeFromWishlist(item.id)}
                       className="absolute right-4 top-4 p-1.5 rounded-xl bg-slate-50 text-slate-400 hover:bg-[#ff4fa3]/10 hover:text-[#ff4fa3] transition-all duration-200 cursor-pointer"
                     >
@@ -632,7 +629,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
                     <h4 className="text-[15px] font-bold text-[#1b1533] logo-font">Your wishlist is empty</h4>
                     <p className="text-xs text-slate-400 max-w-[240px] mt-1">Tap the heart icons on products you love to build your collection.</p>
                   </div>
-                  <button 
+                  <button
                     onClick={() => {
                       setIsWishlistOpen(false);
                       if (typeof window !== 'undefined') {
@@ -650,7 +647,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
             {/* Drawer Footer */}
             {wishlistItems.length > 0 && (
               <div className="p-6 border-t border-pink-100/40 bg-white">
-                <button 
+                <button
                   onClick={() => setIsWishlistOpen(false)}
                   className="w-full inline-flex items-center justify-center rounded-2xl bg-white text-slate-700 border border-slate-200 py-4 text-xs font-black uppercase tracking-wider transition-all duration-300 hover:bg-slate-50 hover:text-[#1b1533] hover:border-slate-300 cursor-pointer logo-font"
                 >
@@ -665,7 +662,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       {/* 3. Premium Bottom-Right Slide-in Toast Notification */}
       {toast.visible && (
         <div className="fixed bottom-6 right-6 z-[99999] max-w-sm w-full bg-white border border-slate-100/90 rounded-[28px] p-4 shadow-[0_20px_50px_rgba(27,21,51,0.12)] flex gap-4 items-center justify-between translate-y-0 opacity-100 transition-all duration-300 animate-slide-in-up overflow-hidden">
-          
+
           {/* Toast Image */}
           <div className="h-14 w-14 rounded-2xl bg-white border border-slate-100 flex items-center justify-center p-0 shrink-0 relative overflow-hidden">
             <img src={toast.productImage} alt={toast.productTitle} className="h-full w-full object-contain" />
@@ -674,7 +671,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
           {/* Toast Content Details */}
           <div className="flex-1 min-w-0 flex flex-col gap-0.5">
             <span className="inline-flex items-center gap-1 text-[12px] font-black uppercase tracking-widest text-[#ff4fa3] leading-none">
-              <Check className="h-3 w-3 stroke-[3]" /> 
+              <Check className="h-3 w-3 stroke-[3]" />
               {toast.type === 'cart' ? 'Added to Cart! 🛒' : toast.type === 'wishlist' ? 'Added to Wishlist! 💖' : 'Removed from Wishlist!'}
             </span>
             <h4 className="text-[12.5px] font-bold text-[#1b1533] leading-tight truncate logo-font mt-0.5">{toast.productTitle}</h4>
@@ -683,7 +680,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
           {/* WooCommerce-Style "View" Button inside Toast! */}
           {toast.type !== 'remove_wishlist' && (
-            <a 
+            <Link
               href={toast.type === 'cart' ? '/cart' : '#'}
               onClick={(e) => {
                 if (toast.type === 'wishlist') {
@@ -695,11 +692,11 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
               className="px-3 py-1.5 bg-[#ff4fa3] text-white hover:bg-black hover:text-[#ff4fa3] border border-[#ff4fa3] hover:border-black transition-all rounded-xl text-[10px] font-black uppercase tracking-wider shrink-0 logo-font cursor-pointer flex items-center gap-1.5 shadow-sm"
             >
               View {toast.type === 'cart' ? 'Cart' : 'List'}
-            </a>
+            </Link>
           )}
 
           {/* Close Toast button */}
-          <button 
+          <button
             onClick={() => setToast(prev => ({ ...prev, visible: false }))}
             className="p-1 rounded-xl bg-slate-50 text-slate-400 hover:bg-slate-100 hover:text-black transition-all cursor-pointer shrink-0"
           >
@@ -708,8 +705,8 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
           {/* Animating Countdown Progress Bar */}
           <div className="absolute bottom-0 left-0 right-0 h-1 bg-slate-100">
-            <div 
-              className={`h-full bg-gradient-to-r ${toast.type === 'remove_wishlist' ? 'from-slate-400 to-slate-500' : 'from-[#ff4fa3] to-[#7b5cff]'} animate-toast-progress`} 
+            <div
+              className={`h-full bg-gradient-to-r ${toast.type === 'remove_wishlist' ? 'from-slate-400 to-slate-500' : 'from-[#ff4fa3] to-[#7b5cff]'} animate-toast-progress`}
               style={{ animationDuration: '5s' }}
             />
           </div>

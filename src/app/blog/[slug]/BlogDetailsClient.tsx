@@ -4,118 +4,64 @@ import Link from 'next/link';
 import React, { useState } from 'react';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
-import { 
-  Sparkles, 
-  Calendar, 
-  Clock, 
-  User, 
-  Share2, 
-  Bookmark, 
-  ChevronRight, 
-  ArrowLeft,
-  BookOpen
+import {
+  Sparkles,
+  Calendar,
+  Clock,
+  User,
+  Share2,
+  Bookmark,
+  ChevronRight,
+  ArrowLeft
 } from 'lucide-react';
-
-const blogPostsData = [
-  {
-    title: 'Magic Mushrooms 101: A Beginner\'s Guide',
-    desc: 'Understand the dosage, effects, and benefits before your first journey.',
-    category: 'Guides',
-    date: 'May 10, 2026',
-    time: '5 min read',
-    image: '/images/blog_1.webp',
-  },
-  {
-    title: 'How Edibles Work: What You Need to Know',
-    desc: 'Why edibles feel different and how long the peak effects typically last.',
-    category: 'Edibles',
-    date: 'May 6, 2026',
-    time: '6 min read',
-    image: '/images/blog_2.webp',
-  },
-  {
-    title: 'Microdosing Benefits For Daily Wellness',
-    desc: 'Discover why thousands of professionals are microdosing for focus.',
-    category: 'Research',
-    date: 'May 2, 2026',
-    time: '5 min read',
-    image: '/images/blog_3.webp',
-  },
-  {
-    title: 'Different Mushroom Strains And Their Effects',
-    desc: 'From Golden Teacher to Penis Envy - find the perfect strain for you.',
-    category: 'Strains',
-    date: 'Apr 28, 2026',
-    time: '7 min read',
-    image: '/images/blog_4.webp',
-  },
-  {
-    title: 'The Ultimate Guide to Mushroom Tea Brewing',
-    desc: 'Learn how to brew a perfect cup of soothing mushroom tea at home easily.',
-    category: 'Recipes',
-    date: 'Apr 24, 2026',
-    time: '4 min read',
-    image: '/images/blog_1.webp',
-  },
-  {
-    title: 'Psilocybin and Neuroplasticity: The Science',
-    desc: 'How magic mushrooms stimulate new neural pathways and connections in the brain.',
-    category: 'Science',
-    date: 'Apr 20, 2026',
-    time: '8 min read',
-    image: '/images/blog_2.webp',
-  },
-  {
-    title: 'Setting Your Intentions: Psychedelic Journeys',
-    desc: 'Why set and setting are crucial for a positive and transformational experience.',
-    category: 'Mindset',
-    date: 'Apr 15, 2026',
-    time: '6 min read',
-    image: '/images/blog_3.webp',
-  },
-  {
-    title: 'Integrating Your Psychedelic Experience',
-    desc: 'Essential tips for carrying the insights of your journey into everyday life.',
-    category: 'Therapy',
-    date: 'Apr 10, 2026',
-    time: '5 min read',
-    image: '/images/blog_4.webp',
-  },
-  {
-    title: 'The Art of Microdosing: A Beginner’s Guide',
-    desc: 'Everything you need to know about starting a sub-perceptual psilocybin microdose ritual safely.',
-    category: 'Guides',
-    date: 'Apr 28, 2026',
-    time: '4 min read',
-    image: '/images/blog_1.webp',
-  },
-  {
-    title: 'A Deep Dive Into Golden Teacher Strains',
-    desc: 'Exploring the genetic origin, potency characteristics, and spiritual introspection profiles of the beloved Golden Teacher.',
-    category: 'Guides',
-    date: 'May 05, 2026',
-    time: '7 min read',
-    image: '/images/blog_1.webp',
-  },
-  {
-    title: 'Clinical Studies on Microdosing & Stress',
-    desc: 'Reviewing recent clinical research abstracts demonstrating psilocybin efficacy in regulating cortisol levels.',
-    category: 'Science',
-    date: 'Apr 28, 2026',
-    time: '9 min read',
-    image: '/images/blog_2.webp',
-  }
-];
+import { MushroomLoader } from '@/components/MushroomLoader';
 
 export default function BlogDetailsClient({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = React.use(params);
   const [bookmarked, setBookmarked] = useState<boolean>(false);
+  const [post, setPost] = useState<any>(null);
+  const [loading, setLoading] = useState<boolean>(true);
 
-  const normalizedSlug = decodeURIComponent(slug).toLowerCase();
-  let post = blogPostsData.find(p => p.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '') === normalizedSlug || (p as any).slug === normalizedSlug);
-  if (!post) {
-    post = blogPostsData[0]; // Fallback to first post
+  React.useEffect(() => {
+    async function fetchBlog() {
+      try {
+        const res = await fetch(`/api/blogs/${slug}`);
+        const data = await res.json();
+        if (data.success && data.blog) {
+          setPost(data.blog);
+        }
+      } catch (err) {
+        console.error('Failed to fetch blog post', err);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchBlog();
+  }, [slug]);
+
+  if (loading) {
+    return (
+      <main className="bg-[#fff8f3] min-h-screen flex items-center justify-center">
+        <MushroomLoader className="scale-150" />
+      </main>
+    );
   }
+
+  if (!post) {
+    return (
+      <main className="bg-[#fff8f3] text-[#1b1533] min-h-screen flex items-center justify-center">
+        <Header />
+        <div className="text-center py-20">
+          <h1 className="text-3xl font-black text-[#1b1533] logo-font uppercase mb-4">Article Not Found</h1>
+          <Link href="/blog" className="text-[#ff4fa3] font-bold hover:underline">Return to Blog Hub</Link>
+        </div>
+        <Footer />
+      </main>
+    );
+  }
+
+  const publishDate = new Date(post.publishedAt);
+  const formattedDate = publishDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
 
   return (
     <main className="bg-[#fff8f3] text-[#1b1533] min-h-screen selection:bg-[#ff4fa3] selection:text-white antialiased">
@@ -134,14 +80,14 @@ export default function BlogDetailsClient({ params }: { params: Promise<{ slug: 
 
       {/* Article Details Container */}
       <article className="mx-auto max-w-7xl px-4 py-12 md:px-8">
-        
+
         {/* Back Link */}
-        <a 
-          href="/blog" 
+        <Link
+          href="/blog"
           className="inline-flex items-center gap-2 text-xs font-black uppercase tracking-wider text-[#ff4fa3] hover:text-black mb-8 transition-colors duration-200 logo-font"
         >
           <ArrowLeft className="h-4 w-4" /> Back to Research Hub
-        </a>
+        </Link>
 
         {/* Hero Metadata */}
         <div className="space-y-4">
@@ -155,31 +101,30 @@ export default function BlogDetailsClient({ params }: { params: Promise<{ slug: 
           {/* Metadata Badges Row */}
           <div className="flex flex-wrap items-center gap-6 text-slate-400 text-xs font-semibold border-b border-slate-100 pb-6">
             <span className="flex items-center gap-1.5">
-              <Calendar className="h-4 w-4 text-[#ff4fa3]" /> {post.date}
+              <Calendar className="h-4 w-4 text-[#ff4fa3]" /> {formattedDate}
             </span>
             <span className="flex items-center gap-1.5">
-              <Clock className="h-4 w-4 text-[#ff4fa3]" /> {post.time}
+              <Clock className="h-4 w-4 text-[#ff4fa3]" /> {post.readTime}
             </span>
             <span className="flex items-center gap-1.5">
               <User className="h-4 w-4 text-[#ff4fa3]" /> Cultivation Expert
             </span>
-            
+
             {/* Social Share & Bookmark Controls */}
             <div className="ml-auto flex items-center gap-3">
-              <button 
+              <button
                 onClick={() => {
                   setBookmarked(!bookmarked);
                   alert(bookmarked ? 'Bookmark removed.' : 'Article bookmarked successfully!');
                 }}
-                className={`p-1.5 rounded-xl border transition-all cursor-pointer ${
-                  bookmarked 
-                    ? 'bg-pink-50 border-pink-100 text-[#ff4fa3]' 
-                    : 'bg-white border-slate-200 text-slate-400 hover:text-[#ff4fa3]'
-                }`}
+                className={`p-1.5 rounded-xl border transition-all cursor-pointer ${bookmarked
+                  ? 'bg-pink-50 border-pink-100 text-[#ff4fa3]'
+                  : 'bg-white border-slate-200 text-slate-400 hover:text-[#ff4fa3]'
+                  }`}
               >
                 <Bookmark className="h-4.5 w-4.5" />
               </button>
-              <button 
+              <button
                 onClick={() => alert('Article link copied to clipboard!')}
                 className="p-1.5 rounded-xl border border-slate-200 bg-white text-slate-400 hover:text-[#ff4fa3] transition-all cursor-pointer"
               >

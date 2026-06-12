@@ -6,12 +6,12 @@ import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { Newsletter } from '@/components/Newsletter';
 import { useCart } from '@/context/CartContext';
-import { 
-  Sparkles, 
-  HelpCircle, 
-  ChevronDown, 
-  ChevronUp, 
-  ShieldCheck, 
+import {
+  Sparkles,
+  HelpCircle,
+  ChevronDown,
+  ChevronUp,
+  ShieldCheck,
   Calendar,
   Clock,
   Sparkle,
@@ -58,12 +58,12 @@ export default function MicrodoseGuidePage() {
       <section className="relative overflow-hidden bg-gradient-to-tr from-[#fffbf8] via-[#fffcfb] to-[#fff3ec] border-b border-purple-100/50 py-16 px-4 md:px-8 min-h-[350px] flex items-center">
         <div className="absolute left-[5%] top-[10%] w-[300px] h-[300px] rounded-full bg-[#ffe8db]/30 blur-[90px] pointer-events-none" />
         <div className="absolute right-[5%] bottom-[5%] w-[300px] h-[300px] rounded-full bg-[#e0f2fe]/40 blur-[90px] pointer-events-none" />
-        
+
         <div className="mx-auto max-w-7xl relative z-10 grid gap-10 md:grid-cols-[1.3fr_1fr] items-center w-full">
-          
+
           {/* Left Hero Block */}
           <div className="flex flex-col items-start text-left gap-4">
-            
+
             {/* Breadcrumb */}
             <div className="flex items-center gap-1.5 text-[12px] font-black uppercase tracking-widest text-slate-400 logo-font leading-none">
               <Link href="/" className="hover:text-[#ff4fa3] transition-colors">Home</Link>
@@ -87,7 +87,7 @@ export default function MicrodoseGuidePage() {
               Learn how sub-perceptual psilocybin doses stimulate BDNF brain factors and optimize theta waves, and explore scheduling charts below.
             </p>
 
-            <button 
+            <button
               onClick={() => document.getElementById('protocol-planner-section')?.scrollIntoView({ behavior: 'smooth' })}
               className="text-xs font-black uppercase tracking-wider text-[#ff4fa3] hover:text-black transition-colors duration-200 logo-font border-b-2 border-transparent hover:border-black pb-0.5"
             >
@@ -140,7 +140,7 @@ export default function MicrodoseGuidePage() {
       <section id="protocol-planner-section" className="bg-gradient-to-tr from-[#fffbf8] to-[#fff3ec] border-t border-b border-purple-100/40 py-16 px-4">
         <div className="mx-auto max-w-4xl bg-white border border-pink-100/50 rounded-[44px] p-6 md:p-10 shadow-[0_32px_90px_rgba(255,79,163,0.07)] text-center relative overflow-hidden">
           <div className="absolute top-0 right-0 h-44 w-44 rounded-full bg-[#ff4fa3]/5 blur-3xl pointer-events-none" />
-          
+
           <div className="space-y-2 mb-8 max-w-md mx-auto">
             <span className="text-[12px] font-black uppercase tracking-widest text-[#ff4fa3] logo-font">Interactive Planner</span>
             <h2 className="text-2xl md:text-3xl font-black text-[#1b1533] uppercase logo-font">Protocol Calendar Planner</h2>
@@ -151,21 +151,19 @@ export default function MicrodoseGuidePage() {
           <div className="flex justify-center gap-3 mb-8">
             <button
               onClick={() => setActiveProtocol('fadiman')}
-              className={`rounded-2xl px-6 py-3 text-xs font-black uppercase tracking-wider logo-font transition-all border cursor-pointer ${
-                activeProtocol === 'fadiman'
+              className={`rounded-2xl px-6 py-3 text-xs font-black uppercase tracking-wider logo-font transition-all border cursor-pointer ${activeProtocol === 'fadiman'
                   ? 'bg-[#ff4fa3] border-[#ff4fa3] text-white shadow-md shadow-pink-100'
                   : 'bg-white border-slate-200 text-slate-700 hover:border-[#ff4fa3]'
-              }`}
+                }`}
             >
               Fadiman Protocol
             </button>
             <button
               onClick={() => setActiveProtocol('stamets')}
-              className={`rounded-2xl px-6 py-3 text-xs font-black uppercase tracking-wider logo-font transition-all border cursor-pointer ${
-                activeProtocol === 'stamets'
+              className={`rounded-2xl px-6 py-3 text-xs font-black uppercase tracking-wider logo-font transition-all border cursor-pointer ${activeProtocol === 'stamets'
                   ? 'bg-[#ff4fa3] border-[#ff4fa3] text-white shadow-md shadow-pink-100'
                   : 'bg-white border-slate-200 text-slate-700 hover:border-[#ff4fa3]'
-              }`}
+                }`}
             >
               Stamets Stack
             </button>
@@ -174,13 +172,12 @@ export default function MicrodoseGuidePage() {
           {/* Calendar Grid display */}
           <div className="grid grid-cols-7 gap-2 text-left mb-6">
             {activeDays.map((day, idx) => (
-              <div 
-                key={idx} 
-                className={`border rounded-2xl p-3 flex flex-col justify-between h-28 transition-all ${
-                  day.type === 'active'
+              <div
+                key={idx}
+                className={`border rounded-2xl p-3 flex flex-col justify-between h-28 transition-all ${day.type === 'active'
                     ? 'border-[#ff4fa3] bg-[#ff4fa3]/5 text-[#ff4fa3] shadow-sm'
                     : 'border-slate-100 bg-[#fff8f3]/20 text-slate-400'
-                }`}
+                  }`}
               >
                 <strong className={`text-[12px] font-black uppercase logo-font ${day.type === 'active' ? 'text-[#ff4fa3]' : 'text-slate-500'}`}>{day.name}</strong>
                 <div className="mt-auto text-left">
@@ -260,7 +257,7 @@ export default function MicrodoseGuidePage() {
       {/* 5. Microdosing FAQ Accordion */}
       <section className="bg-white py-16 px-4 md:px-8 border-b border-purple-100/30">
         <div className="mx-auto max-w-4xl space-y-10 text-center">
-          
+
           <div className="space-y-2">
             <span className="text-[12px] font-black uppercase tracking-widest text-[#ff4fa3] logo-font leading-none">Protocol Help</span>
             <h2 className="text-2xl md:text-3xl font-black text-[#1b1533] uppercase logo-font">Microdose Schedule FAQs</h2>
@@ -281,13 +278,11 @@ export default function MicrodoseGuidePage() {
                   <strong className="text-xs md:text-sm font-black text-[#1b1533] uppercase logo-font group-hover:text-[#ff4fa3] transition-colors flex items-center gap-2.5">
                     <HelpCircle className="h-4.5 w-4.5 text-[#ff4fa3] shrink-0 stroke-[2.2]" /> {faq.q}
                   </strong>
-                  <ChevronDown className={`h-4.5 w-4.5 text-slate-400 group-hover:text-[#ff4fa3] transition-transform duration-300 shrink-0 stroke-[2.5] ${
-                    activeFaqIdx === idx ? 'rotate-180' : ''
-                  }`} />
+                  <ChevronDown className={`h-4.5 w-4.5 text-slate-400 group-hover:text-[#ff4fa3] transition-transform duration-300 shrink-0 stroke-[2.5] ${activeFaqIdx === idx ? 'rotate-180' : ''
+                    }`} />
                 </button>
-                <div className={`transition-all duration-300 overflow-hidden ${
-                  activeFaqIdx === idx ? 'max-h-[300px] opacity-100 mt-2' : 'max-h-0 opacity-0'
-                }`}>
+                <div className={`transition-all duration-300 overflow-hidden ${activeFaqIdx === idx ? 'max-h-[300px] opacity-100 mt-2' : 'max-h-0 opacity-0'
+                  }`}>
                   <p className="text-xs font-semibold leading-relaxed text-slate-500 pl-7 bg-white/40 p-3.5 rounded-xl border border-pink-50/20 shadow-inner">
                     {faq.a}
                   </p>
@@ -322,12 +317,12 @@ export default function MicrodoseGuidePage() {
                   <h3 className="text-sm font-black text-[#1b1533] uppercase logo-font leading-tight">{link.name}</h3>
                   <p className="text-[12px] font-semibold text-slate-400 leading-relaxed line-clamp-3">{link.desc}</p>
                 </div>
-                <a 
+                <Link
                   href={link.url}
                   className="w-full inline-flex items-center justify-center rounded-2xl bg-slate-50 text-slate-800 border border-slate-200/80 py-3 text-xs font-black uppercase tracking-wider group-hover:bg-[#ff4fa3] group-hover:text-white group-hover:border-[#ff4fa3] transition-all duration-200 cursor-pointer gap-1.5 logo-font"
                 >
                   Explore Guide <ArrowRight className="h-3.5 w-3.5 stroke-[2.5]" />
-                </a>
+                </Link>
               </div>
             ))}
           </div>

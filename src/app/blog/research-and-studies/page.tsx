@@ -5,13 +5,13 @@ import React, { useState } from 'react';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { Newsletter } from '@/components/Newsletter';
-import { 
-  Sparkles, 
-  BookOpen, 
-  HelpCircle, 
-  ChevronDown, 
-  ChevronUp, 
-  ShieldCheck, 
+import {
+  Sparkles,
+  BookOpen,
+  HelpCircle,
+  ChevronDown,
+  ChevronUp,
+  ShieldCheck,
   ArrowRight,
   Award,
   Zap,
@@ -70,12 +70,12 @@ export default function ResearchAndStudiesPage() {
       <section className="relative overflow-hidden bg-gradient-to-tr from-[#fffbf8] via-[#fffcfb] to-[#fff3ec] border-b border-purple-100/50 py-16 px-4 md:px-8 min-h-[350px] flex items-center">
         <div className="absolute left-[5%] top-[10%] w-[300px] h-[300px] rounded-full bg-[#ffe8db]/30 blur-[90px] pointer-events-none" />
         <div className="absolute right-[5%] bottom-[5%] w-[300px] h-[300px] rounded-full bg-[#e0f2fe]/40 blur-[90px] pointer-events-none" />
-        
+
         <div className="mx-auto max-w-7xl relative z-10 grid gap-10 md:grid-cols-[1.3fr_1fr] items-center w-full">
-          
+
           {/* Left Hero Block */}
           <div className="flex flex-col items-start text-left gap-4">
-            
+
             {/* Breadcrumb */}
             <div className="flex items-center gap-1.5 text-[12px] font-black uppercase tracking-widest text-slate-400 logo-font leading-none">
               <Link href="/" className="hover:text-[#ff4fa3] transition-colors">Home</Link>
@@ -99,7 +99,7 @@ export default function ResearchAndStudiesPage() {
               Review published clinical trials, scientific abstracts, and neurobiological mapping detailing the safety and efficacy of active tryptamine compounds.
             </p>
 
-            <button 
+            <button
               onClick={() => document.getElementById('studies-section')?.scrollIntoView({ behavior: 'smooth' })}
               className="text-xs font-black uppercase tracking-wider text-[#ff4fa3] hover:text-black transition-colors duration-200 logo-font border-b-2 border-transparent hover:border-black pb-0.5"
             >
@@ -135,7 +135,7 @@ export default function ResearchAndStudiesPage() {
         <div className="space-y-10 max-w-4xl mx-auto">
           {STUDIES_DATA.map((study, idx) => (
             <div key={idx} className="bg-white border border-slate-100 rounded-[36px] p-6 md:p-8 shadow-sm flex flex-col justify-between items-start text-left gap-6 hover:shadow-md transition-shadow relative overflow-hidden group">
-              
+
               <div className="w-full flex justify-between items-start border-b border-slate-50 pb-4">
                 <div className="space-y-1.5">
                   <span className="text-[12px] font-black uppercase text-[#ff4fa3] tracking-wider logo-font">{study.source} ({study.year})</span>
@@ -146,11 +146,10 @@ export default function ResearchAndStudiesPage() {
                     setBookmarkedStudyIdx(bookmarkedStudyIdx === idx ? null : idx);
                     alert(bookmarkedStudyIdx === idx ? 'Removed bookmark.' : 'Study bookmarked!');
                   }}
-                  className={`p-2 rounded-xl border transition-all cursor-pointer ${
-                    bookmarkedStudyIdx === idx 
-                      ? 'bg-pink-50 border-pink-100 text-[#ff4fa3]' 
-                      : 'bg-white border-slate-100 text-slate-400 hover:text-[#ff4fa3]'
-                  }`}
+                  className={`p-2 rounded-xl border transition-all cursor-pointer ${bookmarkedStudyIdx === idx
+                    ? 'bg-pink-50 border-pink-100 text-[#ff4fa3]'
+                    : 'bg-white border-slate-100 text-slate-400 hover:text-[#ff4fa3]'
+                    }`}
                 >
                   <Bookmark className="h-4 w-4" />
                 </button>
@@ -192,7 +191,7 @@ export default function ResearchAndStudiesPage() {
       {/* 3. Research FAQ Section */}
       <section className="bg-white py-16 px-4 md:px-8 border-b border-purple-100/30">
         <div className="mx-auto max-w-4xl space-y-10 text-center">
-          
+
           <div className="space-y-2">
             <span className="text-[12px] font-black uppercase tracking-widest text-[#ff4fa3] logo-font leading-none">Clinical Help</span>
             <h2 className="text-2xl md:text-3xl font-black text-[#1b1533] uppercase logo-font">Clinical Research FAQs</h2>
@@ -213,13 +212,11 @@ export default function ResearchAndStudiesPage() {
                   <strong className="text-xs md:text-sm font-black text-[#1b1533] uppercase logo-font group-hover:text-[#ff4fa3] transition-colors flex items-center gap-2.5">
                     <HelpCircle className="h-4.5 w-4.5 text-[#ff4fa3] shrink-0 stroke-[2.2]" /> {faq.q}
                   </strong>
-                  <ChevronDown className={`h-4.5 w-4.5 text-slate-400 group-hover:text-[#ff4fa3] transition-transform duration-300 shrink-0 stroke-[2.5] ${
-                    activeFaqIdx === idx ? 'rotate-180' : ''
-                  }`} />
+                  <ChevronDown className={`h-4.5 w-4.5 text-slate-400 group-hover:text-[#ff4fa3] transition-transform duration-300 shrink-0 stroke-[2.5] ${activeFaqIdx === idx ? 'rotate-180' : ''
+                    }`} />
                 </button>
-                <div className={`transition-all duration-300 overflow-hidden ${
-                  activeFaqIdx === idx ? 'max-h-[300px] opacity-100 mt-2' : 'max-h-0 opacity-0'
-                }`}>
+                <div className={`transition-all duration-300 overflow-hidden ${activeFaqIdx === idx ? 'max-h-[300px] opacity-100 mt-2' : 'max-h-0 opacity-0'
+                  }`}>
                   <p className="text-xs font-semibold leading-relaxed text-slate-500 pl-7 bg-white/40 p-3.5 rounded-xl border border-pink-50/20 shadow-inner">
                     {faq.a}
                   </p>
@@ -254,12 +251,12 @@ export default function ResearchAndStudiesPage() {
                   <h3 className="text-sm font-black text-[#1b1533] uppercase logo-font leading-tight">{link.name}</h3>
                   <p className="text-[12px] font-semibold text-slate-400 leading-relaxed line-clamp-3">{link.desc}</p>
                 </div>
-                <a 
+                <Link
                   href={link.url}
                   className="w-full inline-flex items-center justify-center rounded-2xl bg-slate-50 text-slate-800 border border-slate-200/80 py-3 text-xs font-black uppercase tracking-wider group-hover:bg-[#ff4fa3] group-hover:text-white group-hover:border-[#ff4fa3] transition-all duration-200 cursor-pointer gap-1.5 logo-font"
                 >
                   Explore Guide <ArrowRight className="h-3.5 w-3.5 stroke-[2.5]" />
-                </a>
+                </Link>
               </div>
             ))}
           </div>

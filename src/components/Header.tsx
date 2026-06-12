@@ -1,5 +1,7 @@
 "use client";
 import Link from 'next/link';
+import useSWR from 'swr';
+import { fetcher } from '@/lib/fetcher';
 
 import React, { useState } from 'react';
 import {
@@ -66,9 +68,10 @@ import {
 } from 'lucide-react';
 import { Logo } from './Logo';
 import { InfoPopup } from './InfoPopup';
+import { MushroomLoader } from './MushroomLoader';
 import { useCart } from '@/context/CartContext';
 import { usePathname } from 'next/navigation';
-import { getSubcategories, menuGroups, getProductSlug, getProductUrl, getCategorySlug } from '@/data/products';
+import { getProductUrl } from '@/data/products';
 
 function MushroomWithStarsIcon(props: React.ComponentProps<'svg'>) {
   return (
@@ -107,31 +110,6 @@ function MushroomWithStarsIcon(props: React.ComponentProps<'svg'>) {
     </span>
   );
 }
-
-const MARQUEE_ITEMS = [
-  { text: "Fast Delivery Across Toronto, Barrie, Halton, Peel & The GTA", icon: Truck, category: 'delivery' as const },
-  { text: "Discreet Shipping Across Canada • Private Packaging", icon: Package, category: 'shipping' as const },
-  { text: "New Delivery & Shipping Website • Save 20% Today", icon: PartyPopper, category: 'promo' as const },
-  { text: "Trusted By Canadians For Years • Delivered Better", icon: ShieldCheck, category: 'security' as const },
-  { text: "Same-Day Delivery Available In Select GTA Locations", icon: Zap, category: 'delivery' as const },
-  { text: "Secure Checkout • Fast Fulfillment • Private Delivery", icon: Lock, category: 'security' as const },
-  { text: "Order Online • Delivered Directly To Your Door", icon: Home, category: 'delivery' as const },
-  { text: "Supporting Canadian Communities With Every Order", icon: Heart, category: 'security' as const },
-  { text: "Toronto, Mississauga, Brampton, Oakville & Barrie Delivery", icon: Truck, category: 'delivery' as const },
-  { text: "GTA Delivery Specialists • Fast, Reliable & Discreet", icon: MapPin, category: 'delivery' as const },
-  { text: "New Website Launch Offer • Save 20% On Your First Order", icon: Gift, category: 'promo' as const },
-  { text: "Premium Products • Fast Delivery • Total Privacy", icon: Star, category: 'security' as const },
-  { text: "Delivery Across Peel, Halton, York, Durham & Simcoe", icon: Truck, category: 'delivery' as const },
-  { text: "No Storefront Needed • Fast Shipping Across Canada", icon: Package, category: 'shipping' as const },
-  { text: "Canada's New Delivery Experience Is Now Live", icon: Flame, category: 'promo' as const }
-];
-
-const fallbackNavItems: any[] = [
-  { label: 'Magic Mushrooms', hasDropdown: true, icon: MushroomWithStarsIcon },
-  { label: 'Edibles', hasDropdown: true, icon: Cookie },
-  { label: 'Capsules', hasDropdown: true, icon: Pill },
-  { label: 'Microdose', hasDropdown: true, icon: Gauge },
-];
 
 const categoryIconMap: Record<string, any> = {
   'Magic Mushrooms': MushroomWithStarsIcon,
@@ -288,32 +266,22 @@ export function Header() {
   const [searchQuery, setSearchQuery] = useState('');
 
   const [isInfoOpen, setIsInfoOpen] = useState(false);
-  const [selectedAnnouncement, setSelectedAnnouncement] = useState<string | null>(null);
+  const [selectedAnnouncement, setSelectedAnnouncement] = useState<any | null>(null);
 
-  const [dbCategories, setDbCategories] = useState<any[]>([]);
+  const { data: catData, isLoading: isCatLoading } = useSWR('/api/categories', fetcher);
+  const { data: annData, isLoading: isAnnLoading } = useSWR('/api/announcements', fetcher);
 
-  React.useEffect(() => {
-    async function fetchCategories() {
-      try {
-        const res = await fetch('/api/categories');
-        const data = await res.json();
-        if (data.success) {
-          setDbCategories(data.categories);
-        }
-      } catch (err) {
-        console.error('Failed to fetch categories', err);
-      }
-    }
-    fetchCategories();
-  }, []);
+  const dbCategories = catData?.success ? catData.categories : [];
+  const announcements = annData?.success ? annData.announcements : [];
+  const isLoading = isCatLoading || isAnnLoading;
 
-  const navItems = dbCategories.length > 0 ? dbCategories.map(cat => ({
+  const navItems = dbCategories.map((cat: any) => ({
     label: cat.name,
     hasDropdown: cat.subcategories && cat.subcategories.length > 0,
     icon: categoryIconMap[cat.name] || Sparkles,
     slug: cat.slug,
     subs: cat.subcategories || [],
-  })) : fallbackNavItems;
+  }));
 
   const toggleMobileCategory = (label: string) => {
     setExpandedMobileCategories(prev => ({
@@ -329,15 +297,32 @@ export function Header() {
     }
   };
 
+  // Dynamic icon mapping for the DB strings
+  const getIconComponent = (name: string) => {
+    if (name === 'Truck') return Truck;
+    if (name === 'Package') return Package;
+    if (name === 'PartyPopper') return PartyPopper;
+    if (name === 'ShieldCheck') return ShieldCheck;
+    if (name === 'Zap') return Zap;
+    if (name === 'Lock') return Lock;
+    if (name === 'Home') return Home;
+    if (name === 'Heart') return Heart;
+    if (name === 'MapPin') return MapPin;
+    if (name === 'Gift') return Gift;
+    if (name === 'Star') return Star;
+    if (name === 'Flame') return Flame;
+    return Sparkles;
+  };
+
   const renderTrackItems = () => {
-    return MARQUEE_ITEMS.map((item, idx) => {
-      const IconComponent = item.icon;
+    return announcements.map((item: any, idx: any) => {
+      const IconComponent = typeof item.iconName === 'string' ? getIconComponent(item.iconName) : (item.icon || Sparkles);
       return (
         <React.Fragment key={idx}>
           <div
             className="inline-flex items-center gap-1.5 text-white shrink-0 font-light cursor-pointer hover:underline hover:text-[#ff4fa3] transition-colors"
             onClick={() => {
-              setSelectedAnnouncement(item.text);
+              setSelectedAnnouncement(item);
               setIsInfoOpen(true);
             }}
             title={`Click for details on: ${item.text}`}
@@ -353,6 +338,12 @@ export function Header() {
 
   return (
     <>
+      {isLoading && (
+        <div className="fixed inset-0 z-[999999] bg-[#fffaf5] flex flex-col items-center justify-center">
+          <MushroomLoader className="scale-150 mb-4" />
+        </div>
+      )}
+
       {/* 1. Announcement Bar */}
       <div className="bg-[#110d24] py-2 text-[12px] font-light text-white shadow-sm relative z-50 overflow-hidden select-none border-b border-white/5">
         <div className="flex whitespace-nowrap overflow-hidden marquee-container">
@@ -434,12 +425,12 @@ export function Header() {
               </div>
 
               <nav className="hidden items-center gap-6 text-[12.5px] font-black text-[#1b1533] md:flex relative">
-                {navItems.map((item) => {
+                {navItems.map((item: any) => {
                   const categorySlug = item.slug || item.label.toLowerCase().replace(/\s+/g, '-');
                   const linkUrl = `/category/${categorySlug}`;
                   return (
                     <div key={item.label} className="relative group py-3">
-                      <a
+                      <Link
                         href={linkUrl}
                         className="flex items-center gap-1.5 cursor-pointer transition-colors duration-200 text-[#1b1533]/85 hover:text-[#ff4fa3]"
                       >
@@ -448,49 +439,59 @@ export function Header() {
                         {item.hasDropdown ? (
                           <ChevronDown className="h-3.5 w-3.5 text-slate-400 group-hover:text-[#ff4fa3] transition-colors" />
                         ) : null}
-                      </a>
+                      </Link>
                       {item.hasDropdown ? (
                         <div className={`absolute top-full -left-6 mt-1 bg-[#fff8f3] border border-pink-100/80 rounded-2xl p-4 shadow-[0_24px_80px_rgba(255,79,163,0.12)] opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-[100] scale-95 group-hover:scale-100 pointer-events-none group-hover:pointer-events-auto ${getDropdownGridCols(item.label)} before:content-[''] before:absolute before:-top-2 before:left-0 before:right-0 before:h-2`}>
-                          {(item.label === 'Edibles' || item.label === 'Capsules') ? (
-                            menuGroups[item.label]?.map((group, gIdx) => (
-                              <div key={gIdx} className="flex flex-col gap-2">
-                                <h3 className="px-2 py-1 text-[11px] font-black uppercase tracking-wider text-[#ff4fa3]/80 border-b border-pink-100/30">
-                                  {group.groupName}
-                                </h3>
-                                <div className="flex flex-col gap-0.5">
-                                  {group.items.map((sub, sIdx) => {
-                                    const SubIcon = getSubcategoryIcon(sub, item.label);
-                                    return (
-                                      <a
-                                        key={sIdx}
-                                        href={getProductUrl(sub, item.label)}
-                                        className="group/item px-2 py-1.5 rounded-lg text-[12px] font-bold text-[#1b1533]/80 hover:text-[#ff4fa3] hover:bg-pink-50/40 transition-all duration-150 text-left whitespace-nowrap overflow-hidden text-ellipsis flex items-center gap-1.5"
-                                        title={sub}
-                                      >
-                                        <SubIcon className="h-4 w-4 stroke-[2] text-slate-400 group-hover/item:text-[#ff4fa3] group-hover/item:scale-110 transition-all duration-200 shrink-0" />
-                                        <span className="truncate">{sub}</span>
-                                      </a>
-                                    );
-                                  })}
+                          {(() => {
+                            const hasGroupNames = item.subs.some((sub: any) => sub.groupName);
+                            if (hasGroupNames) {
+                              const grouped: Record<string, any[]> = {};
+                              item.subs.forEach((sub: any) => {
+                                const gName = sub.groupName || 'Other';
+                                if (!grouped[gName]) grouped[gName] = [];
+                                grouped[gName].push(sub);
+                              });
+
+                              return Object.entries(grouped).map(([gName, subItems], gIdx) => (
+                                <div key={gIdx} className="flex flex-col gap-2">
+                                  <h3 className="px-2 py-1 text-[11px] font-black uppercase tracking-wider text-[#ff4fa3]/80 border-b border-pink-100/30">
+                                    {gName}
+                                  </h3>
+                                  <div className="flex flex-col gap-0.5">
+                                    {subItems.map((sub, sIdx) => {
+                                      const SubIcon = getSubcategoryIcon(sub.name, item.label);
+                                      return (
+                                        <Link
+                                          key={sIdx}
+                                          href={getProductUrl(sub.name, item.label)}
+                                          className="group/item px-2 py-1.5 rounded-lg text-[12px] font-bold text-[#1b1533]/80 hover:text-[#ff4fa3] hover:bg-pink-50/40 transition-all duration-150 text-left whitespace-nowrap overflow-hidden text-ellipsis flex items-center gap-1.5"
+                                          title={sub.name}
+                                        >
+                                          <SubIcon className="h-4 w-4 stroke-[2] text-slate-400 group-hover/item:text-[#ff4fa3] group-hover/item:scale-110 transition-all duration-200 shrink-0" />
+                                          <span className="truncate">{sub.name}</span>
+                                        </Link>
+                                      );
+                                    })}
+                                  </div>
                                 </div>
-                              </div>
-                            ))
-                          ) : (
-                            (item.subs || getSubcategories(item.label)).map((sub: string, sIdx: number) => {
-                              const SubIcon = getSubcategoryIcon(sub, item.label);
-                              return (
-                                <a
-                                  key={sIdx}
-                                  href={getProductUrl(sub, item.label)}
-                                  className="group/item px-2 py-1.5 rounded-lg text-[12px] font-bold text-[#1b1533]/80 hover:text-[#ff4fa3] hover:bg-pink-50/40 transition-all duration-150 text-left whitespace-nowrap overflow-hidden text-ellipsis flex items-center gap-1.5"
-                                  title={sub}
-                                >
-                                  <SubIcon className="h-4 w-4 stroke-[2] text-slate-400 group-hover/item:text-[#ff4fa3] group-hover/item:scale-110 transition-all duration-200 shrink-0" />
-                                  <span className="truncate">{sub}</span>
-                                </a>
-                              );
-                            })
-                          )}
+                              ));
+                            } else {
+                              return item.subs.map((sub: any, sIdx: number) => {
+                                const SubIcon = getSubcategoryIcon(sub.name, item.label);
+                                return (
+                                  <Link
+                                    key={sIdx}
+                                    href={getProductUrl(sub.name, item.label)}
+                                    className="group/item px-2 py-1.5 rounded-lg text-[12px] font-bold text-[#1b1533]/80 hover:text-[#ff4fa3] hover:bg-pink-50/40 transition-all duration-150 text-left whitespace-nowrap overflow-hidden text-ellipsis flex items-center gap-1.5"
+                                    title={sub.name}
+                                  >
+                                    <SubIcon className="h-4 w-4 stroke-[2] text-slate-400 group-hover/item:text-[#ff4fa3] group-hover/item:scale-110 transition-all duration-200 shrink-0" />
+                                    <span className="truncate">{sub.name}</span>
+                                  </Link>
+                                );
+                              });
+                            }
+                          })()}
                         </div>
                       ) : null}
                     </div>
@@ -498,23 +499,23 @@ export function Header() {
                 })}
                 {/* Separate Bundles Menu Link */}
                 <div className="relative group py-3">
-                  <a
+                  <Link
                     href="/bundles"
                     className="flex items-center gap-1.5 cursor-pointer transition-colors duration-200 text-[#1b1533]/85 hover:text-[#ff4fa3]"
                   >
                     <Gift className="h-4 w-4 stroke-[2.2] text-[#ff4fa3] group-hover:scale-110 transition-transform duration-200" />
                     <span>Bundles</span>
-                  </a>
+                  </Link>
                 </div>
                 {/* Separate Coupons Menu Link */}
                 <div className="relative group py-3">
-                  <a
+                  <Link
                     href="/coupons"
                     className="flex items-center gap-1.5 cursor-pointer transition-colors duration-200 text-[#1b1533]/85 hover:text-[#ff4fa3]"
                   >
                     <Ticket className="h-4 w-4 stroke-[2.2] text-[#ff4fa3] group-hover:scale-110 transition-transform duration-200" />
                     <span>Coupons</span>
-                  </a>
+                  </Link>
                 </div>
               </nav>
             </div>
@@ -588,10 +589,10 @@ export function Header() {
               {/* Navigation Categories Accordion */}
               <div className="flex flex-col gap-1">
                 <span className="text-[12px] font-black uppercase tracking-widest text-slate-400 mb-2 pl-2">Categories</span>
-                {navItems.map((item) => {
+                {navItems.map((item: any) => {
                   const categorySlug = item.slug || item.label.toLowerCase().replace(/\s+/g, '-');
                   const isExpanded = !!expandedMobileCategories[item.label];
-                  const subcategories = item.subs || getSubcategories(item.label);
+                  const subcategories = item.subs || [];
 
                   return (
                     <div key={item.label} className="flex flex-col">
@@ -606,61 +607,68 @@ export function Header() {
                         <ChevronDown className={`h-4 w-4 text-slate-400 transition-transform duration-200 ${isExpanded ? 'rotate-180 text-[#ff4fa3]' : ''}`} />
                       </button>
                       {isExpanded && (
-                        <div className="pl-4 pr-2 flex flex-col gap-2 mt-1 border-l-2 border-pink-100/40 ml-5 text-left">
-                          {(item.label === 'Edibles' || item.label === 'Capsules') ? (
-                            menuGroups[item.label]?.map((group, gIdx) => (
-                              <div key={gIdx} className="flex flex-col gap-0.5 mt-2 first:mt-0">
-                                <span className="px-3 text-[10px] font-black uppercase tracking-wider text-[#ff4fa3] block">
-                                  {group.groupName}
-                                </span>
-                                {group.items.map((sub, sIdx) => {
-                                  const SubIcon = getSubcategoryIcon(sub, item.label);
-                                  const subcategorySlug = getProductUrl(sub, item.label);
+                        <div className="pl-4 pr-2 flex flex-col gap-2 mt-1 border-l-2 border-pink-100/40 ml-5 text-left">                          {(() => {
+                          const hasGroupNames = item.subs.some((sub: any) => sub.groupName);
+                          if (hasGroupNames) {
+                            const grouped: Record<string, any[]> = {};
+                            item.subs.forEach((sub: any) => {
+                              const gName = sub.groupName || 'Other';
+                              if (!grouped[gName]) grouped[gName] = [];
+                              grouped[gName].push(sub);
+                            });
+
+                            return Object.entries(grouped).map(([gName, subItems], gIdx) => (
+                              <div key={gIdx} className="flex flex-col gap-1.5">
+                                <h4 className="px-3 py-1 text-[10px] font-black uppercase tracking-wider text-[#ff4fa3]/80 bg-pink-50/50 rounded-lg">
+                                  {gName}
+                                </h4>
+                                {subItems.map((sub, sIdx) => {
+                                  const SubIcon = getSubcategoryIcon(sub.name, item.label);
                                   return (
-                                    <a
+                                    <Link
                                       key={sIdx}
-                                      href={subcategorySlug}
+                                      href={getProductUrl(sub.name, item.label)}
                                       onClick={() => setIsMobileMenuOpen(false)}
-                                      className="flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-semibold text-[#1b1533]/80 hover:text-[#ff4fa3] hover:bg-pink-50/20 transition-all"
+                                      className="group/item flex items-center gap-2.5 px-3 py-2 rounded-xl text-[#1b1533]/80 hover:text-[#ff4fa3] hover:bg-pink-50/40 transition-all active:scale-[0.98]"
                                     >
-                                      <SubIcon className="h-3.5 w-3.5 stroke-[2] text-slate-400" />
-                                      <span>{sub}</span>
-                                    </a>
+                                      <SubIcon className="h-4 w-4 stroke-[2.2] text-slate-400 group-hover/item:text-[#ff4fa3] transition-colors shrink-0" />
+                                      <span className="text-[13px] font-bold truncate">{sub.name}</span>
+                                    </Link>
                                   );
                                 })}
                               </div>
-                            ))
-                          ) : (
-                            subcategories.map((sub: string, sIdx: number) => {
-                              const SubIcon = getSubcategoryIcon(sub, item.label);
-                              const subcategorySlug = getProductUrl(sub, item.label);
+                            ));
+                          } else {
+                            return item.subs.map((sub: any, sIdx: number) => {
+                              const SubIcon = getSubcategoryIcon(sub.name, item.label);
                               return (
-                                <a
+                                <Link
                                   key={sIdx}
-                                  href={subcategorySlug}
+                                  href={getProductUrl(sub.name, item.label)}
                                   onClick={() => setIsMobileMenuOpen(false)}
-                                  className="flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-semibold text-[#1b1533]/80 hover:text-[#ff4fa3] hover:bg-pink-50/20 transition-all"
+                                  className="group/item flex items-center gap-2.5 px-3 py-2 rounded-xl text-[#1b1533]/80 hover:text-[#ff4fa3] hover:bg-pink-50/40 transition-all active:scale-[0.98]"
                                 >
-                                  <SubIcon className="h-3.5 w-3.5 stroke-[2] text-slate-400" />
-                                  <span>{sub}</span>
-                                </a>
+                                  <SubIcon className="h-4 w-4 stroke-[2.2] text-slate-400 group-hover/item:text-[#ff4fa3] transition-colors shrink-0" />
+                                  <span className="text-[13px] font-bold truncate">{sub.name}</span>
+                                </Link>
                               );
-                            })
-                          )}
+                            });
+                          }
+                        })()}
                         </div>
                       )}
                     </div>
                   );
                 })}
                 {/* Separate Bundles link */}
-                <a
+                <Link
                   href="/bundles"
                   onClick={() => setIsMobileMenuOpen(false)}
                   className="flex items-center gap-2 px-3 py-2.5 rounded-xl text-[13px] font-bold text-[#1b1533] hover:bg-pink-50/40 hover:text-[#ff4fa3] transition-all text-left"
                 >
                   <Gift className="h-4.5 w-4.5 stroke-[2] text-[#ff4fa3]" />
                   <span>Bundles</span>
-                </a>
+                </Link>
               </div>
 
               {/* General Links */}
@@ -750,10 +758,10 @@ export function Header() {
             {/* Scrollable Categories List */}
             <div className="flex-1 overflow-y-auto p-5 space-y-4 scrollbar-none pb-24">
               <div className="grid grid-cols-2 gap-3.5">
-                {navItems.map((item, idx) => {
+                {navItems.map((item: any, idx: any) => {
                   const categorySlug = item.slug || item.label.toLowerCase().replace(/\s+/g, '-');
                   const linkUrl = `/category/${categorySlug}`;
-                  const subcategories = item.subs || getSubcategories(item.label);
+                  const subcategories = item.subs || [];
 
                   // Specific styles for cards
                   let bgGradient = "from-[#f3efff] to-white border-purple-100";
@@ -778,23 +786,23 @@ export function Header() {
                         <div className={`p-2 rounded-xl ${iconBg} shadow-sm shrink-0`}>
                           <item.icon className="h-5 w-5 stroke-[2.2]" />
                         </div>
-                        <a
+                        <Link
                           href={linkUrl}
                           onClick={() => setIsMobileCategoryOpen(false)}
                           className="text-[12px] font-black uppercase tracking-wider text-[#ff4fa3] bg-pink-50/50 hover:bg-[#ff4fa3] hover:text-white px-2 py-1 rounded-lg transition-all border border-pink-100/50 logo-font shrink-0"
                         >
                           View
-                        </a>
+                        </Link>
                       </div>
 
                       <div className="mt-4 text-left">
-                        <a
+                        <Link
                           href={linkUrl}
                           onClick={() => setIsMobileCategoryOpen(false)}
                           className="text-[13px] font-black text-[#1b1533] hover:text-[#ff4fa3] transition-colors leading-none tracking-tight block logo-font"
                         >
                           {item.label}
-                        </a>
+                        </Link>
 
                         {/* Subcategory short links (show top 3) */}
                         {subcategories.length > 0 && (
@@ -802,7 +810,7 @@ export function Header() {
                             {subcategories.slice(0, 3).map((sub: string, sIdx: number) => {
                               const productUrl = getProductUrl(sub, item.label);
                               return (
-                                <a
+                                <Link
                                   key={sIdx}
                                   href={productUrl}
                                   onClick={() => setIsMobileCategoryOpen(false)}
@@ -810,7 +818,7 @@ export function Header() {
                                   title={sub}
                                 >
                                   {sub.split(' ')[0]}
-                                </a>
+                                </Link>
                               );
                             })}
                           </div>
@@ -832,13 +840,13 @@ export function Header() {
                     <p className="text-[12px] font-semibold text-slate-400">Discover Canada's best dispensary deals</p>
                   </div>
                 </div>
-                <a
+                <Link
                   href="/shop"
                   onClick={() => setIsMobileCategoryOpen(false)}
                   className="bg-[#ff4fa3] text-white hover:bg-black text-[12px] font-black uppercase tracking-wider px-3.5 py-2 rounded-xl transition-all shadow-md shadow-pink-100 logo-font shrink-0"
                 >
                   Shop Now
-                </a>
+                </Link>
               </div>
             </div>
           </div>
@@ -896,7 +904,7 @@ export function Header() {
       <InfoPopup
         isOpen={isInfoOpen}
         onClose={() => setIsInfoOpen(false)}
-        announcementText={selectedAnnouncement}
+        announcement={selectedAnnouncement}
       />
     </>
   );

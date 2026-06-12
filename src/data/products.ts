@@ -176,8 +176,9 @@ const customSlugs: Record<string, string> = {
 };
 
 export function getProductSlug(title: string): string {
+  if (!title) return '';
   if (customSlugs[title]) return customSlugs[title];
-  return title.toLowerCase()
+  return String(title).toLowerCase()
     .replace(/\s+/g, '-')
     .replace(/[^a-z0-9-]/g, '');
 }

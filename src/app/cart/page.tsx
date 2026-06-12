@@ -1,5 +1,7 @@
 'use client';
 import Link from 'next/link';
+import useSWR from 'swr';
+import { fetcher } from '@/lib/fetcher';
 
 import React, { useState } from 'react';
 import { Header } from '@/components/Header';
@@ -7,14 +9,14 @@ import { Footer } from '@/components/Footer';
 import { ProductCard } from '@/components/ProductCard';
 import { products, getProductUrl } from '@/data/products';
 import { useCart } from '@/context/CartContext';
-import { 
-  ShoppingBag, 
-  Trash2, 
-  Plus, 
-  Minus, 
-  ChevronRight, 
-  ShieldCheck, 
-  ArrowRight, 
+import {
+  ShoppingBag,
+  Trash2,
+  Plus,
+  Minus,
+  ChevronRight,
+  ShieldCheck,
+  ArrowRight,
   Lock,
   RotateCcw,
   Tag,
@@ -23,11 +25,11 @@ import {
 } from 'lucide-react';
 
 export default function CartPage() {
-  const { 
-    cartItems, 
-    removeFromCart, 
-    updateQuantity, 
-    clearCart, 
+  const {
+    cartItems,
+    removeFromCart,
+    updateQuantity,
+    clearCart,
     subtotal,
     appliedCoupon,
     applyCoupon,
@@ -38,33 +40,8 @@ export default function CartPage() {
   const [couponError, setCouponError] = useState('');
   const [couponSuccess, setCouponSuccess] = useState('');
 
-  const [dbProducts, setDbProducts] = useState<any[]>([]);
-
-  React.useEffect(() => {
-    async function fetchProducts() {
-      const cachedGlobalString = sessionStorage.getItem('globalRelatedProducts');
-      const cachedGlobalProducts = cachedGlobalString ? JSON.parse(cachedGlobalString) : [];
-
-      if (cachedGlobalProducts && cachedGlobalProducts.length > 0) {
-        setDbProducts(cachedGlobalProducts);
-        return;
-      }
-
-      try {
-        const res = await fetch('/api/products');
-        const data = await res.json();
-        if (data.success) {
-          setDbProducts(data.products);
-          if (typeof window !== 'undefined') {
-            sessionStorage.setItem('globalRelatedProducts', JSON.stringify(data.products));
-          }
-        }
-      } catch (err) {
-        console.error('Failed to fetch global products', err);
-      }
-    }
-    fetchProducts();
-  }, []);
+  const { data: prodData } = useSWR('/api/products', fetcher);
+  const dbProducts = prodData?.success ? prodData.products : [];
 
   const baseProducts = dbProducts;
 
@@ -112,7 +89,7 @@ export default function CartPage() {
             <ChevronRight className="h-3 w-3" />
             <span className="text-slate-600">Shopping Cart</span>
           </div>
-          
+
           <div className="flex items-center gap-3 sm:gap-4 md:gap-5 text-[12px] font-black uppercase tracking-widest logo-font">
             <span className="text-[#ff4fa3] flex items-center gap-1.5 border-b-2 border-[#ff4fa3] pb-1">
               <span className="grid h-5 w-5 place-items-center rounded-full bg-[#ff4fa3] text-white text-[10px]">1</span>
@@ -140,13 +117,13 @@ export default function CartPage() {
         {cartItems.length > 0 ? (
           /* Simple Two-Column Layout */
           <div className="grid gap-8 lg:grid-cols-3 items-start">
-            
+
             {/* Left Column: Product List (2/3 width) */}
             <div className="lg:col-span-2 space-y-6">
-              
+
               {/* Product List Table Card */}
               <div className="bg-white border border-slate-100 rounded-[32px] overflow-hidden shadow-sm">
-                
+
                 {/* Desktop Headers */}
                 <div className="hidden md:grid grid-cols-12 gap-4 border-b border-slate-100 px-8 py-5 text-[12px] font-black uppercase tracking-widest text-slate-400 select-none">
                   <div className="col-span-6">Product</div>
@@ -161,13 +138,13 @@ export default function CartPage() {
                     const weightMatch = item.title.match(/\(([^)]+)\)/);
                     const weightTag = weightMatch ? weightMatch[1] : null;
                     const cleanTitle = weightTag ? item.title.replace(/\s*\([^)]+\)/, '') : item.title;
-                    
+
                     const priceNum = parseFloat(item.price.replace('$', ''));
                     const itemSubtotal = priceNum * item.quantity;
 
                     return (
-                      <div 
-                        key={item.id} 
+                      <div
+                        key={item.id}
                         className="flex flex-col md:grid md:grid-cols-12 items-start md:items-center gap-4 px-4 md:px-8 py-6 border-b last:border-b-0 md:border-b-0 group/row"
                       >
                         {/* Image & Details - Desktop / Mobile Wrapper */}
@@ -296,8 +273,8 @@ export default function CartPage() {
                     <CheckCircle className="h-4.5 w-4.5 shrink-0 text-emerald-600" />
                     <span>Coupon <strong>{appliedCoupon.code}</strong> applied! {appliedCoupon.label}</span>
                   </div>
-                  <button 
-                    onClick={handleRemoveCoupon} 
+                  <button
+                    onClick={handleRemoveCoupon}
                     className="text-[12px] font-black uppercase tracking-wider text-emerald-800 hover:underline cursor-pointer ml-4"
                   >
                     Remove
@@ -308,7 +285,7 @@ export default function CartPage() {
 
             {/* Right Column: Cart Totals (1/3 width) */}
             <div className="lg:col-span-1">
-              
+
               {/* Structured Totals Card */}
               <div className="bg-white border border-slate-100 rounded-[32px] p-6 md:p-8 shadow-sm space-y-6">
                 <h3 className="text-xs font-black uppercase tracking-widest text-[#1b1533] logo-font border-b border-slate-100 pb-4 select-none">
@@ -401,7 +378,7 @@ export default function CartPage() {
               </div>
 
               <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-                {baseProducts.slice(0, 4).map((p, i) => (
+                {baseProducts.slice(0, 4).map((p: any, i: any) => (
                   <ProductCard key={p._id || p[0]} p={p} i={i} />
                 ))}
               </div>

@@ -212,8 +212,8 @@ export default function TrackOrderPage() {
                   <div key={idx} className="relative">
                     {/* Ring dot icon container */}
                     <div className={`absolute -left-[45px] top-0 h-8 w-8 rounded-full border flex items-center justify-center shadow-sm transition-colors ${isPending
-                        ? 'bg-white border-slate-200 text-slate-400'
-                        : 'bg-[#ff4fa3] border-[#ff4fa3] text-white'
+                      ? 'bg-white border-slate-200 text-slate-400'
+                      : 'bg-[#ff4fa3] border-[#ff4fa3] text-white'
                       }`}>
                       <StepIcon className="h-4 w-4 stroke-[2.2]" />
                     </div>
@@ -224,9 +224,8 @@ export default function TrackOrderPage() {
                           }`}>
                           {step.title}
                         </h4>
-                        <span className={`text-[12px] font-bold ${
-                          isPending ? 'text-slate-400' : 'text-[#ff4fa3]'
-                        }`}>
+                        <span className={`text-[12px] font-bold ${isPending ? 'text-slate-400' : 'text-[#ff4fa3]'
+                          }`}>
                           {step.time}
                         </span>
                       </div>
@@ -308,12 +307,12 @@ export default function TrackOrderPage() {
                   <h3 className="text-sm font-black text-[#1b1533] uppercase logo-font leading-tight">{link.name}</h3>
                   <p className="text-[12px] font-semibold text-slate-400 leading-relaxed line-clamp-3">{link.desc}</p>
                 </div>
-                <a
+                <Link
                   href={link.url}
                   className="w-full inline-flex items-center justify-center rounded-2xl bg-slate-50 text-slate-800 border border-slate-200/80 py-3 text-xs font-black uppercase tracking-wider group-hover:bg-[#ff4fa3] group-hover:text-white group-hover:border-[#ff4fa3] transition-all duration-200 cursor-pointer gap-1.5 logo-font"
                 >
                   Explore Support <ArrowRight className="h-3.5 w-3.5 stroke-[2.5]" />
-                </a>
+                </Link>
               </div>
             ))}
           </div>

@@ -4,6 +4,8 @@ import Product from '@/backend/models/Product';
 import Category from '@/backend/models/Category';
 import { EProductStatus } from '@/backend/models/interfaces/IProduct';
 
+export const dynamic = 'force-dynamic';
+
 export async function GET() {
   try {
     await connectDB();

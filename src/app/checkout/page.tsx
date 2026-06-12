@@ -454,18 +454,18 @@ export default function CheckoutPage() {
 
             {/* Back Home Action */}
             <div className="flex flex-col sm:flex-row gap-3 w-full mt-4">
-              <a
+              <Link
                 href="/"
                 className="flex-1 inline-flex items-center justify-center rounded-2xl bg-[#ff4fa3] text-white border border-[#ff4fa3] px-10 py-4 text-xs font-black uppercase tracking-wider shadow-md shadow-pink-100 transition-all duration-300 hover:bg-black hover:text-[#ff4fa3] hover:border-black hover:-translate-y-0.5 active:translate-y-0 cursor-pointer gap-2 logo-font"
               >
                 Continue Shopping <ArrowRight className="h-4 w-4 stroke-[2.5]" />
-              </a>
-              <a
+              </Link>
+              <Link
                 href="/my-account"
                 className="flex-1 inline-flex items-center justify-center rounded-2xl bg-white text-[#1b1533] border border-slate-200 px-10 py-4 text-xs font-black uppercase tracking-wider transition-all duration-300 hover:border-[#ff4fa3] hover:text-[#ff4fa3] hover:-translate-y-0.5 cursor-pointer gap-2 logo-font"
               >
                 <User className="h-4 w-4" /> My Account
-              </a>
+              </Link>
             </div>
 
           </div>

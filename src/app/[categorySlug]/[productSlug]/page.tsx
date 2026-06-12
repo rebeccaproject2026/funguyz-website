@@ -1,5 +1,7 @@
 'use client';
 import Link from 'next/link';
+import useSWR from 'swr';
+import { fetcher } from '@/lib/fetcher';
 
 import React, { useState } from 'react';
 import { Header } from '@/components/Header';
@@ -63,108 +65,39 @@ export default function CategoryProductPage({ params }: { params: Promise<{ cate
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const [newReviewRating, setNewReviewRating] = useState<number>(5);
   const [newReviewText, setNewReviewText] = useState<string>('');
-
-  const [dbProduct, setDbProduct] = useState<any>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [reviewsList, setReviewsList] = useState<any[]>([]);
-  const [relatedProducts, setRelatedProducts] = useState<any[]>([]);
+  const [addedReviews, setAddedReviews] = useState<any[]>([]);
   const [selectedGalleryImage, setSelectedGalleryImage] = useState<string | null>(null);
   const [prevSlug, setPrevSlug] = useState(productSlug);
 
+  const { data: prodData, isLoading: isLoadingProduct } = useSWR(`/api/products/${productSlug}`, fetcher);
+  const { data: globalProdData } = useSWR('/api/products', fetcher);
+
+  const dbProduct = prodData?.success ? prodData.product : null;
+  const isLoading = isLoadingProduct;
+
+  let baseReviews = [];
+  if (dbProduct?.reviewsList && dbProduct.reviewsList.length > 0) {
+    baseReviews = dbProduct.reviewsList.map((r: any) => [r.name, r.text, r.rating]);
+  } else {
+    baseReviews = [
+      ['Sarah M.', 'Outstanding customer service and extremely discreet packaging. The Golden Teacher provided an incredibly smooth, visual, and introspective mindset journey. Delivered in 2 days to Vancouver!', 5],
+      ['David K.', 'Excellent gummies! The watermelon flavor is completely organic and has zero heavy body load. Ideal microdosing stack for creative coding and design focus!', 5]
+    ];
+  }
+  const reviewsList = [...baseReviews, ...addedReviews];
+
+  let relatedProducts: any[] = [];
+  if (globalProdData?.success && globalProdData.products && dbProduct) {
+    const sameCat = globalProdData.products.filter((p: any) => p.category?.name === dbProduct.category?.name && p.slug !== productSlug);
+    relatedProducts = sameCat.length >= 4 ? sameCat.slice(0, 4) : globalProdData.products.filter((p: any) => p.slug !== productSlug).slice(0, 4);
+  }
+
   React.useEffect(() => {
-    async function fetchProduct() {
-      // 1. Check if we already loaded it from sessionStorage
-      const cachedString = sessionStorage.getItem(`product_${productSlug}`);
-      const cachedData = cachedString ? JSON.parse(cachedString) : null;
-
-      if (cachedData) {
-        setDbProduct(cachedData.product);
-        setReviewsList(cachedData.reviewsList);
-        setRelatedProducts(cachedData.relatedProducts);
-        setIsLoading(false);
-        return;
-      }
-
-      setIsLoading(true);
-      try {
-        const res = await fetch(`/api/products/${productSlug}`);
-        const data = await res.json();
-        if (data.success && data.product) {
-          setDbProduct(data.product);
-
-          let currentReviews = [];
-          if (data.product.reviewsList && data.product.reviewsList.length > 0) {
-            currentReviews = data.product.reviewsList.map((r: any) => [r.name, r.text, r.rating]);
-            setReviewsList(currentReviews);
-          } else {
-            // Default static reviews if none in DB
-            currentReviews = [
-              ['Sarah M.', 'Outstanding customer service and extremely discreet packaging. The Golden Teacher provided an incredibly smooth, visual, and introspective mindset journey. Delivered in 2 days to Vancouver!', 5],
-              ['David K.', 'Excellent gummies! The watermelon flavor is completely organic and has zero heavy body load. Ideal microdosing stack for creative coding and design focus!', 5]
-            ];
-            setReviewsList(currentReviews);
-          }
-
-          let currentRelated: any[] = [];
-          
-          // Show the product immediately! Do not wait for related products.
-          setIsLoading(false);
-
-          let globalRelatedProductsCache: any[] | null = null;
-          if (typeof window !== 'undefined') {
-            const relStr = sessionStorage.getItem('globalRelatedProducts');
-            if (relStr) globalRelatedProductsCache = JSON.parse(relStr);
-          }
-
-          // Fetch related products dynamically in the background without blocking
-          if (globalRelatedProductsCache) {
-            const sameCat = (globalRelatedProductsCache || []).filter((p: any) => p.category?.name === data.product.category?.name && p.slug !== productSlug);
-            currentRelated = sameCat.length >= 4 ? sameCat.slice(0, 4) : (globalRelatedProductsCache || []).filter((p: any) => p.slug !== productSlug).slice(0, 4);
-            setRelatedProducts(currentRelated);
-            
-            // Save all results to cache instantly since we have everything
-            if (typeof window !== 'undefined') {
-              sessionStorage.setItem(`product_${productSlug}`, JSON.stringify({
-                product: data.product,
-                reviewsList: currentReviews,
-                relatedProducts: currentRelated
-              }));
-            }
-          } else {
-            // Fetch silently in the background
-            fetch('/api/products').then(res => res.json()).then(relatedData => {
-              if (relatedData.success && relatedData.products) {
-                globalRelatedProductsCache = relatedData.products;
-                
-                if (typeof window !== 'undefined') {
-                  sessionStorage.setItem('globalRelatedProducts', JSON.stringify(relatedData.products));
-                }
-
-                const sameCat = (globalRelatedProductsCache || []).filter((p: any) => p.category?.name === data.product.category?.name && p.slug !== productSlug);
-                currentRelated = sameCat.length >= 4 ? sameCat.slice(0, 4) : (globalRelatedProductsCache || []).filter((p: any) => p.slug !== productSlug).slice(0, 4);
-                setRelatedProducts(currentRelated);
-                
-                // Save to cache after the background fetch finishes
-                if (typeof window !== 'undefined') {
-                  sessionStorage.setItem(`product_${productSlug}`, JSON.stringify({
-                    product: data.product,
-                    reviewsList: currentReviews,
-                    relatedProducts: currentRelated
-                  }));
-                }
-              }
-            }).catch(err => console.error('Failed to fetch related products:', err));
-          }
-        } else {
-          setIsLoading(false);
-        }
-      } catch (err) {
-        console.error('Failed to fetch dynamic product:', err);
-        setIsLoading(false);
-      }
+    if (productSlug !== prevSlug) {
+      setPrevSlug(productSlug);
+      setSelectedGalleryImage(null);
     }
-    fetchProduct();
-  }, [productSlug]);
+  }, [productSlug, prevSlug]);
 
   if (isLoading) {
     return (
@@ -226,11 +159,6 @@ export default function CategoryProductPage({ params }: { params: Promise<{ cate
   ];
 
   const activeImage = selectedGalleryImage || mainImg;
-
-  if (productSlug !== prevSlug) {
-    setPrevSlug(productSlug);
-    setSelectedGalleryImage(null);
-  }
 
   const handlePrevImage = () => {
     const currentIndex = galleryImages.indexOf(activeImage);
@@ -722,7 +650,7 @@ export default function CategoryProductPage({ params }: { params: Promise<{ cate
                   <button
                     onClick={() => {
                       if (!newReviewText.trim()) return;
-                      setReviewsList([...reviewsList, ['Valued Customer', newReviewText.trim(), newReviewRating]]);
+                      setAddedReviews([...addedReviews, ['Valued Customer', newReviewText.trim(), newReviewRating]]);
                       setNewReviewText('');
                     }}
                     className="inline-flex items-center justify-center rounded-2xl bg-[#ff4fa3] text-white border border-[#ff4fa3] px-6 py-2.5 text-[12px] font-black uppercase tracking-wider shadow-md shadow-pink-100 hover:bg-black hover:text-[#ff4fa3] hover:border-black hover:-translate-y-0.5 active:translate-y-0 cursor-pointer logo-font"

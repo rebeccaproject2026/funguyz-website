@@ -17,15 +17,18 @@ const badgeColors: Record<string, string> = {
 
 export function ProductCard({ p, i = 0 }: { p: any; i?: number }) {
   // Extract dynamic details (handles both legacy array and DB API object)
-  const title = Array.isArray(p) ? p[0] : p.name;
-  const category = Array.isArray(p) ? p[1] : (p.category?.name || 'Magic Mushrooms');
+  const isArray = Array.isArray(p);
+  const title = (isArray ? p[0] : p.name) || '';
+  const category = isArray ? p[1] : (p.category?.name || 'Magic Mushrooms');
   
-  const priceNum = Array.isArray(p) ? parseFloat(p[2].replace('$', '')) : (p.price || (Array.isArray(p.pricing) && p.pricing.length > 0 ? p.pricing[0].price : 0));
+  const priceNum = isArray 
+    ? parseFloat(p[2].replace('$', '')) 
+    : (p.price || (Array.isArray(p.pricing) && p.pricing.length > 0 ? p.pricing[0].price : 0));
   const price = `$${priceNum.toFixed(2)}`;
   
-  const badge = Array.isArray(p) ? (p[3] || '') : (p.tags?.[0] || '');
-  const id = Array.isArray(p) ? title : (p._id || title);
-  const slug = Array.isArray(p) ? '' : p.slug;
+  const badge = isArray ? p[4] : (p.tags?.[0] || '');
+  const id = isArray ? p[0] : (p._id || title);
+  const slug = isArray ? '' : p.slug;
 
   // DO NOT TOUCH IMAGES CODE - Strictly mapped from static `imageMap`
   const imageSrc = imageMap[title] || getFallbackImage(category);
@@ -40,7 +43,7 @@ export function ProductCard({ p, i = 0 }: { p: any; i?: number }) {
     'Golden Teacher Capsules': 82,
     'Microdose Daily Blend': 34,
   };
-  const reviews = reviewCounts[title] || (120 - i * 12);
+  const reviews = isArray ? (p[6] || 48) : (p.reviewStats?.count || 48);
 
   // Dynamically calculate natural-looking previous prices ending in .99
   const originalPrice = '$' + (Math.round(priceNum * 1.25) - 0.01).toFixed(2);

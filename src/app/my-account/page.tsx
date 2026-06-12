@@ -641,10 +641,10 @@ export default function MyAccountPage() {
                       </div>
                       <div className="border-t border-slate-50 pt-4 flex items-center justify-between">
                         <span className="text-[12px] font-bold uppercase tracking-wider text-slate-400">Expires: {expires}</span>
-                        <a href="#" onClick={e => { e.preventDefault(); alert(`Simulated download of ${file}`); }}
+                        <Link href="#" onClick={e => { e.preventDefault(); alert(`Simulated download of ${file}`); }}
                           className="inline-flex items-center gap-1.5 rounded-xl bg-[#ff4fa3] text-white px-4 py-2 text-[12px] font-black uppercase tracking-wider hover:bg-black transition-all cursor-pointer shadow-sm shadow-pink-100">
                           <Download className="h-3 w-3" /> Download
-                        </a>
+                        </Link>
                       </div>
                     </div>
                   ))}

@@ -3,15 +3,16 @@
 import React, { useState } from 'react';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
-import { 
-  Mail, 
-  MapPin, 
-  Clock, 
-  Sparkles, 
-  Send, 
-  CheckCircle2, 
+import {
+  Mail,
+  MapPin,
+  Clock,
+  Sparkles,
+  Send,
+  CheckCircle2,
   ShieldCheck
 } from 'lucide-react';
+import Link from 'next/link';
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
@@ -41,7 +42,7 @@ export default function ContactPage() {
       <section className="bg-gradient-to-tr from-[#fffdfb] via-[#fffbf9] to-[#fff5f0] border-b border-purple-100/50 py-16 px-4 md:px-8 text-center relative overflow-hidden">
         <div className="absolute left-[5%] top-[10%] w-[300px] h-[300px] rounded-full bg-[#ffe8db]/30 blur-[80px] pointer-events-none" />
         <div className="absolute right-[5%] bottom-[5%] w-[300px] h-[300px] rounded-full bg-[#e0f2fe]/40 blur-[80px] pointer-events-none" />
-        
+
         <div className="mx-auto max-w-3xl relative z-10 flex flex-col items-center gap-3">
           <div className="inline-flex items-center gap-1.5 rounded-full bg-[#ff4fa3]/5 px-3.5 py-1.5 text-[10px] font-bold uppercase tracking-widest text-[#ff4fa3]">
             <Sparkles className="h-3 w-3" /> Customer Support Center
@@ -57,7 +58,7 @@ export default function ContactPage() {
 
       {/* Main Grid Layout */}
       <section className="mx-auto max-w-7xl px-4 py-12 md:px-8">
-        
+
         {submitted && (
           <div className="mb-8 flex items-center gap-3 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 p-4 text-emerald-700 text-xs font-bold uppercase tracking-wider logo-font">
             <CheckCircle2 className="h-5 w-5 text-emerald-500 shrink-0" />
@@ -66,7 +67,7 @@ export default function ContactPage() {
         )}
 
         <div className="grid gap-12 lg:grid-cols-2 items-start">
-          
+
           {/* Left Column: Intake Contact Form */}
           <div className="bg-white border border-slate-100 rounded-[32px] p-6 md:p-8 shadow-sm">
             <h2 className="text-xl font-black text-[#1b1533] uppercase logo-font mb-2">Send Us A Message</h2>
@@ -76,8 +77,8 @@ export default function ContactPage() {
               <div className="grid gap-5 sm:grid-cols-2">
                 <label className="block text-[12px] font-black uppercase tracking-wider text-slate-400">
                   Your Name
-                  <input 
-                    type="text" 
+                  <input
+                    type="text"
                     required
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
@@ -87,8 +88,8 @@ export default function ContactPage() {
                 </label>
                 <label className="block text-[12px] font-black uppercase tracking-wider text-slate-400">
                   Email Address
-                  <input 
-                    type="email" 
+                  <input
+                    type="email"
                     required
                     value={formData.email}
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
@@ -101,8 +102,8 @@ export default function ContactPage() {
               <div className="grid gap-5 sm:grid-cols-2">
                 <label className="block text-[12px] font-black uppercase tracking-wider text-slate-400">
                   Phone Number
-                  <input 
-                    type="tel" 
+                  <input
+                    type="tel"
                     value={formData.phone}
                     onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                     placeholder="e.g. +1 (416) 555-0199"
@@ -111,7 +112,7 @@ export default function ContactPage() {
                 </label>
                 <label className="block text-[12px] font-black uppercase tracking-wider text-slate-400">
                   Support Category
-                  <select 
+                  <select
                     value={formData.category}
                     onChange={(e) => setFormData({ ...formData, category: e.target.value })}
                     className="mt-1.5 w-full rounded-xl border border-slate-200 px-3.5 py-2.5 text-xs font-semibold outline-none focus:border-[#ff4fa3] focus:ring-4 focus:ring-pink-50/50 bg-white"
@@ -127,8 +128,8 @@ export default function ContactPage() {
 
               <label className="block text-[12px] font-black uppercase tracking-wider text-slate-400">
                 Subject
-                <input 
-                  type="text" 
+                <input
+                  type="text"
                   value={formData.subject}
                   onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
                   placeholder="How can we assist you?"
@@ -138,7 +139,7 @@ export default function ContactPage() {
 
               <label className="block text-[12px] font-black uppercase tracking-wider text-slate-400">
                 Detailed Message
-                <textarea 
+                <textarea
                   required
                   rows={5}
                   value={formData.message}
@@ -159,11 +160,11 @@ export default function ContactPage() {
 
           {/* Right Column: Contact info cards */}
           <div className="space-y-6">
-            
+
             {/* Quick contact Details card */}
             <div className="bg-white border border-slate-100 rounded-[32px] p-6 md:p-8 shadow-sm space-y-6">
               <h2 className="text-xl font-black text-[#1b1533] uppercase logo-font">Get In Touch</h2>
-              
+
               <div className="space-y-5">
                 {/* Tracking Orders */}
                 <div className="flex items-start gap-4">
@@ -172,7 +173,7 @@ export default function ContactPage() {
                   </div>
                   <div>
                     <span className="block text-[12px] font-black text-slate-400 uppercase tracking-widest">Email Support</span>
-                    <a href="mailto:hello@funguyz.ca" className="text-sm font-black text-[#1b1533] hover:text-[#ff4fa3] logo-font mt-0.5 block">hello@funguyz.ca</a>
+                    <Link href="mailto:hello@funguyz.ca" className="text-sm font-black text-[#1b1533] hover:text-[#ff4fa3] logo-font mt-0.5 block">hello@funguyz.ca</Link>
                   </div>
                 </div>
 

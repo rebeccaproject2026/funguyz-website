@@ -3,6 +3,8 @@ import connectDB from '@/backend/config/db';
 import Category from '@/backend/models/Category';
 import Subcategory from '@/backend/models/Subcategory';
 
+export const dynamic = 'force-dynamic';
+
 export async function GET() {
   try {
     await connectDB();
@@ -14,7 +16,10 @@ export async function GET() {
     const populatedCategories = categories.map((cat: any) => {
       const subs = subcategories
         .filter((sub: any) => sub.category.toString() === cat._id.toString())
-        .map((sub: any) => sub.name);
+        .map((sub: any) => ({
+          name: sub.name,
+          groupName: sub.groupName || null
+        }));
 
       return {
         ...cat,

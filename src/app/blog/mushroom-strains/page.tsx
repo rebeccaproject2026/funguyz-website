@@ -6,13 +6,13 @@ import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { Newsletter } from '@/components/Newsletter';
 import { useCart } from '@/context/CartContext';
-import { 
-  Sparkles, 
-  Search, 
-  HelpCircle, 
-  ChevronDown, 
-  ChevronUp, 
-  ShieldCheck, 
+import {
+  Sparkles,
+  Search,
+  HelpCircle,
+  ChevronDown,
+  ChevronUp,
+  ShieldCheck,
   Award,
   Zap,
   Leaf,
@@ -102,10 +102,10 @@ export default function MushroomStrainsPage() {
 
   // Filter Strains based on potency and search
   const filteredStrains = STRAINS_DATA.filter(strain => {
-    const matchesSearch = searchQuery.trim() === '' || 
-      strain.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
+    const matchesSearch = searchQuery.trim() === '' ||
+      strain.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       strain.desc.toLowerCase().includes(searchQuery.toLowerCase());
-    
+
     const matchesPotency = activePotency === 'all' || strain.potency === activePotency;
     return matchesSearch && matchesPotency;
   });
@@ -118,12 +118,12 @@ export default function MushroomStrainsPage() {
       <section className="relative overflow-hidden bg-gradient-to-tr from-[#fffbf8] via-[#fffcfb] to-[#fff3ec] border-b border-purple-100/50 py-16 px-4 md:px-8 min-h-[350px] flex items-center">
         <div className="absolute left-[5%] top-[10%] w-[300px] h-[300px] rounded-full bg-[#ffe8db]/30 blur-[90px] pointer-events-none" />
         <div className="absolute right-[5%] bottom-[5%] w-[300px] h-[300px] rounded-full bg-[#e0f2fe]/40 blur-[90px] pointer-events-none" />
-        
+
         <div className="mx-auto max-w-7xl relative z-10 grid gap-10 md:grid-cols-[1.3fr_1fr] items-center w-full">
-          
+
           {/* Left Hero Block */}
           <div className="flex flex-col items-start text-left gap-4">
-            
+
             {/* Breadcrumb */}
             <div className="flex items-center gap-1.5 text-[12px] font-black uppercase tracking-widest text-slate-400 logo-font leading-none">
               <Link href="/" className="hover:text-[#ff4fa3] transition-colors">Home</Link>
@@ -147,7 +147,7 @@ export default function MushroomStrainsPage() {
               Browse genetic origin records, active alkaloid ratings, and physiological effects across our premium organic dried magic mushroom flushes.
             </p>
 
-            <button 
+            <button
               onClick={() => document.getElementById('strains-directory-section')?.scrollIntoView({ behavior: 'smooth' })}
               className="text-xs font-black uppercase tracking-wider text-[#ff4fa3] hover:text-black transition-colors duration-200 logo-font border-b-2 border-transparent hover:border-black pb-0.5"
             >
@@ -173,21 +173,20 @@ export default function MushroomStrainsPage() {
 
       {/* 2. Interactive Strain Catalog Section */}
       <section id="strains-directory-section" className="mx-auto max-w-7xl px-4 py-16 md:px-8">
-        
+
         {/* Search & Potency tab filters */}
         <div className="flex flex-col md:flex-row gap-4 items-center justify-between mb-10">
-          
+
           {/* Potency selectors */}
           <div className="flex gap-2 overflow-x-auto scrollbar-none flex-nowrap w-full md:w-auto pb-2 md:pb-0">
             {['all', 'mild', 'high', 'extreme'].map(p => (
               <button
                 key={p}
                 onClick={() => setActivePotency(p)}
-                className={`rounded-2xl px-5 py-2.5 text-xs font-black uppercase tracking-wider logo-font transition-all border cursor-pointer ${
-                  activePotency === p
-                    ? 'bg-[#ff4fa3] border-[#ff4fa3] text-white shadow-md shadow-pink-100'
-                    : 'bg-white border-slate-200 text-slate-700 hover:border-[#ff4fa3]'
-                }`}
+                className={`rounded-2xl px-5 py-2.5 text-xs font-black uppercase tracking-wider logo-font transition-all border cursor-pointer ${activePotency === p
+                  ? 'bg-[#ff4fa3] border-[#ff4fa3] text-white shadow-md shadow-pink-100'
+                  : 'bg-white border-slate-200 text-slate-700 hover:border-[#ff4fa3]'
+                  }`}
               >
                 {p === 'all' ? 'All Strains' : `${p} Potency`}
               </button>
@@ -197,7 +196,7 @@ export default function MushroomStrainsPage() {
           {/* Search Box */}
           <div className="w-full md:max-w-xs flex items-center gap-2.5 bg-white border border-slate-200 rounded-2xl px-4 py-2.5 focus-within:border-[#ff4fa3] transition-all shadow-sm">
             <Search className="h-4 w-4 text-slate-400 shrink-0" />
-            <input 
+            <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
@@ -213,15 +212,14 @@ export default function MushroomStrainsPage() {
           <div className="grid gap-8 lg:grid-cols-2 text-left">
             {filteredStrains.map((strain, idx) => (
               <div key={idx} className="bg-white border border-slate-100 rounded-[36px] p-6 md:p-8 shadow-sm flex flex-col justify-between items-start gap-6 hover:shadow-md transition-shadow relative overflow-hidden group">
-                
+
                 {/* Potency Badge */}
-                <div className={`absolute top-6 right-6 text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full border ${
-                  strain.potency === 'mild'
-                    ? 'border-green-200 bg-green-50 text-green-600'
-                    : strain.potency === 'high'
+                <div className={`absolute top-6 right-6 text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full border ${strain.potency === 'mild'
+                  ? 'border-green-200 bg-green-50 text-green-600'
+                  : strain.potency === 'high'
                     ? 'border-purple-200 bg-purple-50 text-purple-600'
                     : 'border-pink-200 bg-pink-50 text-pink-600'
-                }`}>
+                  }`}>
                   {strain.potency} Potency
                 </div>
 
@@ -297,7 +295,7 @@ export default function MushroomStrainsPage() {
       {/* 3. Strains FAQ Accordion */}
       <section className="bg-white py-16 px-4 md:px-8 border-b border-purple-100/30">
         <div className="mx-auto max-w-4xl space-y-10 text-center">
-          
+
           <div className="space-y-2">
             <span className="text-[12px] font-black uppercase tracking-widest text-[#ff4fa3] logo-font leading-none">Strain Science</span>
             <h2 className="text-2xl md:text-3xl font-black text-[#1b1533] uppercase logo-font">Strain Genetics FAQs</h2>
@@ -318,13 +316,11 @@ export default function MushroomStrainsPage() {
                   <strong className="text-xs md:text-sm font-black text-[#1b1533] uppercase logo-font group-hover:text-[#ff4fa3] transition-colors flex items-center gap-2.5">
                     <HelpCircle className="h-4.5 w-4.5 text-[#ff4fa3] shrink-0 stroke-[2.2]" /> {faq.q}
                   </strong>
-                  <ChevronDown className={`h-4.5 w-4.5 text-slate-400 group-hover:text-[#ff4fa3] transition-transform duration-300 shrink-0 stroke-[2.5] ${
-                    activeFaqIdx === idx ? 'rotate-180' : ''
-                  }`} />
+                  <ChevronDown className={`h-4.5 w-4.5 text-slate-400 group-hover:text-[#ff4fa3] transition-transform duration-300 shrink-0 stroke-[2.5] ${activeFaqIdx === idx ? 'rotate-180' : ''
+                    }`} />
                 </button>
-                <div className={`transition-all duration-300 overflow-hidden ${
-                  activeFaqIdx === idx ? 'max-h-[300px] opacity-100 mt-2' : 'max-h-0 opacity-0'
-                }`}>
+                <div className={`transition-all duration-300 overflow-hidden ${activeFaqIdx === idx ? 'max-h-[300px] opacity-100 mt-2' : 'max-h-0 opacity-0'
+                  }`}>
                   <p className="text-xs font-semibold leading-relaxed text-slate-500 pl-7 bg-white/40 p-3.5 rounded-xl border border-pink-50/20 shadow-inner">
                     {faq.a}
                   </p>
@@ -359,12 +355,12 @@ export default function MushroomStrainsPage() {
                   <h3 className="text-sm font-black text-[#1b1533] uppercase logo-font leading-tight">{link.name}</h3>
                   <p className="text-[12px] font-semibold text-slate-400 leading-relaxed line-clamp-3">{link.desc}</p>
                 </div>
-                <a 
+                <Link
                   href={link.url}
                   className="w-full inline-flex items-center justify-center rounded-2xl bg-slate-50 text-slate-800 border border-slate-200/80 py-3 text-xs font-black uppercase tracking-wider group-hover:bg-[#ff4fa3] group-hover:text-white group-hover:border-[#ff4fa3] transition-all duration-200 cursor-pointer gap-1.5 logo-font"
                 >
                   Explore Guide <ArrowRight className="h-3.5 w-3.5 stroke-[2.5]" />
-                </a>
+                </Link>
               </div>
             ))}
           </div>

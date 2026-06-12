@@ -6,66 +6,16 @@ import { X } from 'lucide-react';
 interface InfoPopupProps {
   isOpen: boolean;
   onClose: () => void;
-  announcementText: string | null;
+  announcement: any | null;
 }
 
-export function InfoPopup({ isOpen, onClose, announcementText }: InfoPopupProps) {
-  if (!isOpen || !announcementText) return null;
+export function InfoPopup({ isOpen, onClose, announcement }: InfoPopupProps) {
+  if (!isOpen || !announcement) return null;
 
-  // Keyword-based mapping to generate specific titles and descriptions matching the screenshot's style
-  const getAnnouncementDetail = (text: string) => {
-    const t = text.toLowerCase();
-    
-    if (t.includes('ottawa')) {
-      return {
-        title: "Ottawa Magic Mushroom Delivery Same-Day",
-        description: "Same-day express delivery is available in Ottawa and surrounding regions. Fast, safe, and discreet drop-offs within 2-4 hours of placing your order."
-      };
-    }
-    
-    if (t.includes('toronto') || t.includes('gta') || t.includes('peel') || t.includes('halton') || t.includes('barrie') || t.includes('mississauga') || t.includes('brampton') || t.includes('oakville')) {
-      return {
-        title: "GTA Magic Mushroom Delivery Same-Day",
-        description: "Same-day express delivery is available in Toronto, Mississauga, Brampton, Oakville, Barrie, and surrounding Peel, Halton, York, Durham, and Simcoe regions. Fast, safe, and discreet drop-offs within 2-4 hours of placing your order."
-      };
-    }
-    
-    if (t.includes('delivery') || t.includes('delivered') || t.includes('door')) {
-      return {
-        title: "Local Same-Day Courier Delivery",
-        description: "We offer fast, safe, and discreet local courier delivery directly to your door in our active delivery zones. Deliveries typically arrive within 2-4 hours of order placement."
-      };
-    }
-    
-    if (t.includes('shipping') || t.includes('package') || t.includes('packaging') || t.includes('canada')) {
-      return {
-        title: "Discreet Canada-Wide Shipping",
-        description: "We ship securely to all provinces and territories across Canada using Canada Post Express. Every order is double vacuum-sealed in scent-free packaging, ensuring 100% privacy."
-      };
-    }
-    
-    if (t.includes('save') || t.includes('launch') || t.includes('offer') || t.includes('live') || t.includes('20%')) {
-      return {
-        title: "New Store Launch Offer - Save 20%",
-        description: "Celebrate our grand opening! Register now to save 20% on your first order. Use the coupon code LAUNCH20 at checkout. Priority cleanroom fulfillment begins on our launch day."
-      };
-    }
-    
-    if (t.includes('secure') || t.includes('checkout') || t.includes('private') || t.includes('trusted') || t.includes('privacy')) {
-      return {
-        title: "100% Private & Secure Checkout",
-        description: "Your privacy is our priority. We accept secure Interac e-Transfers, keeping bank statements clean and profiles anonymous. All client data is hosted on isolated, encrypted servers."
-      };
-    }
 
-    // Default Fallback
-    return {
-      title: "Official FunGuyz Announcement",
-      description: text
-    };
-  };
+  const title = announcement.detailsTitle || "Official FunGuyz Announcement";
+  const description = announcement.detailsContent || announcement.text;
 
-  const { title, description } = getAnnouncementDetail(announcementText);
 
   return (
     <div 

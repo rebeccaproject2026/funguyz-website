@@ -6,16 +6,16 @@ import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { Newsletter } from '@/components/Newsletter';
 import { useCart } from '@/context/CartContext';
-import { 
-  Sparkles, 
-  ChevronRight, 
-  HelpCircle, 
-  ChevronDown, 
-  ChevronUp, 
-  ShieldCheck, 
-  BookOpen, 
-  Compass, 
-  Plus, 
+import {
+  Sparkles,
+  ChevronRight,
+  HelpCircle,
+  ChevronDown,
+  ChevronUp,
+  ShieldCheck,
+  BookOpen,
+  Compass,
+  Plus,
   Award,
   ArrowRight
 } from 'lucide-react';
@@ -86,12 +86,12 @@ export default function BeginnerGuidePage() {
       <section className="relative overflow-hidden bg-gradient-to-tr from-[#fffbf8] via-[#fffcfb] to-[#fff3ec] border-b border-purple-100/50 py-16 px-4 md:px-8 min-h-[350px] flex items-center">
         <div className="absolute left-[5%] top-[10%] w-[300px] h-[300px] rounded-full bg-[#ffe8db]/30 blur-[90px] pointer-events-none" />
         <div className="absolute right-[5%] bottom-[5%] w-[300px] h-[300px] rounded-full bg-[#e0f2fe]/40 blur-[90px] pointer-events-none" />
-        
+
         <div className="mx-auto max-w-7xl relative z-10 grid gap-10 md:grid-cols-[1.3fr_1fr] items-center w-full">
-          
+
           {/* Left Hero Block */}
           <div className="flex flex-col items-start text-left gap-4">
-            
+
             {/* Breadcrumb */}
             <div className="flex items-center gap-1.5 text-[12px] font-black uppercase tracking-widest text-slate-400 logo-font leading-none">
               <Link href="/" className="hover:text-[#ff4fa3] transition-colors">Home</Link>
@@ -115,7 +115,7 @@ export default function BeginnerGuidePage() {
               Welcome to your clinical, structured roadmap. Explore how to safely navigate microdosing, choose suitable cultivars, and map safe dosage thresholds.
             </p>
 
-            <button 
+            <button
               onClick={() => document.getElementById('quiz-section')?.scrollIntoView({ behavior: 'smooth' })}
               className="text-xs font-black uppercase tracking-wider text-[#ff4fa3] hover:text-black transition-colors duration-200 logo-font border-b-2 border-transparent hover:border-black pb-0.5"
             >
@@ -170,7 +170,7 @@ export default function BeginnerGuidePage() {
       <section id="quiz-section" className="bg-gradient-to-tr from-[#fffbf8] to-[#fff3ec] border-t border-b border-purple-100/40 py-16 px-4">
         <div className="mx-auto max-w-3xl bg-white border border-pink-100/50 rounded-[44px] p-6 md:p-10 shadow-[0_32px_90px_rgba(255,79,163,0.07)] text-center relative overflow-hidden">
           <div className="absolute top-0 right-0 h-44 w-44 rounded-full bg-[#ff4fa3]/5 blur-3xl pointer-events-none" />
-          
+
           <div className="space-y-2 mb-8 max-w-md mx-auto">
             <span className="text-[12px] font-black uppercase tracking-widest text-[#ff4fa3] logo-font">Recommender Engine</span>
             <h2 className="text-2xl md:text-3xl font-black text-[#1b1533] uppercase logo-font">What Product Is Right For Me?</h2>
@@ -252,7 +252,7 @@ export default function BeginnerGuidePage() {
           {quizStep === 4 && (
             <div className="space-y-6 animate-scale-up text-center max-w-xl mx-auto">
               <span className="text-[10px] font-black uppercase tracking-widest text-green-500 logo-font border border-green-200 bg-green-50 px-3 py-1 rounded-full shadow-sm leading-none">Your Recommendation Match</span>
-              
+
               <div className="bg-[#fff8f3]/60 border border-pink-100/50 rounded-3xl p-5 md:p-6 grid gap-6 md:grid-cols-[1fr_1.5fr] items-center text-left">
                 <div className="h-44 w-full bg-white rounded-2xl overflow-hidden flex items-center justify-center border border-slate-100 relative">
                   <img src={rec.imageSrc} alt={rec.title} className="object-contain max-h-[140px]" />
@@ -261,7 +261,7 @@ export default function BeginnerGuidePage() {
                   <span className="text-[12px] font-black uppercase text-[#ff4fa3] tracking-wider logo-font">{rec.category}</span>
                   <h3 className="text-base md:text-lg font-black uppercase text-[#1b1533] logo-font leading-snug">{rec.title}</h3>
                   <p className="text-[12px] font-semibold leading-relaxed text-slate-400">{rec.desc}</p>
-                  
+
                   <div className="pt-3 border-t border-slate-100 flex items-center justify-between">
                     <strong className="text-sm font-black text-[#1b1533] logo-font">{rec.price}</strong>
                     <button
@@ -298,7 +298,7 @@ export default function BeginnerGuidePage() {
       {/* 4. Beginner Guide FAQs Accordion */}
       <section className="bg-white py-16 px-4 md:px-8 border-b border-purple-100/30">
         <div className="mx-auto max-w-4xl space-y-10 text-center">
-          
+
           <div className="space-y-2">
             <span className="text-[12px] font-black uppercase tracking-widest text-[#ff4fa3] logo-font leading-none">onboarding help</span>
             <h2 className="text-2xl md:text-3xl font-black text-[#1b1533] uppercase logo-font">Beginner Stacking FAQs</h2>
@@ -319,13 +319,11 @@ export default function BeginnerGuidePage() {
                   <strong className="text-xs md:text-sm font-black text-[#1b1533] uppercase logo-font group-hover:text-[#ff4fa3] transition-colors flex items-center gap-2.5">
                     <HelpCircle className="h-4.5 w-4.5 text-[#ff4fa3] shrink-0 stroke-[2.2]" /> {faq.q}
                   </strong>
-                  <ChevronDown className={`h-4.5 w-4.5 text-slate-400 group-hover:text-[#ff4fa3] transition-transform duration-300 shrink-0 stroke-[2.5] ${
-                    activeFaqIdx === idx ? 'rotate-180' : ''
-                  }`} />
+                  <ChevronDown className={`h-4.5 w-4.5 text-slate-400 group-hover:text-[#ff4fa3] transition-transform duration-300 shrink-0 stroke-[2.5] ${activeFaqIdx === idx ? 'rotate-180' : ''
+                    }`} />
                 </button>
-                <div className={`transition-all duration-300 overflow-hidden ${
-                  activeFaqIdx === idx ? 'max-h-[300px] opacity-100 mt-2' : 'max-h-0 opacity-0'
-                }`}>
+                <div className={`transition-all duration-300 overflow-hidden ${activeFaqIdx === idx ? 'max-h-[300px] opacity-100 mt-2' : 'max-h-0 opacity-0'
+                  }`}>
                   <p className="text-xs font-semibold leading-relaxed text-slate-500 pl-7 bg-white/40 p-3.5 rounded-xl border border-pink-50/20 shadow-inner">
                     {faq.a}
                   </p>
@@ -360,12 +358,12 @@ export default function BeginnerGuidePage() {
                   <h3 className="text-sm font-black text-[#1b1533] uppercase logo-font leading-tight">{link.name}</h3>
                   <p className="text-[12px] font-semibold text-slate-400 leading-relaxed line-clamp-3">{link.desc}</p>
                 </div>
-                <a 
+                <Link
                   href={link.url}
                   className="w-full inline-flex items-center justify-center rounded-2xl bg-slate-50 text-slate-800 border border-slate-200/80 py-3 text-xs font-black uppercase tracking-wider group-hover:bg-[#ff4fa3] group-hover:text-white group-hover:border-[#ff4fa3] transition-all duration-200 cursor-pointer gap-1.5 logo-font"
                 >
                   Explore Guide <ArrowRight className="h-3.5 w-3.5 stroke-[2.5]" />
-                </a>
+                </Link>
               </div>
             ))}
           </div>

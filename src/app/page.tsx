@@ -1,5 +1,7 @@
 'use client';
 import Link from 'next/link';
+import useSWR from 'swr';
+import { fetcher } from '@/lib/fetcher';
 
 import React, { useState, useRef } from 'react';
 import {
@@ -56,72 +58,7 @@ const benefitCards = [
   ['Natural & Safe', '100% organic, lab tested pure products', ShieldCheck],
 ];
 
-const blogPosts = [
-  {
-    title: 'Magic Mushrooms 101: A Beginner\'s Guide',
-    desc: 'Understand the dosage, effects, and benefits before your first journey.',
-    category: 'Guides',
-    date: 'May 10, 2026',
-    time: '5 min read',
-    image: '/images/blog_1.webp',
-  },
-  {
-    title: 'How Edibles Work: What You Need to Know',
-    desc: 'Why edibles feel different and how long the peak effects typically last.',
-    category: 'Edibles',
-    date: 'May 6, 2026',
-    time: '6 min read',
-    image: '/images/blog_2.webp',
-  },
-  {
-    title: 'Microdosing Benefits For Daily Wellness',
-    desc: 'Discover why thousands of professionals are microdosing for focus.',
-    category: 'Research',
-    date: 'May 2, 2026',
-    time: '5 min read',
-    image: '/images/blog_3.webp',
-  },
-  {
-    title: 'Different Mushroom Strains And Their Effects',
-    desc: 'From Golden Teacher to Penis Envy - find the perfect strain for you.',
-    category: 'Strains',
-    date: 'Apr 28, 2026',
-    time: '7 min read',
-    image: '/images/blog_4.webp',
-  },
-  {
-    title: 'The Ultimate Guide to Mushroom Tea Brewing',
-    desc: 'Learn how to brew a perfect cup of soothing mushroom tea at home easily.',
-    category: 'Recipes',
-    date: 'Apr 24, 2026',
-    time: '4 min read',
-    image: '/images/blog_1.webp',
-  },
-  {
-    title: 'Psilocybin and Neuroplasticity: The Science',
-    desc: 'How magic mushrooms stimulate new neural pathways and connections in the brain.',
-    category: 'Science',
-    date: 'Apr 20, 2026',
-    time: '8 min read',
-    image: '/images/blog_2.webp',
-  },
-  {
-    title: 'Setting Your Intentions: Psychedelic Journeys',
-    desc: 'Why set and setting are crucial for a positive and transformational experience.',
-    category: 'Mindset',
-    date: 'Apr 15, 2026',
-    time: '6 min read',
-    image: '/images/blog_3.webp',
-  },
-  {
-    title: 'Integrating Your Psychedelic Experience',
-    desc: 'Essential tips for carrying the insights of your journey into everyday life.',
-    category: 'Therapy',
-    date: 'Apr 10, 2026',
-    time: '5 min read',
-    image: '/images/blog_4.webp',
-  },
-];
+// Removed static blogPosts array as it is now fetched from the database
 
 const faqs = [
   {
@@ -153,46 +90,13 @@ export default function Home() {
   const [bestSellersSwiper, setBestSellersSwiper] = useState<any>(null);
   const bestSellersRef = useRef<HTMLDivElement>(null);
 
-  const [dbProducts, setDbProducts] = useState<any[]>([]);
-  const [dbCategories, setDbCategories] = useState<any[]>([]);
+  const { data: prodData } = useSWR('/api/products', fetcher);
+  const { data: catData } = useSWR('/api/categories', fetcher);
+  const { data: blogData } = useSWR('/api/blogs', fetcher);
 
-  React.useEffect(() => {
-    async function fetchProducts() {
-      const cachedGlobalString = sessionStorage.getItem('globalRelatedProducts');
-      const cachedGlobalProducts = cachedGlobalString ? JSON.parse(cachedGlobalString) : [];
-
-      if (cachedGlobalProducts && cachedGlobalProducts.length > 0) {
-        setDbProducts(cachedGlobalProducts);
-        return;
-      }
-
-      try {
-        const res = await fetch('/api/products');
-        const data = await res.json();
-        if (data.success) {
-          setDbProducts(data.products);
-          if (typeof window !== 'undefined') {
-            sessionStorage.setItem('globalRelatedProducts', JSON.stringify(data.products));
-          }
-        }
-      } catch (err) {
-        console.error('Failed to fetch global products', err);
-      }
-    }
-    async function fetchCategories() {
-      try {
-        const res = await fetch('/api/categories');
-        const data = await res.json();
-        if (data.success) {
-          setDbCategories(data.categories);
-        }
-      } catch (err) {
-        console.error('Failed to fetch categories', err);
-      }
-    }
-    fetchProducts();
-    fetchCategories();
-  }, []);
+  const dbProducts = prodData?.success ? prodData.products : [];
+  const dbCategories = catData?.success ? catData.categories : [];
+  const dbBlogs = blogData?.success ? blogData.blogs : [];
 
   // Use DB products for rendering
   const displayProducts = dbProducts;
@@ -308,20 +212,20 @@ export default function Home() {
 
             {/* Hero CTA buttons */}
             <div className="mt-5 flex flex-col sm:flex-row gap-3 sm:gap-4 w-full sm:w-auto">
-              <a
+              <Link
                 href="/shop"
                 className="w-full sm:w-auto inline-flex items-center justify-center rounded-2xl bg-[#ff4fa3] text-white border border-[#ff4fa3] px-6 sm:px-9 py-4 text-xs font-black uppercase tracking-wider shadow-md shadow-pink-100 transition-all duration-300 hover:bg-black hover:text-[#ff4fa3] hover:border-black hover:-translate-y-0.5 active:translate-y-0 cursor-pointer gap-2 logo-font whitespace-nowrap"
               >
                 <ShoppingBag className="h-4.5 w-4.5" />
                 <span>Shop Now</span>
-              </a>
-              <a
+              </Link>
+              <Link
                 href="#featured-products"
                 className="w-full sm:w-auto inline-flex items-center justify-center rounded-2xl border border-slate-200 bg-white px-6 sm:px-9 py-4 text-xs font-black uppercase tracking-wider text-[#1b1533] shadow-sm transition-all duration-300 hover:bg-black hover:text-[#ff4fa3] hover:border-black hover:-translate-y-0.5 active:translate-y-0 cursor-pointer gap-2 logo-font whitespace-nowrap"
               >
                 <Sparkles className="h-4.5 w-4.5 text-[#ff4fa3]" />
                 <span>Explore Collections</span>
-              </a>
+              </Link>
             </div>
           </div>
 
@@ -380,7 +284,7 @@ export default function Home() {
         </div>
 
         <div className="mt-4 grid gap-4 sm:gap-6 grid-cols-2 md:grid-cols-4 lg:grid-cols-4">
-          {(dbCategories.length > 0 ? dbCategories : categories).slice(0, 4).map((kind, idx) => {
+          {(dbCategories.length > 0 ? dbCategories : categories).slice(0, 4).map((kind: any, idx: any) => {
             const name = kind.name;
             const desc = kind.description || kind.desc;
             const slug = kind.slug || name.toLowerCase().replace(/\s+/g, '-');
@@ -389,7 +293,7 @@ export default function Home() {
             const gradient = categoryGradients[name] || 'from-slate-50 to-white border-slate-100';
 
             return (
-              <a
+              <Link
                 key={idx}
                 href={linkUrl}
                 className="group relative aspect-[4/5] w-full overflow-hidden rounded-[24px] sm:rounded-[32px] shadow-[0_12px_36px_rgba(27,21,51,0.04)] hover:shadow-[0_24px_50px_rgba(27,21,51,0.15)] hover:-translate-y-1.5 transition-all duration-500 cursor-pointer block"
@@ -415,7 +319,7 @@ export default function Home() {
                     Shop Now <ArrowRight className="h-2.5 w-2.5 sm:h-3 sm:w-3 stroke-[2.5]" />
                   </div>
                 </div>
-              </a>
+              </Link>
             );
           })}
         </div>
@@ -446,12 +350,12 @@ export default function Home() {
             </div>
 
             {/* View All Products Button */}
-            <a
+            <Link
               href="/shop?filter=best-sellers"
               className="inline-flex items-center justify-center rounded-2xl bg-[#ff4fa3] text-white border border-[#ff4fa3] px-6 py-2.5 text-[12px] font-black uppercase tracking-wider shadow-md shadow-pink-100 transition-all duration-300 hover:bg-black hover:text-[#ff4fa3] hover:border-black hover:-translate-y-0.5 active:translate-y-0 cursor-pointer gap-1.5 logo-font"
             >
               View All Products <ArrowRight className="h-3.5 w-3.5 stroke-[2.5]" />
-            </a>
+            </Link>
           </div>
         </div>
 
@@ -477,7 +381,7 @@ export default function Home() {
           }}
           className="mt-8 w-full"
         >
-          {displayProducts.map((p, i) => (
+          {displayProducts.map((p: any, i: any) => (
             <SwiperSlide key={p._id || p[0]} className="!h-auto pb-4">
               <ProductCard p={p} i={i} />
             </SwiperSlide>
@@ -522,7 +426,7 @@ export default function Home() {
           </div>
 
           <div className="grid gap-6 grid-cols-2 lg:grid-cols-4">
-            {displayProducts.slice(0, 8).map((p, i) => (
+            {displayProducts.slice(0, 8).map((p: any, i: any) => (
               <div key={p._id || p[0]} className="w-full">
                 <ProductCard p={p} i={i} />
               </div>
@@ -530,12 +434,12 @@ export default function Home() {
           </div>
 
           <div className="mt-12 flex justify-center">
-            <a
+            <Link
               href="/shop"
               className="inline-flex items-center justify-center rounded-2xl bg-[#ff4fa3] text-white border border-[#ff4fa3] px-8 py-3.5 text-xs font-black uppercase tracking-wider shadow-md shadow-pink-100 transition-all duration-300 hover:bg-black hover:text-[#ff4fa3] hover:border-black hover:-translate-y-0.5 active:translate-y-0 cursor-pointer gap-2 logo-font"
             >
               View All Products <ArrowRight className="h-4 w-4 stroke-[2.5]" />
-            </a>
+            </Link>
           </div>
         </section>
       </div>
@@ -709,12 +613,12 @@ export default function Home() {
               </button>
             </div>
 
-            <a
+            <Link
               href="/blog"
               className="inline-flex items-center justify-center rounded-2xl bg-[#ff4fa3] text-white border border-[#ff4fa3] px-6 py-2.5 text-xs font-black uppercase tracking-wider shadow-md shadow-pink-100 transition-all duration-300 hover:bg-black hover:text-[#ff4fa3] hover:border-black hover:-translate-y-0.5 active:translate-y-0 cursor-pointer gap-2 logo-font"
             >
               View All Articles <ArrowRight className="h-4 w-4 stroke-[2.5]" />
-            </a>
+            </Link>
           </div>
         </div>
 
@@ -740,38 +644,42 @@ export default function Home() {
           }}
           className="mt-8 w-full"
         >
-          {blogPosts.map((post) => (
-            <SwiperSlide key={post.title} className="!h-auto">
-              <Link href={`/blog/${post.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')}`} className="block h-full w-full">
-                <article className="group overflow-hidden rounded-2xl border border-slate-100 bg-white shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between hover:-translate-y-0.5 h-full w-full">
-                  <div className="relative aspect-video w-full overflow-hidden bg-slate-100">
-                    <img
-                      src={post.image}
-                      alt={post.title}
-                      className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                      loading="lazy"
-                    />
-                  </div>
-                  <div className="p-5 flex flex-col gap-3">
-                    <div className="flex items-center justify-between text-[12px] font-black uppercase tracking-wider text-slate-400">
-                      <span className="bg-[#ff4fa3]/5 text-[#ff4fa3] px-2 py-0.5 rounded">{post.category}</span>
-                      <span>{post.date}</span>
+          {dbBlogs.map((post: any) => {
+            const publishDate = new Date(post.publishedAt);
+            const formattedDate = publishDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+            return (
+              <SwiperSlide key={post._id || post.title} className="!h-auto">
+                <Link href={`/blog/${post.slug}`} className="block h-full w-full">
+                  <article className="group overflow-hidden rounded-2xl border border-slate-100 bg-white shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between hover:-translate-y-0.5 h-full w-full">
+                    <div className="relative aspect-video w-full overflow-hidden bg-slate-100">
+                      <img
+                        src={post.image}
+                        alt={post.title}
+                        className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                        loading="lazy"
+                      />
                     </div>
-                    <h3 className="font-black text-sm text-[#1b1533] line-clamp-2 leading-snug group-hover:text-[#ff4fa3] transition-colors duration-200 mt-1">
-                      {post.title}
-                    </h3>
-                    <p className="text-[12px] font-semibold text-slate-500 leading-relaxed line-clamp-2">
-                      {post.desc}
-                    </p>
-                    <div className="mt-2 flex items-center gap-1.5 text-[12px] font-black uppercase tracking-wider text-slate-400">
-                      <Clock className="h-3 w-3 stroke-[2.5]" />
-                      <span>{post.time}</span>
+                    <div className="p-5 flex flex-col gap-3">
+                      <div className="flex items-center justify-between text-[12px] font-black uppercase tracking-wider text-slate-400">
+                        <span className="bg-[#ff4fa3]/5 text-[#ff4fa3] px-2 py-0.5 rounded">{post.category}</span>
+                        <span>{formattedDate}</span>
+                      </div>
+                      <h3 className="font-black text-sm text-[#1b1533] line-clamp-2 leading-snug group-hover:text-[#ff4fa3] transition-colors duration-200 mt-1">
+                        {post.title}
+                      </h3>
+                      <p className="text-[12px] font-semibold text-slate-500 leading-relaxed line-clamp-2">
+                        {post.desc}
+                      </p>
+                      <div className="mt-2 flex items-center gap-1.5 text-[12px] font-black uppercase tracking-wider text-slate-400">
+                        <Clock className="h-3 w-3 stroke-[2.5]" />
+                        <span>{post.readTime}</span>
+                      </div>
                     </div>
-                  </div>
-                </article>
-              </Link>
-            </SwiperSlide>
-          ))}
+                  </article>
+                </Link>
+              </SwiperSlide>
+            );
+          })}
         </Swiper>
       </section>
 
@@ -801,14 +709,14 @@ export default function Home() {
               </div>
 
               {/* Follow Now Button styled exactly like e-commerce theme buttons */}
-              <a
+              <Link
                 href="https://instagram.com"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center justify-center rounded-2xl bg-[#ff4fa3] text-white border border-[#ff4fa3] px-6 py-2.5 text-[12px] font-black uppercase tracking-widest shadow-md shadow-pink-100 transition-all duration-300 hover:bg-black hover:text-[#ff4fa3] hover:border-black hover:-translate-y-0.5 active:translate-y-0 cursor-pointer logo-font shrink-0"
               >
                 Follow Now
-              </a>
+              </Link>
             </div>
 
             <div className="grid grid-cols-3 gap-2.5 sm:grid-cols-6 mt-2 w-full">
@@ -820,7 +728,7 @@ export default function Home() {
                 '/images/blog_4.webp',
                 '/images/hero_composition.webp',
               ].map((img, i) => (
-                <a
+                <Link
                   href="https://instagram.com"
                   target="_blank"
                   rel="noopener noreferrer"
@@ -839,7 +747,7 @@ export default function Home() {
                       View
                     </span>
                   </div>
-                </a>
+                </Link>
               ))}
             </div>
           </div>

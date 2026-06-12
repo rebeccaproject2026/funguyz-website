@@ -5,17 +5,17 @@ import React, { useState } from 'react';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { Newsletter } from '@/components/Newsletter';
-import { 
-  Sparkles, 
-  ChevronDown, 
-  ChevronUp, 
-  Search, 
-  Package, 
-  Truck, 
-  Info, 
-  CreditCard, 
-  RotateCcw, 
-  User, 
+import {
+  Sparkles,
+  ChevronDown,
+  ChevronUp,
+  Search,
+  Package,
+  Truck,
+  Info,
+  CreditCard,
+  RotateCcw,
+  User,
   HelpCircle,
   ShieldCheck
 } from 'lucide-react';
@@ -174,12 +174,12 @@ export default function FAQPage() {
         {/* Faded Background Glows */}
         <div className="absolute left-[5%] top-[10%] w-[300px] h-[300px] rounded-full bg-[#ffe8db]/30 blur-[90px] pointer-events-none" />
         <div className="absolute right-[5%] bottom-[5%] w-[300px] h-[300px] rounded-full bg-[#e0f2fe]/40 blur-[90px] pointer-events-none" />
-        
+
         <div className="mx-auto max-w-7xl relative z-10 grid gap-10 md:grid-cols-[1.3fr_1fr] items-center w-full">
-          
+
           {/* Left Side Content */}
           <div className="flex flex-col items-start text-left gap-4">
-            
+
             {/* Breadcrumb */}
             <div className="flex items-center gap-1.5 text-[12px] font-black uppercase tracking-widest text-slate-400 logo-font leading-none">
               <Link href="/" className="hover:text-[#ff4fa3] transition-colors">Home</Link>
@@ -202,7 +202,7 @@ export default function FAQPage() {
             </p>
 
             {/* Read More Mock Link */}
-            <button 
+            <button
               onClick={() => document.getElementById('faq-accordion-section')?.scrollIntoView({ behavior: 'smooth' })}
               className="text-xs font-black uppercase tracking-wider text-[#ff4fa3] hover:text-black transition-colors duration-200 logo-font border-b-2 border-transparent hover:border-black pb-0.5"
             >
@@ -214,7 +214,7 @@ export default function FAQPage() {
           {/* Right Side Visual Illustration */}
           <div className="relative flex justify-center items-center select-none animate-float hidden md:flex">
             <div className="absolute inset-0 bg-gradient-to-tr from-[#ff4fa3]/10 to-[#7b5cff]/15 rounded-[40px] rotate-3 scale-95 blur-sm" />
-            
+
             <div className="relative bg-white/70 backdrop-blur-md border border-pink-100/60 rounded-[40px] p-8 shadow-[0_24px_70px_rgba(255,79,163,0.12)] text-left space-y-4 max-w-xs">
               <div className="h-10 w-10 rounded-2xl bg-gradient-to-tr from-[#ff4fa3] to-[#7b5cff] flex items-center justify-center text-white text-lg shadow-md shadow-pink-500/10">
                 💡
@@ -234,7 +234,7 @@ export default function FAQPage() {
 
       {/* 2. Interactive FAQ Catalog & Live Search */}
       <section id="faq-accordion-section" className="mx-auto max-w-7xl px-4 py-16 md:px-8">
-        
+
         {/* Search Bar Widget */}
         <div className="max-w-xl mx-auto mb-10">
           <div className="flex items-center gap-3 bg-white border border-slate-200 rounded-full px-5 py-3.5 focus-within:border-[#ff4fa3] focus-within:ring-4 focus-within:ring-pink-50/50 transition-all shadow-sm">
@@ -250,7 +250,7 @@ export default function FAQPage() {
               className="w-full bg-transparent text-xs md:text-sm font-semibold text-[#1b1533] outline-none placeholder:text-slate-400"
             />
             {searchQuery && (
-              <button 
+              <button
                 onClick={() => setSearchQuery('')}
                 className="text-[12px] font-black uppercase text-slate-400 hover:text-[#ff4fa3] logo-font px-2"
               >
@@ -286,11 +286,10 @@ export default function FAQPage() {
                     setActiveCategory(cat.id);
                     setOpenIdx(0);
                   }}
-                  className={`flex items-center gap-2 rounded-2xl px-5 py-3.5 text-xs font-black uppercase tracking-wider logo-font transition-all duration-200 cursor-pointer border ${
-                    activeCategory === cat.id
-                      ? 'bg-[#ff4fa3] border-[#ff4fa3] text-white shadow-md shadow-pink-100'
-                      : 'bg-white border-slate-200 text-[#1b1533] shadow-sm hover:border-[#ff4fa3] hover:text-[#ff4fa3]'
-                  }`}
+                  className={`flex items-center gap-2 rounded-2xl px-5 py-3.5 text-xs font-black uppercase tracking-wider logo-font transition-all duration-200 cursor-pointer border ${activeCategory === cat.id
+                    ? 'bg-[#ff4fa3] border-[#ff4fa3] text-white shadow-md shadow-pink-100'
+                    : 'bg-white border-slate-200 text-[#1b1533] shadow-sm hover:border-[#ff4fa3] hover:text-[#ff4fa3]'
+                    }`}
                 >
                   <CatIcon className="h-4 w-4 shrink-0" />
                   <span>{cat.label}</span>
@@ -325,13 +324,12 @@ export default function FAQPage() {
                 {filteredFAQs.map((item, idx) => {
                   const isOpen = openIdx === idx;
                   return (
-                    <div 
-                      key={idx} 
-                      className={`border rounded-2xl transition-all duration-300 ${
-                        isOpen 
-                          ? 'border-[#ff4fa3]/30 bg-pink-50/5 shadow-sm' 
-                          : 'border-slate-100 hover:border-pink-100'
-                      }`}
+                    <div
+                      key={idx}
+                      className={`border rounded-2xl transition-all duration-300 ${isOpen
+                        ? 'border-[#ff4fa3]/30 bg-pink-50/5 shadow-sm'
+                        : 'border-slate-100 hover:border-pink-100'
+                        }`}
                     >
                       <button
                         onClick={() => setOpenIdx(isOpen ? null : idx)}
@@ -376,12 +374,12 @@ export default function FAQPage() {
                 </p>
               </div>
             </div>
-            <a
+            <Link
               href="/contact"
               className="inline-flex items-center justify-center rounded-2xl bg-[#1b1533] text-white py-3.5 px-6 text-xs font-black uppercase tracking-wider hover:bg-[#ff4fa3] hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200 cursor-pointer logo-font shrink-0"
             >
               Contact Support
-            </a>
+            </Link>
           </div>
         </div>
 

@@ -3,6 +3,8 @@ import connectDB from '@/backend/config/db';
 import Product from '@/backend/models/Product';
 import Category from '@/backend/models/Category';
 
+export const dynamic = 'force-dynamic';
+
 export async function GET(
   request: Request,
   { params }: { params: Promise<{ slug: string }> }

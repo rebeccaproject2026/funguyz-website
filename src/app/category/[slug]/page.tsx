@@ -1,5 +1,7 @@
 'use client';
 import Link from 'next/link';
+import useSWR from 'swr';
+import { fetcher } from '@/lib/fetcher';
 
 import React, { useState } from 'react';
 import { Header } from '@/components/Header';
@@ -238,33 +240,8 @@ export default function DedicatedCategoryPage({ params }: { params: Promise<{ sl
   const [selectedPriceRange, setSelectedPriceRange] = useState<string>('all');
   const [inStockOnly, setInStockOnly] = useState<boolean>(true);
 
-  const [dbProducts, setDbProducts] = useState<any[]>([]);
-
-  React.useEffect(() => {
-    async function fetchProducts() {
-      const cachedGlobalString = sessionStorage.getItem('globalRelatedProducts');
-      const cachedGlobalProducts = cachedGlobalString ? JSON.parse(cachedGlobalString) : [];
-
-      if (cachedGlobalProducts && cachedGlobalProducts.length > 0) {
-        setDbProducts(cachedGlobalProducts);
-        return;
-      }
-
-      try {
-        const res = await fetch('/api/products');
-        const data = await res.json();
-        if (data.success) {
-          setDbProducts(data.products);
-          if (typeof window !== 'undefined') {
-            sessionStorage.setItem('globalRelatedProducts', JSON.stringify(data.products));
-          }
-        }
-      } catch (err) {
-        console.error('Failed to fetch global products', err);
-      }
-    }
-    fetchProducts();
-  }, []);
+  const { data: prodData } = useSWR('/api/products', fetcher);
+  const dbProducts = prodData?.success ? prodData.products : [];
 
   // FAQ accordion open states (mapped by index)
   const [openFaqIdx, setOpenFaqIdx] = useState<number | null>(null);
@@ -1023,12 +1000,12 @@ export default function DedicatedCategoryPage({ params }: { params: Promise<{ sl
                     <p className="text-[12px] font-semibold text-slate-400 leading-relaxed line-clamp-3">{relCat.desc}</p>
                   </div>
 
-                  <a
+                  <Link
                     href={`/category/${relCat.slug}`}
                     className="w-full inline-flex items-center justify-center rounded-2xl bg-slate-50 text-slate-800 border border-slate-200/80 py-3 text-xs font-black uppercase tracking-wider group-hover:bg-[#ff4fa3] group-hover:text-white group-hover:border-[#ff4fa3] transition-all duration-200 cursor-pointer gap-1.5 logo-font"
                   >
                     Explore Catalog <ArrowRight className="h-3.5 w-3.5 stroke-[2.5]" />
-                  </a>
+                  </Link>
                 </div>
               ))}
             </div>
@@ -1048,7 +1025,7 @@ export default function DedicatedCategoryPage({ params }: { params: Promise<{ sl
   const baseFilteredProducts = dbProducts.filter((p: any) => p.category?.name === category.categoryName || p.category?.name?.includes(category.categoryName.replace('Magic ', '')));
 
   // Filter products interactively
-  const activeFilteredProducts = baseFilteredProducts.filter((product) => {
+  const activeFilteredProducts = baseFilteredProducts.filter((product: { name: any; tags: any[]; price: number; }) => {
     const title = (product.name || '').toLowerCase();
     const tag = (product.tags?.[0] || 'Premium').toLowerCase();
     const priceNum = product.price || 0;
@@ -1554,12 +1531,12 @@ export default function DedicatedCategoryPage({ params }: { params: Promise<{ sl
                   <p className="text-[12px] font-semibold text-slate-400 leading-relaxed line-clamp-3">{relCat.desc}</p>
                 </div>
 
-                <a
+                <Link
                   href={`/category/${relCat.slug}`}
                   className="w-full inline-flex items-center justify-center rounded-2xl bg-slate-50 text-slate-800 border border-slate-200/80 py-3 text-xs font-black uppercase tracking-wider group-hover:bg-[#ff4fa3] group-hover:text-white group-hover:border-[#ff4fa3] transition-all duration-200 cursor-pointer gap-1.5 logo-font"
                 >
                   Explore Catalog <ArrowRight className="h-3.5 w-3.5 stroke-[2.5]" />
-                </a>
+                </Link>
               </div>
             ))}
           </div>

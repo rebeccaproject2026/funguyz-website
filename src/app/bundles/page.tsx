@@ -5,23 +5,23 @@ import React, { useState } from 'react';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { useCart } from '@/context/CartContext';
-import { 
-  Sparkles, 
-  ChevronDown, 
-  ChevronUp, 
-  ShieldCheck, 
-  Truck, 
-  Star, 
-  Smile, 
-  Brain, 
-  Compass, 
-  Coffee, 
-  Leaf, 
-  ArrowRight, 
-  HelpCircle, 
-  Award, 
-  Zap, 
-  Package, 
+import {
+  Sparkles,
+  ChevronDown,
+  ChevronUp,
+  ShieldCheck,
+  Truck,
+  Star,
+  Smile,
+  Brain,
+  Compass,
+  Coffee,
+  Leaf,
+  ArrowRight,
+  HelpCircle,
+  Award,
+  Zap,
+  Package,
   Gift,
   Check
 } from 'lucide-react';
@@ -61,12 +61,12 @@ export default function BundlesCollectionPage() {
         {/* Faded Background Glows */}
         <div className="absolute left-[5%] top-[10%] w-[300px] h-[300px] rounded-full bg-[#ffe8db]/30 blur-[90px] pointer-events-none" />
         <div className="absolute right-[5%] bottom-[5%] w-[300px] h-[300px] rounded-full bg-[#e0f2fe]/40 blur-[90px] pointer-events-none" />
-        
+
         <div className="mx-auto max-w-7xl relative z-10 grid gap-10 md:grid-cols-[1.2fr_1fr] items-center">
-          
+
           {/* Left Side Hero Content */}
           <div className="flex flex-col items-start text-left gap-4">
-            
+
             {/* Breadcrumb */}
             <div className="flex items-center gap-1.5 text-[12px] font-black uppercase tracking-widest text-slate-400 logo-font leading-none">
               <Link href="/" className="hover:text-[#ff4fa3] transition-colors">Home</Link>
@@ -78,7 +78,7 @@ export default function BundlesCollectionPage() {
               Save More With <br />
               <span className="text-[#ff4fa3]">Premium Bundles</span>
             </h1>
-            
+
             <p className="text-xs md:text-sm font-semibold leading-relaxed text-slate-500 max-w-md">
               Hand-picked mushroom bundles designed for better value, convenience and variety. Curated compounds to secure the ultimate synergistic savings.
             </p>
@@ -119,13 +119,13 @@ export default function BundlesCollectionPage() {
           <div className="relative flex justify-center items-center h-full w-full">
             {/* Floating compositions back circle glow */}
             <div className="absolute h-[320px] w-[320px] rounded-full bg-gradient-to-tr from-[#ff4fa3]/10 via-[#2fdfff]/10 to-[#7b5cff]/10 blur-3xl pointer-events-none animate-pulse" />
-            
+
             {/* Premium contained delivery box container */}
             <div className="relative w-full max-w-[340px] aspect-square rounded-[40px] border border-white/60 bg-white/35 backdrop-blur-md p-6 shadow-2xl flex flex-col justify-between items-center overflow-hidden animate-float">
               <span className="text-[10px] font-black uppercase tracking-widest text-[#ff4fa3] logo-font border border-pink-100 bg-white/75 px-3 py-1 rounded-full shadow-sm">
                 FunGuyz Box
               </span>
-              
+
               {/* Floating miniature cards inside */}
               <div className="grid grid-cols-2 gap-3.5 w-full mt-4">
                 {[
@@ -177,7 +177,7 @@ export default function BundlesCollectionPage() {
         </div>
 
         <div className="grid gap-8 md:grid-cols-3">
-          
+
           {/* Starter Bundle */}
           <div className="bg-white border border-slate-100 rounded-[36px] p-6 shadow-sm flex flex-col justify-between items-start text-left gap-6 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 relative group">
             <span className="absolute left-6 top-6 bg-slate-50 border border-slate-100 text-slate-500 rounded-full px-3.5 py-1 text-[10px] font-black uppercase tracking-widest leading-none">
@@ -190,7 +190,7 @@ export default function BundlesCollectionPage() {
             <div className="space-y-1.5 w-full mt-4">
               <h3 className="text-xl font-black text-[#1b1533] uppercase logo-font leading-none">Starter Bundle</h3>
               <span className="block text-[12px] text-slate-400 font-bold uppercase">Perfect For Beginners</span>
-              
+
               {/* Product Checklist */}
               <div className="pt-4 space-y-2 border-t border-slate-100/70 mt-4">
                 {[
@@ -237,7 +237,7 @@ export default function BundlesCollectionPage() {
             <div className="space-y-1.5 w-full mt-4">
               <h3 className="text-xl font-black text-[#1b1533] uppercase logo-font leading-none">Best Seller Bundle</h3>
               <span className="block text-[12px] text-slate-400 font-bold uppercase">Customer Favorite Stack</span>
-              
+
               {/* Product Checklist */}
               <div className="pt-4 space-y-2 border-t border-slate-100/70 mt-4">
                 {[
@@ -285,7 +285,7 @@ export default function BundlesCollectionPage() {
             <div className="space-y-1.5 w-full mt-4">
               <h3 className="text-xl font-black text-[#1b1533] uppercase logo-font leading-none">Ultimate Bundle</h3>
               <span className="block text-[12px] text-slate-400 font-bold uppercase">Maximum Compound Variety</span>
-              
+
               {/* Product Checklist */}
               <div className="pt-4 space-y-2 border-t border-slate-100/70 mt-4">
                 {[
@@ -326,7 +326,7 @@ export default function BundlesCollectionPage() {
 
       {/* 4. Build Your Own Bundle Section (Large Interactive Section) */}
       <section id="build-bundle" className="mx-auto max-w-7xl px-4 py-16 md:px-8 border-t border-purple-100/30">
-        
+
         <div className="text-center space-y-2 mb-12 max-w-md mx-auto">
           <span className="text-[12px] font-black uppercase tracking-widest text-[#ff4fa3] logo-font">Interactive Builder</span>
           <h2 className="text-3xl font-black text-[#1b1533] uppercase logo-font">Build Your Own Bundle</h2>
@@ -334,10 +334,10 @@ export default function BundlesCollectionPage() {
         </div>
 
         <div className="grid gap-10 lg:grid-cols-[1.3fr_1fr] items-start">
-          
+
           {/* Left Steps Deck */}
           <div className="bg-white border border-slate-100 rounded-[32px] p-6 md:p-8 shadow-sm space-y-8 text-left">
-            
+
             {/* Step 1: Choose Mushrooms */}
             <div className="space-y-4">
               <div className="flex items-center gap-3">
@@ -355,11 +355,10 @@ export default function BundlesCollectionPage() {
                     key={opt.name}
                     type="button"
                     onClick={() => setBuildMushroom({ name: opt.name, price: opt.price })}
-                    className={`rounded-2xl border p-4 text-left cursor-pointer transition-all flex justify-between items-center ${
-                      buildMushroom.name === opt.name
-                        ? 'border-[#ff4fa3] bg-pink-50/10 shadow-sm'
-                        : 'border-slate-100 hover:border-pink-300'
-                    }`}
+                    className={`rounded-2xl border p-4 text-left cursor-pointer transition-all flex justify-between items-center ${buildMushroom.name === opt.name
+                      ? 'border-[#ff4fa3] bg-pink-50/10 shadow-sm'
+                      : 'border-slate-100 hover:border-pink-300'
+                      }`}
                   >
                     <div className="leading-tight">
                       <span className="block text-xs font-black uppercase text-[#1b1533] logo-font">{opt.name}</span>
@@ -387,11 +386,10 @@ export default function BundlesCollectionPage() {
                     key={opt.name}
                     type="button"
                     onClick={() => setBuildEdible({ name: opt.name, price: opt.price })}
-                    className={`rounded-2xl border p-4 text-left cursor-pointer transition-all flex flex-col justify-between items-start gap-3 h-28 ${
-                      buildEdible.name === opt.name
-                        ? 'border-[#ff4fa3] bg-pink-50/10 shadow-sm'
-                        : 'border-slate-100 hover:border-pink-300'
-                    }`}
+                    className={`rounded-2xl border p-4 text-left cursor-pointer transition-all flex flex-col justify-between items-start gap-3 h-28 ${buildEdible.name === opt.name
+                      ? 'border-[#ff4fa3] bg-pink-50/10 shadow-sm'
+                      : 'border-slate-100 hover:border-pink-300'
+                      }`}
                   >
                     <span className="block text-xs font-black uppercase text-[#1b1533] logo-font leading-tight">{opt.name}</span>
                     <strong className="text-emerald-600 text-xs font-black logo-font mt-auto">+${opt.price}</strong>
@@ -416,11 +414,10 @@ export default function BundlesCollectionPage() {
                     key={opt.name}
                     type="button"
                     onClick={() => setBuildCapsule({ name: opt.name, price: opt.price })}
-                    className={`rounded-2xl border p-4 text-left cursor-pointer transition-all flex flex-col justify-between items-start gap-3 h-28 ${
-                      buildCapsule.name === opt.name
-                        ? 'border-[#ff4fa3] bg-pink-50/10 shadow-sm'
-                        : 'border-slate-100 hover:border-pink-300'
-                    }`}
+                    className={`rounded-2xl border p-4 text-left cursor-pointer transition-all flex flex-col justify-between items-start gap-3 h-28 ${buildCapsule.name === opt.name
+                      ? 'border-[#ff4fa3] bg-pink-50/10 shadow-sm'
+                      : 'border-slate-100 hover:border-pink-300'
+                      }`}
                   >
                     <span className="block text-xs font-black uppercase text-[#1b1533] logo-font leading-tight">{opt.name}</span>
                     <strong className="text-emerald-600 text-xs font-black logo-font mt-auto">+${opt.price}</strong>
@@ -445,10 +442,9 @@ export default function BundlesCollectionPage() {
                     key={opt.name}
                     type="button"
                     onClick={() => setBuildMicrodose({ name: opt.name, price: opt.price })}
-                    className={`rounded-2xl border p-4 text-left cursor-pointer transition-all flex flex-col justify-between items-start gap-3 h-28 ${
-                      buildMicrodose.name === opt.name
-                        ? 'border-[#ff4fa3] bg-pink-50/10 shadow-sm'
-                        : 'border-slate-100 hover:border-pink-300'
+                    className={`rounded-2xl border p-4 text-left cursor-pointer transition-all flex flex-col justify-between items-start gap-3 h-28 ${buildMicrodose.name === opt.name
+                      ? 'border-[#ff4fa3] bg-pink-50/10 shadow-sm'
+                      : 'border-slate-100 hover:border-pink-300'
                       }`}
                   >
                     <span className="block text-xs font-black uppercase text-[#1b1533] logo-font leading-tight">{opt.name}</span>
@@ -463,9 +459,9 @@ export default function BundlesCollectionPage() {
           {/* Right Side: Sticky Order Summary */}
           <div className="bg-white border border-slate-100 rounded-[32px] p-6 md:p-8 shadow-sm space-y-6 sticky top-24 text-left">
             <h3 className="text-lg font-black text-[#1b1533] uppercase logo-font border-b border-slate-100 pb-3">Your Custom Bundle</h3>
-            
+
             <div className="space-y-3.5 divide-y divide-slate-50">
-              
+
               {/* Selected Mushroom */}
               <div className="flex items-center justify-between text-xs font-semibold text-slate-500 pt-3 first:pt-0">
                 <div>
@@ -541,7 +537,7 @@ export default function BundlesCollectionPage() {
       {/* 5. Why Buy Bundles (6 Benefit Cards) */}
       <section className="bg-white border-t border-b border-purple-100/30 py-16 px-4 md:px-8">
         <div className="mx-auto max-w-7xl space-y-10 text-center">
-          
+
           <div className="space-y-2">
             <span className="text-[12px] font-black uppercase tracking-widest text-[#ff4fa3] logo-font leading-none">Synergy & Value</span>
             <h2 className="text-2xl md:text-3xl font-black text-[#1b1533] uppercase logo-font">Why Buy Bundles?</h2>
@@ -593,8 +589,8 @@ export default function BundlesCollectionPage() {
               { name: 'Wellness Bundle', items: 'Capsules + Daily Microdose', price: '$69.99' },
               { name: 'Explorer Bundle', items: 'Strains + Edibles + Capsules', price: '$159.99' }
             ].map((item, idx) => (
-              <div 
-                key={idx} 
+              <div
+                key={idx}
                 className="flex flex-col justify-between bg-white p-5 rounded-3xl border border-slate-100 shadow-sm shrink-0 min-w-[230px] group transition-all duration-200 hover:-translate-y-1 hover:shadow-md cursor-pointer"
                 onClick={() => addToCart({
                   title: item.name,
@@ -621,7 +617,7 @@ export default function BundlesCollectionPage() {
       {/* 7. Customer Reviews Section */}
       <section className="bg-white py-16 border-b border-purple-100/30 px-4">
         <div className="mx-auto max-w-7xl space-y-10 text-center">
-          
+
           <div className="space-y-2">
             <span className="text-[12px] font-black uppercase tracking-widest text-[#ff4fa3] logo-font">Reviews</span>
             <h2 className="text-2xl md:text-3xl font-black text-[#1b1533] uppercase logo-font">Verified Bundle Reviews</h2>
@@ -661,7 +657,7 @@ export default function BundlesCollectionPage() {
       {/* 8. Bundle Comparison Table Section */}
       <section className="bg-white py-16 px-4 md:px-8 border-b border-purple-100/30">
         <div className="mx-auto max-w-4xl space-y-8 text-center">
-          
+
           <div className="space-y-2">
             <span className="text-[12px] font-black uppercase tracking-widest text-[#ff4fa3] logo-font">Curation Grid</span>
             <h2 className="text-2xl md:text-3xl font-black text-[#1b1533] uppercase logo-font">Compare Our Bundles</h2>
@@ -702,7 +698,7 @@ export default function BundlesCollectionPage() {
       {/* 9. Accordion FAQ Section */}
       <section className="bg-white py-16 px-4 md:px-8 border-b border-purple-100/30">
         <div className="mx-auto max-w-3xl space-y-8 text-center">
-          
+
           <div className="space-y-2">
             <span className="text-[12px] font-black uppercase tracking-widest text-[#ff4fa3] logo-font">Got Questions?</span>
             <h2 className="text-2xl md:text-3xl font-black text-[#1b1533] uppercase logo-font">Bundle FAQ Section</h2>
@@ -725,13 +721,11 @@ export default function BundlesCollectionPage() {
                   <strong className="text-xs md:text-sm font-black text-[#1b1533] uppercase logo-font group-hover:text-[#ff4fa3] transition-colors flex items-center gap-2.5">
                     <HelpCircle className="h-4.5 w-4.5 text-[#ff4fa3] shrink-0 stroke-[2.2]" /> {faqItem.q}
                   </strong>
-                  <ChevronDown className={`h-4.5 w-4.5 text-slate-400 group-hover:text-[#ff4fa3] transition-transform duration-300 shrink-0 stroke-[2.5] ${
-                    openFaqIdx === idx ? 'rotate-180' : ''
-                  }`} />
+                  <ChevronDown className={`h-4.5 w-4.5 text-slate-400 group-hover:text-[#ff4fa3] transition-transform duration-300 shrink-0 stroke-[2.5] ${openFaqIdx === idx ? 'rotate-180' : ''
+                    }`} />
                 </button>
-                <div className={`transition-all duration-300 overflow-hidden ${
-                  openFaqIdx === idx ? 'max-h-[300px] opacity-100 mt-2' : 'max-h-0 opacity-0'
-                }`}>
+                <div className={`transition-all duration-300 overflow-hidden ${openFaqIdx === idx ? 'max-h-[300px] opacity-100 mt-2' : 'max-h-0 opacity-0'
+                  }`}>
                   <p className="text-xs font-semibold leading-relaxed text-slate-500 pl-7 bg-white/40 p-3.5 rounded-xl border border-pink-50/20 shadow-inner">
                     {faqItem.a}
                   </p>
@@ -746,7 +740,7 @@ export default function BundlesCollectionPage() {
       {/* 10. Related Categories Card Section */}
       <section className="bg-[#fff8f3] py-16 px-4 md:px-8 border-b border-purple-100/30">
         <div className="mx-auto max-w-7xl space-y-8 text-center">
-          
+
           <div className="space-y-2">
             <span className="text-[12px] font-black uppercase tracking-widest text-[#ff4fa3] logo-font">Browse More</span>
             <h3 className="text-2xl md:text-3xl font-black text-[#1b1533] uppercase logo-font">Explore Other Collections</h3>
@@ -777,12 +771,12 @@ export default function BundlesCollectionPage() {
                   <p className="text-[12px] font-semibold text-slate-400 leading-relaxed line-clamp-3">{relCat.desc}</p>
                 </div>
 
-                <a 
+                <Link
                   href={`/category/${relCat.slug}`}
                   className="w-full inline-flex items-center justify-center rounded-2xl bg-slate-50 text-slate-800 border border-slate-200/80 py-3 text-xs font-black uppercase tracking-wider group-hover:bg-[#ff4fa3] group-hover:text-white group-hover:border-[#ff4fa3] transition-all duration-200 cursor-pointer gap-1.5 logo-font"
                 >
                   Explore Catalog <ArrowRight className="h-3.5 w-3.5 stroke-[2.5]" />
-                </a>
+                </Link>
               </div>
             ))}
           </div>

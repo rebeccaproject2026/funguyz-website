@@ -5,16 +5,16 @@ import React, { useState } from 'react';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { Newsletter } from '@/components/Newsletter';
-import { 
-  Sparkles, 
-  Shield, 
-  Bookmark, 
-  Share2, 
-  ChevronRight, 
-  FileText, 
-  Clock, 
-  Calendar, 
-  User, 
+import {
+  Sparkles,
+  Shield,
+  Bookmark,
+  Share2,
+  ChevronRight,
+  FileText,
+  Clock,
+  Calendar,
+  User,
   HelpCircle,
   Truck,
   Coins,
@@ -374,9 +374,9 @@ export default function DynamicInfoPage({ params }: { params: Promise<{ slug: st
   const doseRange = userIntent === 'micro'
     ? { min: 0.05, max: 0.15, text: 'Sub-perceptual daily wellness, no visuals.' }
     : userIntent === 'gentle'
-    ? { min: 0.5, max: 1.5, text: 'Gentle cognitive shift, glowing focus.' }
-    : { min: 2.0, max: 3.5, text: 'Deep transcendent, spiritual journey.' };
-  
+      ? { min: 0.5, max: 1.5, text: 'Gentle cognitive shift, glowing focus.' }
+      : { min: 2.0, max: 3.5, text: 'Deep transcendent, spiritual journey.' };
+
   const scheduleText = userIntent === 'micro'
     ? 'Fadiman Stack: 1 day active, 2 days rest.'
     : 'Trips should be scheduled with at least 2 weeks between sessions to prevent tolerance.';
@@ -389,12 +389,12 @@ export default function DynamicInfoPage({ params }: { params: Promise<{ slug: st
       <section className="relative overflow-hidden bg-gradient-to-tr from-[#fffbf8] via-[#fffcfb] to-[#fff3ec] border-b border-purple-100/50 py-16 px-4 md:px-8 min-h-[380px] flex items-center">
         <div className="absolute left-[5%] top-[10%] w-[300px] h-[300px] rounded-full bg-[#ffe8db]/30 blur-[90px] pointer-events-none" />
         <div className="absolute right-[5%] bottom-[5%] w-[300px] h-[300px] rounded-full bg-[#e0f2fe]/40 blur-[90px] pointer-events-none" />
-        
+
         <div className="mx-auto max-w-7xl relative z-10 grid gap-10 md:grid-cols-[1.3fr_1fr] items-center w-full">
-          
+
           {/* Left Hero Content */}
           <div className="flex flex-col items-start text-left gap-4">
-            
+
             {/* Breadcrumb */}
             <div className="flex items-center gap-1.5 text-[12px] font-black uppercase tracking-widest text-slate-400 logo-font leading-none">
               <Link href="/" className="hover:text-[#ff4fa3] transition-colors">Home</Link>
@@ -444,10 +444,10 @@ export default function DynamicInfoPage({ params }: { params: Promise<{ slug: st
 
       {/* 2. Sticky Sidebar Article Layout */}
       <section className="mx-auto max-w-7xl px-4 py-16 md:px-8 grid gap-10 lg:grid-cols-[1fr_2.5fr] items-start">
-        
+
         {/* Sticky Sidebar Navigation Desk (Left Column) */}
         <aside className="space-y-6 lg:sticky lg:top-24 text-left">
-          
+
           {/* Table Of Contents */}
           <div className="bg-white border border-slate-100 rounded-[32px] p-6 shadow-sm space-y-4">
             <h4 className="text-xs font-black uppercase tracking-wider text-[#1b1533] logo-font border-b border-slate-50 pb-2 flex items-center gap-2">
@@ -474,13 +474,13 @@ export default function DynamicInfoPage({ params }: { params: Promise<{ slug: st
             <ul className="space-y-2.5 text-xs font-bold text-slate-400">
               {RELATED_LINKS.filter(link => link.slug !== slugKey).slice(0, 4).map((link) => (
                 <li key={link.slug}>
-                  <a 
-                    href={`/info/${link.slug}`} 
+                  <Link
+                    href={`/info/${link.slug}`}
                     className="flex items-center gap-1 hover:text-[#ff4fa3] transition-colors"
                   >
                     <ChevronRight className="h-3.5 w-3.5 text-[#ff4fa3] shrink-0" />
                     <span>{link.label}</span>
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>
@@ -506,7 +506,7 @@ export default function DynamicInfoPage({ params }: { params: Promise<{ slug: st
 
         {/* Content Card Layout (Center Column) */}
         <div className="bg-white border border-slate-100 rounded-[44px] p-6 md:p-12 shadow-sm text-left space-y-10">
-          
+
           {/* Header Action metadata */}
           <div className="flex flex-wrap items-center justify-between gap-4 border-b border-slate-100 pb-6">
             <div className="space-y-1">
@@ -514,20 +514,19 @@ export default function DynamicInfoPage({ params }: { params: Promise<{ slug: st
               <h2 className="text-xl font-black uppercase text-[#1b1533] logo-font">{content.title}</h2>
             </div>
             <div className="flex gap-2">
-              <button 
+              <button
                 onClick={() => {
                   setIsBookmarked(!isBookmarked);
                   alert(isBookmarked ? 'Bookmark removed.' : 'Policy bookmarked!');
                 }}
-                className={`p-2 rounded-xl border transition-all cursor-pointer ${
-                  isBookmarked 
-                    ? 'bg-pink-50 border-pink-100 text-[#ff4fa3]' 
-                    : 'bg-white border-slate-200 text-slate-400 hover:text-[#ff4fa3]'
-                }`}
+                className={`p-2 rounded-xl border transition-all cursor-pointer ${isBookmarked
+                  ? 'bg-pink-50 border-pink-100 text-[#ff4fa3]'
+                  : 'bg-white border-slate-200 text-slate-400 hover:text-[#ff4fa3]'
+                  }`}
               >
                 <Bookmark className="h-4 w-4" />
               </button>
-              <button 
+              <button
                 onClick={() => alert('Link copied to clipboard!')}
                 className="p-2 rounded-xl border border-slate-200 bg-white text-slate-400 hover:text-[#ff4fa3] cursor-pointer"
               >
@@ -567,7 +566,7 @@ export default function DynamicInfoPage({ params }: { params: Promise<{ slug: st
                           <span>Order Subtotal</span>
                           <strong>${shipVal}</strong>
                         </div>
-                        <input 
+                        <input
                           type="range"
                           min="30"
                           max="250"
@@ -583,11 +582,10 @@ export default function DynamicInfoPage({ params }: { params: Promise<{ slug: st
                           <button
                             key={r}
                             onClick={() => setShipRegion(r as any)}
-                            className={`rounded-xl border py-2.5 text-[12px] font-black uppercase tracking-wide logo-font transition-all ${
-                              shipRegion === r 
-                                ? 'border-[#ff4fa3] bg-[#ff4fa3]/5 text-[#ff4fa3] shadow-sm'
-                                : 'border-slate-200 bg-white text-slate-600 hover:border-pink-300'
-                            }`}
+                            className={`rounded-xl border py-2.5 text-[12px] font-black uppercase tracking-wide logo-font transition-all ${shipRegion === r
+                              ? 'border-[#ff4fa3] bg-[#ff4fa3]/5 text-[#ff4fa3] shadow-sm'
+                              : 'border-slate-200 bg-white text-slate-600 hover:border-pink-300'
+                              }`}
                           >
                             {r} Metro
                           </button>
@@ -653,7 +651,7 @@ export default function DynamicInfoPage({ params }: { params: Promise<{ slug: st
                     <div className="grid grid-cols-3 gap-2 relative">
                       {/* Line connector */}
                       <div className="absolute top-5 left-[15%] right-[15%] h-0.5 bg-slate-100 pointer-events-none" />
-                      
+
                       {[
                         { title: '1. Contact Support', desc: 'Email details & Order ID.', icon: HelpCircle },
                         { title: '2. Quality Check', desc: 'wellness experts review reports.', icon: Shield },
@@ -689,7 +687,7 @@ export default function DynamicInfoPage({ params }: { params: Promise<{ slug: st
                           <span>Body Weight</span>
                           <strong>{userWeight} lbs ({weightKg.toFixed(0)} kg)</strong>
                         </div>
-                        <input 
+                        <input
                           type="range"
                           min="90"
                           max="260"
@@ -709,11 +707,10 @@ export default function DynamicInfoPage({ params }: { params: Promise<{ slug: st
                           <button
                             key={intent.id}
                             onClick={() => setUserIntent(intent.id as any)}
-                            className={`rounded-xl border py-2.5 text-[12px] font-black uppercase tracking-wide logo-font transition-all ${
-                              userIntent === intent.id
-                                ? 'border-[#ff4fa3] bg-[#ff4fa3]/5 text-[#ff4fa3] shadow-sm'
-                                : 'border-slate-200 bg-white text-slate-600 hover:border-pink-300'
-                            }`}
+                            className={`rounded-xl border py-2.5 text-[12px] font-black uppercase tracking-wide logo-font transition-all ${userIntent === intent.id
+                              ? 'border-[#ff4fa3] bg-[#ff4fa3]/5 text-[#ff4fa3] shadow-sm'
+                              : 'border-slate-200 bg-white text-slate-600 hover:border-pink-300'
+                              }`}
                           >
                             {intent.label}
                           </button>
@@ -791,12 +788,12 @@ export default function DynamicInfoPage({ params }: { params: Promise<{ slug: st
                   <h3 className="text-sm font-black text-[#1b1533] uppercase logo-font leading-tight truncate w-full">{link.label}</h3>
                   <p className="text-[12px] font-semibold text-slate-400 leading-normal line-clamp-3">Read authoritative terms, guidelines, and compliance maps under the official {link.label} statement.</p>
                 </div>
-                <a 
+                <Link
                   href={`/info/${link.slug}`}
                   className="w-full inline-flex items-center justify-center rounded-2xl bg-slate-50 text-slate-800 border border-slate-200/80 py-3 text-xs font-black uppercase tracking-wider group-hover:bg-[#ff4fa3] group-hover:text-white group-hover:border-[#ff4fa3] transition-all duration-200 cursor-pointer gap-1.5 logo-font"
                 >
                   Read Policy <ChevronRight className="h-3.5 w-3.5 stroke-[2.5]" />
-                </a>
+                </Link>
               </div>
             ))}
           </div>

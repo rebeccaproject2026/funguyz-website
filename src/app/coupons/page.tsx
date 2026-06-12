@@ -1,52 +1,33 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { Sparkles, Ticket, Copy, Check, ShieldCheck, Star, Truck } from 'lucide-react';
-
-const COUPONS = [
-  {
-    code: 'LAUNCH20',
-    discount: '20% OFF',
-    title: 'Grand Opening Special',
-    description: 'Celebrate our new Canada-wide shipping and delivery website launch. 20% off your entire order!',
-    expiry: 'Expires: Dec 31, 2026',
-    terms: 'Cannot be combined with other active codes. Does not apply on bundles.',
-    featured: true,
-    icon: Star,
-    gradient: 'from-[#ff4fa3] to-[#a855f7]',
-    badge: '🔥 Most Popular',
-  },
-  {
-    code: 'BULK25',
-    discount: '25% OFF',
-    title: 'Orders Over $500',
-    description: 'Spend over $500 and unlock 25% off your entire cart. Perfect for stocking up.',
-    expiry: 'Never Expires',
-    terms: 'Minimum cart value of $500 required before tax and shipping. Does not apply on bundles.',
-    featured: false,
-    icon: Sparkles,
-    gradient: 'from-[#f59e0b] to-[#ef4444]',
-    badge: '💰 Big Saver',
-  },
-  {
-    code: 'FREESHIP200',
-    discount: 'FREE SHIPPING',
-    discountLabel: true,
-    title: 'Free Delivery Over $200',
-    description: 'Enjoy free discreet delivery & shipping across Canada on orders over $200.',
-    expiry: 'Never Expires',
-    terms: 'Applies to orders with a subtotal of $200 or more before tax. Canada-wide. Does not apply on bundles.',
-    featured: false,
-    icon: Truck,
-    gradient: 'from-[#10b981] to-[#059669]',
-    badge: '🚚 Free Shipping',
-  },
-];
+import Link from 'next/link';
+import { MushroomLoader } from '@/components/MushroomLoader';
 
 export default function CouponsPage() {
   const [copiedCode, setCopiedCode] = useState<string | null>(null);
+  const [coupons, setCoupons] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchCoupons() {
+      try {
+        const res = await fetch('/api/coupons');
+        const data = await res.json();
+        if (data.success) {
+          setCoupons(data.coupons);
+        }
+      } catch (err) {
+        console.error('Failed to fetch coupons', err);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    fetchCoupons();
+  }, []);
 
   const handleCopy = (code: string) => {
     navigator.clipboard.writeText(code);
@@ -62,7 +43,7 @@ export default function CouponsPage() {
       <section className="bg-gradient-to-tr from-[#fffdfb] via-[#fffbf9] to-[#fff5f0] border-b border-purple-100/50 py-16 px-4 md:px-8 text-center relative overflow-hidden">
         <div className="absolute left-[5%] top-[10%] w-[300px] h-[300px] rounded-full bg-[#ffe8db]/30 blur-[80px] pointer-events-none" />
         <div className="absolute right-[5%] bottom-[5%] w-[300px] h-[300px] rounded-full bg-[#e0f2fe]/40 blur-[80px] pointer-events-none" />
-        
+
         <div className="mx-auto max-w-3xl relative z-10 flex flex-col items-center gap-3">
           <div className="inline-flex items-center gap-1.5 rounded-full bg-[#ff4fa3]/5 px-3.5 py-1.5 text-[10px] font-bold uppercase tracking-widest text-[#ff4fa3]">
             <Sparkles className="h-3 w-3" /> Exclusive Savings Hub
@@ -86,9 +67,9 @@ export default function CouponsPage() {
       <section className="mx-auto max-w-6xl px-4 py-16 md:px-8">
 
         {/* Featured LAUNCH20 Card — Full width, extra prominent */}
-        {COUPONS.filter(c => c.featured).map((coupon) => {
+        {isLoading && <div className="py-20"><MushroomLoader /></div>}
+        {!isLoading && coupons.filter(c => c.featured).map((coupon) => {
           const isCopied = copiedCode === coupon.code;
-          const IconComp = coupon.icon;
           return (
             <div
               key={coupon.code}
@@ -139,12 +120,12 @@ export default function CouponsPage() {
                       <><Copy className="h-4 w-4" /> Copy Code</>
                     )}
                   </button>
-                  <a
+                  <Link
                     href="/shop"
                     className="w-full md:w-56 inline-flex items-center justify-center rounded-2xl bg-white/10 border border-white/20 text-white py-3.5 text-xs font-black uppercase tracking-wider hover:bg-white/20 transition-all cursor-pointer gap-2 logo-font"
                   >
                     Shop Now →
-                  </a>
+                  </Link>
                 </div>
               </div>
             </div>
@@ -153,9 +134,8 @@ export default function CouponsPage() {
 
         {/* Rest of Coupons Grid */}
         <div className="grid gap-6 md:grid-cols-2">
-          {COUPONS.filter(c => !c.featured).map((coupon) => {
+          {!isLoading && coupons.filter(c => !c.featured).map((coupon) => {
             const isCopied = copiedCode === coupon.code;
-            const IconComp = coupon.icon;
             return (
               <div
                 key={coupon.code}

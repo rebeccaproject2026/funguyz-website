@@ -5,11 +5,11 @@ import React, { useState } from 'react';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { Newsletter } from '@/components/Newsletter';
-import { 
-  Sparkles, 
-  Calendar, 
-  Clock, 
-  User, 
+import {
+  Sparkles,
+  Calendar,
+  Clock,
+  User,
   ArrowRight,
   BookOpen,
   Smile,
@@ -69,8 +69,8 @@ const ARTICLES_DATA: Article[] = [
 export default function WellnessArticlesPage() {
   const [activeTab, setActiveTab] = useState<string>('all');
 
-  const filteredArticles = activeTab === 'all' 
-    ? ARTICLES_DATA 
+  const filteredArticles = activeTab === 'all'
+    ? ARTICLES_DATA
     : ARTICLES_DATA.filter(a => a.category.toLowerCase() === activeTab.toLowerCase());
 
   return (
@@ -81,12 +81,12 @@ export default function WellnessArticlesPage() {
       <section className="relative overflow-hidden bg-gradient-to-tr from-[#fffbf8] via-[#fffcfb] to-[#fff3ec] border-b border-purple-100/50 py-16 px-4 md:px-8 min-h-[350px] flex items-center">
         <div className="absolute left-[5%] top-[10%] w-[300px] h-[300px] rounded-full bg-[#ffe8db]/30 blur-[90px] pointer-events-none" />
         <div className="absolute right-[5%] bottom-[5%] w-[300px] h-[300px] rounded-full bg-[#e0f2fe]/40 blur-[90px] pointer-events-none" />
-        
+
         <div className="mx-auto max-w-7xl relative z-10 grid gap-10 md:grid-cols-[1.3fr_1fr] items-center w-full">
-          
+
           {/* Left Hero Block */}
           <div className="flex flex-col items-start text-left gap-4">
-            
+
             {/* Breadcrumb */}
             <div className="flex items-center gap-1.5 text-[12px] font-black uppercase tracking-widest text-slate-400 logo-font leading-none">
               <Link href="/" className="hover:text-[#ff4fa3] transition-colors">Home</Link>
@@ -110,7 +110,7 @@ export default function WellnessArticlesPage() {
               Discover mental balance, stress regulation articles, and structured insights helping you bring mindful benefits into your active lifestyle.
             </p>
 
-            <button 
+            <button
               onClick={() => document.getElementById('articles-grid-section')?.scrollIntoView({ behavior: 'smooth' })}
               className="text-xs font-black uppercase tracking-wider text-[#ff4fa3] hover:text-black transition-colors duration-200 logo-font border-b-2 border-transparent hover:border-black pb-0.5"
             >
@@ -141,12 +141,12 @@ export default function WellnessArticlesPage() {
         </div>
 
         <div className="bg-white border border-slate-100 rounded-[44px] p-6 md:p-8 shadow-sm grid gap-8 lg:grid-cols-[1.2fr_1fr] items-center hover:shadow-md transition-shadow group">
-          
+
           {/* Article Cover */}
           <div className="aspect-video w-full rounded-[32px] overflow-hidden bg-slate-100 shadow-sm relative">
-            <img 
-              src={ARTICLES_DATA[0].img} 
-              alt={ARTICLES_DATA[0].title} 
+            <img
+              src={ARTICLES_DATA[0].img}
+              alt={ARTICLES_DATA[0].title}
               className="h-full w-full object-cover group-hover:scale-102 transition-transform duration-500"
             />
           </div>
@@ -170,12 +170,12 @@ export default function WellnessArticlesPage() {
               <span className="flex items-center gap-1"><User className="h-3.5 w-3.5 text-[#ff4fa3]" /> Wellness Team</span>
             </div>
 
-            <a 
+            <Link
               href={`/blog/${ARTICLES_DATA[0].slug}`}
               className="inline-flex items-center justify-center gap-2 rounded-2xl bg-[#ff4fa3] text-white py-3.5 px-6 text-xs font-black uppercase tracking-wider transition-all duration-200 hover:bg-black hover:text-[#ff4fa3] hover:border-black cursor-pointer logo-font shadow-sm shadow-pink-100"
             >
               Read Article <ArrowRight className="h-4 w-4 stroke-[2.5]" />
-            </a>
+            </Link>
           </div>
 
         </div>
@@ -183,18 +183,17 @@ export default function WellnessArticlesPage() {
 
       {/* 3. Article Grid with Category Tabs */}
       <section id="articles-grid-section" className="mx-auto max-w-7xl px-4 py-16 md:px-8">
-        
+
         {/* Category Tabs */}
         <div className="flex gap-2 overflow-x-auto scrollbar-none flex-nowrap justify-center pb-8 border-b border-slate-100/50 mb-10">
           {['all', 'Integrate', 'Mindset', 'Recovery', 'Lifestyle'].map(tab => (
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
-              className={`rounded-2xl px-5 py-2.5 text-xs font-black uppercase tracking-wider logo-font transition-all border cursor-pointer ${
-                activeTab.toLowerCase() === tab.toLowerCase()
-                  ? 'bg-[#ff4fa3] border-[#ff4fa3] text-white shadow-md shadow-pink-100'
-                  : 'bg-white border-slate-200 text-slate-700 hover:border-[#ff4fa3]'
-              }`}
+              className={`rounded-2xl px-5 py-2.5 text-xs font-black uppercase tracking-wider logo-font transition-all border cursor-pointer ${activeTab.toLowerCase() === tab.toLowerCase()
+                ? 'bg-[#ff4fa3] border-[#ff4fa3] text-white shadow-md shadow-pink-100'
+                : 'bg-white border-slate-200 text-slate-700 hover:border-[#ff4fa3]'
+                }`}
             >
               {tab === 'all' ? 'All Articles' : `${tab}`}
             </button>
@@ -205,12 +204,12 @@ export default function WellnessArticlesPage() {
         <div className="grid gap-8 sm:grid-cols-2">
           {filteredArticles.map((article, idx) => (
             <div key={idx} className="bg-white border border-slate-100 rounded-[32px] p-5 shadow-sm flex flex-col justify-between items-start text-left gap-4 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 group">
-              
+
               <div className="aspect-video w-full rounded-2xl overflow-hidden bg-slate-100 relative">
-                <img 
-                  src={article.img} 
-                  alt={article.title} 
-                  className="h-full w-full object-cover group-hover:scale-102 transition-transform duration-500" 
+                <img
+                  src={article.img}
+                  alt={article.title}
+                  className="h-full w-full object-cover group-hover:scale-102 transition-transform duration-500"
                 />
               </div>
 
@@ -228,12 +227,12 @@ export default function WellnessArticlesPage() {
                   <span>•</span>
                   <span>{article.time}</span>
                 </div>
-                <a 
+                <Link
                   href={`/blog/${article.slug}`}
                   className="text-[12px] font-black uppercase tracking-wider text-[#ff4fa3] hover:underline logo-font flex items-center gap-1"
                 >
                   Read Article <ChevronRight className="h-3 w-3 stroke-[2.5]" />
-                </a>
+                </Link>
               </div>
 
             </div>
@@ -264,12 +263,12 @@ export default function WellnessArticlesPage() {
                   <h3 className="text-sm font-black text-[#1b1533] uppercase logo-font leading-tight">{link.name}</h3>
                   <p className="text-[12px] font-semibold text-slate-400 leading-relaxed line-clamp-3">{link.desc}</p>
                 </div>
-                <a 
+                <Link
                   href={link.url}
                   className="w-full inline-flex items-center justify-center rounded-2xl bg-slate-50 text-slate-800 border border-slate-200/80 py-3 text-xs font-black uppercase tracking-wider group-hover:bg-[#ff4fa3] group-hover:text-white group-hover:border-[#ff4fa3] transition-all duration-200 cursor-pointer gap-1.5 logo-font"
                 >
                   Explore Guide <ArrowRight className="h-3.5 w-3.5 stroke-[2.5]" />
-                </a>
+                </Link>
               </div>
             ))}
           </div>

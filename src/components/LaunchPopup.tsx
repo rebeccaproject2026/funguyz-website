@@ -125,15 +125,22 @@ export function LaunchPopup() {
         body: JSON.stringify({ name: username, email, phone }),
       });
 
+      const data = await response.json();
+
       if (!response.ok) {
-        throw new Error('Failed to subscribe');
+        throw new Error(data.message || 'Failed to subscribe');
+      }
+
+      if (data.message === 'Already registered') {
+        setErrorMsg('This email is already registered! Please wait for the launch email.');
+        return;
       }
 
       setErrorMsg('');
       setSubmitted(true);
       localStorage.setItem('funguyz_launch_popup_submitted', 'true');
-    } catch (err) {
-      setErrorMsg('Something went wrong. Please try again.');
+    } catch (err: any) {
+      setErrorMsg(err.message || 'Something went wrong. Please try again.');
     }
   };
 
