@@ -1,4 +1,5 @@
 'use client';
+import Link from 'next/link';
 
 import React, { useState } from 'react';
 import { Header } from '@/components/Header';
@@ -396,7 +397,7 @@ export default function DynamicInfoPage({ params }: { params: Promise<{ slug: st
             
             {/* Breadcrumb */}
             <div className="flex items-center gap-1.5 text-[12px] font-black uppercase tracking-widest text-slate-400 logo-font leading-none">
-              <a href="/" className="hover:text-[#ff4fa3] transition-colors">Home</a>
+              <Link href="/" className="hover:text-[#ff4fa3] transition-colors">Home</Link>
               <span>&gt;</span>
               <span className="text-slate-600 truncate max-w-xs">{content.title}</span>
             </div>

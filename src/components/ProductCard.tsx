@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { ShoppingCart, Star, Heart } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
 import { getProductUrl } from '@/data/products';
@@ -167,13 +168,7 @@ export function ProductCard({ p, i = 0 }: { p: any; i?: number }) {
       </button>
 
       {/* Inner Image Container with Pure White Background (Clickable Link!) */}
-      {/* --- OLD CODE BACKUP ---
-      <a
-        href={getProductUrl(title, category)}
-        className="relative aspect-square w-full overflow-hidden bg-white flex items-center justify-center rounded-2xl sm:rounded-3xl border border-slate-100/50 cursor-pointer block"
-      >
-      */}
-      <a
+      <Link
         href={getProductUrl(title, category)}
         className="relative aspect-[4/5] w-full overflow-hidden bg-white flex items-center justify-center rounded-2xl sm:rounded-3xl border border-slate-100/50 cursor-pointer block"
       >
@@ -183,21 +178,13 @@ export function ProductCard({ p, i = 0 }: { p: any; i?: number }) {
             {badge}
           </span>
         ) : null}
-        {/* --- OLD CODE BACKUP ---
-        <img
-          src={imageSrc}
-          alt={title}
-          className="w-full h-full object-contain pointer-events-none transition-all duration-500 group-hover:scale-105 group-hover:-translate-y-1 rounded-2xl sm:rounded-3xl"
-          loading="lazy"
-        />
-        */}
         <img
           src={imageSrc}
           alt={title}
           className="w-full h-full object-cover pointer-events-none transition-all duration-500 group-hover:scale-105 group-hover:-translate-y-1 rounded-2xl sm:rounded-3xl"
           loading="lazy"
         />
-      </a>
+      </Link>
 
       {/* Content Details Block */}
       <div className="p-1.5 sm:p-3 flex flex-col gap-1 sm:gap-1.5 mt-1 w-full">
@@ -206,9 +193,9 @@ export function ProductCard({ p, i = 0 }: { p: any; i?: number }) {
 
         {/* Title (Clickable Link!) */}
         <h3 className="font-bold text-[13px] sm:text-base md:text-[17px] text-[#1b1533] leading-snug tracking-tight hover:text-[#ff4fa3] transition-colors duration-200 line-clamp-2 logo-font">
-          <a href={getProductUrl(title, category)} className="cursor-pointer">
+          <Link href={getProductUrl(title, category)} className="cursor-pointer">
             {title}
-          </a>
+          </Link>
         </h3>
 
         {/* Rating Row */}

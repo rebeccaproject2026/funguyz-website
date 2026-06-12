@@ -1,4 +1,5 @@
 "use client";
+import Link from 'next/link';
 
 import React, { useState } from 'react';
 import {
@@ -665,10 +666,10 @@ export function Header() {
               {/* General Links */}
               <div className="flex flex-col gap-1 border-t border-pink-100/30 pt-4">
                 <span className="text-[12px] font-black uppercase tracking-widest text-slate-400 mb-2 pl-2">Quick Links</span>
-                <a href="/faq" onClick={() => setIsMobileMenuOpen(false)} className="px-3 py-2 rounded-xl text-xs font-bold text-[#1b1533]/85 hover:text-[#ff4fa3] hover:bg-pink-50/40 transition-all">FAQ</a>
-                <a href="/blog" onClick={() => setIsMobileMenuOpen(false)} className="px-3 py-2 rounded-xl text-xs font-bold text-[#1b1533]/85 hover:text-[#ff4fa3] hover:bg-pink-50/40 transition-all">Blog</a>
-                <a href="/contact" onClick={() => setIsMobileMenuOpen(false)} className="px-3 py-2 rounded-xl text-xs font-bold text-[#1b1533]/85 hover:text-[#ff4fa3] hover:bg-pink-50/40 transition-all">Contact Us</a>
-                <a href="/track-order" onClick={() => setIsMobileMenuOpen(false)} className="px-3 py-2 rounded-xl text-xs font-bold text-[#1b1533]/85 hover:text-[#ff4fa3] hover:bg-pink-50/40 transition-all">Track Order</a>
+                <Link href="/faq" onClick={() => setIsMobileMenuOpen(false)} className="px-3 py-2 rounded-xl text-xs font-bold text-[#1b1533]/85 hover:text-[#ff4fa3] hover:bg-pink-50/40 transition-all">FAQ</Link>
+                <Link href="/blog" onClick={() => setIsMobileMenuOpen(false)} className="px-3 py-2 rounded-xl text-xs font-bold text-[#1b1533]/85 hover:text-[#ff4fa3] hover:bg-pink-50/40 transition-all">Blog</Link>
+                <Link href="/contact" onClick={() => setIsMobileMenuOpen(false)} className="px-3 py-2 rounded-xl text-xs font-bold text-[#1b1533]/85 hover:text-[#ff4fa3] hover:bg-pink-50/40 transition-all">Contact Us</Link>
+                <Link href="/track-order" onClick={() => setIsMobileMenuOpen(false)} className="px-3 py-2 rounded-xl text-xs font-bold text-[#1b1533]/85 hover:text-[#ff4fa3] hover:bg-pink-50/40 transition-all">Track Order</Link>
               </div>
             </div>
 
@@ -684,27 +685,27 @@ export function Header() {
 
       {/* Mobile Sticky Bottom Navigation Bar */}
       <div className="fixed bottom-0 left-0 right-0 z-[999] md:hidden bg-white/95 backdrop-blur-md border-t border-slate-200/80 shadow-[0_-4px_24px_rgba(27,21,51,0.08)] flex items-center justify-around px-1 pt-2.5 pb-[calc(env(safe-area-inset-bottom)+12px)] select-none">
-        <a
+        <Link
           href="/shop"
           className={`flex flex-col items-center justify-center active:scale-95 transition-all w-[72px] h-12 gap-1 ${(pathname === '/shop' || pathname.startsWith('/shop/') || pathname.startsWith('/category/') || pathname.startsWith('/product/')) ? 'text-[#ff4fa3]' : 'text-slate-500 hover:text-[#ff4fa3]'}`}
         >
           <ShoppingBag className="h-5 w-5 stroke-[2]" />
           <span className="text-[10.5px] font-black uppercase tracking-widest whitespace-nowrap leading-none">Shop</span>
-        </a>
-        <a
+        </Link>
+        <Link
           href="/bundles"
           className={`flex flex-col items-center justify-center active:scale-95 transition-all w-[72px] h-12 gap-1 ${(pathname === '/bundles' || pathname.startsWith('/bundles/')) ? 'text-[#ff4fa3]' : 'text-slate-500 hover:text-[#ff4fa3]'}`}
         >
           <Gift className="h-5 w-5 stroke-[2]" />
           <span className="text-[10.5px] font-black uppercase tracking-widest whitespace-nowrap leading-none">Bundles</span>
-        </a>
-        <a
+        </Link>
+        <Link
           href="/coupons"
           className={`flex flex-col items-center justify-center active:scale-95 transition-all w-[72px] h-12 gap-1 ${(pathname === '/coupons' || pathname.startsWith('/coupons/')) ? 'text-[#ff4fa3]' : 'text-slate-500 hover:text-[#ff4fa3]'}`}
         >
           <Ticket className="h-5 w-5 stroke-[2]" />
           <span className="text-[10.5px] font-black uppercase tracking-widest whitespace-nowrap leading-none">Coupons</span>
-        </a>
+        </Link>
         <button
           onClick={() => setIsMobileCategoryOpen(true)}
           className={`flex flex-col items-center justify-center active:scale-95 transition-all w-[72px] h-12 gap-1 cursor-pointer focus:outline-none ${isMobileCategoryOpen ? 'text-[#ff4fa3]' : 'text-slate-500 hover:text-[#ff4fa3]'}`}

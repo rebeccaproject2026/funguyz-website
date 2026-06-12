@@ -1,4 +1,5 @@
 'use client';
+import Link from 'next/link';
 
 import React, { useState, useRef } from 'react';
 import {
@@ -741,7 +742,7 @@ export default function Home() {
         >
           {blogPosts.map((post) => (
             <SwiperSlide key={post.title} className="!h-auto">
-              <a href={`/blog/${post.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')}`} className="block h-full w-full">
+              <Link href={`/blog/${post.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')}`} className="block h-full w-full">
                 <article className="group overflow-hidden rounded-2xl border border-slate-100 bg-white shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between hover:-translate-y-0.5 h-full w-full">
                   <div className="relative aspect-video w-full overflow-hidden bg-slate-100">
                     <img
@@ -768,7 +769,7 @@ export default function Home() {
                     </div>
                   </div>
                 </article>
-              </a>
+              </Link>
             </SwiperSlide>
           ))}
         </Swiper>

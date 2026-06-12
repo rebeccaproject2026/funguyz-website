@@ -106,9 +106,9 @@ export default function CartPage() {
       <div className="bg-slate-50 border-b border-slate-100/50 py-6 px-4 md:px-8 select-none font-poppins">
         <div className="mx-auto max-w-7xl flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div className="flex items-center gap-2 text-xs font-bold text-slate-400">
-            <a href="/" className="hover:text-[#ff4fa3] transition-colors">Home</a>
+            <Link href="/" className="hover:text-[#ff4fa3] transition-colors">Home</Link>
             <ChevronRight className="h-3 w-3" />
-            <a href="/shop" className="hover:text-[#ff4fa3] transition-colors">Shop</a>
+            <Link href="/shop" className="hover:text-[#ff4fa3] transition-colors">Shop</Link>
             <ChevronRight className="h-3 w-3" />
             <span className="text-slate-600">Shopping Cart</span>
           </div>
@@ -187,9 +187,9 @@ export default function CartPage() {
                           <div className="flex-1 flex flex-col text-left min-w-0">
                             <span className="text-[12px] font-black uppercase tracking-widest text-[#ff4fa3] leading-none mb-1 font-poppins">{item.category}</span>
                             <h3 className="font-bold text-[#1b1533] text-sm md:text-base leading-snug truncate md:normal-case logo-font hover:text-[#ff4fa3] transition-colors">
-                              <a href={getProductUrl(cleanTitle, item.category)}>
+                              <Link href={getProductUrl(cleanTitle, item.category)}>
                                 {cleanTitle}
-                              </a>
+                              </Link>
                             </h3>
                             {weightTag && (
                               <span className="inline-flex mt-1 text-[10px] font-black uppercase tracking-wider bg-purple-50 text-purple-600 px-2 py-0.5 rounded-md self-start font-poppins">
@@ -386,12 +386,12 @@ export default function CartPage() {
                 </p>
               </div>
 
-              <a
+              <Link
                 href="/shop"
                 className="inline-flex items-center justify-center rounded-2xl bg-[#ff4fa3] text-white border border-[#ff4fa3] px-10 py-4 text-xs font-black uppercase tracking-wider shadow-md shadow-pink-100 transition-all duration-300 hover:bg-black hover:text-[#ff4fa3] hover:border-black hover:-translate-y-0.5 active:translate-y-0 cursor-pointer gap-2 logo-font z-10"
               >
                 Browse Our Shop <ArrowRight className="h-4 w-4 stroke-[2.5]" />
-              </a>
+              </Link>
             </div>
 
             <div className="space-y-8">

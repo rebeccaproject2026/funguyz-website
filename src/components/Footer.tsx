@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { Mail, MapPin, ShieldCheck, ChevronDown, X, Send, HelpCircle } from 'lucide-react';
 import { Logo } from './Logo';
+import Link from 'next/link';
 
 type FooterColumn = [title: string, links: string[]];
 
@@ -109,9 +110,9 @@ export function Footer() {
 
                   return (
                     <li key={item}>
-                      <a href={getFooterLink(title, item)} className="hover:text-[#ff4fa3] transition-colors duration-200">
+                      <Link href={getFooterLink(title, item)} className="hover:text-[#ff4fa3] transition-colors duration-200">
                         {item}
-                      </a>
+                      </Link>
                     </li>
                   );
                 })}

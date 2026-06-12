@@ -1,11 +1,11 @@
 'use client';
+import Link from 'next/link';
 
 import React, { useState } from 'react';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { ProductCard } from '@/components/ProductCard';
 import { useCart } from '@/context/CartContext';
-import { products } from '@/data/products';
 import {
   Sparkles,
   ArrowUpDown,
@@ -223,13 +223,6 @@ const categoryDataMap: Record<string, CategoryDetails> = {
   }
 };
 
-// Rich products array specifically expanded to guarantee 1-16 product items dynamically for e-commerce catalog
-const productsCatalog: Record<string, string[][]> = {
-  'Magic Mushrooms': products.filter(p => p[1] === 'Magic Mushrooms'),
-  'Edibles': products.filter(p => p[1] === 'Edibles'),
-  'Capsules': products.filter(p => p[1] === 'Capsules'),
-  'Microdose': products.filter(p => p[1] === 'Microdose'),
-};
 
 export default function DedicatedCategoryPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = React.use(params);
@@ -328,7 +321,7 @@ export default function DedicatedCategoryPage({ params }: { params: Promise<{ sl
 
               {/* Breadcrumb */}
               <div className="flex items-center gap-1.5 text-[12px] font-black uppercase tracking-widest text-slate-400 logo-font leading-none">
-                <a href="/" className="hover:text-[#ff4fa3] transition-colors">Home</a>
+                <Link href="/" className="hover:text-[#ff4fa3] transition-colors">Home</Link>
                 <span>&gt;</span>
                 <span className="text-slate-600">Bundles</span>
               </div>
@@ -615,8 +608,8 @@ export default function DedicatedCategoryPage({ params }: { params: Promise<{ sl
                       type="button"
                       onClick={() => setBuildMushroom({ name: opt.name, price: opt.price })}
                       className={`rounded-2xl border p-4 text-left cursor-pointer transition-all flex justify-between items-center ${buildMushroom.name === opt.name
-                          ? 'border-[#ff4fa3] bg-pink-50/10 shadow-sm'
-                          : 'border-slate-100 hover:border-pink-300'
+                        ? 'border-[#ff4fa3] bg-pink-50/10 shadow-sm'
+                        : 'border-slate-100 hover:border-pink-300'
                         }`}
                     >
                       <div className="leading-tight">
@@ -646,8 +639,8 @@ export default function DedicatedCategoryPage({ params }: { params: Promise<{ sl
                       type="button"
                       onClick={() => setBuildEdible({ name: opt.name, price: opt.price })}
                       className={`rounded-2xl border p-4 text-left cursor-pointer transition-all flex flex-col justify-between items-start gap-3 h-28 ${buildEdible.name === opt.name
-                          ? 'border-[#ff4fa3] bg-pink-50/10 shadow-sm'
-                          : 'border-slate-100 hover:border-pink-300'
+                        ? 'border-[#ff4fa3] bg-pink-50/10 shadow-sm'
+                        : 'border-slate-100 hover:border-pink-300'
                         }`}
                     >
                       <span className="block text-xs font-black uppercase text-[#1b1533] logo-font leading-tight">{opt.name}</span>
@@ -674,8 +667,8 @@ export default function DedicatedCategoryPage({ params }: { params: Promise<{ sl
                       type="button"
                       onClick={() => setBuildCapsule({ name: opt.name, price: opt.price })}
                       className={`rounded-2xl border p-4 text-left cursor-pointer transition-all flex flex-col justify-between items-start gap-3 h-28 ${buildCapsule.name === opt.name
-                          ? 'border-[#ff4fa3] bg-pink-50/10 shadow-sm'
-                          : 'border-slate-100 hover:border-pink-300'
+                        ? 'border-[#ff4fa3] bg-pink-50/10 shadow-sm'
+                        : 'border-slate-100 hover:border-pink-300'
                         }`}
                     >
                       <span className="block text-xs font-black uppercase text-[#1b1533] logo-font leading-tight">{opt.name}</span>
@@ -702,8 +695,8 @@ export default function DedicatedCategoryPage({ params }: { params: Promise<{ sl
                       type="button"
                       onClick={() => setBuildMicrodose({ name: opt.name, price: opt.price })}
                       className={`rounded-2xl border p-4 text-left cursor-pointer transition-all flex flex-col justify-between items-start gap-3 h-28 ${buildMicrodose.name === opt.name
-                          ? 'border-[#ff4fa3] bg-pink-50/10 shadow-sm'
-                          : 'border-slate-100 hover:border-pink-300'
+                        ? 'border-[#ff4fa3] bg-pink-50/10 shadow-sm'
+                        : 'border-slate-100 hover:border-pink-300'
                         }`}
                     >
                       <span className="block text-xs font-black uppercase text-[#1b1533] logo-font leading-tight">{opt.name}</span>
@@ -1056,11 +1049,9 @@ export default function DedicatedCategoryPage({ params }: { params: Promise<{ sl
 
   // Filter products interactively
   const activeFilteredProducts = baseFilteredProducts.filter((product) => {
-    const isDynamic = !Array.isArray(product);
-    const title = isDynamic ? (product.name || '').toLowerCase() : product[0].toLowerCase();
-    const tag = isDynamic ? (product.tags?.[0] || 'Premium').toLowerCase() : product[3].toLowerCase();
-    const priceStr = isDynamic ? `$${product.price || 0}` : product[2];
-    const priceNum = isDynamic ? (product.price || 0) : parseFloat(priceStr.replace('$', ''));
+    const title = (product.name || '').toLowerCase();
+    const tag = (product.tags?.[0] || 'Premium').toLowerCase();
+    const priceNum = product.price || 0;
 
     // 1. Text Search Filter
     if (searchQuery && !title.includes(searchQuery.toLowerCase())) {
@@ -1088,15 +1079,12 @@ export default function DedicatedCategoryPage({ params }: { params: Promise<{ sl
 
   // Sort logic
   const sortedProducts = [...activeFilteredProducts].sort((a, b) => {
-    const isADyn = !Array.isArray(a);
-    const isBDyn = !Array.isArray(b);
-    
-    const priceA = isADyn ? (a.price || 0) : parseFloat(a[2].replace('$', ''));
-    const priceB = isBDyn ? (b.price || 0) : parseFloat(b[2].replace('$', ''));
+    const priceA = a.price || 0;
+    const priceB = b.price || 0;
 
     if (sortBy === 'price-asc') return priceA - priceB;
     if (sortBy === 'price-desc') return priceB - priceA;
-    if (sortBy === 'name-asc') return a[0].localeCompare(b[0]);
+    if (sortBy === 'name-asc') return (a.name || '').localeCompare(b.name || '');
     return 0; // default
   });
 
@@ -1123,9 +1111,9 @@ export default function DedicatedCategoryPage({ params }: { params: Promise<{ sl
 
             {/* Breadcrumbs */}
             <div className="flex items-center gap-1.5 text-[12px] font-black uppercase tracking-widest text-slate-400 logo-font leading-none">
-              <a href="/" className="hover:text-[#ff4fa3] transition-colors">Home</a>
+              <Link href="/" className="hover:text-[#ff4fa3] transition-colors">Home</Link>
               <span>/</span>
-              <a href="/shop" className="hover:text-[#ff4fa3] transition-colors">Shop</a>
+              <Link href="/shop" className="hover:text-[#ff4fa3] transition-colors">Shop</Link>
               <span>/</span>
               <span className="text-slate-600">{category.categoryName}</span>
             </div>
@@ -1459,12 +1447,12 @@ export default function DedicatedCategoryPage({ params }: { params: Promise<{ sl
                   <strong className="block text-xs font-black text-[#1b1533] logo-font leading-snug truncate max-w-[130px]">{item.name}</strong>
                   <span className="block text-[12px] font-black text-[#ff4fa3] mt-0.5">
                     {(() => {
-                      const dbMatch = products.find(p => {
-                        const name1 = p[0].toLowerCase();
+                      const dbMatch = dbProducts.find((p: any) => {
+                        const name1 = (p.name || '').toLowerCase();
                         const name2 = item.name.toLowerCase();
                         return name1 === name2 || name1.includes(name2) || name2.includes(name1);
                       });
-                      return dbMatch ? dbMatch[2] : item.price;
+                      return dbMatch ? `$${dbMatch.price.toFixed(2)}` : item.price;
                     })()}
                   </span>
                 </div>

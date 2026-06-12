@@ -1,4 +1,5 @@
 'use client';
+import Link from 'next/link';
 
 import React, { useState, useEffect } from 'react';
 import { Header } from '@/components/Header';
@@ -274,9 +275,9 @@ export default function MyAccountPage() {
 
             <p className="text-center text-[12px] font-semibold text-slate-400 pt-2 border-t border-slate-100">
               Don&apos;t have an account?{' '}
-              <a href="/checkout" className="text-[#ff4fa3] font-bold hover:underline">
+              <Link href="/checkout" className="text-[#ff4fa3] font-bold hover:underline">
                 Place an order
-              </a>{' '}
+              </Link>{' '}
               and one will be created for you automatically.
             </p>
           </div>
@@ -614,7 +615,7 @@ export default function MyAccountPage() {
                       <p className="font-black text-slate-800 logo-font">No orders yet</p>
                       <p className="text-xs text-slate-400 mt-1">Your orders will appear here after checkout</p>
                     </div>
-                    <a href="/shop" className="mt-2 rounded-2xl bg-[#ff4fa3] px-6 py-2.5 text-xs font-bold uppercase tracking-wider text-white shadow-md shadow-pink-100 hover:bg-black transition-all duration-300 cursor-pointer logo-font">Browse Shop</a>
+                    <Link href="/shop" className="mt-2 rounded-2xl bg-[#ff4fa3] px-6 py-2.5 text-xs font-bold uppercase tracking-wider text-white shadow-md shadow-pink-100 hover:bg-black transition-all duration-300 cursor-pointer logo-font">Browse Shop</Link>
                   </div>
                 )}
               </div>

@@ -1,4 +1,5 @@
 'use client';
+import Link from 'next/link';
 
 import React, { useState } from 'react';
 import { Header } from '@/components/Header';
@@ -123,9 +124,9 @@ export default function BlogDetailsClient({ params }: { params: Promise<{ slug: 
       {/* Breadcrumbs Row */}
       <div className="bg-slate-50 border-b border-slate-100/50 py-3.5 px-4 md:px-8 text-xs font-bold text-slate-400 select-none">
         <div className="mx-auto max-w-7xl flex items-center gap-2">
-          <a href="/" className="hover:text-[#ff4fa3]">Home</a>
+          <Link href="/" className="hover:text-[#ff4fa3]">Home</Link>
           <ChevronRight className="h-3 w-3" />
-          <a href="/blog" className="hover:text-[#ff4fa3]">Blog</a>
+          <Link href="/blog" className="hover:text-[#ff4fa3]">Blog</Link>
           <ChevronRight className="h-3 w-3" />
           <span className="text-slate-600 truncate max-w-xs">{post.title}</span>
         </div>

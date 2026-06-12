@@ -1,7 +1,7 @@
 'use client';
+import Link from 'next/link';
 
 import React, { useState, useEffect } from 'react';
-import Link from 'next/link';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { useCart } from '@/context/CartContext';
@@ -416,7 +416,7 @@ export default function CheckoutPage() {
                   </div>
                   <div>
                     <h4 className="text-xs font-black uppercase tracking-wider text-violet-800 logo-font">Account Created For You!</h4>
-                    <p className="text-[11px] font-semibold text-violet-600 mt-0.5">Use these credentials to access your order history at <a href="/my-account" className="underline font-bold">My Account</a></p>
+                    <p className="text-[11px] font-semibold text-violet-600 mt-0.5">Use these credentials to access your order history at <Link href="/my-account" className="underline font-bold">My Account</Link></p>
                   </div>
                 </div>
                 <div className="grid gap-3 sm:grid-cols-3 bg-white p-4 rounded-2xl border border-violet-100/60 text-xs font-semibold">
@@ -433,7 +433,7 @@ export default function CheckoutPage() {
                   <div className="space-y-1">
                     <span className="block text-[11px] text-slate-400 uppercase tracking-widest">Action Required</span>
                     <span className="block text-[11px] font-semibold text-amber-600 leading-relaxed">Change your password after first login</span>
-                    <a href="/my-account" className="text-[11px] font-black uppercase text-violet-600 hover:underline tracking-wider block mt-1">Go to My Account →</a>
+                    <Link href="/my-account" className="text-[11px] font-black uppercase text-violet-600 hover:underline tracking-wider block mt-1">Go to My Account →</Link>
                   </div>
                 </div>
                 <p className="text-[11px] text-slate-400 font-semibold">📧 These credentials have been sent to <strong className="text-slate-600">{completedOrder.formData.email}</strong> — please save your temporary password now.</p>
@@ -447,7 +447,7 @@ export default function CheckoutPage() {
                 </div>
                 <div>
                   <h4 className="text-xs font-black uppercase tracking-wider text-blue-800 logo-font">Order Added to Your Account</h4>
-                  <p className="text-[12px] font-semibold text-slate-600 mt-1">This order has been added to your existing account. <a href="/my-account" className="text-[#ff4fa3] font-bold hover:underline">View in My Account →</a></p>
+                  <p className="text-[12px] font-semibold text-slate-600 mt-1">This order has been added to your existing account. <Link href="/my-account" className="text-[#ff4fa3] font-bold hover:underline">View in My Account →</Link></p>
                 </div>
               </div>
             )}
