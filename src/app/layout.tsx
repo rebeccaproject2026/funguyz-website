@@ -27,14 +27,14 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://www.funguyz.ca'),
+  metadataBase: new URL('https://funguyz.ca'),
   title: 'FunGuyz | Magic Mushroom Delivery Canada & GTA',
   description: 'Shop premium magic mushrooms with fast delivery across Toronto, Mississauga, Brampton and the GTA. Canada-wide shipping and discreet packaging.',
   keywords: 'magic mushroom delivery Canada, mushroom delivery GTA, buy magic mushrooms online, FunGuyz, mushroom shipping Canada',
   icons: {
     icon: [
       { url: '/images/favicon.png' },
-      new URL('/images/favicon.png', 'https://www.funguyz.ca'),
+      new URL('/images/favicon.png', 'https://funguyz.ca'),
     ],
     shortcut: '/images/favicon.png',
     apple: '/images/favicon.png',
