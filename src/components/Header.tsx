@@ -807,17 +807,17 @@ export function Header() {
                         {/* Subcategory short links (show top 3) */}
                         {subcategories.length > 0 && (
                           <div className="flex flex-wrap gap-1 mt-2.5">
-                            {subcategories.slice(0, 3).map((sub: string, sIdx: number) => {
-                              const productUrl = getProductUrl(sub, item.label);
+                            {subcategories.slice(0, 3).map((sub: any, sIdx: number) => {
+                              const productUrl = getProductUrl(sub.name, item.label);
                               return (
                                 <Link
                                   key={sIdx}
                                   href={productUrl}
                                   onClick={() => setIsMobileCategoryOpen(false)}
                                   className="text-[10px] font-bold text-slate-500 hover:text-[#ff4fa3] bg-white/85 px-1.5 py-0.5 rounded border border-slate-100 truncate max-w-[80px]"
-                                  title={sub}
+                                  title={sub.name}
                                 >
-                                  {sub.split(' ')[0]}
+                                  {sub.name.split(' ')[0]}
                                 </Link>
                               );
                             })}
