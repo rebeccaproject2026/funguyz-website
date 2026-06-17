@@ -11,10 +11,21 @@ const nextConfig = {
         has: [
           {
             type: 'host',
-            value: 'funguyz.ca',
+            value: 'www.funguyz.ca',
           },
         ],
-        destination: 'https://www.funguyz.ca/:path*',
+        destination: 'https://funguyz.ca/:path*',
+        permanent: true,
+      },
+      {
+        source: '/:path*',
+        has: [
+          {
+            type: 'host',
+            value: 'www.funguyz.com',
+          },
+        ],
+        destination: 'https://funguyz.com/:path*',
         permanent: true,
       },
     ];

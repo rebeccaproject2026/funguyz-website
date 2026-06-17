@@ -9,8 +9,8 @@ export const transporter = nodemailer.createTransport(
     port: Number(process.env.SMTP_PORT) || 465,
     secure: true, // true for 465
     auth: {
-      user: process.env.TITAN_EMAIL_USER || process.env.SMTP_USER,
-      pass: process.env.TITAN_EMAIL_PASS || process.env.SMTP_PASS,
+      user: process.env.SMTP_USER,
+      pass: process.env.SMTP_PASS,
     },
     // debug: true, 
     // logger: true,

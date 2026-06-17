@@ -41,7 +41,7 @@ export async function POST(req: Request) {
     try {
       const emailContent = generateRegistrationEmailTemplate(name);
       await transporter.sendMail({
-        from: `"The Delivery & Shipping Team" <${process.env.TITAN_EMAIL_USER || process.env.SMTP_USER || 'no-reply@funguyz.ca'}>`,
+        from: `"The Delivery & Shipping Team" <${process.env.SMTP_USER || 'no-reply@funguyz.ca'}>`,
         to: email.toLowerCase(),
         subject: "You're officially on the list 🍄",
         text: emailContent.text,

@@ -3,7 +3,7 @@ import Link from 'next/link';
 import useSWR from 'swr';
 import { fetcher } from '@/lib/fetcher';
 
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import {
   ArrowRight,
   Award,
@@ -90,10 +90,27 @@ export default function Home() {
   const [swiperInstance, setSwiperInstance] = useState<any>(null);
   const [bestSellersSwiper, setBestSellersSwiper] = useState<any>(null);
   const bestSellersRef = useRef<HTMLDivElement>(null);
+  const triggerRef = useRef<HTMLElement>(null);
+  const [shouldFetchData, setShouldFetchData] = useState(false);
 
-  const { data: prodData, isLoading: isLoadingProducts } = useSWR('/api/products', fetcher);
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          setShouldFetchData(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: '400px' }
+    );
+
+    if (triggerRef.current) observer.observe(triggerRef.current);
+    return () => observer.disconnect();
+  }, []);
+
+  const { data: prodData, isLoading: isLoadingProducts } = useSWR(shouldFetchData ? '/api/products' : null, fetcher);
   const { data: catData } = useSWR('/api/categories', fetcher);
-  const { data: blogData } = useSWR('/api/blogs', fetcher);
+  const { data: blogData } = useSWR(shouldFetchData ? '/api/blogs' : null, fetcher);
 
   const dbProducts = prodData?.success ? prodData.products : [];
   const dbCategories = catData?.success ? catData.categories : [];
@@ -277,7 +294,7 @@ export default function Home() {
       </section>
 
       {/* 3. Shop By Category */}
-      <section id="shop-by-category" className="mx-auto max-w-7xl px-4 py-8 md:px-8">
+      <section id="shop-by-category" ref={triggerRef} className="mx-auto max-w-7xl px-4 py-8 md:px-8">
         <div className="flex flex-col items-center gap-1.5 text-center mb-8">
           <span className="text-[12px] font-bold uppercase tracking-widest text-[#ff4fa3]">Premium Selection</span>
           <h2 className="text-3xl font-black tracking-tight text-[#1b1533] uppercase md:text-4xl logo-font">SHOP BY CATEGORY</h2>
@@ -361,9 +378,11 @@ export default function Home() {
         </div>
 
         {/* Elite Swiper Carousel Slider Container (4 slides on desktop) */}
-        {isLoadingProducts ? (
-          <div className="flex justify-center items-center py-20 w-full">
-            <MushroomLoader className="scale-150" />
+        {isLoadingProducts || !shouldFetchData ? (
+          <div className="mt-8 grid w-full grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            {[1, 2, 3, 4].map((i) => (
+              <div key={i} className="w-full aspect-[4/5] rounded-[32px] bg-slate-100 animate-pulse border border-slate-200/50 shadow-sm"></div>
+            ))}
           </div>
         ) : (
           <Swiper
@@ -432,13 +451,21 @@ export default function Home() {
             <div className="h-1 w-12 rounded bg-[#ff4fa3] mt-1.5" />
           </div>
 
-          <div className="grid gap-6 grid-cols-2 lg:grid-cols-4">
-            {displayProducts.slice(0, 8).map((p: any, i: any) => (
-              <div key={p._id || p[0]} className="w-full">
-                <ProductCard p={p} i={i} />
-              </div>
-            ))}
-          </div>
+          {isLoadingProducts || !shouldFetchData ? (
+            <div className="grid gap-6 grid-cols-2 lg:grid-cols-4">
+              {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
+                <div key={i} className="w-full aspect-[4/5] rounded-[32px] bg-white/50 animate-pulse border border-purple-100/30 shadow-sm"></div>
+              ))}
+            </div>
+          ) : (
+            <div className="grid gap-6 grid-cols-2 lg:grid-cols-4">
+              {displayProducts.slice(0, 8).map((p: any, i: any) => (
+                <div key={p._id || p[0]} className="w-full">
+                  <ProductCard p={p} i={i} />
+                </div>
+              ))}
+            </div>
+          )}
 
           <div className="mt-12 flex justify-center">
             <Link

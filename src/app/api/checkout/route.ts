@@ -33,10 +33,10 @@ export async function POST(request: Request) {
       isNewUser = true;
       generatedPassword = generateRandomPassword();
       const passwordHash = await bcrypt.hash(generatedPassword, 10);
-      
+
       const expiryDate = new Date();
       expiryDate.setDate(expiryDate.getDate() + 7); // 7 days expiry
-      
+
       user = await Customer.create({
         firstName: customerInfo?.firstName || 'Customer',
         lastName: customerInfo?.lastName || '',
@@ -55,25 +55,25 @@ export async function POST(request: Request) {
         }]
       });
     } else if (customerInfo) {
-       // Returning user or logged-in user: update phone if missing, deduct cash if applied
-       let needsSave = false;
-       if (!user.phone && customerInfo.phone) {
-         user.phone = customerInfo.phone;
-         needsSave = true;
-       }
-       if (appliedCashBalance && appliedCashBalance > 0 && user.cashBalance >= appliedCashBalance) {
-         user.cashBalance -= appliedCashBalance;
-         needsSave = true;
-       }
-       if (needsSave) {
-         await user.save();
-       }
+      // Returning user or logged-in user: update phone if missing, deduct cash if applied
+      let needsSave = false;
+      if (!user.phone && customerInfo.phone) {
+        user.phone = customerInfo.phone;
+        needsSave = true;
+      }
+      if (appliedCashBalance && appliedCashBalance > 0 && user.cashBalance >= appliedCashBalance) {
+        user.cashBalance -= appliedCashBalance;
+        needsSave = true;
+      }
+      if (needsSave) {
+        await user.save();
+      }
     }
 
     // 2. Recalculate and Create the Order
-    const clientSubTotal = parseFloat(orderDetails.subtotal.replace(/[^0-9.-]+/g,""));
-    const clientGrandTotal = parseFloat(orderDetails.grandTotal.replace(/[^0-9.-]+/g,""));
-    
+    const clientSubTotal = parseFloat(orderDetails.subtotal.replace(/[^0-9.-]+/g, ""));
+    const clientGrandTotal = parseFloat(orderDetails.grandTotal.replace(/[^0-9.-]+/g, ""));
+
     let trueSubTotal = 0;
     const trueItems = [];
 
@@ -94,7 +94,7 @@ export async function POST(request: Request) {
         status: { $ne: EProductStatus.OUT_OF_STOCK }
       }).lean() as any;
 
-      let truePrice = parseFloat(item.price.replace(/[^0-9.-]+/g,"")); // Fallback
+      let truePrice = parseFloat(item.price.replace(/[^0-9.-]+/g, "")); // Fallback
       if (product) {
         truePrice = product.price;
         if (weight && product.pricing && product.pricing.length > 0) {
@@ -124,10 +124,10 @@ export async function POST(request: Request) {
       const coupon = await Coupon.findOne({ code: couponCode.toUpperCase(), isActive: true });
       if (coupon) {
         if (coupon.discountLabel && (coupon.title.toLowerCase().includes('free shipping') || coupon.title.toLowerCase().includes('free delivery'))) {
-           trueShippingAmount = 0;
+          trueShippingAmount = 0;
         } else if (coupon.discount.includes('%')) {
-           const percent = parseInt(coupon.discount) / 100;
-           trueDiscountAmount = trueSubTotal * percent;
+          const percent = parseInt(coupon.discount) / 100;
+          trueDiscountAmount = trueSubTotal * percent;
         }
       }
     }
@@ -143,8 +143,8 @@ export async function POST(request: Request) {
 
     // Validate (Allow tiny floating point variance)
     if (Math.abs(trueGrandTotal - clientGrandTotal) > 0.05) {
-       console.error(`Price Mismatch! Client: ${clientGrandTotal}, Server: ${trueGrandTotal}`);
-       return NextResponse.json({ success: false, error: 'Price validation failed. Your cart prices were out of sync. Please refresh the page.' }, { status: 400 });
+      console.error(`Price Mismatch! Client: ${clientGrandTotal}, Server: ${trueGrandTotal}`);
+      return NextResponse.json({ success: false, error: 'Price validation failed. Your cart prices were out of sync. Please refresh the page.' }, { status: 400 });
     }
 
     const newOrder = await Order.create({
@@ -161,14 +161,14 @@ export async function POST(request: Request) {
       discountAmount: trueDiscountAmount,
       couponCode,
       shippingAddress: {
-         street: customerInfo?.address || '',
-         city: customerInfo?.city || '',
-         province: customerInfo?.province || 'ON',
-         postalCode: customerInfo?.postcode || '',
+        street: customerInfo?.address || '',
+        city: customerInfo?.city || '',
+        province: customerInfo?.province || 'ON',
+        postalCode: customerInfo?.postcode || '',
       },
       deliveryDetails: {
-         date: orderDetails.deliveryDetails?.date,
-         timeSlot: orderDetails.deliveryDetails?.timeSlot,
+        date: orderDetails.deliveryDetails?.date,
+        timeSlot: orderDetails.deliveryDetails?.timeSlot,
       }
     });
 
@@ -176,8 +176,8 @@ export async function POST(request: Request) {
     const emailPromises = [];
 
     const adminMailOptions = {
-      from: `"FunGuyz Store" <${process.env.TITAN_EMAIL_USER || 'no-reply@funguyz.ca'}>`,
-      to: adminEmail || process.env.TITAN_EMAIL_USER,
+      from: `"FunGuyz Store" <${process.env.SMTP_USER || 'no-reply@funguyz.ca'}>`,
+      to: adminEmail || process.env.SMTP_USER,
       subject: `New Order Received - ${orderDetails.orderId}`,
       html: generateAdminEmailHtml(orderDetails, customerEmail),
     };
@@ -185,19 +185,19 @@ export async function POST(request: Request) {
 
     if (customerEmail) {
       const customerMailOptions = {
-        from: `"FunGuyz Store" <${process.env.TITAN_EMAIL_USER || 'no-reply@funguyz.ca'}>`,
+        from: `"FunGuyz Store" <${process.env.SMTP_USER || 'no-reply@funguyz.ca'}>`,
         to: customerEmail,
         subject: `Order Confirmation - ${orderDetails.orderId}`,
-        html: generateCustomerEmailHtml(orderDetails, customerEmail) 
-              + (isNewUser ? `<br><p>An account was created for you! Temp Password: <b>${generatedPassword}</b></p>` : ''),
+        html: generateCustomerEmailHtml(orderDetails, customerEmail)
+          + (isNewUser ? `<br><p>An account was created for you! Temp Password: <b>${generatedPassword}</b></p>` : ''),
       };
       emailPromises.push(transporter.sendMail(customerMailOptions).catch(e => console.error('Customer email failed', e)));
     }
 
     await Promise.allSettled(emailPromises);
 
-    return NextResponse.json({ 
-      success: true, 
+    return NextResponse.json({
+      success: true,
       message: 'Checkout complete',
       isNewUser,
       password: generatedPassword

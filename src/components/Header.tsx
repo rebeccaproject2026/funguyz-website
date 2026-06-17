@@ -338,22 +338,21 @@ export function Header() {
 
   return (
     <>
-      {isLoading && (
-        <div className="fixed inset-0 z-[999999] bg-[#fffaf5] flex flex-col items-center justify-center">
-          <MushroomLoader className="scale-150 mb-4" />
-        </div>
-      )}
 
       {/* 1. Announcement Bar */}
       <div className="bg-[#110d24] py-2 text-[12px] font-light text-white shadow-sm relative z-50 overflow-hidden select-none border-b border-white/5">
         <div className="flex whitespace-nowrap overflow-hidden marquee-container">
           {/* Track 1 */}
           <div className="inline-flex items-center gap-6 animate-custom-marquee pr-6 shrink-0">
-            {renderTrackItems()}
+            {isAnnLoading ? (
+              [1, 2].map(i => <div key={i} className="h-3 w-64 bg-white/20 animate-pulse rounded-full my-1"></div>)
+            ) : renderTrackItems()}
           </div>
           {/* Track 2 (Seamless clone) */}
           <div className="inline-flex items-center gap-6 animate-custom-marquee pr-6 shrink-0" aria-hidden="true">
-            {renderTrackItems()}
+            {isAnnLoading ? (
+              [1, 2].map(i => <div key={i} className="h-3 w-64 bg-white/20 animate-pulse rounded-full my-1"></div>)
+            ) : renderTrackItems()}
           </div>
         </div>
       </div>
@@ -425,7 +424,11 @@ export function Header() {
               </div>
 
               <nav className="hidden items-center gap-6 text-[12.5px] font-black text-[#1b1533] md:flex relative">
-                {navItems.map((item: any) => {
+                {isCatLoading ? (
+                  [1, 2, 3, 4].map(i => (
+                    <div key={i} className="h-4 w-24 bg-slate-100 animate-pulse rounded-full my-3"></div>
+                  ))
+                ) : navItems.map((item: any) => {
                   const categorySlug = item.slug || item.label.toLowerCase().replace(/\s+/g, '-');
                   const linkUrl = `/category/${categorySlug}`;
                   return (
@@ -589,7 +592,11 @@ export function Header() {
               {/* Navigation Categories Accordion */}
               <div className="flex flex-col gap-1">
                 <span className="text-[12px] font-black uppercase tracking-widest text-slate-400 mb-2 pl-2">Categories</span>
-                {navItems.map((item: any) => {
+                {isCatLoading ? (
+                  [1, 2, 3, 4].map(i => (
+                    <div key={i} className="h-8 w-full bg-slate-100 animate-pulse rounded-xl mb-1"></div>
+                  ))
+                ) : navItems.map((item: any) => {
                   const categorySlug = item.slug || item.label.toLowerCase().replace(/\s+/g, '-');
                   const isExpanded = !!expandedMobileCategories[item.label];
                   const subcategories = item.subs || [];
