@@ -10,7 +10,8 @@ import {
   Sparkles,
   Send,
   CheckCircle2,
-  ShieldCheck
+  ShieldCheck,
+  Loader2
 } from 'lucide-react';
 import Link from 'next/link';
 
@@ -24,13 +25,32 @@ export default function ContactPage() {
     message: ''
   });
   const [submitted, setSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (formData.name && formData.email && formData.message) {
-      setSubmitted(true);
-      setFormData({ name: '', email: '', phone: '', category: 'Product', subject: '', message: '' });
-      setTimeout(() => setSubmitted(false), 5000);
+      setIsSubmitting(true);
+      try {
+        const res = await fetch('/api/contact', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(formData)
+        });
+        
+        if (res.ok) {
+          setSubmitted(true);
+          setFormData({ name: '', email: '', phone: '', category: 'Product', subject: '', message: '' });
+          setTimeout(() => setSubmitted(false), 5000);
+        } else {
+          alert('Failed to send message. Please try again later.');
+        }
+      } catch (err) {
+        console.error(err);
+        alert('An error occurred. Please try again later.');
+      } finally {
+        setIsSubmitting(false);
+      }
     }
   };
 
@@ -151,9 +171,15 @@ export default function ContactPage() {
 
               <button
                 type="submit"
-                className="w-full inline-flex items-center justify-center rounded-2xl bg-[#ff4fa3] text-white border border-[#ff4fa3] py-4 text-xs font-black uppercase tracking-wider shadow-md shadow-pink-100 transition-all duration-300 hover:bg-black hover:text-[#ff4fa3] hover:border-black hover:-translate-y-0.5 active:translate-y-0 cursor-pointer gap-2 logo-font"
+                disabled={isSubmitting}
+                className="w-full inline-flex items-center justify-center rounded-2xl bg-[#ff4fa3] text-white border border-[#ff4fa3] py-4 text-xs font-black uppercase tracking-wider shadow-md shadow-pink-100 transition-all duration-300 hover:bg-black hover:text-[#ff4fa3] hover:border-black hover:-translate-y-0.5 active:translate-y-0 cursor-pointer gap-2 logo-font disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                <Send className="h-4 w-4" /> Send Secure Message
+                {isSubmitting ? (
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                ) : (
+                  <Send className="h-4 w-4" />
+                )}
+                Send Secure Message
               </button>
             </form>
           </div>

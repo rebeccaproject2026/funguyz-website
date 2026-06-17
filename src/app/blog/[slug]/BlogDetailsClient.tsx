@@ -25,7 +25,7 @@ export default function BlogDetailsClient({ params }: { params: Promise<{ slug: 
   React.useEffect(() => {
     async function fetchBlog() {
       try {
-        const res = await fetch(`/api/blogs/${slug}`);
+        const res = await fetch(`/api/blogs/${encodeURIComponent(slug)}/`);
         const data = await res.json();
         if (data.success && data.blog) {
           setPost(data.blog);
@@ -49,9 +49,9 @@ export default function BlogDetailsClient({ params }: { params: Promise<{ slug: 
 
   if (!post) {
     return (
-      <main className="bg-[#fff8f3] text-[#1b1533] min-h-screen flex items-center justify-center">
+      <main className="bg-[#fff8f3] text-[#1b1533] min-h-screen flex flex-col items-center justify-center">
         <Header />
-        <div className="text-center py-20">
+        <div className="text-center py-20 flex-1 flex flex-col items-center justify-center">
           <h1 className="text-3xl font-black text-[#1b1533] logo-font uppercase mb-4">Article Not Found</h1>
           <Link href="/blog" className="text-[#ff4fa3] font-bold hover:underline">Return to Blog Hub</Link>
         </div>

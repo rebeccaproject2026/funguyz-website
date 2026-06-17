@@ -8,6 +8,7 @@ import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { ProductCard } from '@/components/ProductCard';
 import { useCart } from '@/context/CartContext';
+import { imageMap, getFallbackImage } from '@/data/imageMap';
 import {
   Sparkles,
   ArrowUpDown,
@@ -240,7 +241,10 @@ export default function DedicatedCategoryPage({ params }: { params: Promise<{ sl
   const [selectedPriceRange, setSelectedPriceRange] = useState<string>('all');
   const [inStockOnly, setInStockOnly] = useState<boolean>(true);
 
-  const { data: prodData } = useSWR('/api/products', fetcher);
+  const category = categoryDataMap[slugKey] || categoryDataMap['magic-mushrooms'];
+
+  const dynamicUrl = `/api/products?category=${encodeURIComponent(category.categoryName)}`;
+  const { data: prodData } = useSWR(dynamicUrl, fetcher);
   const dbProducts = prodData?.success ? prodData.products : [];
 
   // FAQ accordion open states (mapped by index)
@@ -269,7 +273,7 @@ export default function DedicatedCategoryPage({ params }: { params: Promise<{ sl
     });
   };
 
-  const category = categoryDataMap[slugKey] || categoryDataMap['magic-mushrooms'];
+  // Category declaration moved up for SWR
 
 
 
@@ -1021,8 +1025,10 @@ export default function DedicatedCategoryPage({ params }: { params: Promise<{ sl
   // ==========================================
   // RENDER STANDARD CATEGORY PAGES
   // ==========================================
-  // Filter products by category
-  const baseFilteredProducts = dbProducts.filter((p: any) => p.category?.name === category.categoryName || p.category?.name?.includes(category.categoryName.replace('Magic ', '')));
+  // Filter products by category (Now done strictly via backend API)
+  const baseFilteredProducts = dbProducts;
+  const trendingProducts = dbProducts.filter((p: any) => p.isTrending);
+  const displayTrending = trendingProducts.length > 0 ? trendingProducts : dbProducts.slice(0, 8);
 
   // Filter products interactively
   const activeFilteredProducts = baseFilteredProducts.filter((product: { name: any; tags: any[]; price: number; }) => {
@@ -1410,31 +1416,30 @@ export default function DedicatedCategoryPage({ params }: { params: Promise<{ sl
 
           {/* Horizontal scrollable flex deck */}
           <div className="flex gap-4 overflow-x-auto scrollbar-none pb-2">
-            {category.popularItems.map((item, idx) => (
-              <div
-                key={idx}
-                className="flex items-center gap-3 bg-white p-2.5 rounded-2xl border border-slate-100 shadow-sm shrink-0 min-w-[210px] group transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md cursor-pointer"
-                onClick={() => setSearchQuery(item.name)}
-              >
-                <div className="h-10 w-10 bg-slate-50 border border-slate-100/50 p-1.5 rounded-xl shrink-0">
-                  <img src={item.image} className="h-full w-full object-contain rounded-lg" alt={item.name} />
+            {displayTrending.map((item: any, idx: number) => {
+              const imageSrc = imageMap[item.name] || getFallbackImage(category.categoryName);
+              const price = `$${item.price?.toFixed(2) || '0.00'}`;
+              const badge = item.tags?.[0] || 'Premium';
+              
+              return (
+                <div
+                  key={item._id || idx}
+                  className="flex items-center gap-3 bg-white p-2.5 rounded-2xl border border-slate-100 shadow-sm shrink-0 min-w-[210px] group transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md cursor-pointer"
+                  onClick={() => setSearchQuery(item.name)}
+                >
+                  <div className="h-10 w-10 bg-slate-50 border border-slate-100/50 p-1.5 rounded-xl shrink-0">
+                    <img src={imageSrc} className="h-full w-full object-contain rounded-lg" alt={item.name} />
+                  </div>
+                  <div className="leading-tight text-left">
+                    <span className="block text-[10px] text-slate-400 font-bold uppercase">{badge}</span>
+                    <strong className="block text-xs font-black text-[#1b1533] logo-font leading-snug truncate max-w-[130px]">{item.name}</strong>
+                    <span className="block text-[12px] font-black text-[#ff4fa3] mt-0.5">
+                      {price}
+                    </span>
+                  </div>
                 </div>
-                <div className="leading-tight text-left">
-                  <span className="block text-[10px] text-slate-400 font-bold uppercase">{item.badge}</span>
-                  <strong className="block text-xs font-black text-[#1b1533] logo-font leading-snug truncate max-w-[130px]">{item.name}</strong>
-                  <span className="block text-[12px] font-black text-[#ff4fa3] mt-0.5">
-                    {(() => {
-                      const dbMatch = dbProducts.find((p: any) => {
-                        const name1 = (p.name || '').toLowerCase();
-                        const name2 = item.name.toLowerCase();
-                        return name1 === name2 || name1.includes(name2) || name2.includes(name1);
-                      });
-                      return dbMatch ? `$${dbMatch.price.toFixed(2)}` : item.price;
-                    })()}
-                  </span>
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </section>

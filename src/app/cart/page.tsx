@@ -7,7 +7,7 @@ import React, { useState } from 'react';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { ProductCard } from '@/components/ProductCard';
-import { products, getProductUrl } from '@/data/products';
+import {  getProductUrl } from '@/data/products';
 import { useCart } from '@/context/CartContext';
 import {
   ShoppingBag,

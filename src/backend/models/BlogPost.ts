@@ -10,6 +10,7 @@ export interface IBlogPost extends mongoose.Document {
   image: string;
   publishedAt: Date;
   isActive: boolean;
+  isWellness?: boolean;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -57,6 +58,10 @@ const BlogPostSchema: Schema = new Schema(
     isActive: {
       type: Boolean,
       default: true,
+    },
+    isWellness: {
+      type: Boolean,
+      default: false,
     },
   },
   { timestamps: true }

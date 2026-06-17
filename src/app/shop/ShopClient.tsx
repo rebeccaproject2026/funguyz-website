@@ -8,6 +8,7 @@ import { Footer } from '@/components/Footer';
 import { ProductCard } from '@/components/ProductCard';
 import { products } from '@/data/products';
 import { Sparkles, SlidersHorizontal, ArrowUpDown, X } from 'lucide-react';
+import { MushroomLoader } from '@/components/MushroomLoader';
 
 export default function ShopClient() {
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
@@ -42,56 +43,17 @@ export default function ShopClient() {
     }
   }, []);
 
-  const { data: prodData } = useSWR('/api/products', fetcher);
+  const params = new URLSearchParams();
+  if (selectedCategory && selectedCategory !== 'All') params.append('category', selectedCategory);
+  if (subcategoryFilter) params.append('subcategory', subcategoryFilter);
+  if (sortBy && sortBy !== 'default') params.append('sortBy', sortBy);
+
+  const dynamicUrl = `/api/products?${params.toString()}`;
+  const { data: prodData, isLoading: isLoadingProducts } = useSWR(dynamicUrl, fetcher);
   const { data: catData, isLoading: isLoadingCategories } = useSWR('/api/categories', fetcher);
 
-  const dbProducts = prodData?.success ? prodData.products : [];
+  const sortedProducts = prodData?.success ? prodData.products : [];
   const dbCategories = catData?.success ? catData.categories : [];
-
-  const baseProducts = dbProducts;
-
-  // Filter Logic
-  const filteredProducts = baseProducts.filter((p: any) => {
-    // Category match
-    let matchCat = true;
-    if (selectedCategory !== 'All') {
-      if (selectedCategory === 'Best Sellers') {
-        const badge = p.tags?.[0] || (Array.isArray(p) ? p[3] : '');
-        matchCat = badge?.toLowerCase() === 'best seller';
-      } else {
-        const cat = p.category?.name || (Array.isArray(p) ? p[1] : 'Magic Mushrooms');
-        matchCat = cat === selectedCategory;
-      }
-    }
-
-    // Subcategory match
-    let matchSub = true;
-    if (subcategoryFilter) {
-      const name = p.name || (Array.isArray(p) ? p[0] : '');
-      matchSub = name.toLowerCase().includes(subcategoryFilter.toLowerCase());
-    }
-
-    return matchCat && matchSub;
-  });
-
-  // Sort Logic
-  const sortedProducts = [...filteredProducts].sort((a, b) => {
-    const getPrice = (prod: any) => {
-      if (prod.price) return prod.price;
-      if (Array.isArray(prod.pricing) && prod.pricing.length > 0) return prod.pricing[0].price;
-      if (Array.isArray(prod)) return parseFloat(prod[2].replace('$', ''));
-      return 0;
-    };
-    const getName = (prod: any) => prod.name || (Array.isArray(prod) ? prod[0] : '');
-
-    const priceA = getPrice(a);
-    const priceB = getPrice(b);
-
-    if (sortBy === 'price-asc') return priceA - priceB;
-    if (sortBy === 'price-desc') return priceB - priceA;
-    if (sortBy === 'name-asc') return getName(a).localeCompare(getName(b));
-    return 0; // default
-  });
 
   const categoryTabs = ['All', 'Best Sellers', ...dbCategories.map((c: any) => c.name)];
 
@@ -363,9 +325,13 @@ export default function ShopClient() {
         </div>
 
         {/* Products Grid */}
-        {sortedProducts.length > 0 ? (
+        {isLoadingProducts ? (
+          <div className="flex justify-center items-center py-20 w-full">
+            <MushroomLoader className="scale-150" />
+          </div>
+        ) : sortedProducts.length > 0 ? (
           <div className="mt-8 grid gap-3 sm:gap-6 grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-            {sortedProducts.map((p, i) => (
+            {sortedProducts.map((p: any, i: any) => (
               <ProductCard key={p._id || p[0]} p={p} i={i} />
             ))}
           </div>

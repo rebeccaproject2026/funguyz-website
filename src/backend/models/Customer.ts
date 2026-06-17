@@ -39,6 +39,8 @@ const CustomerSchema: Schema = new Schema(
     },
     addresses: [
       {
+        firstName: String,
+        lastName: String,
         street: String,
         city: String,
         province: String,

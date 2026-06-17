@@ -31,51 +31,84 @@ export default function TrackOrderPage() {
   const [trackingCode, setTrackingCode] = useState('');
   const [isSearched, setIsSearched] = useState(false);
   const [activeFaqIdx, setActiveFaqIdx] = useState<number | null>(0);
+  const [orderData, setOrderData] = useState<any>(null);
+  const [errorMsg, setErrorMsg] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
-  const mockTimeline: TimelineStep[] = [
-    {
-      title: 'Order Confirmed',
-      desc: 'Ontario cleanroom batch selected and genetic purity validated.',
-      time: '9:14 AM EST',
-      icon: CheckCircle2
-    },
-    {
-      title: 'Sanitary Packaging',
-      desc: 'Double vacuum-sealed in odorless medical bags and secured inside a generic cardboard envelope.',
-      time: '10:45 AM EST',
-      icon: Package
-    },
-    {
-      title: 'Dispatched to Courier',
-      desc: 'Courier dropped off parcel to Canada Post main terminal.',
-      time: '2:15 PM EST',
-      icon: Truck
-    },
-    {
-      title: 'In Transit',
-      desc: 'Canada Post Express Delivery tracking active. En route to destination city hub.',
-      time: '4:30 PM EST',
-      icon: Clock
-    },
-    {
-      title: 'Out For Delivery',
-      desc: 'Dispatched to local courier driver for final drop-off.',
-      time: 'Pending Delivery',
-      icon: MapPin
+  const fetchOrder = async (code: string) => {
+    setIsLoading(true);
+    setErrorMsg('');
+    try {
+      const res = await fetch(`/api/orders/track?code=${encodeURIComponent(code)}`);
+      const data = await res.json();
+      if (data.success) {
+        setOrderData(data.order);
+        setIsSearched(true);
+      } else {
+        setErrorMsg(data.error || 'Invalid tracking code');
+        setIsSearched(false);
+      }
+    } catch (e) {
+      setErrorMsg('Network error. Please try again.');
+    } finally {
+      setIsLoading(false);
     }
-  ];
+  };
 
   const handleTrackSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (trackingCode.trim().length > 3) {
-      setIsSearched(true);
+      fetchOrder(trackingCode.trim());
     }
   };
 
-  const handleDemoClick = () => {
-    setTrackingCode('FG-10492');
-    setIsSearched(true);
+
+
+  const generateTimeline = (): TimelineStep[] => {
+    if (!orderData) return [];
+
+    const createdTime = new Date(orderData.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    const updatedTime = new Date(orderData.updatedAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+    const statusLevels = ['PENDING', 'PROCESSING', 'SHIPPED', 'DELIVERED'];
+    let currentIndex = statusLevels.indexOf(orderData.status);
+    if (currentIndex === -1) currentIndex = 0;
+
+    return [
+      {
+        title: 'Order Confirmed',
+        desc: 'Ontario cleanroom batch selected and genetic purity validated.',
+        time: createdTime,
+        icon: CheckCircle2
+      },
+      {
+        title: 'Sanitary Packaging',
+        desc: 'Double vacuum-sealed in odorless medical bags and secured inside a generic cardboard envelope.',
+        time: currentIndex >= 1 ? updatedTime : 'Pending',
+        icon: Package
+      },
+      {
+        title: 'Dispatched to Courier',
+        desc: 'Courier dropped off parcel to Canada Post main terminal.',
+        time: currentIndex >= 2 ? updatedTime : 'Pending',
+        icon: Truck
+      },
+      {
+        title: 'In Transit',
+        desc: 'Canada Post Express Delivery tracking active. En route to destination city hub.',
+        time: currentIndex >= 2 ? updatedTime : 'Pending',
+        icon: Clock
+      },
+      {
+        title: orderData.status === 'DELIVERED' ? 'Delivered' : 'Out For Delivery',
+        desc: orderData.status === 'DELIVERED' ? 'Package successfully delivered to the destination.' : 'Dispatched to local courier driver for final drop-off.',
+        time: currentIndex >= 3 ? updatedTime : 'Pending Delivery',
+        icon: MapPin
+      }
+    ];
   };
+
+  const activeTimeline = generateTimeline();
 
   return (
     <main className="bg-[#fff8f3] text-[#1b1533] min-h-screen selection:bg-[#ff4fa3] selection:text-white antialiased font-sans">
@@ -160,23 +193,18 @@ export default function TrackOrderPage() {
             </div>
             <button
               type="submit"
-              className="rounded-2xl bg-[#ff4fa3] text-white border border-[#ff4fa3] px-8 py-3.5 text-xs font-black uppercase tracking-wider hover:bg-black hover:text-[#ff4fa3] hover:border-black transition-all duration-200 cursor-pointer logo-font shrink-0"
+              disabled={isLoading}
+              className={`rounded-2xl bg-[#ff4fa3] text-white border border-[#ff4fa3] px-8 py-3.5 text-xs font-black uppercase tracking-wider hover:bg-black hover:text-[#ff4fa3] hover:border-black transition-all duration-200 cursor-pointer logo-font shrink-0 ${isLoading ? 'opacity-50' : ''}`}
             >
-              Track Package
+              {isLoading ? 'Searching...' : 'Track Package'}
             </button>
           </form>
 
-          {/* Quick Demo Trigger */}
-          <div className="text-[12px] font-semibold text-slate-400">
-            Don't have a tracking code yet? Click{' '}
-            <button
-              onClick={handleDemoClick}
-              className="text-[#ff4fa3] hover:underline font-black cursor-pointer"
-            >
-              Use Demo Code FG-10492
-            </button>{' '}
-            to preview the tracker timeline.
-          </div>
+          {errorMsg && (
+            <div className="text-red-500 text-xs font-bold mt-4">{errorMsg}</div>
+          )}
+
+
         </div>
 
         {/* 3. Interactive Timeline Progress Deck */}
@@ -187,7 +215,7 @@ export default function TrackOrderPage() {
             <div className="flex flex-wrap items-center justify-between gap-4 border-b border-slate-100 pb-6">
               <div className="space-y-1">
                 <span className="text-[12px] font-black uppercase tracking-widest text-[#ff4fa3] logo-font">Ontario Dispatch Hub</span>
-                <h3 className="text-base font-black uppercase text-[#1b1533] logo-font">Tracking ID: {trackingCode}</h3>
+                <h3 className="text-base font-black uppercase text-[#1b1533] logo-font">Tracking ID: {orderData?.trackingNumber || orderData?.orderNumber || trackingCode}</h3>
               </div>
               <div className="flex gap-4 items-center">
                 <div className="text-right">
@@ -197,16 +225,16 @@ export default function TrackOrderPage() {
                 <div className="h-10 w-px bg-slate-100" />
                 <div>
                   <span className="block text-[12px] font-black text-slate-400 uppercase tracking-widest leading-none">Status</span>
-                  <strong className="block text-xs font-black text-[#ff4fa3] logo-font mt-1 uppercase tracking-wide">In Transit</strong>
+                  <strong className="block text-xs font-black text-[#ff4fa3] logo-font mt-1 uppercase tracking-wide">{orderData?.status || 'In Transit'}</strong>
                 </div>
               </div>
             </div>
 
             {/* Vertical timeline steps mapping */}
             <div className="relative border-l border-slate-100 ml-5 pl-8 space-y-8 py-2">
-              {mockTimeline.map((step, idx) => {
+              {activeTimeline.map((step, idx) => {
                 const StepIcon = step.icon;
-                const isPending = step.time === 'Pending Delivery';
+                const isPending = step.time.includes('Pending');
 
                 return (
                   <div key={idx} className="relative">

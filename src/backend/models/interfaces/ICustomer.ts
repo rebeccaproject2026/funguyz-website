@@ -16,6 +16,8 @@ export interface ICustomer extends Document {
   passwordHash: string;
   role: ERole;
   addresses: {
+    firstName?: string;
+    lastName?: string;
     street: string;
     city: string;
     province: string;

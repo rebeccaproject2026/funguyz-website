@@ -27,9 +27,10 @@ export const imageMap: Record<string, string> = {
   'Mango Gummies': '/images/edibles/gummies/mangogummies/mangogummiesfront.webp',
   'Green Apple Gummies': '/images/edibles/gummies/greenapplegummies/greenapplegummiesfront.webp',
   'Mixed Berry Gummies': '/images/edibles/gummies/mixedberrygummies/mixedberrygummiesfront.webp',
-  'Golden Teacher S\'Mores': '/images/EDIBLES/s_mores/goldenteachers_mores/goldenteachers_moresfront.webp',
-  'Penis Envy S\'Mores': '/images/EDIBLES/s_mores/penisenvys_mores/penisenvys_moresfront.webp',
-  'Cookies & Cream S\'Mores': '/images/EDIBLES/s_mores/cookies&creams_mores/cookies&creams_moresfront.webp',
+  'Golden Teacher S\'Mores': '/images/edibles/s_mores/goldenteachers_mores/goldenteachers_moresfront.webp',
+  'Penis Envy S\'Mores': '/images/edibles/s_mores/penisenvys_mores/penisenvys_moresfront.webp',
+  'Cookies & Cream S\'Mores': '/images/edibles/s_mores/cookies&creams_mores/cookies&creams_moresfront.webp',
+
 
   // Capsules
   'Lion\'s Mane Capsules': '/images/CAPSULES/functionalmushroomcapsules/lion_smanecapsules/lion_smanecapsulesfront.webp',

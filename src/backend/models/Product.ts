@@ -89,6 +89,16 @@ const ProductSchema: Schema = new Schema(
       type: Boolean,
       default: false,
     },
+    image: {
+      type: String,
+    },
+    badge: {
+      type: String,
+    },
+    isTrending: {
+      type: Boolean,
+      default: false,
+    },
   },
   { timestamps: true }
 );

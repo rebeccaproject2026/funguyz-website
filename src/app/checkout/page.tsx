@@ -50,11 +50,17 @@ export default function CheckoutPage() {
   // 1. Auto-fill from Session if logged in
   useEffect(() => {
     if (isLoggedIn && currentUser) {
+      const defaultAddr = currentUser.addresses?.[1] || currentUser.addresses?.[0] || null; // Prefer shipping (index 1) or fallback to billing
       setFormData(prev => ({
         ...prev,
-        firstName: currentUser.firstName || prev.firstName,
-        lastName: currentUser.lastName || prev.lastName,
+        firstName: defaultAddr?.firstName || currentUser.firstName || prev.firstName,
+        lastName: defaultAddr?.lastName || currentUser.lastName || prev.lastName,
         email: currentUser.email || prev.email,
+        phone: currentUser.phone || prev.phone,
+        address: defaultAddr?.street || prev.address,
+        city: defaultAddr?.city || prev.city,
+        province: defaultAddr?.province || prev.province,
+        postcode: defaultAddr?.postalCode || prev.postcode,
       }));
     }
   }, [isLoggedIn, currentUser]);
@@ -81,7 +87,12 @@ export default function CheckoutPage() {
 
   // Calculate pricing metrics
   const parsedSubtotal = subtotal;
-  const shippingCost = 20.00;
+  const isFreeShipping = appliedCoupon && (
+    appliedCoupon.discountLabel?.toLowerCase() === 'free shipping' ||
+    appliedCoupon.title?.toLowerCase().includes('free shipping') ||
+    appliedCoupon.title?.toLowerCase().includes('free delivery')
+  );
+  const shippingCost = isFreeShipping ? 0.00 : 20.00;
   const taxes = 0.00; // No tax
   const discountAmount = appliedCoupon ? parsedSubtotal * appliedCoupon.discount : 0;
   let grandTotal = parsedSubtotal - discountAmount + shippingCost + taxes;
@@ -235,7 +246,14 @@ export default function CheckoutPage() {
     })
       .then((res) => res.json())
       .then(async (data) => {
-        if (data.success && data.isNewUser) {
+        if (!data.success) {
+          console.error('Checkout failed:', data.error);
+          setScheduleError(data.error || 'Failed to process order.');
+          setIsSubmitting(false);
+          return;
+        }
+
+        if (data.isNewUser) {
           // Setting the generated password for the confirmation screen
           setAccountCredentials({
             password: data.password || '',
@@ -245,7 +263,7 @@ export default function CheckoutPage() {
           if (data.password) {
             await login(email, data.password);
           }
-        } else if (data.success && !data.isNewUser) {
+        } else {
           setAccountCredentials({
             password: '',
             isNewUser: false,

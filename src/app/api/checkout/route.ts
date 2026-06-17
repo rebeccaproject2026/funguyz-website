@@ -4,6 +4,9 @@ import { generateAdminEmailHtml, generateCustomerEmailHtml } from '@/lib/emailTe
 import connectDB from '@/backend/config/db';
 import Customer from '@/backend/models/Customer';
 import Order from '@/backend/models/Order';
+import Product from '@/backend/models/Product';
+import Coupon from '@/backend/models/Coupon';
+import { EProductStatus } from '@/backend/models/interfaces/IProduct';
 import { ERole } from '@/backend/models/interfaces/ICustomer';
 import { EOrderStatus } from '@/backend/models/interfaces/IOrder';
 import bcrypt from 'bcryptjs';
@@ -67,18 +70,82 @@ export async function POST(request: Request) {
        }
     }
 
-    // 2. Create the Order
-    const subTotal = parseFloat(orderDetails.subtotal.replace(/[^0-9.-]+/g,""));
-    const grandTotal = parseFloat(orderDetails.grandTotal.replace(/[^0-9.-]+/g,""));
-    const shippingAmount = 20; // Default flat rate from frontend
+    // 2. Recalculate and Create the Order
+    const clientSubTotal = parseFloat(orderDetails.subtotal.replace(/[^0-9.-]+/g,""));
+    const clientGrandTotal = parseFloat(orderDetails.grandTotal.replace(/[^0-9.-]+/g,""));
     
-    // Convert items
-    const items = orderDetails.items.map((item: any) => ({
-       title: item.title,
-       imageSrc: item.imageSrc,
-       priceAtPurchase: parseFloat(item.price.replace(/[^0-9.-]+/g,"")),
-       quantity: item.quantity,
-    }));
+    let trueSubTotal = 0;
+    const trueItems = [];
+
+    for (const item of orderDetails.items) {
+      if (!item.title) continue;
+
+      const match = item.title.match(/^(.*?)(?:\s*\((.*?)\))?$/);
+      let productName = match ? match[1].trim() : item.title.trim();
+      const weight = match ? match[2]?.trim() : null;
+
+      // Handle old cart items that might have 'Magic Mushrooms' appended to the name
+      if (productName.toLowerCase().endsWith(' magic mushrooms')) {
+        productName = productName.substring(0, productName.length - 16).trim();
+      }
+
+      const product = await Product.findOne({
+        name: new RegExp(`^${productName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}$`, 'i'),
+        status: { $ne: EProductStatus.OUT_OF_STOCK }
+      }).lean() as any;
+
+      let truePrice = parseFloat(item.price.replace(/[^0-9.-]+/g,"")); // Fallback
+      if (product) {
+        truePrice = product.price;
+        if (weight && product.pricing && product.pricing.length > 0) {
+          const pricingOption = product.pricing.find((p: any) => p.weight.toLowerCase() === weight.toLowerCase());
+          if (pricingOption && pricingOption.price != null) {
+            truePrice = pricingOption.price;
+          }
+        }
+      } else if (!item.title.toLowerCase().includes('bundle')) {
+        return NextResponse.json({ success: false, error: `Product not found or unavailable: ${item.title}` }, { status: 400 });
+      }
+
+      trueSubTotal += truePrice * item.quantity;
+      trueItems.push({
+        title: item.title,
+        imageSrc: product?.heroImage || item.imageSrc,
+        priceAtPurchase: truePrice,
+        quantity: item.quantity,
+      });
+    }
+
+    // Recalculate Coupon and Shipping
+    let trueDiscountAmount = 0;
+    let trueShippingAmount = 20; // Default flat rate
+
+    if (couponCode) {
+      const coupon = await Coupon.findOne({ code: couponCode.toUpperCase(), isActive: true });
+      if (coupon) {
+        if (coupon.discountLabel && (coupon.title.toLowerCase().includes('free shipping') || coupon.title.toLowerCase().includes('free delivery'))) {
+           trueShippingAmount = 0;
+        } else if (coupon.discount.includes('%')) {
+           const percent = parseInt(coupon.discount) / 100;
+           trueDiscountAmount = trueSubTotal * percent;
+        }
+      }
+    }
+
+    let trueGrandTotal = trueSubTotal + trueShippingAmount - trueDiscountAmount;
+
+    // Apply cash balance to server total just like the frontend does
+    if (appliedCashBalance && appliedCashBalance > 0) {
+      const validCash = user ? user.cashBalance : 0;
+      const amountToApply = Math.min(validCash, appliedCashBalance, trueGrandTotal);
+      trueGrandTotal = Math.max(0, trueGrandTotal - amountToApply);
+    }
+
+    // Validate (Allow tiny floating point variance)
+    if (Math.abs(trueGrandTotal - clientGrandTotal) > 0.05) {
+       console.error(`Price Mismatch! Client: ${clientGrandTotal}, Server: ${trueGrandTotal}`);
+       return NextResponse.json({ success: false, error: 'Price validation failed. Your cart prices were out of sync. Please refresh the page.' }, { status: 400 });
+    }
 
     const newOrder = await Order.create({
       customer: user._id,
@@ -86,12 +153,12 @@ export async function POST(request: Request) {
       orderNumber: orderDetails.orderId,
       trackingNumber: orderDetails.trackingCode,
       status: EOrderStatus.PENDING,
-      orderItems: items,
-      subTotal,
-      totalAmount: grandTotal,
+      orderItems: trueItems,
+      subTotal: trueSubTotal,
+      totalAmount: trueGrandTotal,
       taxAmount: 0,
-      shippingAmount,
-      discountAmount,
+      shippingAmount: trueShippingAmount,
+      discountAmount: trueDiscountAmount,
       couponCode,
       shippingAddress: {
          street: customerInfo?.address || '',

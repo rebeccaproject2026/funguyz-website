@@ -33,7 +33,8 @@ import 'swiper/css';
 import { Footer } from '@/components/Footer';
 import { Header } from '@/components/Header';
 import { ProductCard } from '@/components/ProductCard';
-import { categories, products, getCategorySlug } from '@/data/products';
+import { MushroomLoader } from '@/components/MushroomLoader';
+
 
 const categoryImages: Record<string, string> = {
   'Magic Mushrooms': '/images/cat_mushrooms.webp',
@@ -90,7 +91,7 @@ export default function Home() {
   const [bestSellersSwiper, setBestSellersSwiper] = useState<any>(null);
   const bestSellersRef = useRef<HTMLDivElement>(null);
 
-  const { data: prodData } = useSWR('/api/products', fetcher);
+  const { data: prodData, isLoading: isLoadingProducts } = useSWR('/api/products', fetcher);
   const { data: catData } = useSWR('/api/categories', fetcher);
   const { data: blogData } = useSWR('/api/blogs', fetcher);
 
@@ -284,7 +285,7 @@ export default function Home() {
         </div>
 
         <div className="mt-4 grid gap-4 sm:gap-6 grid-cols-2 md:grid-cols-4 lg:grid-cols-4">
-          {(dbCategories.length > 0 ? dbCategories : categories).slice(0, 4).map((kind: any, idx: any) => {
+          {dbCategories.slice(0, 4).map((kind: any, idx: any) => {
             const name = kind.name;
             const desc = kind.description || kind.desc;
             const slug = kind.slug || name.toLowerCase().replace(/\s+/g, '-');
@@ -360,33 +361,39 @@ export default function Home() {
         </div>
 
         {/* Elite Swiper Carousel Slider Container (4 slides on desktop) */}
-        <Swiper
-          onSwiper={setBestSellersSwiper}
-          modules={[Navigation]}
-          spaceBetween={24}
-          slidesPerView={1}
-          breakpoints={{
-            640: {
-              slidesPerView: 2,
-              spaceBetween: 24,
-            },
-            768: {
-              slidesPerView: 3,
-              spaceBetween: 24,
-            },
-            1024: {
-              slidesPerView: 4,
-              spaceBetween: 24,
-            },
-          }}
-          className="mt-8 w-full"
-        >
-          {displayProducts.map((p: any, i: any) => (
-            <SwiperSlide key={p._id || p[0]} className="!h-auto pb-4">
-              <ProductCard p={p} i={i} />
-            </SwiperSlide>
-          ))}
-        </Swiper>
+        {isLoadingProducts ? (
+          <div className="flex justify-center items-center py-20 w-full">
+            <MushroomLoader className="scale-150" />
+          </div>
+        ) : (
+          <Swiper
+            onSwiper={setBestSellersSwiper}
+            modules={[Navigation]}
+            spaceBetween={24}
+            slidesPerView={1}
+            breakpoints={{
+              640: {
+                slidesPerView: 2,
+                spaceBetween: 24,
+              },
+              768: {
+                slidesPerView: 3,
+                spaceBetween: 24,
+              },
+              1024: {
+                slidesPerView: 4,
+                spaceBetween: 24,
+              },
+            }}
+            className="mt-8 w-full"
+          >
+            {displayProducts.map((p: any, i: any) => (
+              <SwiperSlide key={p._id || p[0]} className="!h-auto pb-4">
+                <ProductCard p={p} i={i} />
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        )}
       </section>
 
       {/* 5. Why Choose FunGuyz (Designed as a full-width solid black banner) */}

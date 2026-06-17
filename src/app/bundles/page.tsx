@@ -1,27 +1,24 @@
 'use client';
 import Link from 'next/link';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import useSWR from 'swr';
+import { fetcher } from '@/lib/fetcher';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { useCart } from '@/context/CartContext';
 import {
   Sparkles,
   ChevronDown,
-  ChevronUp,
   ShieldCheck,
   Truck,
   Star,
   Smile,
-  Brain,
   Compass,
-  Coffee,
   Leaf,
   ArrowRight,
   HelpCircle,
   Award,
-  Zap,
-  Package,
   Gift,
   Check
 } from 'lucide-react';
@@ -29,23 +26,76 @@ import {
 export default function BundlesCollectionPage() {
   const [openFaqIdx, setOpenFaqIdx] = useState<number | null>(null);
 
+  // Data fetching
+  const { data: bundlesData } = useSWR('/api/bundles', fetcher);
+  const { data: prodData } = useSWR('/api/products', fetcher);
+
+  const dbBundles = bundlesData?.success ? bundlesData.bundles : [];
+  const dbProducts = prodData?.success ? prodData.products : [];
+
+  const featuredBundles = dbBundles.filter((b: any) => b.type === 'FEATURED');
+  const trendingBundles = dbBundles.filter((b: any) => b.type === 'TRENDING');
+
+  const shortDescMap: Record<string, string> = {
+    'Golden Teacher': 'Earthy, introspective favorite',
+    'Penis Envy': 'Maximum potency visuals profile',
+    'Blue Meanies': 'Highly potent energetic genetics',
+    'Jack Frost': 'Rare clean crystals and euphoria',
+  };
+
+  const preferredStrains = ['Golden Teacher', 'Penis Envy', 'Blue Meanies', 'Jack Frost'];
+
+  const strains = dbProducts
+    .filter((p: any) => p.category?.name === 'Magic Mushrooms')
+    .sort((a: any, b: any) => {
+      const aIdx = preferredStrains.indexOf(a.name);
+      const bIdx = preferredStrains.indexOf(b.name);
+      if (aIdx !== -1 && bIdx !== -1) return aIdx - bIdx;
+      if (aIdx !== -1) return -1;
+      if (bIdx !== -1) return 1;
+      return 0;
+    })
+    .slice(0, 4)
+    .map((p: any) => ({
+      ...p,
+      desc: shortDescMap[p.name] || p.description?.split(' ').slice(0, 6).join(' ') + '...'
+    }));
+
+  const edibles = dbProducts.filter((p: any) => p.category?.name === 'Edibles').slice(0, 3);
+  const capsules = dbProducts.filter((p: any) => p.category?.name === 'Capsules').slice(0, 3);
+  const microdose = dbProducts.filter((p: any) => p.category?.name === 'Microdose').slice(0, 3);
+
   // Cart interaction
   const { addToCart } = useCart();
 
   // Custom Build Your Own Bundle States
-  const [buildMushroom, setBuildMushroom] = useState<{ name: string; price: number }>({ name: 'Golden Teacher', price: 40 });
-  const [buildEdible, setBuildEdible] = useState<{ name: string; price: number }>({ name: 'Gummies', price: 25 });
-  const [buildCapsule, setBuildCapsule] = useState<{ name: string; price: number }>({ name: 'Focus Capsules', price: 28 });
-  const [buildMicrodose, setBuildMicrodose] = useState<{ name: string; price: number }>({ name: 'Daily Wellness', price: 26 });
+  const [buildMushroom, setBuildMushroom] = useState<{ name: string; price: number; description?: string } | null>(null);
+  const [buildEdible, setBuildEdible] = useState<{ name: string; price: number } | null>(null);
+  const [buildCapsule, setBuildCapsule] = useState<{ name: string; price: number } | null>(null);
+  const [buildMicrodose, setBuildMicrodose] = useState<{ name: string; price: number } | null>(null);
+
+  // Set defaults when products load
+  useEffect(() => {
+    if (!buildMushroom && strains.length > 0) setBuildMushroom({ name: strains[0].name, price: strains[0].price, description: strains[0].desc });
+    if (!buildEdible && edibles.length > 0) setBuildEdible({ name: edibles[0].name, price: edibles[0].price });
+    if (!buildCapsule && capsules.length > 0) setBuildCapsule({ name: capsules[0].name, price: capsules[0].price });
+    if (!buildMicrodose && microdose.length > 0) setBuildMicrodose({ name: microdose[0].name, price: microdose[0].price });
+  }, [strains, edibles, capsules, microdose, buildMushroom, buildEdible, buildCapsule, buildMicrodose]);
+
+  // Fallback defaults if null to prevent UI flicker
+  const defaultMushroom = buildMushroom || { name: 'Golden Teacher', price: 40, description: 'Earthy, introspective favorite' };
+  const defaultEdible = buildEdible || { name: 'Mushroom Gummies', price: 25 };
+  const defaultCapsule = buildCapsule || { name: 'Focus Capsules', price: 28 };
+  const defaultMicrodose = buildMicrodose || { name: 'Daily Wellness', price: 26 };
 
   // Custom Bundle Price Calculations
-  const buildSubtotal = buildMushroom.price + buildEdible.price + buildCapsule.price + buildMicrodose.price;
+  const buildSubtotal = defaultMushroom.price + defaultEdible.price + defaultCapsule.price + defaultMicrodose.price;
   const buildDiscount = buildSubtotal * 0.15; // 15% discount for building custom bundle
   const buildFinalPrice = buildSubtotal - buildDiscount;
 
   const handleAddCustomBundle = () => {
     addToCart({
-      title: `Custom Bundle (${buildMushroom.name} + ${buildEdible.name} + ${buildCapsule.name} + ${buildMicrodose.name})`,
+      title: `Custom Bundle (${defaultMushroom.name} + ${defaultEdible.name} + ${defaultCapsule.name} + ${defaultMicrodose.name})`,
       category: 'Bundles',
       price: `$${buildFinalPrice.toFixed(2)}`,
       imageSrc: '/images/hero_composition.webp'
@@ -178,148 +228,70 @@ export default function BundlesCollectionPage() {
 
         <div className="grid gap-8 md:grid-cols-3">
 
-          {/* Starter Bundle */}
-          <div className="bg-white border border-slate-100 rounded-[36px] p-6 shadow-sm flex flex-col justify-between items-start text-left gap-6 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 relative group">
-            <span className="absolute left-6 top-6 bg-slate-50 border border-slate-100 text-slate-500 rounded-full px-3.5 py-1 text-[10px] font-black uppercase tracking-widest leading-none">
-              Entry Level
-            </span>
-            <div className="w-full text-right">
-              <span className="text-3xl">🌱</span>
-            </div>
+          {featuredBundles.length > 0 ? featuredBundles.map((bundle: any) => {
+            let borderClass = "border border-slate-100";
+            let shadowClass = "shadow-sm hover:shadow-lg";
+            let badgeClass = "bg-slate-50 border border-slate-100 text-slate-500";
+            let priceColor = "text-[#1b1533]";
+            let buttonClass = "bg-[#ff4fa3] text-white border-[#ff4fa3] hover:bg-black hover:text-[#ff4fa3] hover:border-black shadow-sm";
 
-            <div className="space-y-1.5 w-full mt-4">
-              <h3 className="text-xl font-black text-[#1b1533] uppercase logo-font leading-none">Starter Bundle</h3>
-              <span className="block text-[12px] text-slate-400 font-bold uppercase">Perfect For Beginners</span>
+            if (bundle.badge === 'Best Seller') {
+              borderClass = "border-2 border-[#ff4fa3]";
+              shadowClass = "shadow-md hover:shadow-xl";
+              badgeClass = "bg-[#ff4fa3] text-white shadow-sm shadow-pink-100 flex items-center gap-1 animate-pulse";
+              priceColor = "text-[#ff4fa3]";
+              buttonClass = "bg-[#ff4fa3] text-white border-[#ff4fa3] hover:bg-black hover:text-[#ff4fa3] hover:border-black shadow-md shadow-pink-100";
+            } else if (bundle.badge?.includes('Premium')) {
+              badgeClass = "bg-[#7b5cff]/10 border border-[#7b5cff]/20 text-[#7b5cff]";
+            }
 
-              {/* Product Checklist */}
-              <div className="pt-4 space-y-2 border-t border-slate-100/70 mt-4">
-                {[
-                  'Golden Teacher (Dried)',
-                  'Blue Raspberry Gummies',
-                  'Focus Wellness Capsules'
-                ].map((prod, idx) => (
-                  <div key={idx} className="flex items-center gap-2 text-xs font-bold text-slate-500">
-                    <Check className="h-4 w-4 text-emerald-500 shrink-0" />
-                    <span>{prod}</span>
+            return (
+              <div key={bundle._id} className={`bg-white rounded-[36px] p-6 flex flex-col justify-between items-start text-left gap-6 hover:-translate-y-1 transition-all duration-300 relative group ${borderClass} ${shadowClass}`}>
+                <span className={`absolute left-6 top-6 rounded-full px-3.5 py-1 text-[10px] font-black uppercase tracking-widest leading-none ${badgeClass}`}>
+                  {bundle.badge === 'Best Seller' && <Sparkles className="mr-1 h-3.5 w-3.5 fill-current" />}
+                  {bundle.badge}
+                </span>
+                <div className="w-full text-right">
+                  <span className="text-3xl">{bundle.icon}</span>
+                </div>
+
+                <div className="space-y-1.5 w-full mt-4">
+                  <h3 className="text-xl font-black text-[#1b1533] uppercase logo-font leading-none">{bundle.name}</h3>
+                  <span className="block text-[12px] text-slate-400 font-bold uppercase">{bundle.description}</span>
+
+                  {/* Product Checklist */}
+                  <div className="pt-4 space-y-2 border-t border-slate-100/70 mt-4">
+                    {bundle.includedItems?.map((prod: string, idx: number) => (
+                      <div key={idx} className="flex items-center gap-2 text-xs font-bold text-slate-500">
+                        <Check className="h-4 w-4 text-emerald-500 shrink-0" />
+                        <span>{prod}</span>
+                      </div>
+                    ))}
                   </div>
-                ))}
-              </div>
-            </div>
+                </div>
 
-            <div className="w-full border-t border-slate-100/70 pt-4 flex items-baseline justify-between mt-auto">
-              <div>
-                <span className="block text-[12px] text-slate-400 font-black uppercase tracking-wider">Save 15%</span>
-                <strong className="text-2xl font-black text-[#1b1533] logo-font">$149.00</strong>
-              </div>
-              <button
-                onClick={() => addToCart({
-                  title: 'Starter Bundle',
-                  category: 'Bundles',
-                  price: '$149.00',
-                  imageSrc: '/images/hero_composition.webp'
-                })}
-                className="rounded-2xl bg-[#ff4fa3] text-white border border-[#ff4fa3] px-6 py-3 text-xs font-black uppercase tracking-wider transition-all duration-200 hover:bg-black hover:text-[#ff4fa3] hover:border-black cursor-pointer logo-font shadow-sm"
-              >
-                Buy Bundle
-              </button>
-            </div>
-          </div>
-
-          {/* Best Seller Bundle */}
-          <div className="bg-white border-2 border-[#ff4fa3] rounded-[36px] p-6 shadow-md flex flex-col justify-between items-start text-left gap-6 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 relative group">
-            <span className="absolute left-6 top-6 bg-[#ff4fa3] text-white rounded-full px-3.5 py-1 text-[10px] font-black uppercase tracking-widest leading-none shadow-sm shadow-pink-100 flex items-center gap-1 animate-pulse">
-              <Sparkles className="h-3 w-3 fill-current" /> Best Seller
-            </span>
-            <div className="w-full text-right">
-              <span className="text-3xl">🔥</span>
-            </div>
-
-            <div className="space-y-1.5 w-full mt-4">
-              <h3 className="text-xl font-black text-[#1b1533] uppercase logo-font leading-none">Best Seller Bundle</h3>
-              <span className="block text-[12px] text-slate-400 font-bold uppercase">Customer Favorite Stack</span>
-
-              {/* Product Checklist */}
-              <div className="pt-4 space-y-2 border-t border-slate-100/70 mt-4">
-                {[
-                  'Golden Teacher (Dried)',
-                  'Penis Envy (Dried)',
-                  'Gummies (Infused)',
-                  'Wellness Stacks (Capsules)'
-                ].map((prod, idx) => (
-                  <div key={idx} className="flex items-center gap-2 text-xs font-bold text-slate-500">
-                    <Check className="h-4 w-4 text-emerald-500 shrink-0" />
-                    <span>{prod}</span>
+                <div className="w-full border-t border-slate-100/70 pt-4 flex items-baseline justify-between mt-auto">
+                  <div>
+                    <span className="block text-[12px] text-slate-400 font-black uppercase tracking-wider">{bundle.discountText}</span>
+                    <strong className={`text-2xl font-black logo-font ${priceColor}`}>${Number(bundle.price).toFixed(2)}</strong>
                   </div>
-                ))}
+                  <button
+                    onClick={() => addToCart({
+                      title: bundle.name,
+                      category: 'Bundles',
+                      price: `$${Number(bundle.price).toFixed(2)}`,
+                      imageSrc: '/images/hero_composition.webp'
+                    })}
+                    className={`rounded-2xl px-6 py-3 text-xs font-black uppercase tracking-wider transition-all duration-200 cursor-pointer logo-font ${buttonClass}`}
+                  >
+                    Buy Bundle
+                  </button>
+                </div>
               </div>
-            </div>
-
-            <div className="w-full border-t border-slate-100/70 pt-4 flex items-baseline justify-between mt-auto">
-              <div>
-                <span className="block text-[12px] text-slate-400 font-black uppercase tracking-wider">Save 20%</span>
-                <strong className="text-2xl font-black text-[#ff4fa3] logo-font">$249.00</strong>
-              </div>
-              <button
-                onClick={() => addToCart({
-                  title: 'Best Seller Bundle',
-                  category: 'Bundles',
-                  price: '$249.00',
-                  imageSrc: '/images/hero_composition.webp'
-                })}
-                className="rounded-2xl bg-[#ff4fa3] text-white border border-[#ff4fa3] px-6 py-3 text-xs font-black uppercase tracking-wider transition-all duration-200 hover:bg-black hover:text-[#ff4fa3] hover:border-black cursor-pointer logo-font shadow-md shadow-pink-100"
-              >
-                Buy Bundle
-              </button>
-            </div>
-          </div>
-
-          {/* Ultimate Bundle */}
-          <div className="bg-white border border-slate-100 rounded-[36px] p-6 shadow-sm flex flex-col justify-between items-start text-left gap-6 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 relative group">
-            <span className="absolute left-6 top-6 bg-[#7b5cff]/10 border border-[#7b5cff]/20 text-[#7b5cff] rounded-full px-3.5 py-1 text-[10px] font-black uppercase tracking-widest leading-none">
-              👑 Premium Bundle
-            </span>
-            <div className="w-full text-right">
-              <span className="text-3xl">✨</span>
-            </div>
-
-            <div className="space-y-1.5 w-full mt-4">
-              <h3 className="text-xl font-black text-[#1b1533] uppercase logo-font leading-none">Ultimate Bundle</h3>
-              <span className="block text-[12px] text-slate-400 font-bold uppercase">Maximum Compound Variety</span>
-
-              {/* Product Checklist */}
-              <div className="pt-4 space-y-2 border-t border-slate-100/70 mt-4">
-                {[
-                  'Multiple Dried Strains',
-                  'Fruity Edibles (Gummies)',
-                  'Cognitive Wellness Capsules',
-                  'Daily Microdose Blends'
-                ].map((prod, idx) => (
-                  <div key={idx} className="flex items-center gap-2 text-xs font-bold text-slate-500">
-                    <Check className="h-4 w-4 text-emerald-500 shrink-0" />
-                    <span>{prod}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <div className="w-full border-t border-slate-100/70 pt-4 flex items-baseline justify-between mt-auto">
-              <div>
-                <span className="block text-[12px] text-slate-400 font-black uppercase tracking-wider">Save 25%</span>
-                <strong className="text-2xl font-black text-[#1b1533] logo-font">$399.00</strong>
-              </div>
-              <button
-                onClick={() => addToCart({
-                  title: 'Ultimate Bundle',
-                  category: 'Bundles',
-                  price: '$399.00',
-                  imageSrc: '/images/hero_composition.webp'
-                })}
-                className="rounded-2xl bg-[#ff4fa3] text-white border border-[#ff4fa3] px-6 py-3 text-xs font-black uppercase tracking-wider transition-all duration-200 hover:bg-black hover:text-[#ff4fa3] hover:border-black cursor-pointer logo-font shadow-sm"
-              >
-                Buy Bundle
-              </button>
-            </div>
-          </div>
+            );
+          }) : (
+            <p className="text-slate-400">Loading Featured Bundles...</p>
+          )}
 
         </div>
       </section>
@@ -345,17 +317,12 @@ export default function BundlesCollectionPage() {
                 <h3 className="text-base font-black text-[#1b1533] uppercase logo-font">Choose Strains (Mushrooms)</h3>
               </div>
               <div className="grid gap-3 sm:grid-cols-2">
-                {[
-                  { name: 'Golden Teacher', price: 40, desc: 'Earthy, introspective favorite' },
-                  { name: 'Penis Envy', price: 50, desc: 'Maximum potency visuals profile' },
-                  { name: 'Blue Meanies', price: 45, desc: 'Highly potent energetic genetics' },
-                  { name: 'Jack Frost', price: 48, desc: 'Rare clean crystals and euphoria' }
-                ].map((opt) => (
+                {strains.map((opt: any, idx: number) => (
                   <button
-                    key={opt.name}
+                    key={opt._id || idx}
                     type="button"
-                    onClick={() => setBuildMushroom({ name: opt.name, price: opt.price })}
-                    className={`rounded-2xl border p-4 text-left cursor-pointer transition-all flex justify-between items-center ${buildMushroom.name === opt.name
+                    onClick={() => setBuildMushroom({ name: opt.name, price: opt.price, description: opt.desc })}
+                    className={`rounded-2xl border p-4 text-left cursor-pointer transition-all flex justify-between items-center ${defaultMushroom.name === opt.name
                       ? 'border-[#ff4fa3] bg-pink-50/10 shadow-sm'
                       : 'border-slate-100 hover:border-pink-300'
                       }`}
@@ -364,7 +331,7 @@ export default function BundlesCollectionPage() {
                       <span className="block text-xs font-black uppercase text-[#1b1533] logo-font">{opt.name}</span>
                       <span className="block text-[12px] text-slate-400 font-semibold mt-0.5">{opt.desc}</span>
                     </div>
-                    <strong className="text-emerald-600 text-xs font-black logo-font shrink-0 ml-2">+${opt.price}</strong>
+                    <strong className="text-emerald-600 text-xs font-black logo-font shrink-0 ml-2">+${Number(opt.price)}</strong>
                   </button>
                 ))}
               </div>
@@ -377,22 +344,18 @@ export default function BundlesCollectionPage() {
                 <h3 className="text-base font-black text-[#1b1533] uppercase logo-font">Choose Edibles</h3>
               </div>
               <div className="grid gap-3 sm:grid-cols-3">
-                {[
-                  { name: 'Mushroom Gummies', price: 25 },
-                  { name: 'Belgian Chocolate', price: 22 },
-                  { name: 'Infused Chai Tea', price: 18 }
-                ].map((opt) => (
+                {edibles.map((opt: any, idx: number) => (
                   <button
-                    key={opt.name}
+                    key={opt._id || idx}
                     type="button"
                     onClick={() => setBuildEdible({ name: opt.name, price: opt.price })}
-                    className={`rounded-2xl border p-4 text-left cursor-pointer transition-all flex flex-col justify-between items-start gap-3 h-28 ${buildEdible.name === opt.name
+                    className={`rounded-2xl border p-4 text-left cursor-pointer transition-all flex flex-col justify-between items-start gap-3 h-28 ${defaultEdible.name === opt.name
                       ? 'border-[#ff4fa3] bg-pink-50/10 shadow-sm'
                       : 'border-slate-100 hover:border-pink-300'
                       }`}
                   >
                     <span className="block text-xs font-black uppercase text-[#1b1533] logo-font leading-tight">{opt.name}</span>
-                    <strong className="text-emerald-600 text-xs font-black logo-font mt-auto">+${opt.price}</strong>
+                    <strong className="text-emerald-600 text-xs font-black logo-font mt-auto">+${Number(opt.price)}</strong>
                   </button>
                 ))}
               </div>
@@ -405,22 +368,18 @@ export default function BundlesCollectionPage() {
                 <h3 className="text-base font-black text-[#1b1533] uppercase logo-font">Choose Wellness Capsules</h3>
               </div>
               <div className="grid gap-3 sm:grid-cols-3">
-                {[
-                  { name: 'Focus Capsules', price: 28 },
-                  { name: 'Energy Capsules', price: 28 },
-                  { name: 'Relax Capsules', price: 30 }
-                ].map((opt) => (
+                {capsules.map((opt: any, idx: number) => (
                   <button
-                    key={opt.name}
+                    key={opt._id || idx}
                     type="button"
                     onClick={() => setBuildCapsule({ name: opt.name, price: opt.price })}
-                    className={`rounded-2xl border p-4 text-left cursor-pointer transition-all flex flex-col justify-between items-start gap-3 h-28 ${buildCapsule.name === opt.name
+                    className={`rounded-2xl border p-4 text-left cursor-pointer transition-all flex flex-col justify-between items-start gap-3 h-28 ${defaultCapsule.name === opt.name
                       ? 'border-[#ff4fa3] bg-pink-50/10 shadow-sm'
                       : 'border-slate-100 hover:border-pink-300'
                       }`}
                   >
                     <span className="block text-xs font-black uppercase text-[#1b1533] logo-font leading-tight">{opt.name}</span>
-                    <strong className="text-emerald-600 text-xs font-black logo-font mt-auto">+${opt.price}</strong>
+                    <strong className="text-emerald-600 text-xs font-black logo-font mt-auto">+${Number(opt.price)}</strong>
                   </button>
                 ))}
               </div>
@@ -433,22 +392,18 @@ export default function BundlesCollectionPage() {
                 <h3 className="text-base font-black text-[#1b1533] uppercase logo-font">Choose Microdose Blends</h3>
               </div>
               <div className="grid gap-3 sm:grid-cols-3">
-                {[
-                  { name: 'Daily Wellness', price: 26 },
-                  { name: 'Creative Boost', price: 30 },
-                  { name: 'Mood Support', price: 28 }
-                ].map((opt) => (
+                {microdose.map((opt: any, idx: number) => (
                   <button
-                    key={opt.name}
+                    key={opt._id || idx}
                     type="button"
                     onClick={() => setBuildMicrodose({ name: opt.name, price: opt.price })}
-                    className={`rounded-2xl border p-4 text-left cursor-pointer transition-all flex flex-col justify-between items-start gap-3 h-28 ${buildMicrodose.name === opt.name
+                    className={`rounded-2xl border p-4 text-left cursor-pointer transition-all flex flex-col justify-between items-start gap-3 h-28 ${defaultMicrodose.name === opt.name
                       ? 'border-[#ff4fa3] bg-pink-50/10 shadow-sm'
                       : 'border-slate-100 hover:border-pink-300'
                       }`}
                   >
                     <span className="block text-xs font-black uppercase text-[#1b1533] logo-font leading-tight">{opt.name}</span>
-                    <strong className="text-emerald-600 text-xs font-black logo-font mt-auto">+${opt.price}</strong>
+                    <strong className="text-emerald-600 text-xs font-black logo-font mt-auto">+${Number(opt.price)}</strong>
                   </button>
                 ))}
               </div>
@@ -466,36 +421,36 @@ export default function BundlesCollectionPage() {
               <div className="flex items-center justify-between text-xs font-semibold text-slate-500 pt-3 first:pt-0">
                 <div>
                   <span className="block text-[12px] text-slate-400 font-bold uppercase">Step 1: Strains</span>
-                  <strong className="text-slate-800 logo-font">{buildMushroom.name}</strong>
+                  <strong className="text-slate-800 logo-font">{defaultMushroom.name}</strong>
                 </div>
-                <strong className="text-slate-800 font-black">${buildMushroom.price.toFixed(2)}</strong>
+                <strong className="text-slate-800 font-black">${Number(defaultMushroom.price).toFixed(2)}</strong>
               </div>
 
               {/* Selected Edible */}
               <div className="flex items-center justify-between text-xs font-semibold text-slate-500 pt-3">
                 <div>
                   <span className="block text-[12px] text-slate-400 font-bold uppercase">Step 2: Edibles</span>
-                  <strong className="text-slate-800 logo-font">{buildEdible.name}</strong>
+                  <strong className="text-slate-800 logo-font">{defaultEdible.name.replace('Mushroom ', '')}</strong>
                 </div>
-                <strong className="text-slate-800 font-black">${buildEdible.price.toFixed(2)}</strong>
+                <strong className="text-slate-800 font-black">${Number(defaultEdible.price).toFixed(2)}</strong>
               </div>
 
               {/* Selected Capsule */}
               <div className="flex items-center justify-between text-xs font-semibold text-slate-500 pt-3">
                 <div>
                   <span className="block text-[12px] text-slate-400 font-bold uppercase">Step 3: Capsules</span>
-                  <strong className="text-slate-800 logo-font">{buildCapsule.name}</strong>
+                  <strong className="text-slate-800 logo-font">{defaultCapsule.name}</strong>
                 </div>
-                <strong className="text-slate-800 font-black">${buildCapsule.price.toFixed(2)}</strong>
+                <strong className="text-slate-800 font-black">${Number(defaultCapsule.price).toFixed(2)}</strong>
               </div>
 
               {/* Selected Microdose */}
               <div className="flex items-center justify-between text-xs font-semibold text-slate-500 pt-3">
                 <div>
                   <span className="block text-[12px] text-slate-400 font-bold uppercase">Step 4: Microdosing</span>
-                  <strong className="text-slate-800 logo-font">{buildMicrodose.name}</strong>
+                  <strong className="text-slate-800 logo-font">{defaultMicrodose.name}</strong>
                 </div>
-                <strong className="text-slate-800 font-black">${buildMicrodose.price.toFixed(2)}</strong>
+                <strong className="text-slate-800 font-black">${Number(defaultMicrodose.price).toFixed(2)}</strong>
               </div>
 
             </div>
@@ -582,30 +537,24 @@ export default function BundlesCollectionPage() {
 
           {/* Horizontal scrollable flex deck */}
           <div className="flex gap-4 overflow-x-auto scrollbar-none pb-2">
-            {[
-              { name: 'Focus Bundle', items: 'Golden Teacher + Focus Capsules', price: '$79.99' },
-              { name: 'Creative Bundle', items: 'Jack Frost + Edible Gummies', price: '$89.99' },
-              { name: 'Weekend Bundle', items: 'Penis Envy + Belgian Chocolate', price: '$99.99' },
-              { name: 'Wellness Bundle', items: 'Capsules + Daily Microdose', price: '$69.99' },
-              { name: 'Explorer Bundle', items: 'Strains + Edibles + Capsules', price: '$159.99' }
-            ].map((item, idx) => (
+            {trendingBundles.map((item: any, idx: number) => (
               <div
-                key={idx}
+                key={item._id || idx}
                 className="flex flex-col justify-between bg-white p-5 rounded-3xl border border-slate-100 shadow-sm shrink-0 min-w-[230px] group transition-all duration-200 hover:-translate-y-1 hover:shadow-md cursor-pointer"
                 onClick={() => addToCart({
                   title: item.name,
                   category: 'Bundles',
-                  price: item.price,
+                  price: `$${Number(item.price).toFixed(2)}`,
                   imageSrc: '/images/hero_composition.webp'
                 })}
               >
                 <div>
                   <span className="block text-[12px] text-slate-400 font-bold uppercase tracking-wider leading-none">Pre-Packaged</span>
                   <strong className="block text-sm font-black text-[#1b1533] logo-font leading-snug mt-2">{item.name}</strong>
-                  <span className="block text-[12px] text-slate-400 font-semibold mt-1.5 leading-relaxed">{item.items}</span>
+                  <span className="block text-[12px] text-slate-400 font-semibold mt-1.5 leading-relaxed line-clamp-2">{item.description || item.items || item.includedItems?.join(' + ')}</span>
                 </div>
                 <div className="flex items-center justify-between mt-6 pt-3 border-t border-slate-50 w-full">
-                  <strong className="text-emerald-600 text-xs font-black logo-font">{item.price}</strong>
+                  <strong className="text-emerald-600 text-xs font-black logo-font">${Number(item.price).toFixed(2)}</strong>
                   <span className="text-[12px] font-black text-[#ff4fa3] uppercase tracking-wider group-hover:underline">Quick Buy</span>
                 </div>
               </div>
@@ -676,16 +625,12 @@ export default function BundlesCollectionPage() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-purple-100/20">
-                {[
-                  { name: 'Starter Bundle', prods: 'Golden Teacher + Gummies + Focus Stacks', save: 'Save 15%', price: '$149.00' },
-                  { name: 'Best Seller Bundle', prods: 'Golden Teacher + Penis Envy + Edibles + Capsules', save: 'Save 20%', price: '$249.00' },
-                  { name: 'Ultimate Bundle', prods: 'Dried Strains + Gummies + Capsules + Microdose', save: 'Save 25%', price: '$399.00' }
-                ].map((row, idx) => (
-                  <tr key={idx} className="hover:bg-slate-50/50 transition-colors">
+                {featuredBundles.map((row: any, idx: number) => (
+                  <tr key={row._id || idx} className="hover:bg-slate-50/50 transition-colors">
                     <td className="p-4 text-[#1b1533] font-black uppercase logo-font">{row.name}</td>
-                    <td className="p-4 text-slate-500">{row.prods}</td>
-                    <td className="p-4 text-[#ff4fa3] font-black uppercase">{row.save}</td>
-                    <td className="p-4 text-right text-emerald-600 font-black logo-font">{row.price}</td>
+                    <td className="p-4 text-slate-500">{row.includedItems.join(' + ')}</td>
+                    <td className="p-4 text-[#ff4fa3] font-black uppercase">{row.discountText || row.save}</td>
+                    <td className="p-4 text-right text-emerald-600 font-black logo-font">${Number(row.price).toFixed(2)}</td>
                   </tr>
                 ))}
               </tbody>

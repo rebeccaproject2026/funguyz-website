@@ -36,6 +36,9 @@ export interface IProduct extends Document {
   potency?: { tier: string; percent: number; pctRange: string; color: string };
   compounds?: { thc: string; cbd: string; cbn: string };
   deleted: boolean;
+  image?: string;
+  badge?: string;
+  isTrending?: boolean;
   createdAt: Date;
   updatedAt: Date;
 }

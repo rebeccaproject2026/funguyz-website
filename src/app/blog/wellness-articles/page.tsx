@@ -27,47 +27,43 @@ interface Article {
   slug: string;
 }
 
-const ARTICLES_DATA: Article[] = [
-  {
-    title: 'Integrating Psychedelics: Bringing Insights Home',
-    desc: 'How to successfully bridge the breakthroughs of a psilocybin trip into your daily relationships, career focus, and wellness goals. Integration maps are the absolute core of long-term healing.',
-    category: 'Integrate',
-    date: 'May 28, 2026',
-    time: '6 min read',
-    img: '/images/blog_4.webp',
-    slug: 'integrating-your-psychedelic-experience'
-  },
-  {
-    title: 'Mindset & Intention: The Set and Setting Blueprint',
-    desc: 'Why aligning your internal emotional environment and external physical settings holds the key to avoiding negative visual sessions and achieving absolute peace.',
-    category: 'Mindset',
-    date: 'May 24, 2026',
-    time: '5 min read',
-    img: '/images/blog_3.webp',
-    slug: 'setting-your-intentions:-psychedelic-journeys'
-  },
-  {
-    title: 'Adrenal Recovery: Combating Burnout with Adaptogens',
-    desc: 'Exploring how adaptogenic mushroom stacks (like Lion\'s Mane, Cordyceps, and Reishi) regulate cortisol pathways to combat physical fatigue and restore brain neurogenesis.',
-    category: 'Recovery',
-    date: 'May 18, 2026',
-    time: '7 min read',
-    img: '/images/blog_2.webp',
-    slug: 'clinical-studies-microdosing-stress'
-  },
-  {
-    title: 'Microdosing as a Morning Coffee Alternative',
-    desc: 'Many high-performance professionals are trading caffeine for sub-perceptual microdoses to experience steady, jitter-free focus, cognitive clarity, and mental stamina.',
-    category: 'Lifestyle',
-    date: 'May 12, 2026',
-    time: '5 min read',
-    img: '/images/blog_1.webp',
-    slug: 'the-art-of-microdosing:-a-beginner’s-guide'
-  }
-];
+import { MushroomLoader } from '@/components/MushroomLoader';
 
 export default function WellnessArticlesPage() {
   const [activeTab, setActiveTab] = useState<string>('all');
+  const [dbBlogs, setDbBlogs] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  React.useEffect(() => {
+    async function fetchBlogs() {
+      try {
+        const res = await fetch('/api/blogs', { cache: 'no-store' });
+        const data = await res.json();
+        if (data.success && data.blogs) {
+          setDbBlogs(data.blogs);
+        }
+      } catch (err) {
+        console.error('Failed to fetch blogs', err);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    fetchBlogs();
+  }, []);
+
+  const ARTICLES_DATA: Article[] = dbBlogs
+    .filter(dbPost => dbPost.isWellness === true)
+    .map(dbPost => ({
+      title: dbPost.title || 'Untitled',
+      desc: dbPost.desc || dbPost.excerpt || '',
+      category: dbPost.category || 'Uncategorized',
+      date: dbPost.publishedAt ? new Date(dbPost.publishedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : 'Unknown Date',
+      time: dbPost.readTime || '5 min read',
+      img: dbPost.image || '/images/blog_2.webp',
+      slug: dbPost.slug
+    }));
+
+  const featuredPost = ARTICLES_DATA.find(a => a.slug === 'integrating-psychedelics-insights-home') || ARTICLES_DATA[0];
 
   const filteredArticles = activeTab === 'all'
     ? ARTICLES_DATA
@@ -134,111 +130,121 @@ export default function WellnessArticlesPage() {
         </div>
       </section>
 
-      {/* 2. Highlighted Featured Article Banner */}
-      <section className="mx-auto max-w-7xl px-4 pt-16 md:px-8">
-        <div className="text-left mb-6">
-          <span className="text-[10px] font-black uppercase tracking-widest text-[#ff4fa3] logo-font border border-pink-100 bg-white px-3 py-1 rounded-full shadow-sm">Featured wellness Read</span>
+      {isLoading && (
+        <div className="flex justify-center items-center py-32 min-h-[400px]">
+          <MushroomLoader />
         </div>
+      )}
 
-        <div className="bg-white border border-slate-100 rounded-[44px] p-6 md:p-8 shadow-sm grid gap-8 lg:grid-cols-[1.2fr_1fr] items-center hover:shadow-md transition-shadow group">
-
-          {/* Article Cover */}
-          <div className="aspect-video w-full rounded-[32px] overflow-hidden bg-slate-100 shadow-sm relative">
-            <img
-              src={ARTICLES_DATA[0].img}
-              alt={ARTICLES_DATA[0].title}
-              className="h-full w-full object-cover group-hover:scale-102 transition-transform duration-500"
-            />
+      {/* 2. Highlighted Featured Article Banner */}
+      {!isLoading && featuredPost && (
+        <section className="mx-auto max-w-7xl px-4 pt-16 md:px-8">
+          <div className="text-left mb-6">
+            <span className="text-[10px] font-black uppercase tracking-widest text-[#ff4fa3] logo-font border border-pink-100 bg-white px-3 py-1 rounded-full shadow-sm">Featured wellness Read</span>
           </div>
 
-          {/* Article details */}
-          <div className="flex flex-col items-start gap-4 text-left">
-            <span className="rounded bg-[#ff4fa3]/5 px-3 py-1 text-[10px] font-black uppercase tracking-widest text-[#ff4fa3]">
-              {ARTICLES_DATA[0].category}
-            </span>
-            <h2 className="text-xl md:text-3xl font-black uppercase tracking-tight text-[#1b1533] logo-font leading-tight">
-              {ARTICLES_DATA[0].title}
-            </h2>
-            <p className="text-xs md:text-sm font-semibold leading-relaxed text-slate-400">
-              {ARTICLES_DATA[0].desc}
-            </p>
+          <div className="bg-white border border-slate-100 rounded-[44px] p-6 md:p-8 shadow-sm grid gap-8 lg:grid-cols-[1.2fr_1fr] items-center hover:shadow-md transition-shadow group">
 
-            {/* Meta */}
-            <div className="flex flex-wrap items-center gap-4 text-[12px] font-bold text-slate-400 border-b border-slate-100 pb-4 w-full">
-              <span className="flex items-center gap-1"><Calendar className="h-3.5 w-3.5 text-[#ff4fa3]" /> {ARTICLES_DATA[0].date}</span>
-              <span className="flex items-center gap-1"><Clock className="h-3.5 w-3.5 text-[#ff4fa3]" /> {ARTICLES_DATA[0].time}</span>
-              <span className="flex items-center gap-1"><User className="h-3.5 w-3.5 text-[#ff4fa3]" /> Wellness Team</span>
+            {/* Article Cover */}
+            <div className="aspect-video w-full rounded-[32px] overflow-hidden bg-slate-100 shadow-sm relative">
+              <img
+                src={featuredPost.img}
+                alt={featuredPost.title}
+                className="h-full w-full object-cover group-hover:scale-102 transition-transform duration-500"
+              />
             </div>
 
-            <Link
-              href={`/blog/${ARTICLES_DATA[0].slug}`}
-              className="inline-flex items-center justify-center gap-2 rounded-2xl bg-[#ff4fa3] text-white py-3.5 px-6 text-xs font-black uppercase tracking-wider transition-all duration-200 hover:bg-black hover:text-[#ff4fa3] hover:border-black cursor-pointer logo-font shadow-sm shadow-pink-100"
-            >
-              Read Article <ArrowRight className="h-4 w-4 stroke-[2.5]" />
-            </Link>
-          </div>
+            {/* Article details */}
+            <div className="flex flex-col items-start gap-4 text-left">
+              <span className="rounded bg-[#ff4fa3]/5 px-3 py-1 text-[10px] font-black uppercase tracking-widest text-[#ff4fa3]">
+                {featuredPost.category}
+              </span>
+              <h2 className="text-xl md:text-3xl font-black uppercase tracking-tight text-[#1b1533] logo-font leading-tight">
+                {featuredPost.title}
+              </h2>
+              <p className="text-xs md:text-sm font-semibold leading-relaxed text-slate-400">
+                {featuredPost.desc}
+              </p>
 
-        </div>
-      </section>
+              {/* Meta */}
+              <div className="flex flex-wrap items-center gap-4 text-[12px] font-bold text-slate-400 border-b border-slate-100 pb-4 w-full">
+                <span className="flex items-center gap-1"><Calendar className="h-3.5 w-3.5 text-[#ff4fa3]" /> {featuredPost.date}</span>
+                <span className="flex items-center gap-1"><Clock className="h-3.5 w-3.5 text-[#ff4fa3]" /> {featuredPost.time}</span>
+                <span className="flex items-center gap-1"><User className="h-3.5 w-3.5 text-[#ff4fa3]" /> Wellness Team</span>
+              </div>
+
+              <Link
+                href={`/blog/${featuredPost.slug}`}
+                className="inline-flex items-center justify-center gap-2 rounded-2xl bg-[#ff4fa3] text-white py-3.5 px-6 text-xs font-black uppercase tracking-wider transition-all duration-200 hover:bg-black hover:text-[#ff4fa3] hover:border-black cursor-pointer logo-font shadow-sm shadow-pink-100"
+              >
+                Read Article <ArrowRight className="h-4 w-4 stroke-[2.5]" />
+              </Link>
+            </div>
+
+          </div>
+        </section>
+      )}
 
       {/* 3. Article Grid with Category Tabs */}
-      <section id="articles-grid-section" className="mx-auto max-w-7xl px-4 py-16 md:px-8">
+      {!isLoading && (
+        <section id="articles-grid-section" className="mx-auto max-w-7xl px-4 py-16 md:px-8">
 
-        {/* Category Tabs */}
-        <div className="flex gap-2 overflow-x-auto scrollbar-none flex-nowrap justify-center pb-8 border-b border-slate-100/50 mb-10">
-          {['all', 'Integrate', 'Mindset', 'Recovery', 'Lifestyle'].map(tab => (
-            <button
-              key={tab}
-              onClick={() => setActiveTab(tab)}
-              className={`rounded-2xl px-5 py-2.5 text-xs font-black uppercase tracking-wider logo-font transition-all border cursor-pointer ${activeTab.toLowerCase() === tab.toLowerCase()
-                ? 'bg-[#ff4fa3] border-[#ff4fa3] text-white shadow-md shadow-pink-100'
-                : 'bg-white border-slate-200 text-slate-700 hover:border-[#ff4fa3]'
-                }`}
-            >
-              {tab === 'all' ? 'All Articles' : `${tab}`}
-            </button>
-          ))}
-        </div>
+          {/* Category Tabs */}
+          <div className="flex gap-2 overflow-x-auto scrollbar-none flex-nowrap justify-center pb-8 border-b border-slate-100/50 mb-10">
+            {['all', 'Integrate', 'Mindset', 'Recovery', 'Lifestyle'].map(tab => (
+              <button
+                key={tab}
+                onClick={() => setActiveTab(tab)}
+                className={`rounded-2xl px-5 py-2.5 text-xs font-black uppercase tracking-wider logo-font transition-all border cursor-pointer ${activeTab.toLowerCase() === tab.toLowerCase()
+                  ? 'bg-[#ff4fa3] border-[#ff4fa3] text-white shadow-md shadow-pink-100'
+                  : 'bg-white border-slate-200 text-slate-700 hover:border-[#ff4fa3]'
+                  }`}
+              >
+                {tab === 'all' ? 'All Articles' : `${tab}`}
+              </button>
+            ))}
+          </div>
 
-        {/* Dynamic Cards Grid */}
-        <div className="grid gap-8 sm:grid-cols-2">
-          {filteredArticles.map((article, idx) => (
-            <div key={idx} className="bg-white border border-slate-100 rounded-[32px] p-5 shadow-sm flex flex-col justify-between items-start text-left gap-4 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 group">
+          {/* Dynamic Cards Grid */}
+          <div className="grid gap-8 sm:grid-cols-2">
+            {filteredArticles.slice(0, 4).map((article, idx) => (
+              <div key={idx} className="bg-white border border-slate-100 rounded-[32px] p-5 shadow-sm flex flex-col justify-between items-start text-left gap-4 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 group">
 
-              <div className="aspect-video w-full rounded-2xl overflow-hidden bg-slate-100 relative">
-                <img
-                  src={article.img}
-                  alt={article.title}
-                  className="h-full w-full object-cover group-hover:scale-102 transition-transform duration-500"
-                />
-              </div>
-
-              <div className="space-y-2 w-full">
-                <span className="inline-block rounded bg-[#ff4fa3]/5 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-widest text-[#ff4fa3]">
-                  {article.category}
-                </span>
-                <h3 className="text-base font-black uppercase text-[#1b1533] logo-font leading-snug line-clamp-2 group-hover:text-[#ff4fa3] transition-colors">{article.title}</h3>
-                <p className="text-[12px] font-semibold leading-relaxed text-slate-400 line-clamp-3">{article.desc}</p>
-              </div>
-
-              <div className="border-t border-slate-100 pt-4 mt-auto w-full flex items-center justify-between text-[12px] font-bold text-slate-400">
-                <div className="flex gap-2">
-                  <span>{article.date}</span>
-                  <span>•</span>
-                  <span>{article.time}</span>
+                <div className="aspect-video w-full rounded-2xl overflow-hidden bg-slate-100 relative">
+                  <img
+                    src={article.img}
+                    alt={article.title}
+                    className="h-full w-full object-cover group-hover:scale-102 transition-transform duration-500"
+                  />
                 </div>
-                <Link
-                  href={`/blog/${article.slug}`}
-                  className="text-[12px] font-black uppercase tracking-wider text-[#ff4fa3] hover:underline logo-font flex items-center gap-1"
-                >
-                  Read Article <ChevronRight className="h-3 w-3 stroke-[2.5]" />
-                </Link>
-              </div>
 
-            </div>
-          ))}
-        </div>
-      </section>
+                <div className="space-y-2 w-full">
+                  <span className="inline-block rounded bg-[#ff4fa3]/5 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-widest text-[#ff4fa3]">
+                    {article.category}
+                  </span>
+                  <h3 className="text-base font-black uppercase text-[#1b1533] logo-font leading-snug line-clamp-2 group-hover:text-[#ff4fa3] transition-colors">{article.title}</h3>
+                  <p className="text-[12px] font-semibold leading-relaxed text-slate-400 line-clamp-3">{article.desc}</p>
+                </div>
+
+                <div className="border-t border-slate-100 pt-4 mt-auto w-full flex items-center justify-between text-[12px] font-bold text-slate-400">
+                  <div className="flex gap-2">
+                    <span>{article.date}</span>
+                    <span>•</span>
+                    <span>{article.time}</span>
+                  </div>
+                  <Link
+                    href={`/blog/${article.slug}`}
+                    className="text-[12px] font-black uppercase tracking-wider text-[#ff4fa3] hover:underline logo-font flex items-center gap-1"
+                  >
+                    Read Article <ChevronRight className="h-3 w-3 stroke-[2.5]" />
+                  </Link>
+                </div>
+
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* 4. Related Links Section */}
       <section className="bg-[#fff8f3] py-16 px-4 md:px-8 border-t border-purple-100/30">

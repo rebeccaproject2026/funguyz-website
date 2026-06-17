@@ -24,6 +24,8 @@ export interface FunguyzUser {
   displayName: string;
   role: string;
   orders: OrderRecord[];
+  addresses?: any[];
+  phone?: string;
 }
 
 interface AuthContextType {
@@ -48,21 +50,46 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   // Sync session with context state
   useEffect(() => {
+    let isMounted = true;
     if (session?.user) {
-      // In a full implementation, you might fetch full user details including orders from an API here
-      setCurrentUser({
-        id: session.user.id,
-        email: session.user.email as string, // keep email cast if NextAuth marks it optional
-        firstName: session.user.name?.split(' ')[0] || '',
-        lastName: session.user.name?.split(' ')[1] || '',
-        displayName: session.user.name || '',
-        role: session.user.role || 'CUSTOMER',
-        isDummyPassword: (session.user as any).isDummyPassword || false,
-        orders: [], // You would fetch orders from /api/user/orders
+      // Set initial state from session while fetching full details
+      setCurrentUser(prev => {
+        if (prev?.id === session.user.id) return prev; // Prevent wiping out state if we already have it
+        return {
+          id: session.user.id,
+          email: session.user.email as string, 
+          firstName: session.user.name?.split(' ')[0] || '',
+          lastName: session.user.name?.split(' ')[1] || '',
+          displayName: session.user.name || '',
+          role: session.user.role || 'CUSTOMER',
+          isDummyPassword: (session.user as any).isDummyPassword || false,
+          orders: [],
+        };
       });
+
+      // Fetch dynamic profile and order history
+      fetch('/api/user/profile')
+        .then(res => res.json())
+        .then(data => {
+          if (data.success && isMounted) {
+            setCurrentUser(prev => prev ? {
+              ...prev,
+              firstName: data.profile.firstName,
+              lastName: data.profile.lastName,
+              displayName: `${data.profile.firstName} ${data.profile.lastName}`.trim(),
+              email: data.profile.email,
+              phone: data.profile.phone,
+              addresses: data.profile.addresses,
+              orders: data.orders,
+            } : null);
+          }
+        })
+        .catch(console.error);
+
     } else {
       setCurrentUser(null);
     }
+    return () => { isMounted = false; };
   }, [session]);
 
   const login = async (email: string, password: string) => {

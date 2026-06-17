@@ -47,7 +47,7 @@ const POSTS_PER_PAGE = 4;
 export default function BlogHubPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [activeCategory, setActiveCategory] = useState<string>('all');
-  
+
   const [dbBlogs, setDbBlogs] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
@@ -98,15 +98,15 @@ export default function BlogHubPage() {
       desc.toLowerCase().includes(searchQuery.toLowerCase());
 
     const matchesCategory = activeCategory === 'all' || category.toLowerCase() === activeCategory.toLowerCase();
-    
+
     return matchesSearch && matchesCategory;
   });
 
   const featuredPost = filteredPosts.find(p => p.featured) || filteredPosts[0];
-  
+
   // If we are searching or filtering by category, we show all results in the grid and don't separate the featured post
   const standardPosts = (searchQuery !== '' || activeCategory !== 'all')
-    ? filteredPosts 
+    ? filteredPosts
     : filteredPosts.filter(p => p.title !== featuredPost?.title);
 
   // Pagination Logic
@@ -326,33 +326,32 @@ export default function BlogHubPage() {
             {/* Dynamic Pagination */}
             {totalPages > 1 && (
               <div className="flex items-center justify-center gap-2 pt-6">
-                <button 
+                <button
                   onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
                   disabled={currentPage === 1}
                   className="rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-black uppercase text-[#1b1533] hover:border-[#ff4fa3] logo-font cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   Prev
                 </button>
-                
+
                 {Array.from({ length: totalPages }).map((_, i) => {
                   const page = i + 1;
                   const isActive = currentPage === page;
                   return (
-                    <button 
+                    <button
                       key={page}
                       onClick={() => setCurrentPage(page)}
-                      className={`rounded-xl border px-4 py-2 text-xs font-black logo-font cursor-pointer ${
-                        isActive 
-                          ? 'border-[#ff4fa3] bg-[#ff4fa3]/5 text-[#ff4fa3]' 
+                      className={`rounded-xl border px-4 py-2 text-xs font-black logo-font cursor-pointer ${isActive
+                          ? 'border-[#ff4fa3] bg-[#ff4fa3]/5 text-[#ff4fa3]'
                           : 'border-slate-200 bg-white text-[#1b1533] hover:border-[#ff4fa3]'
-                      }`}
+                        }`}
                     >
                       {page}
                     </button>
                   );
                 })}
 
-                <button 
+                <button
                   onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
                   disabled={currentPage === totalPages}
                   className="rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-black uppercase text-[#1b1533] hover:border-[#ff4fa3] logo-font cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"

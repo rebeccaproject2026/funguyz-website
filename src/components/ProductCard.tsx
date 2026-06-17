@@ -43,7 +43,7 @@ export function ProductCard({ p, i = 0 }: { p: any; i?: number }) {
     'Golden Teacher Capsules': 82,
     'Microdose Daily Blend': 34,
   };
-  const reviews = isArray ? (p[6] || 48) : (p.reviewStats?.count || 48);
+  const reviews = isArray ? (p[6] || 48) : (p.reviewsList ? p.reviewsList.length : (p.reviewStats?.count ?? 0));
 
   // Dynamically calculate natural-looking previous prices ending in .99
   const originalPrice = '$' + (Math.round(priceNum * 1.25) - 0.01).toFixed(2);
@@ -270,10 +270,10 @@ export function ProductCard({ p, i = 0 }: { p: any; i?: number }) {
           >
             <ShoppingCart className="h-4 w-4 sm:h-5 sm:w-5" />
             {/* Smooth sliding tooltip */}
-            <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2.5 py-1 text-[12px] font-bold uppercase tracking-widest text-white bg-black rounded-lg opacity-0 pointer-events-none group-hover/btn:opacity-100 group-hover/btn:translate-y-0 translate-y-1 transition-all duration-200 shadow-md whitespace-nowrap logo-font z-30">
+            <span className="absolute bottom-full right-0 mb-2 px-2.5 py-1 text-[12px] font-bold uppercase tracking-widest text-white bg-black rounded-lg opacity-0 pointer-events-none group-hover/btn:opacity-100 group-hover/btn:translate-y-0 translate-y-1 transition-all duration-200 shadow-md whitespace-nowrap logo-font z-30">
               Add to Cart
               {/* Caret Down Arrow */}
-              <span className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-black" />
+              <span className="absolute top-full right-3 sm:right-4 border-4 border-transparent border-t-black" />
             </span>
           </button>
         </div>

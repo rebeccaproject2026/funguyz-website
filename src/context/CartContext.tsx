@@ -35,6 +35,8 @@ interface ToastState {
 }
 
 interface AppliedCoupon {
+  title?: any;
+  discountLabel?: any;
   code: string;
   discount: number;
   label: string;
@@ -68,8 +70,8 @@ interface CartContextType {
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
-// Valid coupon codes — single source of truth (must match /coupons page)
-const VALID_COUPONS: Record<string, { discount: number; label: string; type: 'percent' | 'shipping'; minOrder?: number }> = {
+// Valid coupon codes default fallback
+const FALLBACK_COUPONS: Record<string, { discount: number; label: string; type: 'percent' | 'shipping'; minOrder?: number }> = {
   'LAUNCH20': { discount: 0.20, label: '20% Off', type: 'percent' },
   'BULK25': { discount: 0.25, label: '25% Off', type: 'percent', minOrder: 500 },
   'FREESHIP200': { discount: 0, label: 'Free Delivery & Free Shipping', type: 'shipping', minOrder: 200 },
@@ -91,6 +93,37 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const { isLoggedIn, currentUser } = useAuth();
   const { data: prodData } = useSWR('/api/products', fetcher);
   const globalProducts = React.useMemo(() => prodData?.success ? prodData.products : [], [prodData]);
+
+  const { data: couponsData } = useSWR('/api/coupons', fetcher);
+  
+  // Build dynamic valid coupons list
+  const dynamicCoupons = React.useMemo(() => {
+    const baseCoupons = { ...FALLBACK_COUPONS };
+    if (couponsData?.success && Array.isArray(couponsData.coupons)) {
+      couponsData.coupons.forEach((c: any) => {
+        let type: 'percent' | 'shipping' = 'percent';
+        let discountVal = 0;
+        let minOrder = undefined;
+
+        if (c.discountLabel && (c.title.toLowerCase().includes('free shipping') || c.title.toLowerCase().includes('free delivery'))) {
+          type = 'shipping';
+          // Try to extract min order from terms (e.g. "Orders over $200")
+          const minMatch = c.terms?.match(/\$(\d+)/);
+          minOrder = minMatch ? parseInt(minMatch[1]) : 200;
+        } else if (c.discount.includes('%')) {
+          discountVal = parseInt(c.discount) / 100;
+        }
+
+        baseCoupons[c.code] = {
+          discount: discountVal,
+          label: c.discount,
+          type,
+          minOrder,
+        };
+      });
+    }
+    return baseCoupons;
+  }, [couponsData]);
 
   // Local Storage & DB Persistence for Wishlist
   useEffect(() => {
@@ -189,12 +222,34 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     hydrateWishlist();
   }, [isLoggedIn, currentUser, globalProducts]);
 
-  // Local Storage Persistence
+  // Local Storage Persistence & Live Server Price Validation
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const storedCart = localStorage.getItem('funguyz_cart');
       if (storedCart) {
-        try { setCartItems(JSON.parse(storedCart)); } catch (e) { console.error(e); }
+        try { 
+          const parsedCart = JSON.parse(storedCart);
+          setCartItems(parsedCart); 
+          
+          // Asynchronously validate cart items against the backend MongoDB
+          if (parsedCart.length > 0) {
+            fetch('/api/cart/validate', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ items: parsedCart })
+            })
+            .then(res => res.json())
+            .then(data => {
+              if (data.success && data.modified) {
+                // Found price mismatch or manipulation, update with real DB values
+                setCartItems(data.items);
+                localStorage.setItem('funguyz_cart', JSON.stringify(data.items));
+                console.log('Cart was synced and corrected with live database prices.');
+              }
+            })
+            .catch(err => console.error('Cart live validation failed', err));
+          }
+        } catch (e) { console.error(e); }
       }
       const storedCoupon = localStorage.getItem('funguyz_coupon');
       if (storedCoupon) {
@@ -283,8 +338,8 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const applyCoupon = (code: string, currentSubtotal?: number): { success: boolean; message: string } => {
     const normalized = code.trim().toUpperCase();
     if (!normalized) return { success: false, message: 'Please enter a coupon code.' };
-    if (VALID_COUPONS[normalized]) {
-      const couponDef = VALID_COUPONS[normalized];
+    if (dynamicCoupons[normalized]) {
+      const couponDef = dynamicCoupons[normalized];
       // Check minimum order requirement
       if (couponDef.minOrder && (currentSubtotal ?? subtotal) < couponDef.minOrder) {
         return { success: false, message: `This coupon requires a minimum order of $${couponDef.minOrder}. Your current subtotal is $${(currentSubtotal ?? subtotal).toFixed(2)}.` };
@@ -409,7 +464,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         appliedCoupon,
         applyCoupon,
         removeCoupon,
-        VALID_COUPONS,
+        VALID_COUPONS: dynamicCoupons,
       }}
     >
       {children}

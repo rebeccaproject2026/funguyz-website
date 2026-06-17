@@ -89,6 +89,81 @@ export default function MyAccountPage() {
   // Dashboard tab
   const [activeTab, setActiveTab] = useState<'dashboard' | 'orders' | 'downloads' | 'addresses' | 'details'>('dashboard');
 
+  // Profile Forms State
+  const [profileFirstName, setProfileFirstName] = useState('');
+  const [profileLastName, setProfileLastName] = useState('');
+  const [profileEmail, setProfileEmail] = useState('');
+  
+  // Addresses Forms State
+  const [billingAddress, setBillingAddress] = useState({ firstName: '', lastName: '', street: '', city: '', province: '', postalCode: '' });
+  const [shippingAddress, setShippingAddress] = useState({ firstName: '', lastName: '', street: '', city: '', province: '', postalCode: '' });
+
+  // Loading states
+  const [isSavingProfile, setIsSavingProfile] = useState(false);
+  const [isSavingAddresses, setIsSavingAddresses] = useState(false);
+
+  // Sync state when currentUser loads
+  useEffect(() => {
+    if (currentUser) {
+      setProfileFirstName(currentUser.firstName || '');
+      setProfileLastName(currentUser.lastName || '');
+      setProfileEmail(currentUser.email || '');
+
+      if (currentUser.addresses && currentUser.addresses.length > 0) {
+        const addr = currentUser.addresses[0];
+        setBillingAddress({ firstName: addr.firstName || currentUser.firstName, lastName: addr.lastName || currentUser.lastName, street: addr.street || '', city: addr.city || '', province: addr.province || '', postalCode: addr.postalCode || '' });
+        
+        const shipAddr = currentUser.addresses.length > 1 ? currentUser.addresses[1] : addr;
+        setShippingAddress({ firstName: shipAddr.firstName || currentUser.firstName, lastName: shipAddr.lastName || currentUser.lastName, street: shipAddr.street || '', city: shipAddr.city || '', province: shipAddr.province || '', postalCode: shipAddr.postalCode || '' });
+      }
+    }
+  }, [currentUser]);
+
+  const handleSaveProfile = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSavingProfile(true);
+    try {
+      const res = await fetch('/api/user/profile', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ firstName: profileFirstName, lastName: profileLastName, email: profileEmail })
+      });
+      const data = await res.json();
+      if (data.success) {
+        showFlash('success', 'Account details saved!');
+      } else {
+        showFlash('error', data.error || 'Failed to save');
+      }
+    } catch (e) {
+      showFlash('error', 'Network error');
+    }
+    setIsSavingProfile(false);
+  };
+
+  const handleSaveAddresses = async () => {
+    setIsSavingAddresses(true);
+    try {
+      const payload = [
+        { isDefault: true, firstName: billingAddress.firstName, lastName: billingAddress.lastName, street: billingAddress.street, city: billingAddress.city, province: billingAddress.province, postalCode: billingAddress.postalCode },
+        { isDefault: false, firstName: shippingAddress.firstName, lastName: shippingAddress.lastName, street: shippingAddress.street, city: shippingAddress.city, province: shippingAddress.province, postalCode: shippingAddress.postalCode }
+      ];
+      const res = await fetch('/api/user/profile', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ addresses: payload })
+      });
+      const data = await res.json();
+      if (data.success) {
+        showFlash('success', 'Addresses updated successfully!');
+      } else {
+        showFlash('error', data.error || 'Failed to update addresses');
+      }
+    } catch (e) {
+      showFlash('error', 'Network error');
+    }
+    setIsSavingAddresses(false);
+  };
+
   // Determine initial view on mount
   useEffect(() => {
     if (status === 'loading') {
@@ -661,50 +736,88 @@ export default function MyAccountPage() {
                 </div>
                 <p className="text-sm font-semibold text-slate-500">Your addresses are pre-filled from your last order. Edit below and save.</p>
                 <div className="grid gap-8 md:grid-cols-2">
-                  {['Billing', 'Shipping'].map(type => (
-                    <div key={type} className="space-y-3">
-                      <h3 className="text-xs font-black uppercase tracking-wider text-[#ff4fa3] border-b border-slate-100 pb-2">{type} Address</h3>
-                      {['First Name', 'Last Name', 'Street Address', 'City', 'Province', 'Postal Code'].map(field => (
-                        <label key={field} className={labelCls}>
-                          {field}
-                          <input type="text" placeholder={`Enter ${field}`} className={fieldCls} />
-                        </label>
-                      ))}
-                    </div>
-                  ))}
+                  {/* Billing Address */}
+                  <div className="space-y-3">
+                    <h3 className="text-xs font-black uppercase tracking-wider text-[#ff4fa3] border-b border-slate-100 pb-2">Billing Address</h3>
+                    {[
+                      { key: 'firstName', label: 'First Name' },
+                      { key: 'lastName', label: 'Last Name' },
+                      { key: 'street', label: 'Street Address' },
+                      { key: 'city', label: 'City' },
+                      { key: 'province', label: 'Province' },
+                      { key: 'postalCode', label: 'Postal Code' },
+                    ].map(field => (
+                      <label key={field.key} className={labelCls}>
+                        {field.label}
+                        <input 
+                          type="text" 
+                          placeholder={`Enter ${field.label}`} 
+                          className={fieldCls} 
+                          value={(billingAddress as any)[field.key]} 
+                          onChange={e => setBillingAddress(prev => ({...prev, [field.key]: e.target.value}))} 
+                        />
+                      </label>
+                    ))}
+                  </div>
+
+                  {/* Shipping Address */}
+                  <div className="space-y-3">
+                    <h3 className="text-xs font-black uppercase tracking-wider text-[#ff4fa3] border-b border-slate-100 pb-2">Shipping Address</h3>
+                    {[
+                      { key: 'firstName', label: 'First Name' },
+                      { key: 'lastName', label: 'Last Name' },
+                      { key: 'street', label: 'Street Address' },
+                      { key: 'city', label: 'City' },
+                      { key: 'province', label: 'Province' },
+                      { key: 'postalCode', label: 'Postal Code' },
+                    ].map(field => (
+                      <label key={field.key} className={labelCls}>
+                        {field.label}
+                        <input 
+                          type="text" 
+                          placeholder={`Enter ${field.label}`} 
+                          className={fieldCls} 
+                          value={(shippingAddress as any)[field.key]} 
+                          onChange={e => setShippingAddress(prev => ({...prev, [field.key]: e.target.value}))} 
+                        />
+                      </label>
+                    ))}
+                  </div>
                 </div>
-                <button onClick={() => showFlash('success', 'Addresses updated successfully!')}
-                  className="rounded-2xl bg-[#ff4fa3] text-white px-8 py-3 text-xs font-black uppercase tracking-wider hover:bg-black transition-all cursor-pointer logo-font">
-                  Save Changes
+                <button 
+                  onClick={handleSaveAddresses}
+                  disabled={isSavingAddresses}
+                  className="rounded-2xl bg-[#ff4fa3] text-white px-8 py-3 text-xs font-black uppercase tracking-wider hover:bg-black transition-all cursor-pointer logo-font disabled:opacity-50">
+                  {isSavingAddresses ? 'Saving...' : 'Save Changes'}
                 </button>
               </div>
             )}
 
             {/* ACCOUNT DETAILS */}
             {activeTab === 'details' && (
-              <form onSubmit={e => { e.preventDefault(); showFlash('success', 'Account details saved!'); }} className="space-y-6">
+              <form onSubmit={handleSaveProfile} className="space-y-6">
                 <div className="border-b border-slate-100 pb-4 flex items-center justify-between">
                   <div>
                     <h2 className="text-xl font-black text-[#1b1533] uppercase logo-font">Account Details</h2>
                     <p className="text-[12px] font-semibold text-slate-400 mt-1 uppercase tracking-wider">Personal Profile & Credentials</p>
                   </div>
-                  <button type="submit" className="rounded-2xl bg-[#ff4fa3] text-white px-6 py-2.5 text-[12px] font-black uppercase tracking-widest hover:bg-black transition-all cursor-pointer logo-font">
-                    Save Changes
+                  <button type="submit" disabled={isSavingProfile} className="rounded-2xl bg-[#ff4fa3] text-white px-6 py-2.5 text-[12px] font-black uppercase tracking-widest hover:bg-black transition-all cursor-pointer logo-font disabled:opacity-50">
+                    {isSavingProfile ? 'Saving...' : 'Save Changes'}
                   </button>
                 </div>
 
                 <div className="grid gap-6 sm:grid-cols-2">
                   <label className={labelCls}>
                     First Name
-                    <input type="text" defaultValue={currentUser?.firstName} className={fieldCls} />
+                    <input type="text" value={profileFirstName} onChange={e => setProfileFirstName(e.target.value)} className={fieldCls} />
                   </label>
                   <label className={labelCls}>
                     Last Name
-                    <input type="text" defaultValue={currentUser?.lastName} className={fieldCls} />
+                    <input type="text" value={profileLastName} onChange={e => setProfileLastName(e.target.value)} className={fieldCls} />
                   </label>
                   <label className={`${labelCls} sm:col-span-2`}>
                     Email Address
-                    <input type="email" defaultValue={currentUser?.email} className={fieldCls} />
+                    <input type="email" value={profileEmail} onChange={e => setProfileEmail(e.target.value)} className={fieldCls} />
                   </label>
                 </div>
 

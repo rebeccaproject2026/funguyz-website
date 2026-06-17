@@ -11,6 +11,7 @@ import { MushroomLoader } from '@/components/MushroomLoader';
 
 import { products, getProductSlug, getCategorySlug, getProductSeoMetadata, getProductSections, mushroomPricingTable } from '@/data/products';
 import { useCart } from '@/context/CartContext';
+import { useAuth } from '@/context/AuthContext';
 import {
   Sparkles,
   ShoppingBag,
@@ -58,33 +59,32 @@ function getCompoundsForCategory(category: string) {
 export default function CategoryProductPage({ params }: { params: Promise<{ categorySlug: string; productSlug: string }> }) {
   const { categorySlug, productSlug } = React.use(params);
   const { addToCart, toggleWishlist, isWishlisted } = useCart();
+  const { isLoggedIn, currentUser } = useAuth();
   const [selectedWeight, setSelectedWeight] = useState<string>('3.5g');
   const [quantity, setQuantity] = useState<number>(1);
   const [activeSection, setActiveSection] = useState<string>('overview');
   const [openFaqTab, setOpenFaqTab] = useState<number | null>(null);
-  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const [newReviewRating, setNewReviewRating] = useState<number>(5);
   const [newReviewText, setNewReviewText] = useState<string>('');
-  const [addedReviews, setAddedReviews] = useState<any[]>([]);
+  const [isSubmittingReview, setIsSubmittingReview] = useState<boolean>(false);
   const [selectedGalleryImage, setSelectedGalleryImage] = useState<string | null>(null);
   const [prevSlug, setPrevSlug] = useState(productSlug);
 
-  const { data: prodData, isLoading: isLoadingProduct } = useSWR(`/api/products/${productSlug}`, fetcher);
+  const { data: prodData, isLoading: isLoadingProduct, mutate: mutateProduct } = useSWR(`/api/products/${productSlug}`, fetcher);
   const { data: globalProdData } = useSWR('/api/products', fetcher);
 
   const dbProduct = prodData?.success ? prodData.product : null;
   const isLoading = isLoadingProduct;
 
-  let baseReviews = [];
-  if (dbProduct?.reviewsList && dbProduct.reviewsList.length > 0) {
-    baseReviews = dbProduct.reviewsList.map((r: any) => [r.name, r.text, r.rating]);
+  let reviewsList: any = [];
+  if (dbProduct) {
+    reviewsList = dbProduct.reviewsList ? dbProduct.reviewsList.map((r: any) => [r.name, r.text, r.rating]) : [];
   } else {
-    baseReviews = [
+    reviewsList = [
       ['Sarah M.', 'Outstanding customer service and extremely discreet packaging. The Golden Teacher provided an incredibly smooth, visual, and introspective mindset journey. Delivered in 2 days to Vancouver!', 5],
       ['David K.', 'Excellent gummies! The watermelon flavor is completely organic and has zero heavy body load. Ideal microdosing stack for creative coding and design focus!', 5]
     ];
   }
-  const reviewsList = [...baseReviews, ...addedReviews];
 
   let relatedProducts: any[] = [];
   if (globalProdData?.success && globalProdData.products && dbProduct) {
@@ -137,8 +137,8 @@ export default function CategoryProductPage({ params }: { params: Promise<{ cate
     price: `$${priceNum.toFixed(2)}`,
     originalPrice: `$${originalPriceNum.toFixed(2)}`,
     imageSrc: mainImg,
-    reviews: isDynamic ? `${matched.reviewStats?.count || 48} reviews` : (matched[6] || '48 reviews'),
-    rating: isDynamic ? (matched.reviewStats?.averageRating || 5) : (matched[7] || 5),
+    reviews: isDynamic ? `${matched.reviewsList ? matched.reviewsList.length : (matched.reviewStats?.count ?? 0)} reviews` : (matched[6] || '48 reviews'),
+    rating: isDynamic ? (matched.reviewStats?.averageRating ?? 5) : (matched[7] || 5),
     pricingMap: isDynamic ? (matched.pricing?.reduce((acc: any, p: any) => ({ ...acc, [p.weight]: p.price }), {}) || { '3.5g': priceNum }) : (mushroomPricingTable[matched[0]] || { '3.5g': priceNum }),
     desc: isDynamic ? matched.description : getProductSeoMetadata(matched[0], matched[1]).description,
     compounds: isDynamic && matched.compounds ? matched.compounds : getCompoundsForCategory(categoryName),
@@ -187,6 +187,37 @@ export default function CategoryProductPage({ params }: { params: Promise<{ cate
       price: `$${calculatedPrice.toFixed(2)}`,
       imageSrc: productData.imageSrc
     }, quantity);
+  };
+
+  const submitReview = async () => {
+    if (!newReviewText.trim()) return;
+    if (!dbProduct) return; // Can only submit review for dynamic DB product
+
+    setIsSubmittingReview(true);
+    try {
+      const res = await fetch(`/api/products/${productSlug}/reviews`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: currentUser?.firstName || 'Valued Customer',
+          text: newReviewText.trim(),
+          rating: newReviewRating
+        })
+      });
+
+      if (res.ok) {
+        setNewReviewText('');
+        setNewReviewRating(5);
+        await mutateProduct();
+      } else {
+        alert('Failed to submit review. Please try again.');
+      }
+    } catch (e) {
+      console.error(e);
+      alert('An error occurred while submitting.');
+    } finally {
+      setIsSubmittingReview(false);
+    }
   };
 
   return (
@@ -582,7 +613,7 @@ export default function CategoryProductPage({ params }: { params: Promise<{ cate
               </div>
 
               <div className="space-y-6">
-                {reviewsList.map(([name, text, rating], i) => (
+                {reviewsList.map(([name, text, rating]: any, i: number) => (
                   <div key={i} className="border-b border-slate-100 pb-5 last:border-b-0">
                     <div className="flex items-center gap-3">
                       <span className="grid h-10 w-10 place-items-center rounded-full bg-pink-100 text-pink-600 font-extrabold text-sm uppercase leading-none">
@@ -613,12 +644,12 @@ export default function CategoryProductPage({ params }: { params: Promise<{ cate
                     <h4 className="text-xs font-black text-[#1b1533] uppercase logo-font leading-none">Write a Customer Review</h4>
                     <p className="text-[12px] text-slate-400 mt-2 font-semibold leading-normal max-w-[280px]">You must be logged in to write a review on this product.</p>
                   </div>
-                  <button
-                    onClick={() => setIsLoggedIn(true)}
+                  <Link
+                    href="/my-account"
                     className="rounded-2xl bg-[#ff4fa3] text-white border border-[#ff4fa3] px-6 py-2.5 text-[12px] font-black uppercase tracking-widest shadow-md shadow-pink-100 transition-all duration-300 hover:bg-black hover:text-[#ff4fa3] hover:border-black hover:-translate-y-0.5 active:translate-y-0 cursor-pointer logo-font flex items-center gap-1.5"
                   >
                     <span>Login to your Account</span> <ArrowRight className="h-3.5 w-3.5 stroke-[2.5]" />
-                  </button>
+                  </Link>
                 </div>
               ) : (
                 <div className="bg-slate-50/50 border border-slate-100 rounded-3xl p-6 max-w-xl space-y-4">
@@ -648,14 +679,11 @@ export default function CategoryProductPage({ params }: { params: Promise<{ cate
                     />
                   </div>
                   <button
-                    onClick={() => {
-                      if (!newReviewText.trim()) return;
-                      setAddedReviews([...addedReviews, ['Valued Customer', newReviewText.trim(), newReviewRating]]);
-                      setNewReviewText('');
-                    }}
-                    className="inline-flex items-center justify-center rounded-2xl bg-[#ff4fa3] text-white border border-[#ff4fa3] px-6 py-2.5 text-[12px] font-black uppercase tracking-wider shadow-md shadow-pink-100 hover:bg-black hover:text-[#ff4fa3] hover:border-black hover:-translate-y-0.5 active:translate-y-0 cursor-pointer logo-font"
+                    onClick={submitReview}
+                    disabled={isSubmittingReview || !dbProduct}
+                    className={`inline-flex items-center justify-center rounded-2xl bg-[#ff4fa3] text-white border border-[#ff4fa3] px-6 py-2.5 text-[12px] font-black uppercase tracking-wider shadow-md shadow-pink-100 hover:bg-black hover:text-[#ff4fa3] hover:border-black hover:-translate-y-0.5 active:translate-y-0 cursor-pointer logo-font ${isSubmittingReview || !dbProduct ? 'opacity-50 pointer-events-none' : ''}`}
                   >
-                    Submit Review
+                    {isSubmittingReview ? 'Submitting...' : 'Submit Review'}
                   </button>
                 </div>
               )}

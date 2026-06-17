@@ -513,3 +513,71 @@ The Delivery & Shipping Team
 
   return { html, text };
 };
+
+export const generateContactEmailTemplate = (formData: any) => {
+  const { name, email, phone, category, subject, message } = formData;
+
+  const html = `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>New Support Ticket</title>
+  <style>
+    ${baseStyles}
+  </style>
+</head>
+<body style="margin: 0; padding: 0; background-color: #FFF8F5; font-family: 'Poppins', Helvetica, Arial, sans-serif;">
+  <div style="padding: 40px 20px; background-color: #FFF8F5; width: 100%; box-sizing: border-box;">
+    <div class="container" style="max-width: 600px; margin: 0 auto; background-color: #FFFFFF; border-radius: 24px; padding: 40px; box-shadow: 0 4px 20px rgba(0,0,0,0.03);">
+      <div class="text-center">
+        <div class="icon-container" style="color: #2563EB; background-color: #DBEAFE;">💬</div>
+        
+        <div class="status-text" style="color: #2563EB;">NEW SUPPORT TICKET</div>
+        <h1 class="title">CUSTOMER INQUIRY</h1>
+        <p class="subtitle">A new support request has been submitted by <strong>${name}</strong>.</p>
+      </div>
+
+      <div class="info-block">
+        <div class="info-row">
+          <div class="info-col">
+            <div class="label">CUSTOMER NAME</div>
+            <div class="value">${name}</div>
+          </div>
+          <div class="info-col">
+            <div class="label">EMAIL ADDRESS</div>
+            <div class="value pink"><a href="mailto:${email}" style="color: #FF3366; text-decoration: none;">${email}</a></div>
+          </div>
+          <div class="info-col">
+            <div class="label">PHONE</div>
+            <div class="value">${phone || 'N/A'}</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="delivery-block" style="background-color: #F8FAFC; border: 1px solid #E2E8F0;">
+        <div class="delivery-title" style="color: #475569;">
+          <span style="margin-right: 8px; font-size: 14px;">🏷️</span> CATEGORY: ${category}
+        </div>
+        <div class="delivery-title" style="color: #0F172A; margin-top: 12px; font-size: 14px;">
+          SUBJECT: ${subject || 'No Subject'}
+        </div>
+        <p class="delivery-text" style="margin-top: 16px; padding-top: 16px; border-top: 1px solid #E2E8F0; white-space: pre-wrap;">
+${message}
+        </p>
+      </div>
+
+      <div style="text-align: center; margin-top: 40px; padding-top: 20px; border-top: 1px solid #E5E7EB; color: #9CA3AF; font-size: 12px; font-weight: 600;">
+        <div style="margin-bottom: 8px; font-weight: 800; letter-spacing: 0.5px;">FunGuyz Support System</div>
+        <div>Please reply directly to the customer's email address to respond.</div>
+      </div>
+
+    </div>
+  </div>
+</body>
+</html>
+  `;
+
+  return { html };
+};
