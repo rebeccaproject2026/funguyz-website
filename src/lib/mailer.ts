@@ -12,7 +12,7 @@ export const transporter = nodemailer.createTransport(
       user: process.env.SMTP_USER,
       pass: process.env.SMTP_PASS,
     },
-    connectionTimeout: 5000, // 5 seconds max wait before giving up
+    connectionTimeout: 8000, // 5 seconds max wait before giving up
     // debug: true, 
     // logger: true,
     tls: {
