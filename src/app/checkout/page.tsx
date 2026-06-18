@@ -27,6 +27,7 @@ import {
   BadgePercent,
   UserPlus
 } from 'lucide-react';
+import Image from 'next/image';
 
 export default function CheckoutPage() {
   const { cartItems, subtotal, clearCart, appliedCoupon, applyCoupon, removeCoupon } = useCart();
@@ -420,7 +421,7 @@ export default function CheckoutPage() {
 
               <p className="text-[10px] text-[#ff4fa3] font-semibold leading-relaxed flex items-center justify-start gap-1">
                 * Note: Fast • Secure • Discreet Delivery Across Canada
-                <img src="/images/canada-flag.svg" alt="Canada Flag" className="w-4 h-3 rounded-[1px] shrink-0" />
+                <Image src="/images/canada-flag.svg" alt="Canada Flag" width={16} height={12} className="rounded-[1px] shrink-0" />
               </p>
             </div>
 
@@ -728,8 +729,8 @@ export default function CheckoutPage() {
                 <div className="space-y-4 divide-y divide-slate-100">
                   {cartItems.map((item) => (
                     <div key={item.title} className="flex gap-4 pt-4 first:pt-0">
-                      <div className="h-14 w-14 rounded-xl border border-slate-100 bg-slate-50 flex items-center justify-center p-2 shrink-0">
-                        <img src={item.imageSrc} className="max-h-full max-w-full object-contain" alt="Cart item" />
+                      <div className="h-14 w-14 rounded-xl border border-slate-100 bg-slate-50 flex items-center justify-center p-2 shrink-0 relative">
+                        <Image src={item.imageSrc} fill sizes="56px" className="object-contain p-1" alt="Cart item" />
                       </div>
                       <div className="flex-1 flex flex-col justify-between">
                         <div>
@@ -777,7 +778,7 @@ export default function CheckoutPage() {
                     </ol>
                     <p className="text-[#ff4fa3] flex items-center justify-start gap-1">
                       Fast • Secure • Discreet Delivery Across Canada
-                      <img src="/images/canada-flag.svg" alt="Canada Flag" className="w-4 h-3 rounded-[1px] shrink-0" />
+                      <Image src="/images/canada-flag.svg" alt="Canada Flag" width={16} height={12} className="rounded-[1px] shrink-0" />
                     </p>
                   </div>
                 </div>

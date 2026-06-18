@@ -38,6 +38,7 @@ import {
   Plus,
   Check
 } from 'lucide-react';
+import Image from 'next/image';
 
 interface CategoryDetails {
   title: string;
@@ -1154,9 +1155,11 @@ export default function DedicatedCategoryPage({ params }: { params: Promise<{ sl
           {/* Right Column: Floating product image card */}
           <div className="relative flex justify-center items-center h-full w-full">
             <div className="relative w-full max-w-[290px] aspect-square rounded-[32px] overflow-hidden border-4 border-white shadow-xl shadow-pink-100/50 bg-white/50 p-2 transition-transform duration-500 hover:scale-[1.03] animate-float">
-              <img
+              <Image
                 src={category.heroImage}
-                className="w-full h-full object-cover rounded-[24px]"
+                fill
+                sizes="290px"
+                className="object-cover rounded-[24px]"
                 alt={category.categoryName}
               />
               {/* Glass reflection overlay */}
@@ -1360,9 +1363,11 @@ export default function DedicatedCategoryPage({ params }: { params: Promise<{ sl
 
           {/* Left Column: Premium Feature Image Card */}
           <div className="relative w-full max-w-[420px] aspect-video sm:aspect-square rounded-[36px] overflow-hidden border-4 border-slate-50 shadow-lg mx-auto bg-slate-50">
-            <img
+            <Image
               src={category.heroImage}
-              className="w-full h-full object-cover"
+              fill
+              sizes="420px"
+              className="object-cover"
               alt="Mycological Cultivation Quality"
             />
             {/* Custom glowing floating micro-elements */}
@@ -1427,8 +1432,8 @@ export default function DedicatedCategoryPage({ params }: { params: Promise<{ sl
                   className="flex items-center gap-3 bg-white p-2.5 rounded-2xl border border-slate-100 shadow-sm shrink-0 min-w-[210px] group transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md cursor-pointer"
                   onClick={() => setSearchQuery(item.name)}
                 >
-                  <div className="h-10 w-10 bg-slate-50 border border-slate-100/50 p-1.5 rounded-xl shrink-0">
-                    <img src={imageSrc} className="h-full w-full object-contain rounded-lg" alt={item.name} />
+                  <div className="h-10 w-10 bg-slate-50 border border-slate-100/50 p-1.5 rounded-xl shrink-0 relative">
+                    <Image src={imageSrc} fill sizes="40px" className="object-contain rounded-lg p-1.5" alt={item.name} />
                   </div>
                   <div className="leading-tight text-left">
                     <span className="block text-[10px] text-slate-400 font-bold uppercase">{badge}</span>

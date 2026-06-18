@@ -36,6 +36,7 @@ import {
   MessageSquare
 } from 'lucide-react';
 import { imageMap } from '@/data/imageMap';
+import Image from 'next/image';
 
 function getGalleryImagesList(title: string, category: string, mainImg: string): string[] {
   const backImg = mainImg.replace('front.webp', 'back.webp');
@@ -253,10 +254,13 @@ export default function CategoryProductPage({ params }: { params: Promise<{ cate
               />
             */}
             <div className="relative aspect-[4/5] w-full rounded-[24px] sm:rounded-[40px] bg-[#1a1a1a] border border-slate-100 shadow-sm overflow-hidden flex items-center justify-center group">
-              <img
+              <Image
                 src={activeImage}
                 alt={productData.title}
-                className="h-full w-full object-cover object-bottom pointer-events-none transition-transform duration-500 group-hover:scale-105"
+                fill
+                sizes="(max-width: 768px) 100vw, 50vw"
+                priority
+                className="object-cover object-bottom pointer-events-none transition-transform duration-500 group-hover:scale-105"
               />
               <span className="absolute top-5 left-5 inline-flex items-center gap-1.5 rounded-full bg-[#ff4fa3]/5 px-3 py-1.5 text-[10px] font-bold uppercase tracking-widest text-[#ff4fa3] shadow-sm backdrop-blur-md">
                 <Sparkles className="h-3 w-3" /> 100% Lab Tested
@@ -295,10 +299,10 @@ export default function CategoryProductPage({ params }: { params: Promise<{ cate
                   */}
                   <button
                     onClick={() => setSelectedGalleryImage(img)}
-                    className={`aspect-[4/5] rounded-2xl border bg-[#1a1a1a] overflow-hidden flex items-center justify-center hover:border-[#ff4fa3] transition-all cursor-pointer ${activeImage === img ? 'border-[#ff4fa3] ring-2 ring-pink-50' : 'border-slate-100'
+                    className={`relative aspect-[4/5] rounded-2xl border bg-[#1a1a1a] overflow-hidden flex items-center justify-center hover:border-[#ff4fa3] transition-all cursor-pointer ${activeImage === img ? 'border-[#ff4fa3] ring-2 ring-pink-50' : 'border-slate-100'
                       }`}
                   >
-                    <img src={img} className="h-full w-full object-cover object-bottom" alt="Thumbnail" loading="lazy" />
+                    <Image src={img} fill sizes="100px" className="object-cover object-bottom" alt="Thumbnail" loading="lazy" />
                   </button>
                 </div>
               ))}

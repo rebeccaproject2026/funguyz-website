@@ -72,6 +72,7 @@ import { MushroomLoader } from './MushroomLoader';
 import { useCart } from '@/context/CartContext';
 import { usePathname } from 'next/navigation';
 import { getProductUrl } from '@/data/products';
+import { staticCategories, staticAnnouncements } from '@/data/staticData';
 
 function MushroomWithStarsIcon(props: React.ComponentProps<'svg'>) {
   return (
@@ -268,12 +269,16 @@ export function Header() {
   const [isInfoOpen, setIsInfoOpen] = useState(false);
   const [selectedAnnouncement, setSelectedAnnouncement] = useState<any | null>(null);
 
-  const { data: catData, isLoading: isCatLoading } = useSWR('/api/categories', fetcher);
-  const { data: annData, isLoading: isAnnLoading } = useSWR('/api/announcements', fetcher);
+  // const { data: catData, isLoading: isCatLoading } = useSWR('/api/categories', fetcher);
+  // const { data: annData, isLoading: isAnnLoading } = useSWR('/api/announcements', fetcher);
 
-  const dbCategories = catData?.success ? catData.categories : [];
-  const announcements = annData?.success ? annData.announcements : [];
-  const isLoading = isCatLoading || isAnnLoading;
+  // const dbCategories = catData?.success ? catData.categories : [];
+  // const announcements = annData?.success ? annData.announcements : [];
+  const dbCategories = staticCategories;
+  const announcements = staticAnnouncements;
+  const isCatLoading = false;
+  const isAnnLoading = false;
+  const isLoading = false;
 
   const navItems = dbCategories.map((cat: any) => ({
     label: cat.name,

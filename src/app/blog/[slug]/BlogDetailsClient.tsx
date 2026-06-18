@@ -15,6 +15,7 @@ import {
   ArrowLeft
 } from 'lucide-react';
 import { MushroomLoader } from '@/components/MushroomLoader';
+import Image from 'next/image';
 
 export default function BlogDetailsClient({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = React.use(params);
@@ -136,11 +137,13 @@ export default function BlogDetailsClient({ params }: { params: Promise<{ slug: 
 
         {/* Full-width Cover Image */}
         <div className="mt-8 aspect-video w-full overflow-hidden rounded-[32px] border border-slate-100 bg-slate-100 shadow-sm relative">
-          <img
+          <Image
             src={post.image}
             alt={post.title}
-            className="h-full w-full object-cover"
-            fetchPriority="high"
+            fill
+            sizes="(max-width: 1024px) 100vw, 1024px"
+            className="object-cover"
+            priority
           />
         </div>
 

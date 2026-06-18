@@ -28,6 +28,7 @@ interface Article {
 }
 
 import { MushroomLoader } from '@/components/MushroomLoader';
+import Image from 'next/image';
 
 export default function WellnessArticlesPage() {
   const [activeTab, setActiveTab] = useState<string>('all');
@@ -147,10 +148,12 @@ export default function WellnessArticlesPage() {
 
             {/* Article Cover */}
             <div className="aspect-video w-full rounded-[32px] overflow-hidden bg-slate-100 shadow-sm relative">
-              <img
+              <Image
                 src={featuredPost.img}
                 alt={featuredPost.title}
-                className="h-full w-full object-cover group-hover:scale-102 transition-transform duration-500"
+                fill
+                className="object-cover group-hover:scale-102 transition-transform duration-500"
+                sizes="(max-width: 1024px) 100vw, 50vw"
               />
             </div>
 
@@ -211,10 +214,12 @@ export default function WellnessArticlesPage() {
               <div key={idx} className="bg-white border border-slate-100 rounded-[32px] p-5 shadow-sm flex flex-col justify-between items-start text-left gap-4 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 group">
 
                 <div className="aspect-video w-full rounded-2xl overflow-hidden bg-slate-100 relative">
-                  <img
+                  <Image
                     src={article.img}
                     alt={article.title}
-                    className="h-full w-full object-cover group-hover:scale-102 transition-transform duration-500"
+                    fill
+                    className="object-cover group-hover:scale-102 transition-transform duration-500"
+                    sizes="(max-width: 768px) 100vw, 50vw"
                   />
                 </div>
 

@@ -1,6 +1,6 @@
 'use client';
 import Link from 'next/link';
-
+import Image from 'next/image';
 import React, { useState } from 'react';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
@@ -255,7 +255,7 @@ export default function BeginnerGuidePage() {
 
               <div className="bg-[#fff8f3]/60 border border-pink-100/50 rounded-3xl p-5 md:p-6 grid gap-6 md:grid-cols-[1fr_1.5fr] items-center text-left">
                 <div className="h-44 w-full bg-white rounded-2xl overflow-hidden flex items-center justify-center border border-slate-100 relative">
-                  <img src={rec.imageSrc} alt={rec.title} className="object-contain max-h-[140px]" />
+                  <Image src={rec.imageSrc} alt={rec.title} width={200} height={140} className="object-contain max-h-[140px]" />
                 </div>
                 <div className="space-y-2">
                   <span className="text-[12px] font-black uppercase text-[#ff4fa3] tracking-wider logo-font">{rec.category}</span>

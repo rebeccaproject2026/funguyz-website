@@ -23,6 +23,7 @@ import {
   CheckCircle,
   AlertCircle
 } from 'lucide-react';
+import Image from 'next/image';
 
 export default function CartPage() {
   const {
@@ -157,8 +158,8 @@ export default function CartPage() {
                             <Trash2 className="h-4 w-4" />
                           </button>
 
-                          <div className="h-16 w-16 rounded-2xl bg-white border border-slate-100 p-1.5 overflow-hidden flex items-center justify-center shrink-0 shadow-sm ml-0 md:ml-6">
-                            <img src={item.imageSrc} alt={item.title} className="h-full w-full object-contain pointer-events-none" />
+                          <div className="h-16 w-16 rounded-2xl bg-white border border-slate-100 p-1.5 overflow-hidden flex items-center justify-center shrink-0 shadow-sm ml-0 md:ml-6 relative">
+                            <Image src={item.imageSrc} alt={item.title} fill sizes="64px" className="object-contain pointer-events-none p-1.5" />
                           </div>
 
                           <div className="flex-1 flex flex-col text-left min-w-0">

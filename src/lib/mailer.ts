@@ -5,9 +5,9 @@ import nodemailer from 'nodemailer';
 export const transporter = nodemailer.createTransport(
   {
 
-    host: process.env.SMTP_HOST || 'smtp.titan.email',
-    port: Number(process.env.SMTP_PORT) || 465,
-    secure: true, // true for 465
+    host: process.env.SMTP_HOST || 'smtp.ionos.com',
+    port: Number(process.env.SMTP_PORT) || 587,
+    secure: Number(process.env.SMTP_PORT) === 465, // true for 465, false for 587
     auth: {
       user: process.env.SMTP_USER,
       pass: process.env.SMTP_PASS,

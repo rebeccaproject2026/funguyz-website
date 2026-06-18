@@ -1,6 +1,6 @@
 'use client';
 import Link from 'next/link';
-
+import Image from 'next/image';
 import React, { useState } from 'react';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
@@ -228,7 +228,7 @@ export default function MicrodoseGuidePage() {
           ].map((prod, idx) => (
             <div key={idx} className="bg-white border border-slate-100 rounded-[36px] p-5 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all flex flex-col justify-between items-start text-left gap-4 group">
               <div className="h-44 w-full bg-[#fff8f3]/60 rounded-2xl overflow-hidden flex items-center justify-center relative">
-                <img src={prod.img} alt={prod.title} className="object-contain max-h-[140px] group-hover:scale-102 transition-transform duration-500" />
+                <Image src={prod.img} alt={prod.title} width={200} height={140} className="object-contain max-h-[140px] group-hover:scale-102 transition-transform duration-500" />
               </div>
               <div className="space-y-1.5 w-full">
                 <span className="text-[12px] font-black text-[#ff4fa3] uppercase tracking-wider logo-font">Wellness</span>

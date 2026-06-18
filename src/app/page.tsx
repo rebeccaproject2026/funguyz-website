@@ -1,5 +1,6 @@
 'use client';
 import Link from 'next/link';
+import Image from 'next/image';
 import useSWR from 'swr';
 import { fetcher } from '@/lib/fetcher';
 
@@ -30,6 +31,8 @@ import {
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation } from 'swiper/modules';
 import 'swiper/css';
+import { useCart } from '@/context/CartContext';
+import { staticCategories } from '@/data/staticData';
 import { Footer } from '@/components/Footer';
 import { Header } from '@/components/Header';
 import { ProductCard } from '@/components/ProductCard';
@@ -109,11 +112,12 @@ export default function Home() {
   }, []);
 
   const { data: prodData, isLoading: isLoadingProducts } = useSWR(shouldFetchData ? '/api/products' : null, fetcher);
-  const { data: catData } = useSWR('/api/categories', fetcher);
+  // const { data: catData } = useSWR('/api/categories', fetcher);
   const { data: blogData } = useSWR(shouldFetchData ? '/api/blogs' : null, fetcher);
 
   const dbProducts = prodData?.success ? prodData.products : [];
-  const dbCategories = catData?.success ? catData.categories : [];
+  // const dbCategories = catData?.success ? catData.categories : [];
+  const dbCategories = staticCategories;
   const dbBlogs = blogData?.success ? blogData.blogs : [];
 
   // Use DB products for rendering
@@ -258,12 +262,16 @@ export default function Home() {
               <div className="absolute inset-0.5 rounded-[100%] border border-slate-200/25 bg-gradient-to-b from-white to-slate-50/50" />
             </div>
 
-            <img
-              src="/images/hero_composition.webp"
-              alt="Premium 3D Mushroom Gummies and Product Bag Composition"
-              className="max-w-full h-auto object-contain drop-shadow-[0_20px_50px_rgba(27,21,51,0.08)] select-none pointer-events-none transition-transform duration-700 hover:scale-103 relative z-10 -my-12 lg:-my-20"
-              fetchPriority="high"
-            />
+            <div className="relative w-full max-w-[600px] aspect-square z-10 -my-12 lg:-my-20">
+              <Image
+                src="/images/hero_composition.webp"
+                alt="Premium 3D Mushroom Gummies and Product Bag Composition"
+                fill
+                className="object-contain drop-shadow-[0_20px_50px_rgba(27,21,51,0.08)] select-none pointer-events-none transition-transform duration-700 hover:scale-103"
+                priority
+                sizes="(max-width: 768px) 100vw, 50vw"
+              />
+            </div>
           </div>
         </div>
       </section>
@@ -317,11 +325,12 @@ export default function Home() {
                 className="group relative aspect-[4/5] w-full overflow-hidden rounded-[24px] sm:rounded-[32px] shadow-[0_12px_36px_rgba(27,21,51,0.04)] hover:shadow-[0_24px_50px_rgba(27,21,51,0.15)] hover:-translate-y-1.5 transition-all duration-500 cursor-pointer block"
               >
                 {/* Cover Image */}
-                <img
+                <Image
                   src={image}
                   alt={name}
-                  className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
-                  loading="lazy"
+                  fill
+                  className="object-cover transition-transform duration-700 group-hover:scale-105"
+                  sizes="(max-width: 768px) 50vw, 25vw"
                 />
 
                 {/* Rich Bottom-Heavy Gradient Overlay */}
@@ -686,11 +695,12 @@ export default function Home() {
                 <Link href={`/blog/${post.slug}`} className="block h-full w-full">
                   <article className="group overflow-hidden rounded-2xl border border-slate-100 bg-white shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between hover:-translate-y-0.5 h-full w-full">
                     <div className="relative aspect-video w-full overflow-hidden bg-slate-100">
-                      <img
+                      <Image
                         src={post.image}
                         alt={post.title}
-                        className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                        loading="lazy"
+                        fill
+                        sizes="(max-width: 768px) 100vw, (max-width: 1024px) 33vw, 25vw"
+                        className="object-cover transition-transform duration-500 group-hover:scale-105"
                       />
                     </div>
                     <div className="p-5 flex flex-col gap-3">
@@ -769,11 +779,12 @@ export default function Home() {
                   key={i}
                   className="group relative aspect-square overflow-hidden rounded-2xl bg-slate-50 border border-slate-100/50 flex items-center justify-center cursor-pointer shadow-sm hover:shadow-md transition-all duration-300"
                 >
-                  <img
+                  <Image
                     src={img}
                     alt={`Instagram preview ${i}`}
-                    className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-108"
-                    loading="lazy"
+                    fill
+                    sizes="(max-width: 640px) 33vw, 16vw"
+                    className="object-cover transition-transform duration-500 group-hover:scale-108"
                   />
                   {/* Glowing hover overlay */}
                   <div className="absolute inset-0 bg-[#7b5cff]/15 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">

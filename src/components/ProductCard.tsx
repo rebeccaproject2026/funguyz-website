@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { ShoppingCart, Star, Heart } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
 import { getProductUrl } from '@/data/products';
@@ -181,11 +182,12 @@ export function ProductCard({ p, i = 0 }: { p: any; i?: number }) {
             {badge}
           </span>
         ) : null}
-        <img
+        <Image
           src={imageSrc}
           alt={title}
-          className="w-full h-full object-cover pointer-events-none transition-all duration-500 group-hover:scale-105 group-hover:-translate-y-1 rounded-2xl sm:rounded-3xl"
-          loading="lazy"
+          fill
+          className="object-cover pointer-events-none transition-all duration-500 group-hover:scale-105 group-hover:-translate-y-1 rounded-2xl sm:rounded-3xl"
+          sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
         />
       </Link>
 
@@ -284,13 +286,13 @@ export function ProductCard({ p, i = 0 }: { p: any; i?: number }) {
 
 export function ProductVisual({ kind, index = 0 }: { kind: string; index?: number }) {
   if (kind === 'Edibles') {
-    return <img src="/images/cat_edibles.webp" className="h-full w-full object-contain pointer-events-none" alt={kind} loading="lazy" />;
+    return <Image src="/images/cat_edibles.webp" width={400} height={500} className="h-full w-full object-contain pointer-events-none" alt={kind} />;
   }
   if (kind === 'Capsules') {
-    return <img src="/images/cat_capsules.webp" className="h-full w-full object-contain pointer-events-none" alt={kind} loading="lazy" />;
+    return <Image src="/images/cat_capsules.webp" width={400} height={500} className="h-full w-full object-contain pointer-events-none" alt={kind} />;
   }
   if (kind === 'Microdose') {
-    return <img src="/images/cat_microdose.webp" className="h-full w-full object-contain pointer-events-none" alt={kind} loading="lazy" />;
+    return <Image src="/images/cat_microdose.webp" width={400} height={500} className="h-full w-full object-contain pointer-events-none" alt={kind} />;
   }
-  return <img src="/images/cat_mushrooms.webp" className="h-full w-full object-contain pointer-events-none" alt={kind} loading="lazy" />;
+  return <Image src="/images/cat_mushrooms.webp" width={400} height={500} className="h-full w-full object-contain pointer-events-none" alt={kind} />;
 }

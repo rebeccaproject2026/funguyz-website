@@ -7,6 +7,7 @@ import { fetcher } from '@/lib/fetcher';
 import { ShoppingBag, Heart, X, Trash2, Plus, Minus, ArrowRight, Check, ShoppingCart } from 'lucide-react';
 import { useAuth } from './AuthContext';
 import { imageMap, getFallbackImage } from '@/data/imageMap';
+import Image from 'next/image';
 
 interface CartItem {
   id: string;
@@ -506,7 +507,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
                     {/* Item Image Container */}
                     <div className="h-20 w-20 rounded-2xl bg-white border border-slate-100 flex items-center justify-center p-0 overflow-hidden shrink-0 relative">
-                      <img src={item.imageSrc} alt={item.title} className="h-full w-full object-contain" />
+                      <Image src={item.imageSrc} alt={item.title} fill sizes="80px" className="object-contain" />
                     </div>
 
                     {/* Item Details */}
@@ -643,7 +644,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
                     {/* Item Image Container */}
                     <div className="h-20 w-16 rounded-xl bg-slate-100/50 border border-slate-100 flex items-center justify-center p-0 overflow-hidden shrink-0 relative">
-                      <img src={item.imageSrc} alt={item.title} className="h-full w-full object-cover" />
+                      <Image src={item.imageSrc} alt={item.title} fill sizes="80px" className="object-cover" />
                     </div>
 
                     {/* Item Details */}
@@ -720,7 +721,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
           {/* Toast Image */}
           <div className="h-14 w-14 rounded-2xl bg-white border border-slate-100 flex items-center justify-center p-0 shrink-0 relative overflow-hidden">
-            <img src={toast.productImage} alt={toast.productTitle} className="h-full w-full object-contain" />
+            <Image src={toast.productImage} alt={toast.productTitle} fill sizes="56px" className="object-contain" />
           </div>
 
           {/* Toast Content Details */}

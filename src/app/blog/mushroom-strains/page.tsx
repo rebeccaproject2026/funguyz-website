@@ -1,6 +1,6 @@
 'use client';
 import Link from 'next/link';
-
+import Image from 'next/image';
 import React, { useState } from 'react';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
@@ -255,7 +255,7 @@ export default function MushroomStrainsPage() {
                 <div className="w-full bg-[#fff8f3]/60 border border-pink-100/10 rounded-2xl p-4 flex items-center justify-between gap-4 mt-2">
                   <div className="flex items-center gap-3">
                     <div className="h-14 w-14 bg-white rounded-xl overflow-hidden flex items-center justify-center border border-slate-100 shrink-0 relative">
-                      <img src={strain.product.img} alt={strain.product.name} className="object-contain max-h-[44px]" />
+                      <Image src={strain.product.img} alt={strain.product.name} width={56} height={44} className="object-contain max-h-[44px]" />
                     </div>
                     <div>
                       <span className="block text-[12px] font-black text-[#ff4fa3] uppercase tracking-wider logo-font">Recommend crop</span>

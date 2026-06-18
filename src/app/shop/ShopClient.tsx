@@ -7,6 +7,7 @@ import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { ProductCard } from '@/components/ProductCard';
 import { products } from '@/data/products';
+import { staticCategories } from '@/data/staticData';
 import { Sparkles, SlidersHorizontal, ArrowUpDown, X } from 'lucide-react';
 import { MushroomLoader } from '@/components/MushroomLoader';
 
@@ -50,10 +51,11 @@ export default function ShopClient() {
 
   const dynamicUrl = `/api/products?${params.toString()}`;
   const { data: prodData, isLoading: isLoadingProducts } = useSWR(dynamicUrl, fetcher);
-  const { data: catData, isLoading: isLoadingCategories } = useSWR('/api/categories', fetcher);
+  // const { data: catData, isLoading: isLoadingCategories } = useSWR('/api/categories', fetcher);
 
   const sortedProducts = prodData?.success ? prodData.products : [];
-  const dbCategories = catData?.success ? catData.categories : [];
+  // const dbCategories = catData?.success ? catData.categories : [];
+  const dbCategories = staticCategories;
 
   const categoryTabs = ['All', 'Best Sellers', ...dbCategories.map((c: any) => c.name)];
 
@@ -199,7 +201,8 @@ export default function ShopClient() {
                         <div key={cat.name} className="flex flex-col gap-2 text-left">
                           <span className="text-[12px] font-black uppercase tracking-wider text-slate-400">{cat.name}</span>
                           <div className="flex flex-wrap gap-1.5">
-                            {cat.subcategories.map((sub: string) => {
+                            {cat.subcategories.map((subObj: any) => {
+                              const sub = subObj.name || subObj;
                               const isActive = subcategoryFilter.toLowerCase() === sub.toLowerCase();
                               return (
                                 <button
@@ -236,7 +239,8 @@ export default function ShopClient() {
                     <div className="flex flex-col gap-2 text-left">
                       <span className="text-[12px] font-black uppercase tracking-wider text-slate-400">{selectedCategory} Formulations</span>
                       <div className="flex flex-wrap gap-1.5">
-                        {dbCategories.find((c: any) => c.name === selectedCategory)?.subcategories.map((sub: string) => {
+                        {dbCategories.find((c: any) => c.name === selectedCategory)?.subcategories.map((subObj: any) => {
+                          const sub = subObj.name || subObj;
                           const isActive = subcategoryFilter.toLowerCase() === sub.toLowerCase();
                           return (
                             <button

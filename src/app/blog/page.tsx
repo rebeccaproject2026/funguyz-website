@@ -1,6 +1,6 @@
 'use client';
 import Link from 'next/link';
-
+import Image from 'next/image';
 import React, { useState, useEffect } from 'react';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
@@ -196,10 +196,12 @@ export default function BlogHubPage() {
 
             {/* Featured Image */}
             <div className="aspect-video w-full rounded-[32px] overflow-hidden bg-slate-100 shadow-sm relative">
-              <img
+              <Image
                 src={featuredPost.image}
                 alt={featuredPost.title}
-                className="h-full w-full object-cover group-hover:scale-102 transition-transform duration-500"
+                fill
+                className="object-cover group-hover:scale-102 transition-transform duration-500"
+                sizes="(max-width: 1024px) 100vw, 50vw"
               />
             </div>
 
@@ -282,10 +284,12 @@ export default function BlogHubPage() {
 
                     {/* Article cover */}
                     <div className="aspect-video w-full rounded-2xl overflow-hidden bg-slate-100 relative">
-                      <img
+                      <Image
                         src={post.image}
                         alt={post.title}
-                        className="h-full w-full object-cover group-hover:scale-102 transition-transform duration-500"
+                        fill
+                        className="object-cover group-hover:scale-102 transition-transform duration-500"
+                        sizes="(max-width: 768px) 100vw, 50vw"
                       />
                     </div>
 
