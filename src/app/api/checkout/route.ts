@@ -22,9 +22,12 @@ export async function POST(request: Request) {
   try {
     await connectDB();
     const body = await request.json();
+    console.log('--- Checkout API Started ---');
+    console.log('Request Body:', JSON.stringify(body, null, 2));
     const { orderDetails, customerEmail, adminEmail, customerInfo, couponCode, discountAmount, appliedCashBalance } = body;
 
     // 1. Check if user exists, if not create them
+    console.log(`Checking user existence for email: ${customerEmail}`);
     let user = await Customer.findOne({ email: customerEmail.toLowerCase() });
     let isNewUser = false;
     let generatedPassword = '';
@@ -71,6 +74,7 @@ export async function POST(request: Request) {
     }
 
     // 2. Recalculate and Create the Order
+    console.log('User check complete. User ID:', user?._id);
     const clientSubTotal = parseFloat(orderDetails.subtotal.replace(/[^0-9.-]+/g, ""));
     const clientGrandTotal = parseFloat(orderDetails.grandTotal.replace(/[^0-9.-]+/g, ""));
 
@@ -118,6 +122,7 @@ export async function POST(request: Request) {
           }
         }
       } else if (!item.title.toLowerCase().includes('bundle')) {
+        console.error(`Checkout Error: Product not found or unavailable: ${item.title}`);
         return NextResponse.json({ success: false, error: `Product not found or unavailable: ${item.title}` }, { status: 400 });
       }
 
@@ -129,6 +134,8 @@ export async function POST(request: Request) {
         quantity: item.quantity,
       });
     }
+
+    console.log(`Product validation complete. trueSubTotal: ${trueSubTotal}`);
 
     // Recalculate Coupon and Shipping
     let trueDiscountAmount = 0;
@@ -156,11 +163,13 @@ export async function POST(request: Request) {
     }
 
     // Validate (Allow tiny floating point variance)
+    console.log(`Validating totals. trueGrandTotal: ${trueGrandTotal}, clientGrandTotal: ${clientGrandTotal}`);
     if (Math.abs(trueGrandTotal - clientGrandTotal) > 0.05) {
       console.error(`Price Mismatch! Client: ${clientGrandTotal}, Server: ${trueGrandTotal}`);
       return NextResponse.json({ success: false, error: 'Price validation failed. Your cart prices were out of sync. Please refresh the page.' }, { status: 400 });
     }
 
+    console.log('Creating new order in DB...');
     const newOrder = await Order.create({
       customer: user._id,
       guestEmail: customerEmail,
@@ -185,6 +194,8 @@ export async function POST(request: Request) {
         timeSlot: orderDetails.deliveryDetails?.timeSlot,
       }
     });
+
+    console.log(`Order created successfully. Order ID: ${newOrder._id}`);
 
     // 3. Send Emails Concurrently to speed up checkout
     const emailPromises = [];
@@ -218,7 +229,9 @@ export async function POST(request: Request) {
     });
 
   } catch (error: any) {
-    console.error('Checkout API Error:', error);
+    console.error('--- Checkout API Exception ---');
+    console.error('Error Details:', error);
+    console.error('Stack Trace:', error.stack);
     return NextResponse.json({ success: false, error: error.message || 'Failed to process checkout' }, { status: 500 });
   }
 }
