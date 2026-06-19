@@ -9,7 +9,7 @@ export function Logo() {
         width={200}
         height={56}
         className="h-14 w-auto object-contain select-none pointer-events-none"
-        style={{ width: 'auto' }}
+        // style={{ width: 'auto' }}
         priority
       />
     </Link>

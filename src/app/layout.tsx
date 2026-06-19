@@ -3,7 +3,8 @@ import { Fredoka, Outfit, Poppins } from 'next/font/google';
 import './globals.css';
 import { CartProvider } from '@/context/CartContext';
 import { AuthProvider } from '@/context/AuthContext';
-import { LaunchPopup } from '@/components/LaunchPopup';
+import dynamic from 'next/dynamic';
+const LaunchPopup = dynamic(() => import('@/components/LaunchPopup').then(mod => mod.LaunchPopup));
 
 const fredoka = Fredoka({
   subsets: ['latin'],

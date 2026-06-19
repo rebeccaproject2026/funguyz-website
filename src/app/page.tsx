@@ -31,12 +31,10 @@ import {
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation } from 'swiper/modules';
 import 'swiper/css';
-import { useCart } from '@/context/CartContext';
 import { staticCategories } from '@/data/staticData';
 import { Footer } from '@/components/Footer';
 import { Header } from '@/components/Header';
 import { ProductCard } from '@/components/ProductCard';
-import { MushroomLoader } from '@/components/MushroomLoader';
 
 
 const categoryImages: Record<string, string> = {
@@ -269,6 +267,7 @@ export default function Home() {
                 fill
                 className="object-contain drop-shadow-[0_20px_50px_rgba(27,21,51,0.08)] select-none pointer-events-none transition-transform duration-700 hover:scale-103"
                 priority
+                loading="eager"
                 sizes="(max-width: 768px) 100vw, 50vw"
               />
             </div>
