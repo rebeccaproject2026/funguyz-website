@@ -79,6 +79,18 @@ export default function CheckoutPage() {
 
   // Scheduling Modal State
   const [isScheduleModalOpen, setIsScheduleModalOpen] = useState(false);
+
+  useEffect(() => {
+    if (isScheduleModalOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [isScheduleModalOpen]);
+
   const [selectedDate, setSelectedDate] = useState<Date>(new Date(2026, 5, 25)); // default June 25, 2026
   const [selectedTimeSlot, setSelectedTimeSlot] = useState<string>('9:00 AM to 12:00 PM');
   const [scheduleEmail, setScheduleEmail] = useState('');
@@ -884,10 +896,10 @@ export default function CheckoutPage() {
 
       {/* 11. Delivery Scheduling Modal */}
       {isScheduleModalOpen && (
-        <div className="fixed inset-0 z-[99999] flex items-center justify-center p-3 sm:p-4 bg-slate-950/70 backdrop-blur-md transition-opacity duration-300 select-none font-sans">
+        <div className="fixed inset-0 z-[99999] flex items-center justify-center p-3 sm:p-4 bg-slate-950/70 backdrop-blur-md transition-opacity duration-300 select-none font-sans ">
 
           {/* Modal Outer Container */}
-          <div className="relative w-full max-w-[970px] flex flex-col md:flex-row gap-6 animate-scale-up max-h-[94vh] md:max-h-none overflow-y-auto md:overflow-visible p-4 md:p-0">
+          <div className="relative w-full max-w-[970px] flex flex-col md:flex-row gap-6 animate-scale-up max-h-[94vh] md:max-h-none overflow-y-auto overflow-x-hidden md:overflow-visible p-4 md:p-0">
 
             {/* Background Ambient Glows */}
             <div className="absolute -top-20 -left-20 w-96 h-96 rounded-full bg-[#ff4fa3]/20 blur-[100px] pointer-events-none -z-10" />
@@ -897,7 +909,7 @@ export default function CheckoutPage() {
             <button
               type="button"
               onClick={() => setIsScheduleModalOpen(false)}
-              className="absolute -top-4 -right-4 md:-top-5 md:-right-5 z-50 text-slate-200 hover:text-white transition-colors p-2 hover:bg-white/10 rounded-full cursor-pointer border border-slate-700 bg-[#0c0a1a] shadow-lg"
+              className="absolute top-1 right-1 md:-top-4 md:-right-4 z-50 text-slate-200 hover:text-white transition-colors p-2 hover:bg-white/10 rounded-full cursor-pointer border border-slate-700 bg-[#0c0a1a] shadow-lg"
               aria-label="Close scheduling modal"
             >
               <X className="h-4 w-4" />

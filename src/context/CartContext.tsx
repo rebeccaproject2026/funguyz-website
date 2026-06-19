@@ -10,7 +10,8 @@ import { imageMap, getFallbackImage } from '@/data/imageMap';
 import Image from 'next/image';
 
 interface CartItem {
-  id: string;
+  id: string; // Used as the unique cart row ID (usually the title with weight)
+  productId?: string; // The MongoDB database ID
   title: string;
   category: string;
   price: string;
@@ -48,7 +49,7 @@ interface AppliedCoupon {
 interface CartContextType {
   cartItems: CartItem[];
   wishlistItems: WishlistItem[];
-  addToCart: (product: { title: string; category: string; price: string; imageSrc: string }, qty?: number) => void;
+  addToCart: (product: { id?: string; title: string; category: string; price: string; imageSrc: string }, qty?: number) => void;
   removeFromCart: (id: string) => void;
   updateQuantity: (id: string, delta: number) => void;
   clearCart: () => void;
@@ -274,19 +275,21 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
-  const addToCart = (product: { title: string; category: string; price: string; imageSrc: string }, qty: number = 1) => {
-    const existing = cartItems.find(item => item.id === product.title);
+  const addToCart = (product: { id?: string; title: string; category: string; price: string; imageSrc: string }, qty: number = 1) => {
+    const cartRowId = product.title;
+    const existing = cartItems.find(item => item.id === cartRowId);
     let newItems: CartItem[] = [];
 
     if (existing) {
       newItems = cartItems.map(item =>
-        item.id === product.title ? { ...item, quantity: item.quantity + qty } : item
+        item.id === cartRowId ? { ...item, quantity: item.quantity + qty, productId: product.id || item.productId } : item
       );
     } else {
       newItems = [
         ...cartItems,
         {
-          id: product.title,
+          id: cartRowId,
+          productId: product.id,
           title: product.title,
           category: product.category,
           price: product.price,
@@ -656,7 +659,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
                       {/* Direct Add to Cart Action */}
                       <button
                         onClick={() => {
-                          addToCart({ title: item.title, category: item.category, price: item.price, imageSrc: item.imageSrc });
+                          addToCart({ id: item.id, title: item.title, category: item.category, price: item.price, imageSrc: item.imageSrc });
                           removeFromWishlist(item.id);
                           setIsWishlistOpen(false);
                           setIsCartOpen(true);

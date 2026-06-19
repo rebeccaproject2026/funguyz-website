@@ -40,7 +40,7 @@ export default function CouponsPage() {
       <Header />
 
       {/* Header Banner */}
-      <section className="bg-gradient-to-tr from-[#fffdfb] via-[#fffbf9] to-[#fff5f0] border-b border-purple-100/50 py-16 px-4 md:px-8 text-center relative overflow-hidden">
+      <section className="bg-gradient-to-tr from-[#fffdfb] via-[#fffbf9] to-[#fff5f0] border-b border-purple-100/50 py-10 md:py-16 px-4 md:px-8 text-center relative overflow-hidden">
         <div className="absolute left-[5%] top-[10%] w-[300px] h-[300px] rounded-full bg-[#ffe8db]/30 blur-[80px] pointer-events-none" />
         <div className="absolute right-[5%] bottom-[5%] w-[300px] h-[300px] rounded-full bg-[#e0f2fe]/40 blur-[80px] pointer-events-none" />
 
@@ -64,7 +64,7 @@ export default function CouponsPage() {
       </section>
 
       {/* Coupons Grid Section */}
-      <section className="mx-auto max-w-6xl px-4 py-16 md:px-8">
+      <section className="mx-auto max-w-6xl px-4 py-10 md:py-16 md:px-8">
 
         {/* Featured LAUNCH20 Card — Full width, extra prominent */}
         {isLoading && <div className="py-20"><MushroomLoader /></div>}
@@ -81,7 +81,7 @@ export default function CouponsPage() {
               <div className="absolute -top-20 -left-20 w-64 h-64 rounded-full bg-[#ff4fa3]/20 blur-[60px] pointer-events-none" />
               <div className="absolute -bottom-20 -right-20 w-64 h-64 rounded-full bg-[#7b5cff]/20 blur-[60px] pointer-events-none" />
 
-              <div className="relative z-10 p-8 md:p-10 flex flex-col md:flex-row items-center md:items-start gap-8">
+              <div className="relative z-10 py-8 md:py-10 px-6 sm:px-8 md:px-8 flex flex-col md:flex-row items-center md:items-start gap-8">
                 {/* Left: Info */}
                 <div className="flex-1 text-center md:text-left">
                   {/* Badge */}
@@ -200,7 +200,7 @@ export default function CouponsPage() {
       </section>
 
       {/* Safety & Trust Banner */}
-      <section className="mx-auto max-w-4xl px-4 pb-20 md:px-8">
+      <section className="mx-auto max-w-4xl px-4 pb-10 md:pb-20 md:px-8">
         <div className="border border-pink-100 bg-[#fffdfd] rounded-[32px] p-8 flex flex-col md:flex-row items-center gap-6 shadow-sm">
           <div className="h-14 w-14 rounded-2xl bg-pink-50 flex items-center justify-center text-[#ff4fa3] shrink-0">
             <ShieldCheck className="h-8 w-8 stroke-[1.8]" />

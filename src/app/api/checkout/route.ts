@@ -84,32 +84,31 @@ export async function POST(request: Request) {
     for (const item of orderDetails.items) {
       if (!item.title) continue;
 
-      let productName = item.title.trim();
+      let product = null;
 
-      // Handle old cart items that might have 'Magic Mushrooms' appended to the name
+      const queryId = item.productId || item.id;
+      if (queryId && /^[0-9a-fA-F]{24}$/.test(queryId)) {
+        product = await Product.findById(queryId).lean() as any;
+      }
+
+      let productName = item.title.trim();
+      let weight = null;
+
+      const weightMatch = productName.match(/^(.*?)\s*\(([^)]+)\)$/);
+      if (weightMatch) {
+        productName = weightMatch[1].trim();
+        weight = weightMatch[2].trim();
+      }
+
       if (productName.toLowerCase().endsWith(' magic mushrooms')) {
         productName = productName.substring(0, productName.length - 16).trim();
       }
 
-      let product = await Product.findOne({
-        name: new RegExp(`^${productName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}$`, 'i'),
-        status: { $ne: EProductStatus.OUT_OF_STOCK }
-      }).lean() as any;
-
-      let weight = null;
-
-      // If not found, it might have a weight appended in parentheses (e.g., "Golden Teacher (3.5g)")
       if (!product) {
-        const weightMatch = productName.match(/^(.*?)\s*\(([^)]+)\)$/);
-        if (weightMatch) {
-          productName = weightMatch[1].trim();
-          weight = weightMatch[2].trim();
-
-          product = await Product.findOne({
-            name: new RegExp(`^${productName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}$`, 'i'),
-            status: { $ne: EProductStatus.OUT_OF_STOCK }
-          }).lean() as any;
-        }
+        product = await Product.findOne({
+          name: new RegExp(`^${productName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}$`, 'i'),
+          status: { $ne: EProductStatus.OUT_OF_STOCK }
+        }).lean() as any;
       }
 
       let truePrice = parseFloat(item.price.replace(/[^0-9.-]+/g, "")); // Fallback

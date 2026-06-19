@@ -148,7 +148,7 @@ export function Footer() {
 
       {/* Footer Bottom Bar */}
       <div className="border-t border-white/5 pt-8 px-6 relative z-10">
-        <div className="mx-auto max-w-7xl flex flex-col md:flex-row items-center justify-between gap-6 w-full text-center md:text-left">
+        <div className="mx-auto max-w-7xl flex flex-col lg:flex-row items-center justify-between gap-6 w-full text-center md:text-left">
 
           {/* Copyright & Credentials Line (Left) */}
           <div className="flex flex-col sm:flex-row items-center gap-x-3 gap-y-1.5 text-xs font-semibold text-white/40">
@@ -161,7 +161,7 @@ export function Footer() {
 
           {/* Translucent 19+ Age Warning Capsule (Right) */}
           <div className="inline-flex items-center gap-2.5 rounded-full bg-red-500/5 border border-red-500/15 px-4 py-1.5 text-xs text-red-400/90 shadow-sm shrink-0">
-            <span className="flex h-5 w-5 items-center justify-center rounded-full bg-red-500/15 border border-red-500/30 text-[9px] font-black text-red-500">19+</span>
+            <span className="flex h-5 w-5 p-3 items-center justify-center rounded-full bg-red-500/15 border border-red-500/30 text-[9px] font-black text-red-500">19+</span>
             <span className="font-semibold tracking-wide">This site is intended for adults 19 years and older. Please consume responsibly.</span>
           </div>
 

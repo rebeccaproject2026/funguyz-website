@@ -209,6 +209,7 @@ export default function ProductDetailsPage({ params }: { params: Promise<{ slug:
 
   const handleAddToCart = () => {
     addToCart({
+      id: productData.id,
       title: productData.category === 'Magic Mushrooms'
         ? `${productData.title} (${selectedWeight})`
         : productData.title,

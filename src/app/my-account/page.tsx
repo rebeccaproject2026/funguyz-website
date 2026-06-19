@@ -93,7 +93,7 @@ export default function MyAccountPage() {
   const [profileFirstName, setProfileFirstName] = useState('');
   const [profileLastName, setProfileLastName] = useState('');
   const [profileEmail, setProfileEmail] = useState('');
-  
+
   // Addresses Forms State
   const [billingAddress, setBillingAddress] = useState({ firstName: '', lastName: '', street: '', city: '', province: '', postalCode: '' });
   const [shippingAddress, setShippingAddress] = useState({ firstName: '', lastName: '', street: '', city: '', province: '', postalCode: '' });
@@ -112,7 +112,7 @@ export default function MyAccountPage() {
       if (currentUser.addresses && currentUser.addresses.length > 0) {
         const addr = currentUser.addresses[0];
         setBillingAddress({ firstName: addr.firstName || currentUser.firstName, lastName: addr.lastName || currentUser.lastName, street: addr.street || '', city: addr.city || '', province: addr.province || '', postalCode: addr.postalCode || '' });
-        
+
         const shipAddr = currentUser.addresses.length > 1 ? currentUser.addresses[1] : addr;
         setShippingAddress({ firstName: shipAddr.firstName || currentUser.firstName, lastName: shipAddr.lastName || currentUser.lastName, street: shipAddr.street || '', city: shipAddr.city || '', province: shipAddr.province || '', postalCode: shipAddr.postalCode || '' });
       }
@@ -592,7 +592,7 @@ export default function MyAccountPage() {
           </aside>
 
           {/* ── Tab Content ─────────────────────────────────────────────────── */}
-          <div className="bg-white border border-slate-100 rounded-[32px] p-6 md:p-8 shadow-sm min-h-[400px]">
+          <div className="bg-white border border-slate-100 rounded-[32px] p-6 md:p-8 shadow-sm min-h-[400px] overflow-x-hidden">
 
             {/* DASHBOARD */}
             {activeTab === 'dashboard' && (
@@ -645,7 +645,7 @@ export default function MyAccountPage() {
 
                 {currentUser?.orders && currentUser.orders.length > 0 ? (
                   <div className="overflow-x-auto">
-                    <table className="w-full text-left border-collapse text-xs">
+                    <table className="w-full text-left border-collapse text-xs ">
                       <thead>
                         <tr className="border-b border-slate-100 text-slate-400 uppercase tracking-widest font-bold">
                           <th className="py-3 px-4">Order</th>
@@ -749,12 +749,12 @@ export default function MyAccountPage() {
                     ].map(field => (
                       <label key={field.key} className={labelCls}>
                         {field.label}
-                        <input 
-                          type="text" 
-                          placeholder={`Enter ${field.label}`} 
-                          className={fieldCls} 
-                          value={(billingAddress as any)[field.key]} 
-                          onChange={e => setBillingAddress(prev => ({...prev, [field.key]: e.target.value}))} 
+                        <input
+                          type="text"
+                          placeholder={`Enter ${field.label}`}
+                          className={fieldCls}
+                          value={(billingAddress as any)[field.key]}
+                          onChange={e => setBillingAddress(prev => ({ ...prev, [field.key]: e.target.value }))}
                         />
                       </label>
                     ))}
@@ -773,18 +773,18 @@ export default function MyAccountPage() {
                     ].map(field => (
                       <label key={field.key} className={labelCls}>
                         {field.label}
-                        <input 
-                          type="text" 
-                          placeholder={`Enter ${field.label}`} 
-                          className={fieldCls} 
-                          value={(shippingAddress as any)[field.key]} 
-                          onChange={e => setShippingAddress(prev => ({...prev, [field.key]: e.target.value}))} 
+                        <input
+                          type="text"
+                          placeholder={`Enter ${field.label}`}
+                          className={fieldCls}
+                          value={(shippingAddress as any)[field.key]}
+                          onChange={e => setShippingAddress(prev => ({ ...prev, [field.key]: e.target.value }))}
                         />
                       </label>
                     ))}
                   </div>
                 </div>
-                <button 
+                <button
                   onClick={handleSaveAddresses}
                   disabled={isSavingAddresses}
                   className="rounded-2xl bg-[#ff4fa3] text-white px-8 py-3 text-xs font-black uppercase tracking-wider hover:bg-black transition-all cursor-pointer logo-font disabled:opacity-50">

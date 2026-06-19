@@ -366,7 +366,7 @@ export function Header() {
       <header className="sticky top-0 z-50 border-b border-slate-100 bg-white/95 backdrop-blur-md shadow-sm">
         <div className="mx-auto max-w-7xl px-6 py-1.5 relative">
           {/* Mobile Header Layout (visible only on mobile) */}
-          <div className="flex md:hidden items-center justify-between h-11 relative">
+          <div className="flex lg:hidden items-center justify-between h-11 relative">
             {/* Left: Search & Account Icon Buttons */}
             <div className="flex items-center gap-1.5">
               <button
@@ -420,7 +420,7 @@ export function Header() {
           </div>
 
           {/* Desktop Header Layout (visible only on desktop) */}
-          <div className="hidden md:flex items-center justify-between gap-6">
+          <div className="hidden lg:flex items-center justify-between gap-6">
             {/* Left Block: Logo + Navigation Menu */}
             <div className="flex items-center gap-12 flex-1">
               {/* Logo */}
@@ -428,7 +428,7 @@ export function Header() {
                 <Logo />
               </div>
 
-              <nav className="hidden items-center gap-6 text-[12.5px] font-black text-[#1b1533] md:flex relative">
+              <nav className="hidden items-center gap-6 text-[12.5px] font-black text-[#1b1533] lg:flex relative">
                 {isCatLoading ? (
                   [1, 2, 3, 4].map(i => (
                     <div key={i} className="h-4 w-24 bg-slate-100 animate-pulse rounded-full my-3"></div>

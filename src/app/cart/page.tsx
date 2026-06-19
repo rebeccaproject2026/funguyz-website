@@ -7,7 +7,7 @@ import React, { useState } from 'react';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { ProductCard } from '@/components/ProductCard';
-import {  getProductUrl } from '@/data/products';
+import { getProductUrl } from '@/data/products';
 import { useCart } from '@/context/CartContext';
 import {
   ShoppingBag,
@@ -81,8 +81,8 @@ export default function CartPage() {
       <Header />
 
       {/* WooCommerce Flow Progress */}
-      <div className="bg-slate-50 border-b border-slate-100/50 py-6 px-4 md:px-8 select-none font-poppins">
-        <div className="mx-auto max-w-7xl flex flex-col md:flex-row md:items-center justify-between gap-6">
+      <div className="bg-slate-50 border-b border-slate-100/50 py-6 px-4 md:px-8 select-none font-poppins overflow-x-hidden">
+        <div className="mx-auto max-w-7xl flex flex-col lg:flex-row lg:items-center justify-between gap-6">
           <div className="flex items-center gap-2 text-xs font-bold text-slate-400">
             <Link href="/" className="hover:text-[#ff4fa3] transition-colors">Home</Link>
             <ChevronRight className="h-3 w-3" />
@@ -91,19 +91,19 @@ export default function CartPage() {
             <span className="text-slate-600">Shopping Cart</span>
           </div>
 
-          <div className="flex items-center gap-3 sm:gap-4 md:gap-5 text-[12px] font-black uppercase tracking-widest logo-font">
+          <div className="flex items-center gap-2 sm:gap-4 md:gap-5 text-[11px] sm:text-xs font-black uppercase tracking-widest logo-font">
             <span className="text-[#ff4fa3] flex items-center gap-1.5 border-b-2 border-[#ff4fa3] pb-1">
-              <span className="grid h-5 w-5 place-items-center rounded-full bg-[#ff4fa3] text-white text-[10px]">1</span>
+              <span className="grid h-5 w-5 place-items-center rounded-full bg-[#ff4fa3] text-white text-[10px] px-1.5">1</span>
               Shopping Cart
             </span>
             <ChevronRight className="h-3 w-3 text-slate-300" />
             <span className="text-slate-400 flex items-center gap-1.5 pb-1">
-              <span className="grid h-5 w-5 place-items-center rounded-full bg-slate-200 text-slate-500 text-[10px]">2</span>
+              <span className="grid h-5 w-5 place-items-center rounded-full bg-slate-200 text-slate-500 text-[10px] px-1.5">2</span>
               Checkout Details
             </span>
             <ChevronRight className="h-3 w-3 text-slate-300" />
-            <span className="text-slate-400 flex items-center gap-1.5 pb-1">
-              <span className="grid h-5 w-5 place-items-center rounded-full bg-slate-200 text-slate-500 text-[10px]">3</span>
+            <span className="text-slate-400   flex items-center gap-1.5 pb-1">
+              <span className="grid h-5 w-5 place-items-center rounded-full bg-slate-200 text-slate-500 text-[10px] px-1.5">3</span>
               Order Complete
             </span>
           </div>

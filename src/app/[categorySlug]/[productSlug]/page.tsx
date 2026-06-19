@@ -183,6 +183,7 @@ export default function CategoryProductPage({ params }: { params: Promise<{ cate
 
   const handleAddToCart = () => {
     addToCart({
+      id: productData.id,
       title: `${productData.title} (${selectedWeight})`,
       category: productData.category,
       price: `$${calculatedPrice.toFixed(2)}`,

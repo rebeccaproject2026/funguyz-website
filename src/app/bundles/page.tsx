@@ -605,7 +605,7 @@ export default function BundlesCollectionPage() {
 
       {/* 8. Bundle Comparison Table Section */}
       <section className="bg-white py-16 px-4 md:px-8 border-b border-purple-100/30">
-        <div className="mx-auto max-w-4xl space-y-8 text-center">
+        <div className="mx-auto max-w-4xl space-y-8 text-center ">
 
           <div className="space-y-2">
             <span className="text-[12px] font-black uppercase tracking-widest text-[#ff4fa3] logo-font">Curation Grid</span>
@@ -614,8 +614,8 @@ export default function BundlesCollectionPage() {
           </div>
 
           {/* Comparison Table */}
-          <div className="bg-[#fffdfb] border border-purple-100/30 rounded-3xl overflow-hidden shadow-sm">
-            <table className="w-full text-left border-collapse text-xs md:text-sm font-semibold">
+          <div className="bg-[#fffdfb] border border-purple-100/30 rounded-3xl overflow-x-auto shadow-sm">
+            <table className="w-full text-left  border-collapse text-xs md:text-sm font-semibold">
               <thead>
                 <tr className="bg-[#fff8f3] text-[#1b1533] uppercase logo-font border-b border-purple-100/30 text-[12px] tracking-wider font-black">
                   <th className="p-4">Bundle Tier</th>

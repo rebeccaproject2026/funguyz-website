@@ -267,7 +267,7 @@ export function ProductCard({ p, i = 0 }: { p: any; i?: number }) {
             <span className="text-[12px] sm:text-xs md:text-sm font-semibold text-slate-400 line-through">{originalPrice}</span>
           </div>
           <button
-            onClick={() => addToCart({ title, category, price, imageSrc })}
+            onClick={() => addToCart({ id, title, category, price, imageSrc })}
             className="relative group/btn grid h-8 w-8 sm:h-10 sm:w-10 place-items-center rounded-xl sm:rounded-2xl bg-[#ff4fa3] text-white shadow-md shadow-pink-100 transition-all duration-300 hover:bg-black hover:text-[#ff4fa3] hover:shadow-none hover:-translate-y-0.5 active:translate-y-0 cursor-pointer"
           >
             <ShoppingCart className="h-4 w-4 sm:h-5 sm:w-5" />

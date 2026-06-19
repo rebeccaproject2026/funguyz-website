@@ -268,6 +268,7 @@ export default function Home() {
                 className="object-contain drop-shadow-[0_20px_50px_rgba(27,21,51,0.08)] select-none pointer-events-none transition-transform duration-700 hover:scale-103"
                 priority
                 loading="eager"
+                fetchPriority="high"
                 sizes="(max-width: 768px) 100vw, 50vw"
               />
             </div>
