@@ -10,6 +10,7 @@ import { EProductStatus } from '@/backend/models/interfaces/IProduct';
 import { ERole } from '@/backend/models/interfaces/ICustomer';
 import { EOrderStatus } from '@/backend/models/interfaces/IOrder';
 import bcrypt from 'bcryptjs';
+import { Resend } from 'resend';
 
 function generateRandomPassword() {
   const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
@@ -223,9 +224,12 @@ export async function POST(request: Request) {
     await Promise.allSettled(emailPromises);
     */
 
-    // --- NEW: Microsoft Graph API Implementation (Port 443 - Bypasses Block) ---
-    console.log('--- Starting Microsoft Graph API Email Process ---');
+    // --- NEW: Resend Implementation ---
+    console.log('--- Starting Resend Email Process ---');
     const emailPromises = [];
+    
+    // --- COMMENTED OUT MICROSOFT GRAPH API IMPLEMENTATION ---
+    /*
     const tenantId = process.env.MS_TENANT_ID;
     const clientId = process.env.MS_CLIENT_ID;
     const clientSecret = process.env.MS_CLIENT_SECRET;
@@ -304,6 +308,38 @@ export async function POST(request: Request) {
       }
     } else {
        console.log('Microsoft 365 credentials missing. Skipping emails completely.');
+    }
+    */
+    // --- END COMMENTED OUT MICROSOFT GRAPH API IMPLEMENTATION ---
+
+    const resendKey = process.env.RESEND_API_KEY;
+    if (resendKey) {
+      const resend = new Resend(resendKey);
+      const senderEmail = process.env.MS_SENDER_EMAIL || process.env.SMTP_USER || 'hello@funguyz.ca';
+      
+      // Send Admin Email
+      const adminEmailTask = resend.emails.send({
+        from: `FunGuyz Store <${senderEmail}>`,
+        to: adminEmail || senderEmail,
+        subject: `New Order Received - ${orderDetails.orderId}`,
+        html: generateAdminEmailHtml(orderDetails, customerEmail),
+      }).then(data => console.log('Resend Admin Email:', data)).catch(e => console.error('Resend Admin Email Error:', e));
+      
+      emailPromises.push(adminEmailTask);
+
+      // Send Customer Email
+      if (customerEmail) {
+        const customerEmailTask = resend.emails.send({
+          from: `FunGuyz Store <${senderEmail}>`,
+          to: customerEmail,
+          subject: `Order Confirmation - ${orderDetails.orderId}`,
+          html: generateCustomerEmailHtml(orderDetails, customerEmail) + (isNewUser ? `<br><p>An account was created for you! Temp Password: <b>${generatedPassword}</b></p>` : ''),
+        }).then(data => console.log('Resend Customer Email:', data)).catch(e => console.error('Resend Customer Email Error:', e));
+        
+        emailPromises.push(customerEmailTask);
+      }
+    } else {
+      console.log('RESEND_API_KEY missing. Skipping Resend emails.');
     }
 
     await Promise.allSettled(emailPromises);
