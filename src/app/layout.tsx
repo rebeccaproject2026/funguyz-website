@@ -52,7 +52,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <AuthProvider>
             <CartProvider>
               {children}
-              <LaunchPopup />
+              {/* <LaunchPopup /> */}
             </CartProvider>
           </AuthProvider>
         </NextAuthProvider>

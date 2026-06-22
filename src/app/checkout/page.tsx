@@ -185,15 +185,22 @@ export default function CheckoutPage() {
     }
 
     setErrors([]);
+    
+    // Commented out schedule modal to allow same day checkout
+    /*
     setScheduleEmail(formData.email);
     setSchedulePhone(formData.phone);
     setScheduleError('');
     setIsScheduleModalOpen(true);
+    */
+    
+    handleConfirmSchedule(true);
   };
 
-  const handleConfirmSchedule = () => {
-    const email = scheduleEmail.trim();
-    const phone = schedulePhone.trim();
+  const handleConfirmSchedule = (bypassSchedule: boolean | React.MouseEvent = false) => {
+    const isBypass = typeof bypassSchedule === 'boolean' ? bypassSchedule : false;
+    const email = isBypass ? formData.email.trim() : scheduleEmail.trim();
+    const phone = isBypass ? formData.phone.trim() : schedulePhone.trim();
 
     if (!email || !phone) {
       setScheduleError('Both Email and Phone Number are required.');
@@ -213,12 +220,15 @@ export default function CheckoutPage() {
       return;
     }
 
+    // Commented out to allow same day orders
+    /*
     const minDate = new Date(2026, 5, 25);
     const checkSelectedDate = new Date(selectedDate.getFullYear(), selectedDate.getMonth(), selectedDate.getDate());
-    if (checkSelectedDate < minDate) {
+    if (!isBypass && checkSelectedDate < minDate) {
       setScheduleError('Delivery is only available on or after June 25, 2026.');
       return;
     }
+    */
 
     setScheduleError('');
 
@@ -235,8 +245,8 @@ export default function CheckoutPage() {
       grandTotal: `$${grandTotal.toFixed(2)}`,
       items: [...cartItems],
       deliveryDetails: {
-        date: selectedDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }),
-        timeSlot: selectedTimeSlot
+        date: isBypass ? 'Same Day Delivery' : selectedDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }),
+        timeSlot: isBypass ? 'ASAP' : selectedTimeSlot
       },
       status: 'processing' as const,
     };
@@ -377,18 +387,18 @@ export default function CheckoutPage() {
               </div>
             )}
 
-            {/* Interac e-Transfer Action Instructions */}
+            {/* Auto-Deposit e-Transfer Action Instructions */}
             <div className="w-full border border-pink-100 bg-[#fffdfd] rounded-[24px] p-6 text-left space-y-4 shadow-sm relative overflow-hidden">
               <div className="absolute right-0 top-0 w-24 h-24 bg-pink-500/5 rounded-bl-[100px] pointer-events-none" />
 
               <h4 className="text-xs font-black uppercase tracking-wider text-[#ff4fa3] flex items-center gap-1.5 logo-font">
-                <Sparkles className="h-4.5 w-4.5 text-[#ff4fa3] animate-pulse" /> Interac e-Transfer Instructions
+                <Zap className="h-4.5 w-4.5 text-[#ff4fa3] animate-pulse" /> Auto-Deposit Checkout
               </h4>
               <p className="text-[11.5px] font-semibold text-slate-500 leading-relaxed">
-                Once payment is sent, your order will be processed and prepared for delivery.
+                Order is processed securely. Once payment is received, it’s automatically confirmed.
               </p>
 
-              <div className="grid gap-4 sm:grid-cols-3 bg-white p-4 rounded-2xl border border-pink-50/50 shadow-sm text-xs font-semibold">
+              <div className="grid gap-4 sm:grid-cols-2 bg-white p-4 rounded-2xl border border-pink-50/50 shadow-sm text-xs font-semibold">
 
                 {/* Recipient */}
                 <div className="space-y-1 relative group">
@@ -406,22 +416,6 @@ export default function CheckoutPage() {
                   </button>
                 </div>
 
-                {/* Password/Memo */}
-                <div className="space-y-1 relative group">
-                  <span className="block text-[8px] text-slate-400 uppercase tracking-widest leading-none">Question / Password</span>
-                  <strong className="block text-slate-700 text-sm font-bold font-poppins">Canada{completedOrder.orderId.slice(-4)}</strong>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      navigator.clipboard.writeText(`Canada${completedOrder.orderId.slice(-4)}`);
-                      alert(`E-transfer Password Canada${completedOrder.orderId.slice(-4)} copied to clipboard!`);
-                    }}
-                    className="mt-1 text-[12px] font-black uppercase text-[#ff4fa3] hover:underline cursor-pointer tracking-wider"
-                  >
-                    Copy Password
-                  </button>
-                </div>
-
                 {/* Amount */}
                 <div className="space-y-1">
                   <span className="block text-[12px] text-slate-400 uppercase tracking-widest leading-none">Amount Due</span>
@@ -431,9 +425,17 @@ export default function CheckoutPage() {
 
               </div>
 
-              <p className="text-[10px] text-[#ff4fa3] font-semibold leading-relaxed flex items-center justify-start gap-1">
-                * Note: Fast • Secure • Discreet Delivery Across Canada
-                <Image src="/images/canada-flag.svg" alt="Canada Flag" width={16} height={12} className="rounded-[1px] shrink-0" />
+              <div className="space-y-1.5 text-[11px] text-slate-500 mt-2">
+                <span className="font-bold text-slate-700 block">How it works:</span>
+                <ol className="list-decimal pl-4 space-y-1">
+                  <li>Complete secure payment</li>
+                  <li>Deposit is verified</li>
+                  <li>Confirmation + updates sent automatically</li>
+                </ol>
+              </div>
+
+              <p className="text-[10px] text-[#ff4fa3] font-semibold leading-relaxed flex items-center justify-start gap-1.5 border-t border-pink-50 pt-3">
+                <Lock className="h-3 w-3" /> Encrypted • Fast processing • Auto confirmation
               </p>
             </div>
 
@@ -762,7 +764,7 @@ export default function CheckoutPage() {
               )}
 
               {/* Payment Options (Interac e-Transfer Only) */}
-              <div className="border-t border-slate-100 pt-6 space-y-4 select-none">
+              <div className="border-t border-slate-100 pt-6 space-y-4">
                 <h3 className="text-xs font-black uppercase tracking-wider text-[#1b1533] logo-font">Payment Method</h3>
                 <div className="border border-pink-100/80 bg-[#fffdfd] rounded-2xl p-4.5 space-y-3 shadow-[0_4px_20px_rgba(255,79,163,0.02)]">
                   {/* Interac Brand Banner */}
@@ -780,17 +782,25 @@ export default function CheckoutPage() {
 
                   {/* e-Transfer flow explanations */}
                   <div className="space-y-2 text-[12px] font-semibold text-slate-500 leading-normal pl-0.5 font-poppins">
-                    <p>
-                      Once payment is sent, your order will be processed and prepared for delivery.
+                    <p className="text-[#1b1533] font-black uppercase tracking-wider flex items-center gap-1.5 mt-1 mb-2">
+                      <Zap className="h-4 w-4 text-emerald-500" /> Auto-Deposit Checkout
                     </p>
-                    <ol className="list-decimal pl-4.5 space-y-1.5 text-slate-400">
-                      <li>Send Payment To: <strong className="text-slate-700 font-bold">funguys.rock@gmail.com</strong></li>
-                      <li>Security Question: <strong className="text-slate-700 font-bold">Which country are we from?</strong></li>
-                      <li>Security Answer: <strong className="text-slate-700 font-bold">Canada + last 4 digits of your order#</strong> (example: Canada1234)</li>
-                    </ol>
-                    <p className="text-[#ff4fa3] flex items-center justify-start gap-1">
-                      Fast • Secure • Discreet Delivery Across Canada
-                      <Image src="/images/canada-flag.svg" alt="Canada Flag" width={16} height={12} className="rounded-[1px] shrink-0" />
+                    <p>
+                      Order is processed securely. Once payment is received, it’s automatically confirmed.
+                    </p>
+                    <div className="mt-3 mb-2">
+                      <span className="font-bold text-slate-700 block mb-1.5">How it works:</span>
+                      <ol className="list-decimal pl-4.5 space-y-1.5 text-slate-500">
+                        <li>Complete secure payment to: <strong className="text-slate-800 font-bold">funguys.rock@gmail.com</strong></li>
+                        <li>Deposit is verified</li>
+                        <li>Confirmation + updates sent automatically</li>
+                      </ol>
+                    </div>
+                    <p className="pt-2 flex items-center gap-1.5 text-slate-600">
+                      <Mail className="h-3.5 w-3.5" /> Contact: <strong className="text-slate-800">funguys.rock@gmail.com</strong>
+                    </p>
+                    <p className="text-[#ff4fa3] flex items-center justify-start gap-1.5 pt-1">
+                      <Lock className="h-3.5 w-3.5" /> Encrypted • Fast processing • Auto confirmation
                     </p>
                   </div>
                 </div>
@@ -883,9 +893,26 @@ export default function CheckoutPage() {
               {/* Place order CTA */}
               <button
                 type="submit"
-                className="w-full inline-flex items-center justify-center rounded-2xl bg-[#ff4fa3] text-white border border-[#ff4fa3] py-4 text-xs font-black uppercase tracking-wider shadow-md shadow-pink-100 transition-all duration-300 hover:bg-black hover:text-[#ff4fa3] hover:border-black hover:-translate-y-0.5 active:translate-y-0 cursor-pointer gap-2 logo-font mt-2"
+                disabled={isSubmitting}
+                className={`w-full inline-flex items-center justify-center rounded-2xl border py-4 text-xs font-black uppercase tracking-wider shadow-md transition-all duration-300 gap-2 logo-font mt-2 ${
+                  isSubmitting
+                    ? 'bg-slate-800 text-slate-400 border-slate-800 cursor-not-allowed'
+                    : 'bg-[#ff4fa3] text-white border-[#ff4fa3] shadow-pink-100 hover:bg-black hover:text-[#ff4fa3] hover:border-black hover:-translate-y-0.5 active:translate-y-0 cursor-pointer'
+                }`}
               >
-                <ShieldCheck className="h-4.5 w-4.5" /> Place Secure Order
+                {isSubmitting ? (
+                  <>
+                    <svg className="animate-spin h-4.5 w-4.5 text-slate-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    Place Secure Order
+                  </>
+                ) : (
+                  <>
+                    <ShieldCheck className="h-4.5 w-4.5" /> Place Secure Order
+                  </>
+                )}
               </button>
 
             </div>

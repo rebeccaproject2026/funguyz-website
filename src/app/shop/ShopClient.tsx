@@ -64,7 +64,7 @@ export default function ShopClient() {
       <Header />
 
       {/* Banner Section */}
-      <section className="bg-gradient-to-tr from-[#fffdfb] via-[#fffbf9] to-[#fff5f0] border-b border-purple-100/50 py-12 md:py-16 px-4 md:px-8 text-center relative overflow-hidden">
+      <section className="bg-gradient-to-tr from-[#fffdfb] via-[#fffbf9] to-[#fff5f0] border-b border-purple-100/50 py-6 md:py-16 px-4 md:px-8 text-center relative overflow-hidden">
         <div className="absolute left-[5%] top-[10%] w-[300px] h-[300px] rounded-full bg-[#ffe8db]/30 blur-[80px] pointer-events-none" />
         <div className="absolute right-[5%] bottom-[5%] w-[300px] h-[300px] rounded-full bg-[#e0f2fe]/40 blur-[80px] pointer-events-none" />
 
@@ -72,7 +72,7 @@ export default function ShopClient() {
           <div className="inline-flex items-center gap-1.5 rounded-full bg-[#ff4fa3]/5 px-3.5 py-1.5 text-[10px] font-bold uppercase tracking-widest text-[#ff4fa3]">
             <Sparkles className="h-3 w-3" /> Canada's #1 Premium Dispensary
           </div>
-          <h1 className="text-4xl md:text-5xl font-black tracking-tight text-[#1b1533] uppercase">
+          <h1 className="text-3xl md:text-5xl font-black tracking-tight text-[#1b1533] uppercase mt-2">
             Our Shop Catalog
           </h1>
           <p className="text-xs md:text-sm font-semibold leading-relaxed text-slate-500 max-w-xl">
@@ -82,12 +82,12 @@ export default function ShopClient() {
       </section>
 
       {/* Filters & Products Section */}
-      <section className="mx-auto max-w-7xl px-4 py-10 md:px-8">
+      <section className="mx-auto max-w-7xl px-4 py-4 md:py-10 md:px-8">
 
         {/* Controls Bar */}
-        <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between border-b border-purple-100/40 pb-6">
+        <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between border-b border-purple-100/40 pb-4 md:pb-6">
           {/* Category Tabs */}
-          <div className="flex gap-2 overflow-x-auto scrollbar-none pb-2 md:pb-0 flex-nowrap -mx-4 px-4 md:mx-0 md:px-0">
+          <div className="hidden lg:flex gap-2 overflow-x-auto scrollbar-none pb-2 md:pb-0 flex-nowrap -mx-4 px-4 md:mx-0 md:px-0">
             {categoryTabs.map(tab => (
               <button
                 key={tab}

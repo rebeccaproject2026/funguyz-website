@@ -197,6 +197,8 @@ export async function POST(request: Request) {
     console.log(`Order created successfully. Order ID: ${newOrder._id}`);
 
     // 3. Send Emails Concurrently to speed up checkout
+    // --- COMMENTED OUT NODEMAILER (BLOCKED BY DIGITALOCEAN) ---
+    /*
     const emailPromises = [];
 
     const adminMailOptions = {
@@ -216,6 +218,92 @@ export async function POST(request: Request) {
           + (isNewUser ? `<br><p>An account was created for you! Temp Password: <b>${generatedPassword}</b></p>` : ''),
       };
       emailPromises.push(transporter.sendMail(customerMailOptions).catch(e => console.error('Customer email failed', e)));
+    }
+
+    await Promise.allSettled(emailPromises);
+    */
+
+    // --- NEW: Microsoft Graph API Implementation (Port 443 - Bypasses Block) ---
+    console.log('--- Starting Microsoft Graph API Email Process ---');
+    const emailPromises = [];
+    const tenantId = process.env.MS_TENANT_ID;
+    const clientId = process.env.MS_CLIENT_ID;
+    const clientSecret = process.env.MS_CLIENT_SECRET;
+    const senderEmail = process.env.MS_SENDER_EMAIL || 'hello@funguyz.ca';
+
+    console.log(`Graph API Credentials Check: TenantId=${!!tenantId}, ClientId=${!!clientId}, ClientSecret=${!!clientSecret}, Sender=${senderEmail}`);
+
+    if (tenantId && clientId && clientSecret) {
+      try {
+        // 1. Get OAuth Token
+        console.log('Requesting OAuth token from Microsoft...');
+        const tokenResponse = await fetch(`https://login.microsoftonline.com/${tenantId}/oauth2/v2.0/token`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: new URLSearchParams({
+            client_id: clientId,
+            scope: 'https://graph.microsoft.com/.default',
+            client_secret: clientSecret,
+            grant_type: 'client_credentials'
+          })
+        });
+
+        const tokenData = await tokenResponse.json();
+        
+        if (tokenData.access_token) {
+          console.log('Successfully acquired OAuth token!');
+          const sendGraphEmail = async (toEmail: string, subject: string, htmlContent: string) => {
+            console.log(`Sending email to ${toEmail}...`);
+            return fetch(`https://graph.microsoft.com/v1.0/users/${senderEmail}/sendMail`, {
+              method: 'POST',
+              headers: {
+                'Authorization': `Bearer ${tokenData.access_token}`,
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({
+                message: {
+                  subject: subject,
+                  body: {
+                    contentType: 'HTML',
+                    content: htmlContent
+                  },
+                  toRecipients: [
+                    { emailAddress: { address: toEmail } }
+                  ]
+                },
+                saveToSentItems: true
+              })
+            }).then(async res => {
+              if (res.ok) {
+                 console.log(`Email successfully delivered to ${toEmail}!`);
+              } else {
+                 const err = await res.text();
+                 console.error(`Graph API Error sending to ${toEmail}:`, res.status, err);
+              }
+            });
+          };
+
+          emailPromises.push(sendGraphEmail(
+            adminEmail || senderEmail,
+            `New Order Received - ${orderDetails.orderId}`,
+            generateAdminEmailHtml(orderDetails, customerEmail)
+          ).catch(e => console.error('Graph API Admin email failed Exception:', e)));
+
+          if (customerEmail) {
+            emailPromises.push(sendGraphEmail(
+              customerEmail,
+              `Order Confirmation - ${orderDetails.orderId}`,
+              generateCustomerEmailHtml(orderDetails, customerEmail) + (isNewUser ? `<br><p>An account was created for you! Temp Password: <b>${generatedPassword}</b></p>` : '')
+            ).catch(e => console.error('Graph API Customer email failed Exception:', e)));
+          }
+        } else {
+           console.error('Failed to get Microsoft Graph API token. Response:', JSON.stringify(tokenData));
+        }
+      } catch (err) {
+        console.error('Exception Error connecting to Microsoft Graph API:', err);
+      }
+    } else {
+       console.log('Microsoft 365 credentials missing. Skipping emails completely.');
     }
 
     await Promise.allSettled(emailPromises);
