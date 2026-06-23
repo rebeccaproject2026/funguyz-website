@@ -199,9 +199,9 @@ export default function Home() {
             </div>
 
             <h1 className="max-w-3xl text-xl sm:text-3xl md:text-4xl lg:text-5xl font-black leading-[1.05] tracking-wide text-[#1b1533] logo-font">
-              Fast Mushroom <span className="text-[#ff4fa3]">Delivery</span>
+              FUNGUYZ <span className="text-[#ff4fa3]">Official Store</span>
               <span className="block mt-1 sm:mt-2 text-[#3b82f6]">
-                in Toronto, GTA & Canada
+                 Premium Canada Delivery
               </span>
             </h1>
             <p className="max-w-lg text-sm sm:text-base font-semibold leading-relaxed sm:leading-8 text-slate-600/90">
