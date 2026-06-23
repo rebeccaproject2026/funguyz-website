@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { transporter } from '@/lib/mailer';
+import { sendEmail } from '@/lib/emailService';
 import { generateContactEmailTemplate } from '@/lib/emailTemplates';
 import connectDB from '@/backend/config/db';
 import { SupportTicket } from '@/backend/models/SupportTicket';
@@ -32,15 +32,14 @@ export async function POST(request: Request) {
     // Generate the beautifully formatted email template
     const emailContent = generateContactEmailTemplate(body);
 
-    // Send the email securely to the admin inbox
-    const mailOptions = {
+    // Send the email securely to the admin inbox via the centralized service
+    await sendEmail({
       from: `"FunGuyz Store" <${process.env.SMTP_USER || 'no-reply@funguyz.ca'}>`,
       to: process.env.SMTP_USER || 'hello@funguyz.ca',
       subject: `[Support Ticket] ${category} - ${subject || 'New Inquiry'}`,
       html: emailContent.html,
       replyTo: email, // This allows the admin to hit "Reply" and email the customer directly
-    };
-    await transporter.sendMail(mailOptions);
+    });
 
     console.log(`✅ Support ticket email sent successfully from ${email}`);
 

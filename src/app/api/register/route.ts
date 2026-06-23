@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import connectDB from '@/backend/config/db';
 import Register from '@/backend/models/Register';
-import { transporter } from '@/lib/mailer';
+import { sendEmail } from '@/lib/emailService';
 import { generateRegistrationEmailTemplate } from '@/lib/emailTemplates';
 
 export async function POST(req: Request) {
@@ -40,11 +40,10 @@ export async function POST(req: Request) {
     // Send the confirmation email
     try {
       const emailContent = generateRegistrationEmailTemplate(name);
-      await transporter.sendMail({
+      await sendEmail({
         from: `"The Delivery & Shipping Team" <${process.env.SMTP_USER || 'no-reply@funguyz.ca'}>`,
         to: email.toLowerCase(),
         subject: "You're officially on the list 🍄",
-        text: emailContent.text,
         html: emailContent.html,
       });
       console.log(`✅ Registration email sent to ${email}`);

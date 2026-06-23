@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { transporter } from '@/lib/mailer';
+import { sendEmail } from '@/lib/emailService';
 import { generateAdminEmailHtml, generateCustomerEmailHtml } from '@/lib/emailTemplates';
 import connectDB from '@/backend/config/db';
 import Customer from '@/backend/models/Customer';
@@ -10,8 +10,6 @@ import { EProductStatus } from '@/backend/models/interfaces/IProduct';
 import { ERole } from '@/backend/models/interfaces/ICustomer';
 import { EOrderStatus } from '@/backend/models/interfaces/IOrder';
 import bcrypt from 'bcryptjs';
-import { Resend } from 'resend';
-
 function generateRandomPassword() {
   const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
   let pass = 'FG-';
@@ -198,148 +196,26 @@ export async function POST(request: Request) {
     console.log(`Order created successfully. Order ID: ${newOrder._id}`);
 
     // 3. Send Emails Concurrently to speed up checkout
-    // --- COMMENTED OUT NODEMAILER (BLOCKED BY DIGITALOCEAN) ---
-    /*
+    console.log('--- Starting Email Process ---');
     const emailPromises = [];
 
-    const adminMailOptions = {
-      from: `"FunGuyz Store" <${process.env.SMTP_USER || 'no-reply@funguyz.ca'}>`,
-      to: adminEmail || process.env.SMTP_USER,
+    const adminEmailHtml = generateAdminEmailHtml(orderDetails, customerEmail);
+    emailPromises.push(sendEmail({
+      to: adminEmail || process.env.MS_SENDER_EMAIL || process.env.SMTP_USER || 'hello@funguyz.ca',
       subject: `New Order Received - ${orderDetails.orderId}`,
-      html: generateAdminEmailHtml(orderDetails, customerEmail),
-    };
-    emailPromises.push(transporter.sendMail(adminMailOptions).catch(e => console.error('Admin email failed', e)));
+      html: adminEmailHtml
+    }).catch(e => console.error('Admin email failed:', e)));
 
     if (customerEmail) {
-      const customerMailOptions = {
-        from: `"FunGuyz Store" <${process.env.SMTP_USER || 'no-reply@funguyz.ca'}>`,
+      let customerEmailHtml = generateCustomerEmailHtml(orderDetails, customerEmail);
+      if (isNewUser) {
+        customerEmailHtml += `<br><p>An account was created for you! Temp Password: <b>${generatedPassword}</b></p>`;
+      }
+      emailPromises.push(sendEmail({
         to: customerEmail,
         subject: `Order Confirmation - ${orderDetails.orderId}`,
-        html: generateCustomerEmailHtml(orderDetails, customerEmail)
-          + (isNewUser ? `<br><p>An account was created for you! Temp Password: <b>${generatedPassword}</b></p>` : ''),
-      };
-      emailPromises.push(transporter.sendMail(customerMailOptions).catch(e => console.error('Customer email failed', e)));
-    }
-
-    await Promise.allSettled(emailPromises);
-    */
-
-    // --- NEW: Resend Implementation ---
-    console.log('--- Starting Resend Email Process ---');
-    const emailPromises = [];
-    
-    // --- COMMENTED OUT MICROSOFT GRAPH API IMPLEMENTATION ---
-    /*
-    const tenantId = process.env.MS_TENANT_ID;
-    const clientId = process.env.MS_CLIENT_ID;
-    const clientSecret = process.env.MS_CLIENT_SECRET;
-    const senderEmail = process.env.MS_SENDER_EMAIL || 'hello@funguyz.ca';
-
-    console.log(`Graph API Credentials Check: TenantId=${!!tenantId}, ClientId=${!!clientId}, ClientSecret=${!!clientSecret}, Sender=${senderEmail}`);
-
-    if (tenantId && clientId && clientSecret) {
-      try {
-        // 1. Get OAuth Token
-        console.log('Requesting OAuth token from Microsoft...');
-        const tokenResponse = await fetch(`https://login.microsoftonline.com/${tenantId}/oauth2/v2.0/token`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-          body: new URLSearchParams({
-            client_id: clientId,
-            scope: 'https://graph.microsoft.com/.default',
-            client_secret: clientSecret,
-            grant_type: 'client_credentials'
-          })
-        });
-
-        const tokenData = await tokenResponse.json();
-        
-        if (tokenData.access_token) {
-          console.log('Successfully acquired OAuth token!');
-          const sendGraphEmail = async (toEmail: string, subject: string, htmlContent: string) => {
-            console.log(`Sending email to ${toEmail}...`);
-            return fetch(`https://graph.microsoft.com/v1.0/users/${senderEmail}/sendMail`, {
-              method: 'POST',
-              headers: {
-                'Authorization': `Bearer ${tokenData.access_token}`,
-                'Content-Type': 'application/json'
-              },
-              body: JSON.stringify({
-                message: {
-                  subject: subject,
-                  body: {
-                    contentType: 'HTML',
-                    content: htmlContent
-                  },
-                  toRecipients: [
-                    { emailAddress: { address: toEmail } }
-                  ]
-                },
-                saveToSentItems: true
-              })
-            }).then(async res => {
-              if (res.ok) {
-                 console.log(`Email successfully delivered to ${toEmail}!`);
-              } else {
-                 const err = await res.text();
-                 console.error(`Graph API Error sending to ${toEmail}:`, res.status, err);
-              }
-            });
-          };
-
-          emailPromises.push(sendGraphEmail(
-            adminEmail || senderEmail,
-            `New Order Received - ${orderDetails.orderId}`,
-            generateAdminEmailHtml(orderDetails, customerEmail)
-          ).catch(e => console.error('Graph API Admin email failed Exception:', e)));
-
-          if (customerEmail) {
-            emailPromises.push(sendGraphEmail(
-              customerEmail,
-              `Order Confirmation - ${orderDetails.orderId}`,
-              generateCustomerEmailHtml(orderDetails, customerEmail) + (isNewUser ? `<br><p>An account was created for you! Temp Password: <b>${generatedPassword}</b></p>` : '')
-            ).catch(e => console.error('Graph API Customer email failed Exception:', e)));
-          }
-        } else {
-           console.error('Failed to get Microsoft Graph API token. Response:', JSON.stringify(tokenData));
-        }
-      } catch (err) {
-        console.error('Exception Error connecting to Microsoft Graph API:', err);
-      }
-    } else {
-       console.log('Microsoft 365 credentials missing. Skipping emails completely.');
-    }
-    */
-    // --- END COMMENTED OUT MICROSOFT GRAPH API IMPLEMENTATION ---
-
-    const resendKey = process.env.RESEND_API_KEY;
-    if (resendKey) {
-      const resend = new Resend(resendKey);
-      const senderEmail = process.env.MS_SENDER_EMAIL || process.env.SMTP_USER || 'hello@funguyz.ca';
-      
-      // Send Admin Email
-      const adminEmailTask = resend.emails.send({
-        from: `FunGuyz Store <${senderEmail}>`,
-        to: adminEmail || senderEmail,
-        subject: `New Order Received - ${orderDetails.orderId}`,
-        html: generateAdminEmailHtml(orderDetails, customerEmail),
-      }).then(data => console.log('Resend Admin Email:', data)).catch(e => console.error('Resend Admin Email Error:', e));
-      
-      emailPromises.push(adminEmailTask);
-
-      // Send Customer Email
-      if (customerEmail) {
-        const customerEmailTask = resend.emails.send({
-          from: `FunGuyz Store <${senderEmail}>`,
-          to: customerEmail,
-          subject: `Order Confirmation - ${orderDetails.orderId}`,
-          html: generateCustomerEmailHtml(orderDetails, customerEmail) + (isNewUser ? `<br><p>An account was created for you! Temp Password: <b>${generatedPassword}</b></p>` : ''),
-        }).then(data => console.log('Resend Customer Email:', data)).catch(e => console.error('Resend Customer Email Error:', e));
-        
-        emailPromises.push(customerEmailTask);
-      }
-    } else {
-      console.log('RESEND_API_KEY missing. Skipping Resend emails.');
+        html: customerEmailHtml
+      }).catch(e => console.error('Customer email failed:', e)));
     }
 
     await Promise.allSettled(emailPromises);

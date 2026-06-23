@@ -77,7 +77,16 @@ export async function PUT(request: Request) {
     const updateData: any = {};
     if (firstName !== undefined) updateData.firstName = firstName;
     if (lastName !== undefined) updateData.lastName = lastName;
-    if (email !== undefined) updateData.email = email;
+    if (email !== undefined && email.trim() !== '') {
+      const existingUser = await Customer.findOne({ 
+        email: email.trim().toLowerCase(), 
+        _id: { $ne: session.user.id } 
+      });
+      if (existingUser) {
+        return NextResponse.json({ success: false, error: 'Email is already in use by another account.' }, { status: 400 });
+      }
+      updateData.email = email.trim().toLowerCase();
+    }
     if (addresses !== undefined) updateData.addresses = addresses;
 
     const customer = await Customer.findByIdAndUpdate(
