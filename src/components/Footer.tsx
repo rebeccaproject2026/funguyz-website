@@ -133,8 +133,7 @@ export function Footer() {
               <MapPin className="h-4 w-4 text-[#2fdfff] shrink-0 mt-0.5" />
               <div className="flex flex-col gap-1 text-[11px] leading-relaxed text-white/60 whitespace-nowrap">
                 <span>24/7 Online Ordering</span>
-                <span>Delivery Available 9AM–11PM</span>
-                <span>7 Days A Week</span>
+                <span>Delivery Available 7 Days A Week</span>
               </div>
             </li>
 

@@ -201,15 +201,15 @@ export default function Home() {
             <h1 className="max-w-3xl text-xl sm:text-3xl md:text-4xl lg:text-5xl font-black leading-[1.05] tracking-wide text-[#1b1533] logo-font">
               FUNGUYZ <span className="text-[#ff4fa3]">Official Store</span>
               <span className="block mt-1 sm:mt-2 text-[#3b82f6]">
-                 Premium Canada Delivery
+                Premium Magic Mushroom Delivery Across Canada
               </span>
             </h1>
             <p className="max-w-lg text-sm sm:text-base font-semibold leading-relaxed sm:leading-8 text-slate-600/90">
-              Premium mushrooms, edibles, capsules and microdose products crafted for quality, wellness and mindful living.
+              Shop premium magic mushrooms, psilocybin edibles, capsules, and microdose products in Canada, crafted for wellness, focus, and mindful living with fast, discreet delivery.
             </p>
 
             {/* Bottom Floating Trust Badges Card */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-0 sm:divide-x divide-slate-100 items-center bg-white border border-slate-100 rounded-2xl p-3 shadow-sm mt-4 max-w-2xl w-full">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-0 sm:divide-x divide-slate-100 items-center bg-white border border-slate-100 rounded-2xl p-3 shadow-sm mt-4 max-w-2xl w-full order-5 sm:order-4">
               {[
                 ['Lab Tested', 'For Purity', ShieldCheck, 'text-pink-500 bg-pink-50'],
                 ['100% Natural', 'Premium Quality', Leaf, 'text-emerald-500 bg-emerald-50'],
@@ -231,7 +231,7 @@ export default function Home() {
             </div>
 
             {/* Hero CTA buttons */}
-            <div className="mt-5 flex flex-col sm:flex-row gap-3 sm:gap-4 w-full sm:w-auto">
+            <div className="mt-5 flex flex-col sm:flex-row gap-3 sm:gap-4 w-full sm:w-auto order-4 sm:order-5">
               <Link
                 href="/shop"
                 className="w-full sm:w-auto inline-flex items-center justify-center rounded-2xl bg-[#ff4fa3] text-white border border-[#ff4fa3] px-6 sm:px-9 py-4 text-xs font-black uppercase tracking-wider shadow-md shadow-pink-100 transition-all duration-300 hover:bg-black hover:text-[#ff4fa3] hover:border-black hover:-translate-y-0.5 active:translate-y-0 cursor-pointer gap-2 logo-font whitespace-nowrap"
