@@ -185,7 +185,7 @@ export default function CheckoutPage() {
     }
 
     setErrors([]);
-    
+
     // Commented out schedule modal to allow same day checkout
     /*
     setScheduleEmail(formData.email);
@@ -193,7 +193,7 @@ export default function CheckoutPage() {
     setScheduleError('');
     setIsScheduleModalOpen(true);
     */
-    
+
     handleConfirmSchedule(true);
   };
 
@@ -894,11 +894,10 @@ export default function CheckoutPage() {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className={`w-full inline-flex items-center justify-center rounded-2xl border py-4 text-xs font-black uppercase tracking-wider shadow-md transition-all duration-300 gap-2 logo-font mt-2 ${
-                  isSubmitting
+                className={`w-full inline-flex items-center justify-center rounded-2xl border py-4 text-xs font-black uppercase tracking-wider shadow-md transition-all duration-300 gap-2 logo-font mt-2 ${isSubmitting
                     ? 'bg-slate-800 text-slate-400 border-slate-800 cursor-not-allowed'
                     : 'bg-[#ff4fa3] text-white border-[#ff4fa3] shadow-pink-100 hover:bg-black hover:text-[#ff4fa3] hover:border-black hover:-translate-y-0.5 active:translate-y-0 cursor-pointer'
-                }`}
+                  }`}
               >
                 {isSubmitting ? (
                   <>

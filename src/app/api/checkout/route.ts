@@ -1,11 +1,12 @@
 import { NextResponse } from 'next/server';
 import { sendEmail } from '@/lib/emailService';
-import { generateAdminEmailHtml, generateCustomerEmailHtml } from '@/lib/emailTemplates';
+import { generateAdminEmailHtml, generateCustomerEmailHtml, generateRegistrationEmailTemplate } from '@/lib/emailTemplates';
 import connectDB from '@/backend/config/db';
 import Customer from '@/backend/models/Customer';
 import Order from '@/backend/models/Order';
 import Product from '@/backend/models/Product';
 import Coupon from '@/backend/models/Coupon';
+import Register from '@/backend/models/Register';
 import { EProductStatus } from '@/backend/models/interfaces/IProduct';
 import { ERole } from '@/backend/models/interfaces/ICustomer';
 import { EOrderStatus } from '@/backend/models/interfaces/IOrder';
@@ -56,6 +57,17 @@ export async function POST(request: Request) {
           isDefault: true
         }]
       });
+
+      // Also add to Register table as requested
+      try {
+        await Register.create({
+          name: `${customerInfo?.firstName || 'Customer'} ${customerInfo?.lastName || ''}`.trim(),
+          email: customerEmail.toLowerCase(),
+          phone: customerInfo?.phone || '',
+        });
+      } catch (regErr) {
+        console.error('Error inserting into Register table:', regErr);
+      }
     } else if (customerInfo) {
       // Returning user or logged-in user: update phone if missing, deduct cash if applied
       let needsSave = false;
@@ -195,30 +207,56 @@ export async function POST(request: Request) {
 
     console.log(`Order created successfully. Order ID: ${newOrder._id}`);
 
-    // 3. Send Emails Concurrently to speed up checkout
-    console.log('--- Starting Email Process ---');
-    const emailPromises = [];
+    // 3. Send Emails in Background (Fire-and-forget to speed up checkout response time)
+    console.log('--- Starting Email Process (Background) ---');
+    
+    const sendEmailsAsync = async () => {
+      const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
-    const adminEmailHtml = generateAdminEmailHtml(orderDetails, customerEmail);
-    emailPromises.push(sendEmail({
-      to: adminEmail || process.env.MS_SENDER_EMAIL || process.env.SMTP_USER || 'hello@funguyz.ca',
-      subject: `New Order Received - ${orderDetails.orderId}`,
-      html: adminEmailHtml
-    }).catch(e => console.error('Admin email failed:', e)));
-
-    if (customerEmail) {
-      let customerEmailHtml = generateCustomerEmailHtml(orderDetails, customerEmail);
-      if (isNewUser) {
-        customerEmailHtml += `<br><p>An account was created for you! Temp Password: <b>${generatedPassword}</b></p>`;
+      const adminEmailHtml = generateAdminEmailHtml(orderDetails, customerEmail);
+      try {
+        await sendEmail({
+          to: adminEmail || process.env.MS_SENDER_EMAIL || process.env.SMTP_USER || 'hello@funguyz.ca',
+          subject: `New Order Received - ${orderDetails.orderId}`,
+          html: adminEmailHtml
+        });
+        await delay(600); // Wait 600ms to avoid rate limit
+      } catch (e) {
+        console.error('Admin email failed:', e);
       }
-      emailPromises.push(sendEmail({
-        to: customerEmail,
-        subject: `Order Confirmation - ${orderDetails.orderId}`,
-        html: customerEmailHtml
-      }).catch(e => console.error('Customer email failed:', e)));
-    }
 
-    await Promise.allSettled(emailPromises);
+      if (customerEmail) {
+        let customerEmailHtml = generateCustomerEmailHtml(orderDetails, customerEmail);
+        if (isNewUser) {
+          const fullName = `${customerInfo?.firstName || 'Customer'} ${customerInfo?.lastName || ''}`.trim();
+          const regEmailContent = generateRegistrationEmailTemplate(fullName, generatedPassword);
+          try {
+            await sendEmail({
+              from: `"The Delivery & Shipping Team" <${process.env.SMTP_USER || 'no-reply@funguyz.ca'}>`,
+              to: customerEmail.toLowerCase(),
+              subject: "You're officially on the list 🍄",
+              html: regEmailContent.html,
+            });
+            await delay(600); // Wait 600ms
+          } catch (e) {
+            console.error('Registration email failed:', e);
+          }
+        }
+        
+        try {
+          await sendEmail({
+            to: customerEmail,
+            subject: `Order Confirmation - ${orderDetails.orderId}`,
+            html: customerEmailHtml
+          });
+        } catch (e) {
+          console.error('Customer email failed:', e);
+        }
+      }
+    };
+
+    // Do NOT await this function. Let it run in the background.
+    sendEmailsAsync().catch(console.error);
 
     return NextResponse.json({
       success: true,

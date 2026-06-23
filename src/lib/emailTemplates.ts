@@ -440,8 +440,22 @@ export const generateAdminEmailHtml = (orderDetails: any, customerEmail: string)
   `;
 };
 
-export const generateRegistrationEmailTemplate = (name: string) => {
+export const generateRegistrationEmailTemplate = (name: string, tempPassword?: string) => {
   const firstName = name.split(' ')[0] || 'there';
+
+  let passwordHtml = '';
+  if (tempPassword) {
+    passwordHtml = `
+      <div class="info-block" style="background-color: #FEF3C7; border-left: 4px solid #F59E0B; margin-top: 20px;">
+        <p style="font-size: 15px; font-weight: 800; color: #92400E; margin-top: 0; margin-bottom: 8px;">Your Temporary Password</p>
+        <p style="color: #B45309; font-size: 14px; margin: 0 0 12px 0;">An account has been automatically created for you. You can use the password below to log in.</p>
+        <div style="background-color: #FFFFFF; border: 1px dashed #FDE68A; padding: 12px; text-align: center; border-radius: 8px; font-size: 18px; font-weight: 900; letter-spacing: 2px; color: #111827;">
+          ${tempPassword}
+        </div>
+        <p style="color: #92400E; font-size: 12px; margin: 12px 0 0 0; font-weight: 600;">*Please change this password in your Account Settings after logging in.</p>
+      </div>
+    `;
+  }
 
   const html = `
     <!DOCTYPE html>
@@ -470,6 +484,8 @@ export const generateRegistrationEmailTemplate = (name: string) => {
               <li style="color: #4B5563; font-size: 14px; font-weight: 600;"><span style="color: #059669; font-weight: 900; margin-right: 8px;">✓</span> SMS and email notifications</li>
             </ul>
           </div>
+          
+          ${passwordHtml}
 
           <p style="color: #6B7280; font-size: 14px; line-height: 1.6; font-weight: 600; text-align: center;">
             We'll contact you as soon as we're ready to open, along with any special offers available to early supporters.
@@ -490,12 +506,17 @@ export const generateRegistrationEmailTemplate = (name: string) => {
     </html>
   `;
 
+  let passwordText = '';
+  if (tempPassword) {
+    passwordText = `\nYour Temporary Password: ${tempPassword}\n(Please change this password in your Account Settings after logging in.)\n`;
+  }
+
   const text = `Hello ${firstName},
 
 You're officially on the list.
 
 Thank you for signing up for launch notifications.
-
+${passwordText}
 As one of our early subscribers, you'll receive:
 
 ✓ Early access to shop
