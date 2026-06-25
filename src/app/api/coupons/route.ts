@@ -11,6 +11,7 @@ export async function GET() {
     return NextResponse.json({ success: true, coupons });
   } catch (error: any) {
     console.error('Error fetching coupons:', error);
-    return NextResponse.json({ success: false, error: error.message }, { status: 500 });
+    return NextResponse.json({ success: false, error: process.env.NODE_ENV === 'development' ? error.message : 'An unexpected error occurred' }, { status: 500 });
   }
 }
+

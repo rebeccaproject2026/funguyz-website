@@ -2,6 +2,7 @@
 import Link from 'next/link';
 
 import React, { useState, useEffect } from 'react';
+import { Turnstile } from '@marsidev/react-turnstile';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { useCart } from '@/context/CartContext';
@@ -44,6 +45,7 @@ export default function CheckoutPage() {
     province: 'ON',
     postcode: ''
   });
+  const [turnstileToken, setTurnstileToken] = useState('');
 
   const [appliedCashBalance, setAppliedCashBalance] = useState(0);
   const [lookupMessage, setLookupMessage] = useState('');
@@ -265,6 +267,7 @@ export default function CheckoutPage() {
         couponCode: appliedCoupon?.code || null,
         discountAmount: discountAmount || 0,
         appliedCashBalance: cashApplied,
+        turnstileToken
       }),
     })
       .then((res) => res.json())
@@ -888,6 +891,10 @@ export default function CheckoutPage() {
                   <span className="text-slate-800 uppercase logo-font">Total Amount</span>
                   <strong className="text-[#ff4fa3] font-black logo-font text-base">${grandTotal.toFixed(2)}</strong>
                 </div>
+              </div>
+
+              <div className="flex justify-center my-1">
+                <Turnstile siteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY || ''} onSuccess={(token) => setTurnstileToken(token)} />
               </div>
 
               {/* Place order CTA */}

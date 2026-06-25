@@ -2,6 +2,7 @@
 import Link from 'next/link';
 
 import React, { useState, useEffect } from 'react';
+import { Turnstile } from '@marsidev/react-turnstile';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { MushroomLoader } from '@/components/MushroomLoader';
@@ -76,6 +77,7 @@ export default function MyAccountPage() {
   // Reset form
   const [resetEmail, setResetEmail] = useState('');
   const [resetResult, setResetResult] = useState<string | null>(null);
+  const [resetTurnstileToken, setResetTurnstileToken] = useState('');
 
   // Change password form
   const [newPass, setNewPass] = useState('');
@@ -199,7 +201,7 @@ export default function MyAccountPage() {
   const handleReset = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsResetting(true);
-    const result = await resetPassword(resetEmail) as any;
+    const result = await resetPassword(resetEmail, resetTurnstileToken) as any;
     setIsResetting(false);
     if (result.success && result.newPassword) {
       setResetResult(result.newPassword);
@@ -397,6 +399,9 @@ export default function MyAccountPage() {
                     className={fieldCls}
                   />
                 </label>
+                <div className="flex justify-center my-1">
+                  <Turnstile siteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY || ''} onSuccess={(token) => setResetTurnstileToken(token)} />
+                </div>
                 <button
                   type="submit"
                   disabled={isResetting}

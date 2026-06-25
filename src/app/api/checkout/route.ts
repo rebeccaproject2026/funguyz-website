@@ -1,5 +1,7 @@
 import { NextResponse } from 'next/server';
+import { rateLimit } from '@/lib/rateLimit';
 import { sendEmail } from '@/lib/emailService';
+import { verifyTurnstileToken } from '@/lib/turnstile';
 import { generateAdminEmailHtml, generateCustomerEmailHtml, generateRegistrationEmailTemplate } from '@/lib/emailTemplates';
 import connectDB from '@/backend/config/db';
 import Customer from '@/backend/models/Customer';
@@ -20,11 +22,22 @@ function generateRandomPassword() {
 
 export async function POST(request: Request) {
   try {
+    const ip = request.headers.get('x-forwarded-for') || '127.0.0.1';
+    const rl = rateLimit(ip, 20, 3600000); // 20 per hour
+    if (!rl.success) {
+      return NextResponse.json({ success: false, error: 'Too many checkout attempts. Please try again later.' }, { status: 429 });
+    }
+
     await connectDB();
     const body = await request.json();
     console.log('--- Checkout API Started ---');
     console.log('Request Body:', JSON.stringify(body, null, 2));
-    const { orderDetails, customerEmail, adminEmail, customerInfo, couponCode, discountAmount, appliedCashBalance } = body;
+    const { orderDetails, customerEmail, adminEmail, customerInfo, couponCode, discountAmount, appliedCashBalance, turnstileToken } = body;
+
+    const isHuman = await verifyTurnstileToken(turnstileToken);
+    if (!isHuman) {
+      return NextResponse.json({ success: false, error: 'Security check failed. Please refresh the page.' }, { status: 400 });
+    }
 
     // 1. Check if user exists, if not create them
     console.log(`Checking user existence for email: ${customerEmail}`);
@@ -269,6 +282,7 @@ export async function POST(request: Request) {
     console.error('--- Checkout API Exception ---');
     console.error('Error Details:', error);
     console.error('Stack Trace:', error.stack);
-    return NextResponse.json({ success: false, error: error.message || 'Failed to process checkout' }, { status: 500 });
+    return NextResponse.json({ success: false, error: process.env.NODE_ENV === 'development' ? (error.message || 'Failed to process checkout') : 'An unexpected error occurred' }, { status: 500 });
   }
 }
+

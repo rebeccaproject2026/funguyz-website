@@ -23,7 +23,7 @@ export async function PUT(request: Request, { params }: { params: Promise<{ slug
     return NextResponse.json({ success: true, blog });
   } catch (error: any) {
     console.error('Blog PUT Error:', error);
-    return NextResponse.json({ success: false, error: error.message }, { status: 500 });
+    return NextResponse.json({ success: false, error: process.env.NODE_ENV === 'development' ? error.message : 'An unexpected error occurred' }, { status: 500 });
   }
 }
 
@@ -46,6 +46,6 @@ export async function GET(request: Request, { params }: { params: Promise<{ slug
 
   } catch (error: any) {
     console.error('Blog by Slug API Error:', error);
-    return NextResponse.json({ success: false, error: error.message }, { status: 500 });
+    return NextResponse.json({ success: false, error: process.env.NODE_ENV === 'development' ? error.message : 'An unexpected error occurred' }, { status: 500 });
   }
 }

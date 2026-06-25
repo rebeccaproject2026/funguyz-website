@@ -1,5 +1,7 @@
 import { NextResponse } from 'next/server';
+import { rateLimit } from '@/lib/rateLimit';
 import connectDB from '@/backend/config/db';
+import { verifyTurnstileToken } from '@/lib/turnstile';
 import Product from '@/backend/models/Product';
 
 export const dynamic = 'force-dynamic';
@@ -9,11 +11,22 @@ export async function POST(
   { params }: { params: Promise<{ slug: string }> }
 ) {
   try {
+    const ip = request.headers.get('x-forwarded-for') || '127.0.0.1';
+    const rl = rateLimit(ip, 5, 3600000); // 5 per hour
+    if (!rl.success) {
+      return NextResponse.json({ success: false, error: 'Too many requests. Please try again later.' }, { status: 429 });
+    }
+
     const { slug } = await params;
     await connectDB();
 
     const body = await request.json();
-    const { name, text, rating } = body;
+    const { name, text, rating, turnstileToken } = body;
+
+    const isHuman = await verifyTurnstileToken(turnstileToken);
+    if (!isHuman) {
+      return NextResponse.json({ success: false, error: 'Security check failed. Please refresh the page.' }, { status: 400 });
+    }
 
     if (!name || !text || !rating) {
       return NextResponse.json(
@@ -48,6 +61,6 @@ export async function POST(
     return NextResponse.json({ success: true, message: 'Review added successfully', product });
   } catch (error: any) {
     console.error('API Error:', error);
-    return NextResponse.json({ success: false, error: error.message }, { status: 500 });
+    return NextResponse.json({ success: false, error: process.env.NODE_ENV === 'development' ? error.message : 'An unexpected error occurred' }, { status: 500 });
   }
 }
