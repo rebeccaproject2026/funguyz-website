@@ -8,30 +8,35 @@ import { MushroomLoader } from '@/components/MushroomLoader';
 import { ProductCard } from '@/components/ProductCard';
 import { products, getProductSlug, getProductSeoMetadata, getProductSections, mushroomPricingTable } from '@/data/products';
 import { useCart } from '@/context/CartContext';
-import {
-  Sparkles,
-  ShoppingBag,
-  Star,
-  ShieldCheck,
-  Truck,
-  Heart,
-  Share2,
-  Check,
-  ChevronRight,
+import { 
+  ChevronRight, 
   ChevronLeft,
-  Minus,
-  Plus,
+  Star, 
+  Minus, 
+  Plus, 
+  ShoppingCart, 
+  ShoppingBag,
+  Leaf, 
+  Droplets, 
+  Zap, 
+  ShieldCheck, 
+  Heart, 
+  AlertTriangle, 
   AlertCircle,
+  ArrowRight, 
+  BookOpen, 
+  Sparkles, 
+  Dna, 
+  TrendingUp, 
+  ThumbsUp, 
+  Activity, 
+  HelpCircle, 
+  MessageSquare, 
   Lock,
-  ArrowRight,
-  BookOpen,
-  Dna,
-  TrendingUp,
-  ThumbsUp,
-  Activity,
-  HelpCircle,
-  MessageSquare
+  Truck,
+  Check
 } from 'lucide-react';
+import { Turnstile } from '@marsidev/react-turnstile';
 import { imageMap } from '@/data/imageMap';
 import Image from 'next/image';
 
@@ -84,6 +89,7 @@ export default function ProductDetailsPage({ params }: { params: Promise<{ slug:
   const [quantity, setQuantity] = useState<number>(1);
   const [activeSection, setActiveSection] = useState<string>('overview');
   const [openFaqTab, setOpenFaqTab] = useState<number | null>(null);
+  const [turnstileToken, setTurnstileToken] = useState('');
 
   const [dbProduct, setDbProduct] = useState<any>(null);
   const [loading, setLoading] = useState(true);
@@ -227,7 +233,8 @@ export default function ProductDetailsPage({ params }: { params: Promise<{ slug:
     const reviewPayload = {
       name: userName,
       text: newReviewText.trim(),
-      rating: newReviewRating
+      rating: newReviewRating,
+      turnstileToken
     };
 
     try {
@@ -755,6 +762,10 @@ export default function ProductDetailsPage({ params }: { params: Promise<{ slug:
                       placeholder="Share your thoughts on the taste, potency, genetic purity, or experience of this formulation..."
                       className="w-full h-24 rounded-2xl border border-slate-200 bg-white p-4 text-xs font-semibold outline-none focus:border-[#ff4fa3] focus:ring-4 focus:ring-pink-50/50 transition-all resize-none"
                     />
+                  </div>
+
+                  <div className="flex justify-center my-1">
+                    <Turnstile siteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY || ''} onSuccess={(token) => setTurnstileToken(token)} />
                   </div>
 
                   <button

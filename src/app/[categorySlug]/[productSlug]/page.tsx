@@ -12,29 +12,35 @@ import { MushroomLoader } from '@/components/MushroomLoader';
 import { products, getProductSlug, getCategorySlug, getProductSeoMetadata, getProductSections, mushroomPricingTable } from '@/data/products';
 import { useCart } from '@/context/CartContext';
 import { useAuth } from '@/context/AuthContext';
-import {
-  Sparkles,
-  ShoppingBag,
-  Star,
-  ShieldCheck,
-  Truck,
-  Heart,
-  Check,
-  ChevronRight,
+import { 
+  ChevronRight, 
   ChevronLeft,
-  Minus,
-  Plus,
+  Star, 
+  Minus, 
+  Plus, 
+  ShoppingCart, 
+  ShoppingBag,
+  Leaf, 
+  Droplets, 
+  Zap, 
+  ShieldCheck, 
+  Heart, 
+  AlertTriangle, 
   AlertCircle,
+  ArrowRight, 
+  BookOpen, 
+  Sparkles, 
+  Dna, 
+  TrendingUp, 
+  ThumbsUp, 
+  Activity, 
+  HelpCircle, 
+  MessageSquare, 
   Lock,
-  ArrowRight,
-  BookOpen,
-  Dna,
-  TrendingUp,
-  ThumbsUp,
-  Activity,
-  HelpCircle,
-  MessageSquare
+  Truck,
+  Check
 } from 'lucide-react';
+import { Turnstile } from '@marsidev/react-turnstile';
 import { imageMap } from '@/data/imageMap';
 import Image from 'next/image';
 
@@ -65,9 +71,10 @@ export default function CategoryProductPage({ params }: { params: Promise<{ cate
   const [quantity, setQuantity] = useState<number>(1);
   const [activeSection, setActiveSection] = useState<string>('overview');
   const [openFaqTab, setOpenFaqTab] = useState<number | null>(null);
-  const [newReviewRating, setNewReviewRating] = useState<number>(5);
-  const [newReviewText, setNewReviewText] = useState<string>('');
-  const [isSubmittingReview, setIsSubmittingReview] = useState<boolean>(false);
+  const [newReviewText, setNewReviewText] = useState('');
+  const [newReviewRating, setNewReviewRating] = useState(5);
+  const [isSubmittingReview, setIsSubmittingReview] = useState(false);
+  const [turnstileToken, setTurnstileToken] = useState('');
   const [selectedGalleryImage, setSelectedGalleryImage] = useState<string | null>(null);
   const [prevSlug, setPrevSlug] = useState(productSlug);
 
@@ -203,7 +210,8 @@ export default function CategoryProductPage({ params }: { params: Promise<{ cate
         body: JSON.stringify({
           name: currentUser?.firstName || 'Valued Customer',
           text: newReviewText.trim(),
-          rating: newReviewRating
+          rating: newReviewRating,
+          turnstileToken
         })
       });
 
@@ -682,6 +690,9 @@ export default function CategoryProductPage({ params }: { params: Promise<{ cate
                       placeholder="Share your thoughts on the taste, potency, or experience..."
                       className="w-full h-24 rounded-2xl border border-slate-200 bg-white p-4 text-xs font-semibold outline-none focus:border-[#ff4fa3] focus:ring-4 focus:ring-pink-50/50 transition-all resize-none"
                     />
+                  </div>
+                  <div className="flex justify-center my-1">
+                    <Turnstile siteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY || ''} onSuccess={(token) => setTurnstileToken(token)} />
                   </div>
                   <button
                     onClick={submitReview}

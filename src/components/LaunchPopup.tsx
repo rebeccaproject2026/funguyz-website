@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { usePathname } from 'next/navigation';
 import { X, Check, Copy, Mail, Shield, MapPin, Gift, Phone, Lock, Truck, Zap, Heart, ShieldCheck, User } from 'lucide-react';
+import { Turnstile } from '@marsidev/react-turnstile';
 
 export function LaunchPopup() {
   const pathname = usePathname();
@@ -14,6 +15,7 @@ export function LaunchPopup() {
   const [submitted, setSubmitted] = useState<boolean>(false);
   const [copied, setCopied] = useState<boolean>(false);
   const [errorMsg, setErrorMsg] = useState<string>('');
+  const [turnstileToken, setTurnstileToken] = useState<string>('');
 
   const timerRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -122,7 +124,7 @@ export function LaunchPopup() {
       const response = await fetch('/api/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name: username, email, phone }),
+        body: JSON.stringify({ name: username, email, phone, turnstileToken }),
       });
 
       const data = await response.json();
@@ -362,6 +364,10 @@ export function LaunchPopup() {
                     ⚠️ {errorMsg}
                   </span>
                 )}
+
+                <div className="flex justify-center my-1">
+                  <Turnstile siteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY || ''} onSuccess={(token) => setTurnstileToken(token)} />
+                </div>
 
                 <button
                   type="submit"

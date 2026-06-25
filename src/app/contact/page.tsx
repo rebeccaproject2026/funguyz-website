@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import { Turnstile } from '@marsidev/react-turnstile';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import {
@@ -22,7 +23,8 @@ export default function ContactPage() {
     phone: '',
     category: 'Product',
     subject: '',
-    message: ''
+    message: '',
+    turnstileToken: ''
   });
   const [submitted, setSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -40,7 +42,7 @@ export default function ContactPage() {
         
         if (res.ok) {
           setSubmitted(true);
-          setFormData({ name: '', email: '', phone: '', category: 'Product', subject: '', message: '' });
+          setFormData({ name: '', email: '', phone: '', category: 'Product', subject: '', message: '', turnstileToken: '' });
           setTimeout(() => setSubmitted(false), 5000);
         } else {
           alert('Failed to send message. Please try again later.');
@@ -168,6 +170,10 @@ export default function ContactPage() {
                   className="mt-1.5 w-full rounded-xl border border-slate-200 px-3.5 py-2.5 text-xs font-semibold outline-none focus:border-[#ff4fa3] focus:ring-4 focus:ring-pink-50/50 resize-none"
                 />
               </label>
+
+              <div className="flex justify-center my-1">
+                <Turnstile siteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY || ''} onSuccess={(token) => setFormData({ ...formData, turnstileToken: token })} />
+              </div>
 
               <button
                 type="submit"

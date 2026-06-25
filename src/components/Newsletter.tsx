@@ -1,12 +1,14 @@
 'use client';
 import React, { useState } from 'react';
 import { Mail, Sparkles, Loader2, CheckCircle2 } from 'lucide-react';
+import { Turnstile } from '@marsidev/react-turnstile';
 
 export function Newsletter() {
   const [email, setEmail] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [successMsg, setSuccessMsg] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
+  const [turnstileToken, setTurnstileToken] = useState('');
 
   const handleSubscribe = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -18,10 +20,10 @@ export function Newsletter() {
       const res = await fetch('/api/subscribe', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email })
+        body: JSON.stringify({ email, turnstileToken })
       });
       const data = await res.json();
-      
+
       if (data.success) {
         setSuccessMsg(data.message);
         setEmail('');
@@ -43,7 +45,7 @@ export function Newsletter() {
 
       <div className="mx-auto max-w-5xl relative z-10">
         <div className="bg-white/80 backdrop-blur-md border border-pink-100/70 rounded-[40px] p-8 md:p-12 shadow-[0_20px_50px_rgba(255,79,163,0.06)] text-center space-y-6 relative overflow-hidden">
-          
+
           {/* Subtle micro-animations using animate-pulse */}
           <div className="absolute top-6 left-6 text-[#ff4fa3] opacity-20 animate-pulse">
             <Sparkles className="h-6 w-6" />
@@ -71,36 +73,42 @@ export function Newsletter() {
               <p className="text-xs font-semibold text-slate-500">Keep an eye on your inbox for our next drop.</p>
             </div>
           ) : (
-            <form 
-              onSubmit={handleSubscribe} 
-              className="max-w-md mx-auto flex flex-col sm:flex-row gap-3 mt-6 relative"
-            >
-              <div className="flex-grow relative flex items-center">
-                <Mail className="absolute left-4 h-4 w-4 text-slate-400" />
-                <input 
-                  type="email" 
-                  required
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="Enter your email address..."
-                  disabled={isLoading}
-                  className="w-full rounded-2xl bg-white border border-slate-200 pl-11 pr-5 py-4 text-xs font-semibold text-[#1b1533] outline-none focus:border-[#ff4fa3] focus:ring-4 focus:ring-[#ff4fa3]/10 placeholder:text-slate-400 shadow-sm transition-all disabled:opacity-50"
-                />
-              </div>
-              <button
-                type="submit"
-                disabled={isLoading}
-                className="rounded-2xl bg-gradient-to-r from-[#ff4fa3] to-[#7b5cff] text-white border-0 px-8 py-4 text-xs font-black uppercase tracking-wider hover:opacity-90 hover:shadow-lg hover:shadow-pink-200/50 transition-all duration-200 cursor-pointer logo-font shrink-0 disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center min-w-[120px]"
+            <>
+              <form
+                onSubmit={handleSubscribe}
+                className="max-w-md mx-auto flex flex-col sm:flex-row gap-3 mt-6 relative"
               >
-                {isLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : 'Join Club'}
-              </button>
-              
-              {errorMsg && (
-                <div className="absolute -bottom-8 left-0 right-0 text-center">
-                  <span className="text-[11px] font-bold text-red-500">{errorMsg}</span>
+                <div className="flex-grow relative flex items-center">
+                  <Mail className="absolute left-4 h-4 w-4 text-slate-400" />
+                  <input
+                    type="email"
+                    required
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="Enter your email address..."
+                    disabled={isLoading}
+                    className="w-full rounded-2xl bg-white border border-slate-200 pl-11 pr-5 py-4 text-xs font-semibold text-[#1b1533] outline-none focus:border-[#ff4fa3] focus:ring-4 focus:ring-[#ff4fa3]/10 placeholder:text-slate-400 shadow-sm transition-all disabled:opacity-50"
+                  />
                 </div>
-              )}
-            </form>
+                <button
+                  type="submit"
+                  disabled={isLoading}
+                  className="rounded-2xl bg-gradient-to-r from-[#ff4fa3] to-[#7b5cff] text-white border-0 px-8 py-4 text-xs font-black uppercase tracking-wider hover:opacity-90 hover:shadow-lg hover:shadow-pink-200/50 transition-all duration-200 cursor-pointer logo-font shrink-0 disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center min-w-[120px]"
+                >
+                  {isLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : 'Join Club'}
+                </button>
+
+                {errorMsg && (
+                  <div className="absolute -bottom-8 left-0 right-0 text-center">
+                    <span className="text-[11px] font-bold text-red-500">{errorMsg}</span>
+                  </div>
+                )}
+              </form>
+
+              <div className="mt-4 flex justify-center">
+                <Turnstile siteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY || ''} onSuccess={(token) => setTurnstileToken(token)} />
+              </div>
+            </>
           )}
         </div>
       </div>

@@ -11,7 +11,8 @@ export async function GET() {
     return NextResponse.json({ success: true, announcements });
   } catch (error: any) {
     console.error('API Error:', error);
-    return NextResponse.json({ success: false, error: error.message }, { status: 500 });
+    return NextResponse.json({ success: false, error: process.env.NODE_ENV === 'development' ? error.message : 'An unexpected error occurred' }, { status: 500 });
   }
 }
+
 

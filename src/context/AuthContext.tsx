@@ -35,7 +35,7 @@ interface AuthContextType {
   login: (email: string, password: string) => Promise<{ success: boolean; message: string }>;
   logout: () => void;
   updatePassword: (newPassword: string, confirmPassword: string) => Promise<{ success: boolean; message: string }>;
-  resetPassword: (email: string) => Promise<{ success: boolean; message: string; newPassword?: string }>;
+  resetPassword: (email: string, turnstileToken: string) => Promise<{ success: boolean; message: string; newPassword?: string }>;
   createUserFromOrder: (
     userData: { email: string; firstName: string; lastName: string },
     order: OrderRecord
@@ -130,12 +130,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
-  const resetPassword = async (email: string) => {
+  const resetPassword = async (email: string, turnstileToken: string) => {
     try {
       const res = await fetch('/api/auth/forgot-password', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email }),
+        body: JSON.stringify({ email, turnstileToken }),
       });
       const data = await res.json();
       return { success: data.success, message: data.message, newPassword: data.newPassword };

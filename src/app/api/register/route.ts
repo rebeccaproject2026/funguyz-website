@@ -1,15 +1,28 @@
 import { NextResponse } from 'next/server';
+import { rateLimit } from '@/lib/rateLimit';
 import connectDB from '@/backend/config/db';
+import { verifyTurnstileToken } from '@/lib/turnstile';
 import Register from '@/backend/models/Register';
 import { sendEmail } from '@/lib/emailService';
 import { generateRegistrationEmailTemplate } from '@/lib/emailTemplates';
 
 export async function POST(req: Request) {
   try {
+    const ip = req.headers.get('x-forwarded-for') || '127.0.0.1';
+    const rl = rateLimit(ip, 5, 3600000); // 5 per hour
+    if (!rl.success) {
+      return NextResponse.json({ success: false, message: 'Too many requests. Please try again later.' }, { status: 429 });
+    }
+
     await connectDB();
 
     const body = await req.json();
-    const { name, email, phone } = body;
+    const { name, email, phone, turnstileToken } = body;
+
+    const isHuman = await verifyTurnstileToken(turnstileToken);
+    if (!isHuman) {
+      return NextResponse.json({ success: false, message: 'Security check failed. Please refresh the page.' }, { status: 400 });
+    }
 
     if (!name || !email) {
       return NextResponse.json(
@@ -56,8 +69,9 @@ export async function POST(req: Request) {
   } catch (error: any) {
     console.error('Registration error:', error);
     return NextResponse.json(
-      { success: false, message: error.message || 'Internal Server Error' },
+      { success: false, message: process.env.NODE_ENV === 'development' ? error.message : 'Internal Server Error' },
       { status: 500 }
     );
   }
 }
+

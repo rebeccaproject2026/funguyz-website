@@ -18,6 +18,7 @@ export async function GET() {
 
   } catch (error: any) {
     console.error('Blogs API Error:', error);
-    return NextResponse.json({ success: false, error: error.message }, { status: 500 });
+    return NextResponse.json({ success: false, error: process.env.NODE_ENV === 'development' ? error.message : 'An unexpected error occurred' }, { status: 500 });
   }
 }
+
