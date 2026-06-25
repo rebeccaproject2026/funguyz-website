@@ -28,14 +28,14 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://funguyz.ca'),
+  metadataBase: new URL('https://funguyzdelivery.ca'),
   title: "Canada's Trusted Magic Mushroom Brand | FunGuyz",
   description: 'Original psychedelic products, premium quality, fast and discreet delivery across Canada.',
   keywords: 'FUNGUYZ official store, original FUNGUYZ, FUNGUYZ Canada, shop FUNGUYZ online, FUNGUYZ premium brand, FUNGUYZ trusted shop, FUNGUYZ fast delivery, Magic mushroom delivery, Magic mushroom dispansary, Psychedelics Delivery, Magic mushroom products',
   icons: {
     icon: [
       { url: '/images/favicon.png' },
-      new URL('/images/favicon.png', 'https://funguyz.ca'),
+      new URL('/images/favicon.png', 'https://funguyzdelivery.ca'),
     ],
     shortcut: '/images/favicon.png',
     apple: '/images/favicon.png',
