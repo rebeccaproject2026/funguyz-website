@@ -8,6 +8,20 @@ const nextConfig = {
   },
   async redirects() {
     return [
+      // --- OLD REDIRECT (Keep for future) ---
+      // {
+      //   source: '/:path*',
+      //   has: [
+      //     {
+      //       type: 'host',
+      //       value: 'www.funguyz.ca',
+      //     },
+      //   ],
+      //   destination: 'https://funguyz.ca/:path*',
+      //   permanent: true,
+      // },
+      
+      // --- NEW REDIRECTS to funguyzdelivery.ca ---
       {
         source: '/:path*',
         has: [
@@ -16,7 +30,18 @@ const nextConfig = {
             value: 'www.funguyz.ca',
           },
         ],
-        destination: 'https://funguyz.ca/:path*',
+        destination: 'https://funguyzdelivery.ca/:path*',
+        permanent: true,
+      },
+      {
+        source: '/:path*',
+        has: [
+          {
+            type: 'host',
+            value: 'funguyz.ca',
+          },
+        ],
+        destination: 'https://funguyzdelivery.ca/:path*',
         permanent: true,
       },
       {
