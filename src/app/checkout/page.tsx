@@ -1,7 +1,7 @@
 'use client';
 import Link from 'next/link';
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Turnstile } from '@marsidev/react-turnstile';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
@@ -46,6 +46,10 @@ export default function CheckoutPage() {
     postcode: ''
   });
   const [turnstileToken, setTurnstileToken] = useState('');
+
+  const handleTurnstileSuccess = useCallback((token: string) => {
+    setTurnstileToken(token);
+  }, []);
 
   const [appliedCashBalance, setAppliedCashBalance] = useState(0);
   const [lookupMessage, setLookupMessage] = useState('');
@@ -900,7 +904,7 @@ export default function CheckoutPage() {
               </div>
 
               <div className="flex justify-center my-1">
-                <Turnstile siteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY || ''} onSuccess={(token) => setTurnstileToken(token)} />
+                <Turnstile siteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY || ''} onSuccess={handleTurnstileSuccess} />
               </div>
 
               {/* Place order CTA */}

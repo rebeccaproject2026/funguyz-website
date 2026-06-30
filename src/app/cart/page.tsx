@@ -165,7 +165,7 @@ export default function CartPage() {
                           <div className="flex-1 flex flex-col text-left min-w-0">
                             <span className="text-[12px] font-black uppercase tracking-widest text-[#ff4fa3] leading-none mb-1 font-poppins">{item.category}</span>
                             <h3 className="font-bold text-[#1b1533] text-sm md:text-base leading-snug truncate md:normal-case logo-font hover:text-[#ff4fa3] transition-colors">
-                              <Link prefetch={false} prefetch={false} href={getProductUrl(cleanTitle, item.category)}>
+                              <Link prefetch={false}  href={getProductUrl(cleanTitle, item.category)}>
                                 {cleanTitle}
                               </Link>
                             </h3>
