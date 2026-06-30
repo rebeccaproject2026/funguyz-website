@@ -320,6 +320,7 @@ export default function Home() {
 
             return (
               <Link
+                prefetch={false}
                 key={idx}
                 href={linkUrl}
                 className="group relative aspect-[4/5] w-full overflow-hidden rounded-[24px] sm:rounded-[32px] shadow-[0_12px_36px_rgba(27,21,51,0.04)] hover:shadow-[0_24px_50px_rgba(27,21,51,0.15)] hover:-translate-y-1.5 transition-all duration-500 cursor-pointer block"
@@ -692,7 +693,7 @@ export default function Home() {
             const formattedDate = publishDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
             return (
               <SwiperSlide key={post._id || post.title} className="!h-auto">
-                <Link href={`/blog/${post.slug}`} className="block h-full w-full">
+                <Link prefetch={false} href={`/blog/${post.slug}`} className="block h-full w-full">
                   <article className="group overflow-hidden rounded-2xl border border-slate-100 bg-white shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between hover:-translate-y-0.5 h-full w-full">
                     <div className="relative aspect-video w-full overflow-hidden bg-slate-100">
                       <Image

@@ -173,6 +173,7 @@ export function ProductCard({ p, i = 0 }: { p: any; i?: number }) {
 
       {/* Inner Image Container with Pure White Background (Clickable Link!) */}
       <Link
+        prefetch={false}
         href={getProductUrl(title, category)}
         className="relative aspect-[4/5] w-full overflow-hidden bg-white flex items-center justify-center rounded-2xl sm:rounded-3xl border border-slate-100/50 cursor-pointer block"
       >
@@ -198,7 +199,7 @@ export function ProductCard({ p, i = 0 }: { p: any; i?: number }) {
 
         {/* Title (Clickable Link!) */}
         <h3 className="font-bold text-[13px] sm:text-base md:text-[17px] text-[#1b1533] leading-snug tracking-tight hover:text-[#ff4fa3] transition-colors duration-200 line-clamp-2 logo-font">
-          <Link href={getProductUrl(title, category)} className="cursor-pointer">
+          <Link prefetch={false} href={getProductUrl(title, category)} className="cursor-pointer">
             {title}
           </Link>
         </h3>
