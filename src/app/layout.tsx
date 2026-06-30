@@ -46,7 +46,7 @@ import NextAuthProvider from '@/context/NextAuthProvider';
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`scroll-smooth ${fredoka.variable} ${outfit.variable} ${poppins.variable}`}>
+    <html lang="en" data-scroll-behavior="smooth" className={`scroll-smooth ${fredoka.variable} ${outfit.variable} ${poppins.variable}`}>
       <body className="antialiased font-sans">
         <NextAuthProvider>
           <AuthProvider>

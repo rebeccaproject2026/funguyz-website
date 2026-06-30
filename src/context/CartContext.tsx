@@ -1,9 +1,7 @@
 'use client';
 import Link from 'next/link';
 
-import React, { createContext, useContext, useState, useEffect } from 'react';
-import useSWR from 'swr';
-import { fetcher } from '@/lib/fetcher';
+import React, { createContext, useContext, useState, useEffect, useCallback, useRef } from 'react';
 import { ShoppingBag, Heart, X, Trash2, Plus, Minus, ArrowRight, Check, ShoppingCart } from 'lucide-react';
 import { useAuth } from './AuthContext';
 import { imageMap, getFallbackImage } from '@/data/imageMap';
@@ -65,7 +63,7 @@ interface CartContextType {
   subtotal: number;
   // Coupon
   appliedCoupon: AppliedCoupon | null;
-  applyCoupon: (code: string, currentSubtotal?: number) => { success: boolean; message: string };
+  applyCoupon: (code: string, currentSubtotal?: number) => Promise<{ success: boolean; message: string }>;
   removeCoupon: () => void;
   VALID_COUPONS: Record<string, { discount: number; label: string; type: 'percent' | 'shipping'; minOrder?: number }>;
 }
@@ -93,44 +91,118 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     type: 'cart',
   });
   const { isLoggedIn, currentUser } = useAuth();
-  const { data: prodData } = useSWR('/api/products', fetcher);
-  const globalProducts = React.useMemo(() => prodData?.success ? prodData.products : [], [prodData]);
 
-  const { data: couponsData } = useSWR('/api/coupons', fetcher);
-  
-  // Build dynamic valid coupons list
-  const dynamicCoupons = React.useMemo(() => {
-    const baseCoupons = { ...FALLBACK_COUPONS };
-    if (couponsData?.success && Array.isArray(couponsData.coupons)) {
-      couponsData.coupons.forEach((c: any) => {
-        let type: 'percent' | 'shipping' = 'percent';
-        let discountVal = 0;
-        let minOrder = undefined;
+  // ── Lazy-loaded products (only fetch when cart/wishlist needs them) ──
+  const [globalProducts, setGlobalProducts] = useState<any[]>([]);
+  const productsCacheRef = useRef<any[]>([]);
+  const productsFetchedRef = useRef(false);
 
-        if (c.discountLabel && (c.title.toLowerCase().includes('free shipping') || c.title.toLowerCase().includes('free delivery'))) {
-          type = 'shipping';
-          // Try to extract min order from terms (e.g. "Orders over $200")
-          const minMatch = c.terms?.match(/\$(\d+)/);
-          minOrder = minMatch ? parseInt(minMatch[1]) : 200;
-        } else if (c.discount.includes('%')) {
-          discountVal = parseInt(c.discount) / 100;
-        }
+  const ensureProducts = useCallback(async () => {
+    if (productsFetchedRef.current) return productsCacheRef.current;
+    try {
+      const res = await fetch('/api/products');
+      const data = await res.json();
+      if (data?.success) {
+        productsFetchedRef.current = true;
+        productsCacheRef.current = data.products;
+        setGlobalProducts(data.products);
+        return data.products;
+      }
+    } catch (e) { console.error('Failed to fetch products', e); }
+    return [];
+  }, []); // No dependencies — stable reference
 
-        baseCoupons[c.code] = {
-          discount: discountVal,
-          label: c.discount,
-          type,
-          minOrder,
-        };
-      });
-    }
-    return baseCoupons;
-  }, [couponsData]);
+  // ── Lazy-loaded coupons (only fetch when a coupon is applied) ──
+  const [dynamicCoupons, setDynamicCoupons] = useState<Record<string, { discount: number; label: string; type: 'percent' | 'shipping'; minOrder?: number }>>({ ...FALLBACK_COUPONS });
+  const couponsFetchedRef = useRef(false);
 
-  // Local Storage & DB Persistence for Wishlist
+  const ensureCoupons = useCallback(async () => {
+    if (couponsFetchedRef.current) return;
+    try {
+      const res = await fetch('/api/coupons');
+      const couponsData = await res.json();
+      if (couponsData?.success && Array.isArray(couponsData.coupons)) {
+        couponsFetchedRef.current = true;
+        const baseCoupons = { ...FALLBACK_COUPONS };
+        couponsData.coupons.forEach((c: any) => {
+          let type: 'percent' | 'shipping' = 'percent';
+          let discountVal = 0;
+          let minOrder = undefined;
+
+          if (c.discountLabel && (c.title.toLowerCase().includes('free shipping') || c.title.toLowerCase().includes('free delivery'))) {
+            type = 'shipping';
+            const minMatch = c.terms?.match(/\$(\d+)/);
+            minOrder = minMatch ? parseInt(minMatch[1]) : 200;
+          } else if (c.discount.includes('%')) {
+            discountVal = parseInt(c.discount) / 100;
+          }
+
+          baseCoupons[c.code] = {
+            discount: discountVal,
+            label: c.discount,
+            type,
+            minOrder,
+          };
+        });
+        setDynamicCoupons(baseCoupons);
+      }
+    } catch (e) { console.error('Failed to fetch coupons', e); }
+  }, []);
+
+  // ── Local Storage Persistence (cart + coupon — NO API calls) ──
   useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const storedCart = localStorage.getItem('funguyz_cart');
+      if (storedCart) {
+        try {
+          const parsedCart = JSON.parse(storedCart);
+          setCartItems(parsedCart);
+        } catch (e) { console.error(e); }
+      }
+      const storedCoupon = localStorage.getItem('funguyz_coupon');
+      if (storedCoupon) {
+        try { setAppliedCoupon(JSON.parse(storedCoupon)); } catch (e) { console.error(e); }
+      }
+    }
+  }, []);
+
+  // ── Deferred cart validation (only when cart has items, after a delay) ──
+  useEffect(() => {
+    if (cartItems.length === 0) return;
+    // Only validate once on initial hydration, not on every cart change
+    const alreadyValidated = sessionStorage.getItem('funguyz_cart_validated');
+    if (alreadyValidated) return;
+
+    const timeout = setTimeout(() => {
+      fetch('/api/cart/validate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ items: cartItems })
+      })
+        .then(res => res.json())
+        .then(data => {
+          sessionStorage.setItem('funguyz_cart_validated', '1');
+          if (data.success && data.modified) {
+            setCartItems(data.items);
+            localStorage.setItem('funguyz_cart', JSON.stringify(data.items));
+            console.log('Cart synced with live database prices.');
+          }
+        })
+        .catch(err => console.error('Cart live validation failed', err));
+    }, 3000); // Wait 3s after page load
+
+    return () => clearTimeout(timeout);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [cartItems.length > 0]); // Only trigger when cart goes from empty to non-empty
+
+  // ── Wishlist hydration (only when logged in OR has local wishlist IDs) ──
+  const wishlistHydratedRef = useRef(false);
+  useEffect(() => {
+    if (wishlistHydratedRef.current) return;
+
     const hydrateWishlist = async () => {
       let idsToHydrate: string[] = [];
+      let needsProducts = false;
 
       if (isLoggedIn && currentUser) {
         // Fetch from backend
@@ -145,14 +217,12 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
             if (storedWish) {
               const localIds = JSON.parse(storedWish) as string[];
               if (localIds.length > 0) {
-                // Merge
                 await fetch('/api/wishlist', {
                   method: 'PUT',
                   headers: { 'Content-Type': 'application/json' },
                   body: JSON.stringify({ productIds: localIds })
                 });
-                localStorage.removeItem('funguyz_wishlist'); // clear after merge
-                // Re-fetch after merge
+                localStorage.removeItem('funguyz_wishlist');
                 const newRes = await fetch('/api/wishlist');
                 const newData = await newRes.json();
                 idsToHydrate = (newData.wishlist || []).map((item: any) => typeof item === 'object' ? item._id : item);
@@ -162,6 +232,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         } catch (e) {
           console.error('Failed to fetch wishlist', e);
         }
+        needsProducts = idsToHydrate.length > 0;
       } else {
         // Not logged in, read from local storage
         if (typeof window !== 'undefined') {
@@ -169,14 +240,21 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
           if (storedWish) {
             try {
               idsToHydrate = JSON.parse(storedWish) as string[];
+              needsProducts = idsToHydrate.length > 0;
             } catch (e) { console.error(e); }
           }
         }
       }
 
-      // Read from global product cache or API to hydrate full objects
-      if (globalProducts && globalProducts.length > 0) {
-        const allProducts = globalProducts;
+      if (idsToHydrate.length === 0) {
+        wishlistHydratedRef.current = true;
+        return;
+      }
+
+      // Only fetch products if we actually have wishlist IDs to hydrate
+      const allProducts = needsProducts ? await ensureProducts() : [];
+
+      if (allProducts.length > 0) {
         const hydratedItems = idsToHydrate.map(id => {
           const found = allProducts.find((p: any) => p._id === id || p.title === id || p.name === id);
           const title = found ? (found.title || found.name) : id;
@@ -185,7 +263,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
           if (found) {
             return {
-              id: found._id || id, // Prefer true _id if found, fallback to stored id
+              id: found._id || id,
               title: title,
               category: categoryName,
               price: typeof found.price === 'number' ? `$${found.price.toFixed(2)}` : found.price,
@@ -193,8 +271,6 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
               slug: found.slug
             };
           }
-          // If not found in cache, we can't fully hydrate, but we should NOT drop it!
-          // Let's return a dummy object just so isWishlisted still works.
           return {
             id: id,
             title: title,
@@ -205,60 +281,23 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         }) as WishlistItem[];
         setWishlistItems(hydratedItems);
       } else {
-        // If global cache isn't ready yet, at least hydrate the IDs so isWishlisted works!
-        // We can still try to use the imageMap if the id happens to be the title!
         const basicItems = idsToHydrate.map(id => {
           const imageSrc = imageMap[id] || getFallbackImage('Magic Mushrooms');
           return {
             id: id,
             title: id,
-            category: 'Magic Mushrooms', // We don't know the real category
+            category: 'Magic Mushrooms',
             price: '$0.00',
             imageSrc: imageSrc
           };
         });
         setWishlistItems(basicItems);
       }
+      wishlistHydratedRef.current = true;
     };
 
     hydrateWishlist();
-  }, [isLoggedIn, currentUser, globalProducts]);
-
-  // Local Storage Persistence & Live Server Price Validation
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const storedCart = localStorage.getItem('funguyz_cart');
-      if (storedCart) {
-        try { 
-          const parsedCart = JSON.parse(storedCart);
-          setCartItems(parsedCart); 
-          
-          // Asynchronously validate cart items against the backend MongoDB
-          if (parsedCart.length > 0) {
-            fetch('/api/cart/validate', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ items: parsedCart })
-            })
-            .then(res => res.json())
-            .then(data => {
-              if (data.success && data.modified) {
-                // Found price mismatch or manipulation, update with real DB values
-                setCartItems(data.items);
-                localStorage.setItem('funguyz_cart', JSON.stringify(data.items));
-                console.log('Cart was synced and corrected with live database prices.');
-              }
-            })
-            .catch(err => console.error('Cart live validation failed', err));
-          }
-        } catch (e) { console.error(e); }
-      }
-      const storedCoupon = localStorage.getItem('funguyz_coupon');
-      if (storedCoupon) {
-        try { setAppliedCoupon(JSON.parse(storedCoupon)); } catch (e) { console.error(e); }
-      }
-    }
-  }, []);
+  }, [isLoggedIn, currentUser, ensureProducts]);
 
   const saveCart = (items: CartItem[]) => {
     setCartItems(items);
@@ -339,9 +378,11 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
-  const applyCoupon = (code: string, currentSubtotal?: number): { success: boolean; message: string } => {
+  const applyCoupon = async (code: string, currentSubtotal?: number): Promise<{ success: boolean; message: string }> => {
     const normalized = code.trim().toUpperCase();
     if (!normalized) return { success: false, message: 'Please enter a coupon code.' };
+    // Lazy-fetch coupons on first apply attempt
+    await ensureCoupons();
     if (dynamicCoupons[normalized]) {
       const couponDef = dynamicCoupons[normalized];
       // Check minimum order requirement

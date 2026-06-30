@@ -47,11 +47,11 @@ export default function CartPage() {
   const baseProducts = dbProducts;
 
   // Coupon handling logic
-  const handleApplyCoupon = (e: React.FormEvent) => {
+  const handleApplyCoupon = async (e: React.FormEvent) => {
     e.preventDefault();
     setCouponError('');
     setCouponSuccess('');
-    const result = applyCoupon(couponCode, subtotal);
+    const result = await applyCoupon(couponCode, subtotal);
     if (result.success) {
       setCouponCode('');
       setCouponSuccess(result.message);

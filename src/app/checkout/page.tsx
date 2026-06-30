@@ -1,7 +1,7 @@
 'use client';
 import Link from 'next/link';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Turnstile } from '@marsidev/react-turnstile';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
@@ -114,8 +114,8 @@ export default function CheckoutPage() {
   const cashApplied = Math.min(grandTotal, appliedCashBalance); // Don't apply more cash than the total
   grandTotal = Math.max(0, grandTotal - cashApplied);
 
-  const handleApplyCoupon = () => {
-    const result = applyCoupon(couponInput);
+  const handleApplyCoupon = async () => {
+    const result = await applyCoupon(couponInput);
     if (result.success) {
       setCouponInput('');
       setCouponSuccess(result.message);
@@ -137,10 +137,16 @@ export default function CheckoutPage() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  const lastLookedUpEmailRef = useRef('');
+
   const handleEmailBlur = async () => {
     if (isLoggedIn || !formData.email) return;
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(formData.email)) return;
+
+    // Skip if we already looked up this exact email
+    if (lastLookedUpEmailRef.current === formData.email.trim().toLowerCase()) return;
+    lastLookedUpEmailRef.current = formData.email.trim().toLowerCase();
 
     try {
       const res = await fetch(`/api/auth/lookup?email=${encodeURIComponent(formData.email)}`);

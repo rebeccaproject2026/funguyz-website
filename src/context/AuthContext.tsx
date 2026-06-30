@@ -1,6 +1,6 @@
 'use client';
 
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, useRef } from 'react';
 import { useSession, signIn, signOut } from 'next-auth/react';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
@@ -48,15 +48,19 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const { data: session, status, update } = useSession();
   const [currentUser, setCurrentUser] = useState<FunguyzUser | null>(null);
 
+  const profileFetchedForRef = useRef<string | null>(null);
+
   // Sync session with context state
   useEffect(() => {
     let isMounted = true;
     if (session?.user) {
+      const userId = session.user.id;
+
       // Set initial state from session while fetching full details
       setCurrentUser(prev => {
-        if (prev?.id === session.user.id) return prev; // Prevent wiping out state if we already have it
+        if (prev?.id === userId) return prev; // Prevent wiping out state if we already have it
         return {
-          id: session.user.id,
+          id: userId,
           email: session.user.email as string, 
           firstName: session.user.name?.split(' ')[0] || '',
           lastName: session.user.name?.split(' ')[1] || '',
@@ -67,27 +71,31 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         };
       });
 
-      // Fetch dynamic profile and order history
-      fetch('/api/user/profile')
-        .then(res => res.json())
-        .then(data => {
-          if (data.success && isMounted) {
-            setCurrentUser(prev => prev ? {
-              ...prev,
-              firstName: data.profile.firstName,
-              lastName: data.profile.lastName,
-              displayName: `${data.profile.firstName} ${data.profile.lastName}`.trim(),
-              email: data.profile.email,
-              phone: data.profile.phone,
-              addresses: data.profile.addresses,
-              orders: data.orders,
-            } : null);
-          }
-        })
-        .catch(console.error);
+      // Fetch dynamic profile and order history — only once per user ID
+      if (profileFetchedForRef.current !== userId) {
+        profileFetchedForRef.current = userId;
+        fetch('/api/user/profile')
+          .then(res => res.json())
+          .then(data => {
+            if (data.success && isMounted) {
+              setCurrentUser(prev => prev ? {
+                ...prev,
+                firstName: data.profile.firstName,
+                lastName: data.profile.lastName,
+                displayName: `${data.profile.firstName} ${data.profile.lastName}`.trim(),
+                email: data.profile.email,
+                phone: data.profile.phone,
+                addresses: data.profile.addresses,
+                orders: data.orders,
+              } : null);
+            }
+          })
+          .catch(console.error);
+      }
 
     } else {
       setCurrentUser(null);
+      profileFetchedForRef.current = null; // Reset on logout
     }
     return () => { isMounted = false; };
   }, [session]);
