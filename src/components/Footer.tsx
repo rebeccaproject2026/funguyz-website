@@ -110,7 +110,7 @@ export function Footer() {
 
                   return (
                     <li key={item}>
-                      <Link href={getFooterLink(title, item)} className="hover:text-[#ff4fa3] transition-colors duration-200">
+                      <Link prefetch={false} href={getFooterLink(title, item)} className="hover:text-[#ff4fa3] transition-colors duration-200">
                         {item}
                       </Link>
                     </li>

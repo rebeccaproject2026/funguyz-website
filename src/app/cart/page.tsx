@@ -84,9 +84,9 @@ export default function CartPage() {
       <div className="bg-slate-50 border-b border-slate-100/50 py-6 px-4 md:px-8 select-none font-poppins overflow-x-hidden">
         <div className="mx-auto max-w-7xl flex flex-col lg:flex-row lg:items-center justify-between gap-6">
           <div className="flex items-center gap-2 text-xs font-bold text-slate-400">
-            <Link href="/" className="hover:text-[#ff4fa3] transition-colors">Home</Link>
+            <Link prefetch={false} href="/" className="hover:text-[#ff4fa3] transition-colors">Home</Link>
             <ChevronRight className="h-3 w-3" />
-            <Link href="/shop" className="hover:text-[#ff4fa3] transition-colors">Shop</Link>
+            <Link prefetch={false} href="/shop" className="hover:text-[#ff4fa3] transition-colors">Shop</Link>
             <ChevronRight className="h-3 w-3" />
             <span className="text-slate-600">Shopping Cart</span>
           </div>
@@ -165,7 +165,7 @@ export default function CartPage() {
                           <div className="flex-1 flex flex-col text-left min-w-0">
                             <span className="text-[12px] font-black uppercase tracking-widest text-[#ff4fa3] leading-none mb-1 font-poppins">{item.category}</span>
                             <h3 className="font-bold text-[#1b1533] text-sm md:text-base leading-snug truncate md:normal-case logo-font hover:text-[#ff4fa3] transition-colors">
-                              <Link prefetch={false} href={getProductUrl(cleanTitle, item.category)}>
+                              <Link prefetch={false} prefetch={false} href={getProductUrl(cleanTitle, item.category)}>
                                 {cleanTitle}
                               </Link>
                             </h3>
