@@ -686,10 +686,10 @@ export function Header() {
               {/* General Links */}
               <div className="flex flex-col gap-1 border-t border-pink-100/30 pt-4">
                 <span className="text-[12px] font-black uppercase tracking-widest text-slate-400 mb-2 pl-2">Quick Links</span>
-                <Link href="/faq" onClick={() => setIsMobileMenuOpen(false)} className="px-3 py-2 rounded-xl text-xs font-bold text-[#1b1533]/85 hover:text-[#ff4fa3] hover:bg-pink-50/40 transition-all">FAQ</Link>
-                <Link href="/blog" onClick={() => setIsMobileMenuOpen(false)} className="px-3 py-2 rounded-xl text-xs font-bold text-[#1b1533]/85 hover:text-[#ff4fa3] hover:bg-pink-50/40 transition-all">Blog</Link>
-                <Link href="/contact" onClick={() => setIsMobileMenuOpen(false)} className="px-3 py-2 rounded-xl text-xs font-bold text-[#1b1533]/85 hover:text-[#ff4fa3] hover:bg-pink-50/40 transition-all">Contact Us</Link>
-                <Link href="/track-order" onClick={() => setIsMobileMenuOpen(false)} className="px-3 py-2 rounded-xl text-xs font-bold text-[#1b1533]/85 hover:text-[#ff4fa3] hover:bg-pink-50/40 transition-all">Track Order</Link>
+                <Link prefetch={false} href="/faq" onClick={() => setIsMobileMenuOpen(false)} className="px-3 py-2 rounded-xl text-xs font-bold text-[#1b1533]/85 hover:text-[#ff4fa3] hover:bg-pink-50/40 transition-all">FAQ</Link>
+                <Link prefetch={false} href="/blog" onClick={() => setIsMobileMenuOpen(false)} className="px-3 py-2 rounded-xl text-xs font-bold text-[#1b1533]/85 hover:text-[#ff4fa3] hover:bg-pink-50/40 transition-all">Blog</Link>
+                <Link prefetch={false} href="/contact" onClick={() => setIsMobileMenuOpen(false)} className="px-3 py-2 rounded-xl text-xs font-bold text-[#1b1533]/85 hover:text-[#ff4fa3] hover:bg-pink-50/40 transition-all">Contact Us</Link>
+                <Link prefetch={false} href="/track-order" onClick={() => setIsMobileMenuOpen(false)} className="px-3 py-2 rounded-xl text-xs font-bold text-[#1b1533]/85 hover:text-[#ff4fa3] hover:bg-pink-50/40 transition-all">Track Order</Link>
               </div>
             </div>
 

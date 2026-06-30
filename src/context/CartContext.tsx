@@ -631,6 +631,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
                 {/* Checkout CTA Links */}
                 <div className="flex flex-col gap-3">
                   <Link
+                    prefetch={false}
                     href="/checkout"
                     onClick={() => setIsCartOpen(false)}
                     className="w-full inline-flex items-center justify-center rounded-2xl bg-[#ff4fa3] text-white border border-[#ff4fa3] py-4 text-xs font-black uppercase tracking-wider shadow-md shadow-pink-100 transition-all duration-300 hover:bg-black hover:text-[#ff4fa3] hover:border-black hover:-translate-y-0.5 active:translate-y-0 cursor-pointer logo-font"
@@ -638,6 +639,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
                     Proceed to Checkout <ArrowRight className="h-3.5 w-3.5 ml-1.5" />
                   </Link>
                   <Link
+                    prefetch={false}
                     href="/cart"
                     onClick={() => setIsCartOpen(false)}
                     className="w-full inline-flex items-center justify-center rounded-2xl bg-white text-slate-700 border border-slate-200 py-3.5 text-xs font-black uppercase tracking-wider transition-all duration-300 hover:bg-slate-50 hover:text-[#1b1533] hover:border-slate-300 cursor-pointer logo-font"
@@ -781,6 +783,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
           {/* WooCommerce-Style "View" Button inside Toast! */}
           {toast.type !== 'remove_wishlist' && (
             <Link
+              prefetch={false}
               href={toast.type === 'cart' ? '/cart' : '#'}
               onClick={(e) => {
                 if (toast.type === 'wishlist') {
