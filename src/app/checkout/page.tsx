@@ -272,7 +272,7 @@ export default function CheckoutPage() {
       body: JSON.stringify({
         orderDetails: orderRecord,
         customerEmail: email,
-        adminEmail: 'hello@funguyz.ca', // Admin email to receive notification
+        adminEmail: 'hello@funguyzdelivery.ca', // Admin email to receive notification
         customerInfo: formData, // Pass full form data for the DB
         couponCode: appliedCoupon?.code || null,
         discountAmount: discountAmount || 0,

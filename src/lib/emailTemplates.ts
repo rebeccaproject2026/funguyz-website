@@ -363,6 +363,11 @@ export const generateCustomerEmailHtml = (orderDetails: any, customerEmail: stri
       </div>
 
     </div>
+    <div style="text-align: center; margin-top: 24px; padding-top: 24px; border-top: 1px solid #E5E7EB; color: #6B7280; font-size: 12px;">
+      <p style="margin-bottom: 4px;"><strong>FunGuyz Store</strong></p>
+      <p style="margin-bottom: 16px;">Toronto, ON, Canada</p>
+      <p>If you have any questions, please contact us at <a href="mailto:hello@funguyzdelivery.ca" style="color: #4F46E5; text-decoration: none;">hello@funguyzdelivery.ca</a></p>
+    </div>
   </div>
 </body>
 </html>
