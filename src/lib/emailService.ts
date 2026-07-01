@@ -4,26 +4,46 @@ export interface SendEmailOptions {
   to: string | string[];
   subject: string;
   html: string;
+  text?: string;
   replyTo?: string;
   from?: string;
 }
 
-export async function sendEmail({ to, subject, html, replyTo, from }: SendEmailOptions) {
+// Utility to generate plain text from HTML to help avoid spam filters
+function generatePlainTextFromHtml(html: string): string {
+  if (!html) return '';
+  return html
+    .replace(/<style[^>]*>[\s\S]*?<\/style>/gi, '') // Remove style tags and content
+    .replace(/<br\s*[\/]?>/gi, '\n')                // Replace <br> with newline
+    .replace(/<\/p>|<\/div>|<\/li>|<\/h[1-6]>/gi, '\n\n') // Replace closing block tags with double newline
+    .replace(/<[^>]+>/g, '')                        // Remove all other HTML tags
+    .replace(/&nbsp;/gi, ' ')                       // Replace common HTML entities
+    .replace(/&times;/gi, 'x')
+    .replace(/&#[0-9a-zA-Z]+;/gi, '')               // Remove numeric html entities
+    .replace(/&[a-zA-Z]+;/gi, '')                   // Remove string html entities
+    .replace(/\n\s+\n/g, '\n\n')                    // Clean up blank lines with spaces
+    .replace(/\n{3,}/g, '\n\n')                     // Reduce multiple blank lines to two
+    .trim();
+}
+
+export async function sendEmail({ to, subject, html, text, replyTo, from }: SendEmailOptions) {
   // Toggle: Set to 'RESEND' or 'MICROSOFT' based on env. Defaulting to RESEND for now.
   const EMAIL_PROVIDER = process.env.EMAIL_PROVIDER || 'RESEND'; 
   const senderEmail = from || process.env.MS_SENDER_EMAIL || process.env.SMTP_USER || 'hello@funguyzdelivery.ca';
   const senderName = 'FunGuyz Store';
 
+  const plainText = text || generatePlainTextFromHtml(html);
+
   if (EMAIL_PROVIDER === 'RESEND') {
-    return sendViaResend({ to, subject, html, replyTo, senderEmail, senderName, from });
+    return sendViaResend({ to, subject, html, text: plainText, replyTo, senderEmail, senderName, from });
   } else if (EMAIL_PROVIDER === 'MICROSOFT') {
-    return sendViaMicrosoftGraph({ to, subject, html, replyTo, senderEmail });
+    return sendViaMicrosoftGraph({ to, subject, html, text: plainText, replyTo, senderEmail });
   } else {
     throw new Error(`Invalid EMAIL_PROVIDER: ${EMAIL_PROVIDER}`);
   }
 }
 
-async function sendViaResend({ to, subject, html, replyTo, senderEmail, senderName, from }: any) {
+async function sendViaResend({ to, subject, html, text, replyTo, senderEmail, senderName, from }: any) {
   const resendKey = process.env.RESEND_API_KEY;
   if (!resendKey) {
     console.error('RESEND_API_KEY missing. Skipping Resend email.');
@@ -42,6 +62,7 @@ async function sendViaResend({ to, subject, html, replyTo, senderEmail, senderNa
       to,
       subject,
       html,
+      text, // Adding plain text version to drastically reduce spam score
       replyTo: replyTo,
     });
     console.log('[Resend] Success:', data);
@@ -52,7 +73,7 @@ async function sendViaResend({ to, subject, html, replyTo, senderEmail, senderNa
   }
 }
 
-async function sendViaMicrosoftGraph({ to, subject, html, replyTo, senderEmail }: any) {
+async function sendViaMicrosoftGraph({ to, subject, html, text, replyTo, senderEmail }: any) {
   const tenantId = process.env.MS_TENANT_ID;
   const clientId = process.env.MS_CLIENT_ID;
   const clientSecret = process.env.MS_CLIENT_SECRET;

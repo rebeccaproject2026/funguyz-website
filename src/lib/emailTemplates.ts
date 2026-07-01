@@ -334,21 +334,21 @@ export const generateCustomerEmailHtml = (orderDetails: any, customerEmail: stri
 
       <div class="interac-block" style="background-color: #FEF3C7; border: 1px solid #FDE68A;">
         <div class="interac-title" style="color: #D97706;">
-          &#127881; EARLY ACCESS SAVINGS
+          &#127881; EARLY ACCESS DISCOUNT
         </div>
         <p class="interac-text" style="color: #92400E; margin-bottom: 0;">
-          You received an exclusive 20% pre-launch discount for reserving your order before our official launch date.<br><br>
-          <strong>Total Saved: ${discountAmount.replace('-', '')}</strong>
+          You received a 20% discount for reserving your order early.<br><br>
+          <strong>Discount Applied: ${discountAmount.replace('-', '')}</strong>
         </p>
       </div>
 
       <div class="interac-block" style="background-color: #F3F4F6; border: 1px solid #E5E7EB;">
         <div class="interac-title" style="color: #374151;">
-          &#128179; PAYMENT INFORMATION
+          &#128179; ORDER STATUS
         </div>
         <p class="interac-text" style="color: #4B5563; margin-bottom: 0;">
-          <strong>No payment is required at this time.</strong><br><br>
-          Once our team reviews and confirms your order, we will contact you by SMS and/or email with Interac e-Transfer instructions. Payment will only be requested after your order has been verified and approved for fulfillment.
+          <strong>Your order has been received successfully.</strong><br><br>
+          Once our team reviews and confirms your order, we will contact you by SMS and/or email with the next steps. A secure payment link will be sent after your order has been verified and approved for fulfillment.
         </p>
       </div>
 
@@ -357,8 +357,8 @@ export const generateCustomerEmailHtml = (orderDetails: any, customerEmail: stri
           &#128242; DELIVERY UPDATES
         </div>
         <p class="interac-text" style="color: #1E3A8A; margin-bottom: 0;">
-          We'll send SMS and/or email updates before delivery, including order confirmation, payment instructions, delivery reminders, and your estimated arrival time (ETA), so you know exactly when to expect your order.<br><br>
-          Your products have been secured and added to our priority fulfillment queue. We appreciate your early support and look forward to serving you on launch day.
+          We'll send SMS and/or email updates before delivery, including order confirmation, next steps, delivery reminders, and your estimated arrival time (ETA), so you know exactly when to expect your order.<br><br>
+          Your products have been secured and added to our processing queue. We appreciate your early support and look forward to serving you on launch day.
         </p>
       </div>
 
