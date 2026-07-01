@@ -229,7 +229,8 @@ export async function POST(request: Request) {
       const adminEmailHtml = generateAdminEmailHtml(orderDetails, customerEmail);
       try {
         await sendEmail({
-          to: adminEmail || process.env.MS_SENDER_EMAIL || process.env.SMTP_USER || 'hello@funguyz.ca',
+          from: `"FunGuyz Admin" <hello@funguyzdelivery.ca>`,
+          to: adminEmail || process.env.MS_SENDER_EMAIL || process.env.SMTP_USER || 'hello@funguyzdelivery.ca',
           subject: `New Order Received - ${orderDetails.orderId}`,
           html: adminEmailHtml
         });
@@ -245,7 +246,8 @@ export async function POST(request: Request) {
           const regEmailContent = generateRegistrationEmailTemplate(fullName, generatedPassword);
           try {
             await sendEmail({
-              from: `"The Delivery & Shipping Team" <${process.env.SMTP_USER || 'no-reply@funguyz.ca'}>`,
+              from: `"The Delivery & Shipping Team" <hello@funguyzdelivery.ca>`,
+              replyTo: `hello@funguyzdelivery.ca`,
               to: customerEmail.toLowerCase(),
               subject: "You're officially on the list 🍄",
               html: regEmailContent.html,
@@ -258,6 +260,8 @@ export async function POST(request: Request) {
         
         try {
           await sendEmail({
+            from: `"FunGuyz Store" <hello@funguyzdelivery.ca>`,
+            replyTo: `hello@funguyzdelivery.ca`,
             to: customerEmail,
             subject: `Order Confirmation - ${orderDetails.orderId}`,
             html: customerEmailHtml

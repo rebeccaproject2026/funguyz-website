@@ -11,7 +11,7 @@ export interface SendEmailOptions {
 export async function sendEmail({ to, subject, html, replyTo, from }: SendEmailOptions) {
   // Toggle: Set to 'RESEND' or 'MICROSOFT' based on env. Defaulting to RESEND for now.
   const EMAIL_PROVIDER = process.env.EMAIL_PROVIDER || 'RESEND'; 
-  const senderEmail = from || process.env.MS_SENDER_EMAIL || process.env.SMTP_USER || 'hello@funguyz.ca';
+  const senderEmail = from || process.env.MS_SENDER_EMAIL || process.env.SMTP_USER || 'hello@funguyzdelivery.ca';
   const senderName = 'FunGuyz Store';
 
   if (EMAIL_PROVIDER === 'RESEND') {

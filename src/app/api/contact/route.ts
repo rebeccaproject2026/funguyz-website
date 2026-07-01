@@ -48,7 +48,7 @@ export async function POST(request: Request) {
     // Send the email securely to the admin inbox via the centralized service
     await sendEmail({
       from: `"FunGuyz Store" <${process.env.SMTP_USER || 'no-reply@funguyz.ca'}>`,
-      to: process.env.SMTP_USER || 'hello@funguyz.ca',
+      to: process.env.SMTP_USER || 'hello@funguyzdelivery.ca',
       subject: `[Support Ticket] ${category} - ${subject || 'New Inquiry'}`,
       html: emailContent.html,
       replyTo: email, // This allows the admin to hit "Reply" and email the customer directly
