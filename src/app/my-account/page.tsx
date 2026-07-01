@@ -65,7 +65,7 @@ function PasswordInput({ value, onChange, placeholder = '•••••••�
 type View = 'loading' | 'login' | 'reset' | 'change-password' | 'dashboard';
 
 export default function MyAccountPage() {
-  const { currentUser, isLoggedIn, status, login, logout, updatePassword, resetPassword } = useAuth();
+  const { currentUser, isLoggedIn, status, login, logout, updatePassword, resetPassword, loadProfile } = useAuth();
 
   const [view, setView] = useState<View>('loading');
   const [flash, setFlash] = useState<{ type: 'success' | 'error'; msg: string } | null>(null);
@@ -103,6 +103,12 @@ export default function MyAccountPage() {
   // Loading states
   const [isSavingProfile, setIsSavingProfile] = useState(false);
   const [isSavingAddresses, setIsSavingAddresses] = useState(false);
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      loadProfile();
+    }
+  }, [isLoggedIn, loadProfile]);
 
   // Sync state when currentUser loads
   useEffect(() => {

@@ -32,7 +32,7 @@ import Image from 'next/image';
 
 export default function CheckoutPage() {
   const { cartItems, subtotal, clearCart, appliedCoupon, applyCoupon, removeCoupon } = useCart();
-  const { createUserFromOrder, login, currentUser, isLoggedIn } = useAuth();
+  const { createUserFromOrder, login, currentUser, isLoggedIn, loadProfile } = useAuth();
   const [paymentMethod, setPaymentMethod] = useState<'etransfer'>('etransfer');
   const [shippingMethod, setShippingMethod] = useState<'sameday' | 'express'>('express');
   const [formData, setFormData] = useState({
@@ -53,6 +53,12 @@ export default function CheckoutPage() {
 
   const [appliedCashBalance, setAppliedCashBalance] = useState(0);
   const [lookupMessage, setLookupMessage] = useState('');
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      loadProfile();
+    }
+  }, [isLoggedIn, loadProfile]);
 
   // 1. Auto-fill from Session if logged in
   useEffect(() => {

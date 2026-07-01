@@ -196,9 +196,11 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   }, [cartItems.length > 0]); // Only trigger when cart goes from empty to non-empty
 
   // ── Wishlist hydration (only when logged in OR has local wishlist IDs) ──
-  const wishlistHydratedRef = useRef(false);
+  const wishlistHydratedForRef = useRef<string | null>(null);
+
   useEffect(() => {
-    if (wishlistHydratedRef.current) return;
+    const currentUserId = isLoggedIn && currentUser ? currentUser.id : 'guest';
+    if (wishlistHydratedForRef.current === currentUserId) return;
 
     const hydrateWishlist = async () => {
       let idsToHydrate: string[] = [];
@@ -247,7 +249,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       }
 
       if (idsToHydrate.length === 0) {
-        wishlistHydratedRef.current = true;
+        wishlistHydratedForRef.current = currentUserId;
         return;
       }
 
@@ -293,11 +295,11 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         });
         setWishlistItems(basicItems);
       }
-      wishlistHydratedRef.current = true;
+      wishlistHydratedForRef.current = currentUserId;
     };
 
     hydrateWishlist();
-  }, [isLoggedIn, currentUser, ensureProducts]);
+  }, [isLoggedIn, currentUser?.id, ensureProducts]);
 
   const saveCart = (items: CartItem[]) => {
     setCartItems(items);

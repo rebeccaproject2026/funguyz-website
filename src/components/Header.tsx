@@ -439,6 +439,7 @@ export function Header() {
                   return (
                     <div key={item.label} className="relative group py-3">
                       <Link
+                        prefetch={false}
                         href={linkUrl}
                         className="flex items-center gap-1.5 cursor-pointer transition-colors duration-200 text-[#1b1533]/85 hover:text-[#ff4fa3]"
                       >
@@ -470,6 +471,7 @@ export function Header() {
                                       const SubIcon = getSubcategoryIcon(sub.name, item.label);
                                       return (
                                         <Link
+                                          prefetch={false}
                                           key={sIdx}
                                           href={getProductUrl(sub.name, item.label)}
                                           className="group/item px-2 py-1.5 rounded-lg text-[12px] font-bold text-[#1b1533]/80 hover:text-[#ff4fa3] hover:bg-pink-50/40 transition-all duration-150 text-left whitespace-nowrap overflow-hidden text-ellipsis flex items-center gap-1.5"
@@ -488,6 +490,7 @@ export function Header() {
                                 const SubIcon = getSubcategoryIcon(sub.name, item.label);
                                 return (
                                   <Link
+                                    prefetch={false}
                                     key={sIdx}
                                     href={getProductUrl(sub.name, item.label)}
                                     className="group/item px-2 py-1.5 rounded-lg text-[12px] font-bold text-[#1b1533]/80 hover:text-[#ff4fa3] hover:bg-pink-50/40 transition-all duration-150 text-left whitespace-nowrap overflow-hidden text-ellipsis flex items-center gap-1.5"
@@ -508,6 +511,7 @@ export function Header() {
                 {/* Separate Bundles Menu Link */}
                 <div className="relative group py-3">
                   <Link
+                    prefetch={false}
                     href="/bundles"
                     className="flex items-center gap-1.5 cursor-pointer transition-colors duration-200 text-[#1b1533]/85 hover:text-[#ff4fa3]"
                   >
@@ -518,6 +522,7 @@ export function Header() {
                 {/* Separate Coupons Menu Link */}
                 <div className="relative group py-3">
                   <Link
+                    prefetch={false}
                     href="/coupons"
                     className="flex items-center gap-1.5 cursor-pointer transition-colors duration-200 text-[#1b1533]/85 hover:text-[#ff4fa3]"
                   >
@@ -638,6 +643,7 @@ export function Header() {
                                   const SubIcon = getSubcategoryIcon(sub.name, item.label);
                                   return (
                                     <Link
+                                      prefetch={false}
                                       key={sIdx}
                                       href={getProductUrl(sub.name, item.label)}
                                       onClick={() => setIsMobileMenuOpen(false)}
@@ -655,6 +661,7 @@ export function Header() {
                               const SubIcon = getSubcategoryIcon(sub.name, item.label);
                               return (
                                 <Link
+                                  prefetch={false}
                                   key={sIdx}
                                   href={getProductUrl(sub.name, item.label)}
                                   onClick={() => setIsMobileMenuOpen(false)}
@@ -674,6 +681,7 @@ export function Header() {
                 })}
                 {/* Separate Bundles link */}
                 <Link
+                  prefetch={false}
                   href="/bundles"
                   onClick={() => setIsMobileMenuOpen(false)}
                   className="flex items-center gap-2 px-3 py-2.5 rounded-xl text-[13px] font-bold text-[#1b1533] hover:bg-pink-50/40 hover:text-[#ff4fa3] transition-all text-left"
@@ -706,6 +714,7 @@ export function Header() {
       {/* Mobile Sticky Bottom Navigation Bar */}
       <div className="fixed bottom-0 left-0 right-0 z-[999] md:hidden bg-white/95 backdrop-blur-md border-t border-slate-200/80 shadow-[0_-4px_24px_rgba(27,21,51,0.08)] flex items-center justify-around px-1 pt-2.5 pb-[calc(env(safe-area-inset-bottom)+12px)] select-none">
         <Link
+          prefetch={false}
           href="/shop"
           className={`flex flex-col items-center justify-center active:scale-95 transition-all w-[72px] h-12 gap-1 ${(pathname === '/shop' || pathname.startsWith('/shop/') || pathname.startsWith('/category/') || pathname.startsWith('/product/')) ? 'text-[#ff4fa3]' : 'text-slate-500 hover:text-[#ff4fa3]'}`}
         >
@@ -713,6 +722,7 @@ export function Header() {
           <span className="text-[10.5px] font-black uppercase tracking-widest whitespace-nowrap leading-none">Shop</span>
         </Link>
         <Link
+          prefetch={false}
           href="/bundles"
           className={`flex flex-col items-center justify-center active:scale-95 transition-all w-[72px] h-12 gap-1 ${(pathname === '/bundles' || pathname.startsWith('/bundles/')) ? 'text-[#ff4fa3]' : 'text-slate-500 hover:text-[#ff4fa3]'}`}
         >
@@ -720,6 +730,7 @@ export function Header() {
           <span className="text-[10.5px] font-black uppercase tracking-widest whitespace-nowrap leading-none">Bundles</span>
         </Link>
         <Link
+          prefetch={false}
           href="/coupons"
           className={`flex flex-col items-center justify-center active:scale-95 transition-all w-[72px] h-12 gap-1 ${(pathname === '/coupons' || pathname.startsWith('/coupons/')) ? 'text-[#ff4fa3]' : 'text-slate-500 hover:text-[#ff4fa3]'}`}
         >

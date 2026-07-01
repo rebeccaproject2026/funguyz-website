@@ -109,9 +109,9 @@ export default function Home() {
     return () => observer.disconnect();
   }, []);
 
-  const { data: prodData, isLoading: isLoadingProducts } = useSWR(shouldFetchData ? '/api/products' : null, fetcher);
+  const { data: prodData, isLoading: isLoadingProducts } = useSWR(shouldFetchData ? '/api/products' : null, fetcher, { revalidateOnFocus: false, revalidateOnReconnect: false, dedupingInterval: 60000 });
   // const { data: catData } = useSWR('/api/categories', fetcher);
-  const { data: blogData } = useSWR(shouldFetchData ? '/api/blogs' : null, fetcher);
+  const { data: blogData } = useSWR(shouldFetchData ? '/api/blogs' : null, fetcher, { revalidateOnFocus: false, revalidateOnReconnect: false, dedupingInterval: 60000 });
 
   const dbProducts = prodData?.success ? prodData.products : [];
   // const dbCategories = catData?.success ? catData.categories : [];

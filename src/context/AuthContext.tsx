@@ -40,6 +40,7 @@ interface AuthContextType {
     userData: { email: string; firstName: string; lastName: string },
     order: OrderRecord
   ) => Promise<{ password?: string; isNewUser: boolean; success: boolean }>;
+  loadProfile: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -70,35 +71,37 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           orders: [],
         };
       });
-
-      // Fetch dynamic profile and order history — only once per user ID
-      if (profileFetchedForRef.current !== userId) {
-        profileFetchedForRef.current = userId;
-        fetch('/api/user/profile')
-          .then(res => res.json())
-          .then(data => {
-            if (data.success && isMounted) {
-              setCurrentUser(prev => prev ? {
-                ...prev,
-                firstName: data.profile.firstName,
-                lastName: data.profile.lastName,
-                displayName: `${data.profile.firstName} ${data.profile.lastName}`.trim(),
-                email: data.profile.email,
-                phone: data.profile.phone,
-                addresses: data.profile.addresses,
-                orders: data.orders,
-              } : null);
-            }
-          })
-          .catch(console.error);
-      }
-
     } else {
       setCurrentUser(null);
       profileFetchedForRef.current = null; // Reset on logout
     }
     return () => { isMounted = false; };
   }, [session]);
+
+  const loadProfile = async () => {
+    if (session?.user?.id) {
+      const userId = session.user.id;
+      if (profileFetchedForRef.current !== userId) {
+        profileFetchedForRef.current = userId;
+        try {
+          const res = await fetch('/api/user/profile');
+          const data = await res.json();
+          if (data.success) {
+            setCurrentUser(prev => prev ? {
+              ...prev,
+              firstName: data.profile.firstName,
+              lastName: data.profile.lastName,
+              displayName: `${data.profile.firstName} ${data.profile.lastName}`.trim(),
+              email: data.profile.email,
+              phone: data.profile.phone,
+              addresses: data.profile.addresses,
+              orders: data.orders,
+            } : null);
+          }
+        } catch (e) { console.error(e); }
+      }
+    }
+  };
 
   const login = async (email: string, password: string) => {
     const res = await signIn('credentials', {
@@ -171,6 +174,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       updatePassword,
       resetPassword,
       createUserFromOrder,
+      loadProfile,
     }}>
       {children}
     </AuthContext.Provider>
