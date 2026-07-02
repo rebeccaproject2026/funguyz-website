@@ -1,7 +1,8 @@
 'use client';
 import Link from 'next/link';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { Newsletter } from '@/components/Newsletter';
@@ -61,6 +62,15 @@ export default function TrackOrderPage() {
       fetchOrder(trackingCode.trim());
     }
   };
+
+  const searchParams = useSearchParams();
+  useEffect(() => {
+    const codeFromUrl = searchParams.get('code');
+    if (codeFromUrl) {
+      setTrackingCode(codeFromUrl);
+      fetchOrder(codeFromUrl);
+    }
+  }, [searchParams]);
 
 
 

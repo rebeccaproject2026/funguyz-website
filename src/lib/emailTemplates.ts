@@ -607,3 +607,41 @@ ${message}
 
   return { html };
 };
+
+export const generateForgotPasswordEmailTemplate = (tempPassword: string) => {
+  const html = `
+    <!DOCTYPE html>
+    <html>
+      <head>
+        <meta charset="utf-8">
+        <style>${baseStyles}</style>
+      </head>
+      <body style="margin: 0; padding: 0; background-color: #FFF8F5; font-family: 'Poppins', Helvetica, Arial, sans-serif;">
+        <div style="padding: 40px 20px; background-color: #FFF8F5; width: 100%; box-sizing: border-box;">
+          <div class="container" style="max-width: 600px; margin: 0 auto; background-color: #FFFFFF; border-radius: 24px; padding: 40px; box-shadow: 0 4px 20px rgba(0,0,0,0.03);">
+            <div class="text-center">
+              <div class="icon-container" style="color: #FF3366; background-color: #FFF0F5;">🔑</div>
+              <div class="status-text">Account Recovery</div>
+              <h1 class="title">Password Reset</h1>
+              <p class="subtitle">You requested a password reset for your FunGuyz account.</p>
+            </div>
+
+            <div class="info-block" style="background-color: #FEF3C7; border-left: 4px solid #F59E0B; margin-top: 20px; padding: 24px; border-radius: 8px;">
+              <p style="font-size: 15px; font-weight: 800; color: #92400E; margin-top: 0; margin-bottom: 8px;">Your Temporary Password</p>
+              <p style="color: #B45309; font-size: 14px; margin: 0 0 16px 0; font-weight: 600;">Use the password below to log in to your account.</p>
+              <div style="background-color: #FFFFFF; border: 2px dashed #FDE68A; padding: 16px; text-align: center; border-radius: 12px; font-size: 24px; font-weight: 900; letter-spacing: 4px; color: #111827;">
+                ${tempPassword}
+              </div>
+              <p style="color: #92400E; font-size: 12px; margin: 16px 0 0 0; font-weight: 600; text-align: center;">*Please change this password in your Account Settings immediately after logging in.</p>
+            </div>
+
+            <p style="color: #6B7280; font-size: 12px; line-height: 1.6; font-weight: 600; text-align: center; margin-top: 40px; border-top: 1px solid #F3F4F6; padding-top: 24px;">
+              If you didn't request this password reset, you can safely ignore this email.
+            </p>
+          </div>
+        </div>
+      </body>
+    </html>
+  `;
+  return { html };
+};

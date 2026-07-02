@@ -6,6 +6,7 @@ import bcrypt from 'bcryptjs';
 import connectDB from '@/backend/config/db';
 import Customer from '@/backend/models/Customer';
 import { sendEmail } from '@/lib/emailService';
+import { generateForgotPasswordEmailTemplate } from '@/lib/emailTemplates';
 
 function generateRandomPassword() {
   const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
@@ -35,7 +36,7 @@ export async function POST(request: Request) {
     const user = await Customer.findOne({ email: email.toLowerCase(), deleted: false });
 
     if (!user) {
-      return NextResponse.json({ success: true, message: 'If an account exists, a temporary password has been generated.' });
+      return NextResponse.json({ success: false, message: 'No account found with this email. Please register first by placing an order.' }, { status: 404 });
     }
 
     // Generate FG-XXXXXX temporary password
@@ -57,10 +58,11 @@ export async function POST(request: Request) {
 
     // Send email with the temporary password
     try {
+      const emailTemplate = generateForgotPasswordEmailTemplate(tempPassword);
       await sendEmail({
         to: email,
         subject: 'Your Temporary Password - FunGuyz',
-        html: `<p>You requested a password reset. Your temporary password is: <strong>${tempPassword}</strong></p><p>Please log in and change your password immediately.</p>`
+        html: emailTemplate.html
       });
     } catch (emailError) {
       console.error('Failed to send forgot password email:', emailError);
@@ -69,7 +71,7 @@ export async function POST(request: Request) {
 
     return NextResponse.json({ 
       success: true, 
-      message: 'If an account exists, a temporary password has been sent to the email.'
+      message: 'A temporary password has been sent to your email.'
     });
   } catch (error: any) {
     console.error('Forgot password error:', error);

@@ -6,6 +6,7 @@ import { Turnstile } from '@marsidev/react-turnstile';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { MushroomLoader } from '@/components/MushroomLoader';
+import { OrderDetailView } from '@/components/OrderDetailView';
 import { useAuth } from '@/context/AuthContext';
 import {
   User,
@@ -90,6 +91,7 @@ export default function MyAccountPage() {
 
   // Dashboard tab
   const [activeTab, setActiveTab] = useState<'dashboard' | 'orders' | 'downloads' | 'addresses' | 'details'>('dashboard');
+  const [selectedOrderId, setSelectedOrderId] = useState<string | null>(null);
 
   // Profile Forms State
   const [profileFirstName, setProfileFirstName] = useState('');
@@ -209,8 +211,13 @@ export default function MyAccountPage() {
     setIsResetting(true);
     const result = await resetPassword(resetEmail, resetTurnstileToken) as any;
     setIsResetting(false);
-    if (result.success && result.newPassword) {
-      setResetResult(result.newPassword);
+    if (result.success) {
+      if (result.newPassword) {
+        setResetResult(result.newPassword);
+      } else {
+        showFlash('success', result.message || 'Password reset successful');
+        setView('login'); // Redirect to login so they can use their new password
+      }
     } else {
       showFlash('error', result.message || 'Something went wrong');
     }
@@ -582,7 +589,7 @@ export default function MyAccountPage() {
             ] as { id: typeof activeTab; label: string; icon: React.ElementType }[]).map(tab => (
               <button
                 key={tab.id}
-                onClick={() => setActiveTab(tab.id)}
+                onClick={() => { setActiveTab(tab.id); setSelectedOrderId(null); }}
                 className={`w-full flex items-center gap-3 px-4 py-3 text-xs font-black uppercase tracking-wider rounded-2xl transition-all duration-200 cursor-pointer text-left logo-font ${activeTab === tab.id
                   ? 'bg-[#ff4fa3] text-white shadow-md shadow-pink-100'
                   : 'text-slate-500 hover:bg-pink-50/50 hover:text-[#ff4fa3]'
@@ -616,7 +623,7 @@ export default function MyAccountPage() {
                   Hello <strong className="text-[#1b1533]">{currentUser?.displayName}</strong> (not {currentUser?.displayName}?{' '}
                   <button onClick={handleLogout} className="text-[#ff4fa3] hover:underline font-bold">Log out</button>).
                   From your account dashboard you can view your{' '}
-                  <button onClick={() => setActiveTab('orders')} className="text-[#ff4fa3] hover:underline font-bold">recent orders</button>,
+                  <button onClick={() => { setActiveTab('orders'); setSelectedOrderId(null); }} className="text-[#ff4fa3] hover:underline font-bold">recent orders</button>,
                   manage your{' '}
                   <button onClick={() => setActiveTab('addresses')} className="text-[#ff4fa3] hover:underline font-bold">addresses</button>,
                   and edit your{' '}
@@ -626,7 +633,7 @@ export default function MyAccountPage() {
                   <div className="border border-slate-100 bg-[#fffdfd] p-5 rounded-2xl shadow-sm hover:shadow-md transition-shadow">
                     <span className="text-[12px] font-bold uppercase tracking-widest text-[#ff4fa3]">Total Orders</span>
                     <b className="block text-2xl font-black text-[#1b1533] mt-2 logo-font">{currentUser?.orders?.length ?? 0} Order{(currentUser?.orders?.length ?? 0) !== 1 ? 's' : ''}</b>
-                    <button onClick={() => setActiveTab('orders')} className="mt-3 text-[12px] font-bold uppercase tracking-wider text-[#7b5cff] hover:text-[#ff4fa3] flex items-center gap-1">
+                    <button onClick={() => { setActiveTab('orders'); setSelectedOrderId(null); }} className="mt-3 text-[12px] font-bold uppercase tracking-wider text-[#7b5cff] hover:text-[#ff4fa3] flex items-center gap-1">
                       View Orders <ArrowRight className="h-3 w-3" />
                     </button>
                   </div>
@@ -649,60 +656,73 @@ export default function MyAccountPage() {
             {/* ORDERS */}
             {activeTab === 'orders' && (
               <div className="space-y-6">
-                <div className="border-b border-slate-100 pb-4">
-                  <h2 className="text-xl font-black text-[#1b1533] uppercase logo-font">Order History</h2>
-                  <p className="text-[12px] font-semibold text-slate-400 mt-1 uppercase tracking-wider">Your Recent Transactions</p>
-                </div>
-
-                {currentUser?.orders && currentUser.orders.length > 0 ? (
-                  <div className="overflow-x-auto">
-                    <table className="w-full text-left border-collapse text-xs ">
-                      <thead>
-                        <tr className="border-b border-slate-100 text-slate-400 uppercase tracking-widest font-bold">
-                          <th className="py-3 px-4">Order</th>
-                          <th className="py-3 px-4">Date</th>
-                          <th className="py-3 px-4">Status</th>
-                          <th className="py-3 px-4">Total</th>
-                          <th className="py-3 px-4 text-right">Tracking</th>
-                        </tr>
-                      </thead>
-                      <tbody className="font-semibold text-slate-600">
-                        {currentUser.orders.map(order => (
-                          <tr key={order.orderId} className="border-b border-slate-100/70 hover:bg-slate-50/30 transition-colors">
-                            <td className="py-4 px-4 font-black text-[#ff4fa3]">{order.orderId}</td>
-                            <td className="py-4 px-4">{order.date}</td>
-                            <td className="py-4 px-4">
-                              <span className={`inline-block rounded-full px-3 py-1 text-[10px] font-black uppercase tracking-widest ${order.status === 'delivered' ? 'bg-emerald-500/10 text-emerald-600' :
-                                order.status === 'cancelled' ? 'bg-red-500/10 text-red-600' :
-                                  'bg-amber-500/10 text-amber-600'
-                                }`}>
-                                {order.status}
-                              </span>
-                            </td>
-                            <td className="py-4 px-4 text-[#1b1533] font-black">{order.grandTotal} for {order.items?.length ?? 0} item{(order.items?.length ?? 0) !== 1 ? 's' : ''}</td>
-                            <td className="py-4 px-4 text-right">
-                              {order.trackingCode ? (
-                                <span className="inline-flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider text-emerald-600 shadow-sm">
-                                  <Truck className="h-3 w-3" /> {order.trackingCode}
-                                </span>
-                              ) : (
-                                <span className="text-slate-300 text-[10px]">—</span>
-                              )}
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-                ) : (
-                  <div className="py-12 flex flex-col items-center gap-4 text-center">
-                    <div className="h-16 w-16 rounded-full bg-slate-50 flex items-center justify-center text-2xl">📦</div>
-                    <div>
-                      <p className="font-black text-slate-800 logo-font">No orders yet</p>
-                      <p className="text-xs text-slate-400 mt-1">Your orders will appear here after checkout</p>
+                {!selectedOrderId ? (
+                  <>
+                    <div className="border-b border-slate-100 pb-4">
+                      <h2 className="text-xl font-black text-[#1b1533] uppercase logo-font">Order History</h2>
+                      <p className="text-[12px] font-semibold text-slate-400 mt-1 uppercase tracking-wider">Your Recent Transactions</p>
                     </div>
-                    <Link href="/shop" className="mt-2 rounded-2xl bg-[#ff4fa3] px-6 py-2.5 text-xs font-bold uppercase tracking-wider text-white shadow-md shadow-pink-100 hover:bg-black transition-all duration-300 cursor-pointer logo-font">Browse Shop</Link>
-                  </div>
+
+                    {currentUser?.orders && currentUser.orders.length > 0 ? (
+                      <div className="overflow-x-auto">
+                        <table className="w-full text-left border-collapse text-xs ">
+                          <thead>
+                            <tr className="border-b border-slate-100 text-slate-400 uppercase tracking-widest font-bold">
+                              <th className="py-3 px-4">Order</th>
+                              <th className="py-3 px-4">Date</th>
+                              <th className="py-3 px-4">Status</th>
+                              <th className="py-3 px-4">Total</th>
+                              <th className="py-3 px-4 text-right">Actions</th>
+                            </tr>
+                          </thead>
+                          <tbody className="font-semibold text-slate-600">
+                            {currentUser.orders.map(order => (
+                              <tr key={order.orderId} className="border-b border-slate-100/70 hover:bg-slate-50/30 transition-colors">
+                                <td className="py-4 px-4 font-black text-[#ff4fa3]">{order.orderId}</td>
+                                <td className="py-4 px-4">{order.date}</td>
+                                <td className="py-4 px-4">
+                                  <span className={`inline-block rounded-full px-3 py-1 text-[10px] font-black uppercase tracking-widest ${order.status === 'delivered' ? 'bg-emerald-500/10 text-emerald-600' :
+                                    order.status === 'cancelled' ? 'bg-red-500/10 text-red-600' :
+                                      'bg-amber-500/10 text-amber-600'
+                                    }`}>
+                                    {order.status}
+                                  </span>
+                                </td>
+                                <td className="py-4 px-4 text-[#1b1533] font-black">{order.grandTotal} for {order.items?.length ?? 0} item{(order.items?.length ?? 0) !== 1 ? 's' : ''}</td>
+                                <td className="py-4 px-4 text-right">
+                                  <button onClick={() => setSelectedOrderId(order.orderId)} className="inline-flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider text-[#ff4fa3] shadow-sm hover:border-[#ff4fa3] transition-colors cursor-pointer">
+                                    <Eye className="h-3 w-3" /> View
+                                  </button>
+                                </td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    ) : (
+                      <div className="py-12 flex flex-col items-center gap-4 text-center">
+                        <div className="h-16 w-16 rounded-full bg-slate-50 flex items-center justify-center text-2xl">📦</div>
+                        <div>
+                          <p className="font-black text-slate-800 logo-font">No orders yet</p>
+                          <p className="text-xs text-slate-400 mt-1">Your orders will appear here after checkout</p>
+                        </div>
+                        <Link href="/shop" className="mt-2 rounded-2xl bg-[#ff4fa3] px-6 py-2.5 text-xs font-bold uppercase tracking-wider text-white shadow-md shadow-pink-100 hover:bg-black transition-all duration-300 cursor-pointer logo-font">Browse Shop</Link>
+                      </div>
+                    )}
+                  </>
+                ) : (
+                  (() => {
+                    const order = currentUser?.orders?.find(o => o.orderId === selectedOrderId);
+                    if (!order) return <p>Order not found.</p>;
+
+                    return (
+                      <OrderDetailView 
+                        order={order} 
+                        currentUser={currentUser} 
+                        onClose={() => setSelectedOrderId(null)} 
+                      />
+                    );
+                  })()
                 )}
               </div>
             )}

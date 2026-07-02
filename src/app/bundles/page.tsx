@@ -148,10 +148,10 @@ export default function BundlesCollectionPage() {
             </div>
 
             {/* Action Buttons */}
-            <div className="flex flex-wrap gap-3 mt-4 w-full">
+            <div className="flex flex-col sm:flex-row gap-3 mt-4 w-full">
               <button
                 onClick={() => document.getElementById('featured-bundles')?.scrollIntoView({ behavior: 'smooth' })}
-                className="inline-flex items-center justify-center rounded-2xl bg-[#ff4fa3] text-white border border-[#ff4fa3] px-8 py-3.5 text-xs font-black uppercase tracking-wider shadow-md shadow-pink-100 transition-all duration-300 hover:bg-black hover:text-[#ff4fa3] hover:border-black hover:-translate-y-0.5 active:translate-y-0 cursor-pointer gap-1.5 logo-font"
+                className="w-full sm:w-auto inline-flex items-center justify-center rounded-2xl bg-[#ff4fa3] text-white border border-[#ff4fa3] px-6 sm:px-8 py-3.5 text-xs font-black uppercase tracking-wider shadow-md shadow-pink-100 transition-all duration-300 hover:bg-black hover:text-[#ff4fa3] hover:border-black hover:-translate-y-0.5 active:translate-y-0 cursor-pointer gap-1.5 logo-font"
               >
                 Shop Bundles <ArrowRight className="h-4 w-4 stroke-[2.5]" />
               </button>
