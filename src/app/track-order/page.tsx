@@ -29,6 +29,14 @@ interface TimelineStep {
 }
 
 export default function TrackOrderPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center font-bold text-slate-500">Loading...</div>}>
+      <TrackOrderContent />
+    </Suspense>
+  );
+}
+
+function TrackOrderContent() {
   const [trackingCode, setTrackingCode] = useState('');
   const [isSearched, setIsSearched] = useState(false);
   const [activeFaqIdx, setActiveFaqIdx] = useState<number | null>(0);
