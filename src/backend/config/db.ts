@@ -25,7 +25,7 @@ async function connectDB() {
   if (!cached.promise) {
     console.log('⏳ Connecting to MongoDB...');
     const opts = {
-      bufferCommands: false,
+      bufferCommands: true,
     };
 
     cached.promise = mongoose.connect(MONGODB_URI!, opts).then((mongoose) => {
