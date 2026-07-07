@@ -17,8 +17,14 @@ export async function GET(request: Request) {
     const categoryQuery = searchParams.get('category');
     const subcategoryQuery = searchParams.get('subcategory');
     const sortBy = searchParams.get('sortBy');
+    const isTrending = searchParams.get('isTrending');
+    const limitParam = searchParams.get('limit');
 
     const query: any = { status: { $ne: EProductStatus.OUT_OF_STOCK } };
+
+    if (isTrending === 'true') {
+      query.isTrending = true;
+    }
 
     if (categoryQuery && categoryQuery !== 'All') {
       if (categoryQuery === 'Best Sellers') {
@@ -41,10 +47,13 @@ export async function GET(request: Request) {
     else if (sortBy === 'price-desc') sortOption.price = -1;
     else if (sortBy === 'name-asc') sortOption.name = 1;
 
-    const products = await Product.find(query)
-      .populate('category')
-      .sort(sortOption)
-      .lean();
+    let dbQuery = Product.find(query).populate('category').sort(sortOption);
+    
+    if (limitParam && !isNaN(Number(limitParam))) {
+      dbQuery = dbQuery.limit(Number(limitParam));
+    }
+
+    const products = await dbQuery.lean();
 
     return NextResponse.json({ success: true, products });
   } catch (error: any) {

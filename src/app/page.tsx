@@ -109,17 +109,18 @@ export default function Home() {
     return () => observer.disconnect();
   }, []);
 
-  const { data: prodData, isLoading: isLoadingProducts } = useSWR(shouldFetchData ? '/api/products' : null, fetcher, { revalidateOnFocus: false, revalidateOnReconnect: false, dedupingInterval: 60000 });
+  const { data: bestSellersData, isLoading: isLoadingBS } = useSWR(shouldFetchData ? '/api/products?category=Best%20Sellers&limit=8' : null, fetcher, { revalidateOnFocus: false, revalidateOnReconnect: false, dedupingInterval: 60000 });
+  const { data: featuredData, isLoading: isLoadingFeatured } = useSWR(shouldFetchData ? '/api/products?limit=8' : null, fetcher, { revalidateOnFocus: false, revalidateOnReconnect: false, dedupingInterval: 60000 });
+  const isLoadingProducts = isLoadingBS || isLoadingFeatured;
+
   // const { data: catData } = useSWR('/api/categories', fetcher);
   const { data: blogData } = useSWR(shouldFetchData ? '/api/blogs' : null, fetcher, { revalidateOnFocus: false, revalidateOnReconnect: false, dedupingInterval: 60000 });
 
-  const dbProducts = prodData?.success ? prodData.products : [];
-  // const dbCategories = catData?.success ? catData.categories : [];
+  const displayBestSellers = bestSellersData?.success ? bestSellersData.products : [];
+  const displayFeatured = featuredData?.success ? featuredData.products : [];
   const dbCategories = staticCategories;
   const dbBlogs = blogData?.success ? blogData.blogs : [];
 
-  // Use DB products for rendering
-  const displayProducts = dbProducts;
 
 
   const reviews = [
@@ -416,7 +417,7 @@ export default function Home() {
             }}
             className="mt-8 w-full"
           >
-            {displayProducts.map((p: any, i: any) => (
+            {displayBestSellers.map((p: any, i: any) => (
               <SwiperSlide key={p._id || p[0]} className="!h-auto pb-4">
                 <ProductCard p={p} i={i} />
               </SwiperSlide>
@@ -469,7 +470,7 @@ export default function Home() {
             </div>
           ) : (
             <div className="grid gap-6 grid-cols-2 lg:grid-cols-4">
-              {displayProducts.slice(0, 8).map((p: any, i: any) => (
+              {displayFeatured.map((p: any, i: any) => (
                 <div key={p._id || p[0]} className="w-full">
                   <ProductCard p={p} i={i} />
                 </div>
