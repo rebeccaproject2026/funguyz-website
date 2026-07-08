@@ -10,8 +10,7 @@ export async function GET(request: Request) {
   try {
     await connectDB();
     
-    // Ensure Category model is loaded for population
-    Category.init();
+    // Ensure Category model is loaded for population by just importing it (which is already done at the top)
 
     const { searchParams } = new URL(request.url);
     const categoryQuery = searchParams.get('category');
