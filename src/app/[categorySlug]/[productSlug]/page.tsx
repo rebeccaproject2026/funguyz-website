@@ -478,7 +478,7 @@ export default function CategoryProductPage({ params }: { params: Promise<{ cate
                     { label: 'CBN Analysis', val: productData.compounds.cbn, color: 'indigo' },
                   ].map((item, idx) => (
                     <div key={idx} className="border border-slate-100 rounded-2xl p-4 bg-[#fffdfd] flex items-center gap-3.5">
-                      <div className={`h-9 w-9 shrink-0 rounded-xl bg-${item.color}-50 flex items-center justify-center font-black text-${item.color}-500 text-xs`}>
+                      <div className={`min-h-9 w-auto min-w-[2.25rem] px-2 py-1 shrink-0 rounded-xl bg-${item.color}-50 flex items-center justify-center font-black text-${item.color}-500 text-[10px] sm:text-xs text-center break-words leading-tight`}>
                         {item.val}
                       </div>
                       <div>

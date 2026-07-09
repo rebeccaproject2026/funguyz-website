@@ -524,7 +524,7 @@ export default function ProductDetailsPage({ params }: { params: Promise<{ slug:
                 </div>
                 <div className="grid gap-4 sm:grid-cols-3">
                   <div className="border border-slate-100 rounded-2xl p-4 bg-[#fffdfd] flex items-center gap-3.5">
-                    <div className="h-9 w-9 shrink-0 rounded-xl bg-pink-50 flex items-center justify-center font-black text-pink-500 text-xs">
+                    <div className="min-h-9 w-auto min-w-[2.25rem] px-2 py-1 shrink-0 rounded-xl bg-pink-50 flex items-center justify-center font-black text-pink-500 text-[10px] sm:text-xs text-center break-words leading-tight">
                       {productData.compounds.thc}
                     </div>
                     <div>
@@ -533,7 +533,7 @@ export default function ProductDetailsPage({ params }: { params: Promise<{ slug:
                     </div>
                   </div>
                   <div className="border border-slate-100 rounded-2xl p-4 bg-[#fffdfd] flex items-center gap-3.5">
-                    <div className="h-9 w-9 shrink-0 rounded-xl bg-purple-50 flex items-center justify-center font-black text-purple-500 text-xs">
+                    <div className="min-h-9 w-auto min-w-[2.25rem] px-2 py-1 shrink-0 rounded-xl bg-purple-50 flex items-center justify-center font-black text-purple-500 text-[10px] sm:text-xs text-center break-words leading-tight">
                       {productData.compounds.cbd}
                     </div>
                     <div>
@@ -542,7 +542,7 @@ export default function ProductDetailsPage({ params }: { params: Promise<{ slug:
                     </div>
                   </div>
                   <div className="border border-slate-100 rounded-2xl p-4 bg-[#fffdfd] flex items-center gap-3.5">
-                    <div className="h-9 w-9 shrink-0 rounded-xl bg-indigo-50 flex items-center justify-center font-black text-indigo-500 text-xs">
+                    <div className="min-h-9 w-auto min-w-[2.25rem] px-2 py-1 shrink-0 rounded-xl bg-indigo-50 flex items-center justify-center font-black text-indigo-500 text-[10px] sm:text-xs text-center break-words leading-tight">
                       {productData.compounds.cbn}
                     </div>
                     <div>
